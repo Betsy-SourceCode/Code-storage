@@ -1,0 +1,831 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>系统技术知识记录详细</title>
+    @*<script src="http://www.jq22.com/jquery/1.4.4/jquery.min.js"></script>*@  @*控制灯箱不可缺少*@
+    <script src="~/Scripts/jquery1.4.4.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/富文本/themes/default/default.css" rel="stylesheet" />
+    <link href="~/Scripts/上传文件和下载文件/fileinput.min.css" rel="stylesheet" />
+    <link href="~/Scripts/灯箱/picbox.css" rel="stylesheet" />
+    <script src="~/Scripts/上传文件和下载文件/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/上传文件和下载文件/fileinput.min.js"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/jQuery.print.js"></script>
+    @*<script src="~/Scripts/富文本/kindeditor-all-min.js"></script>*@
+    <script src="~/Scripts/富文本/kindeditor-all.js"></script>
+    <script src="~/Scripts/富文本/zh-CN.js"></script>
+    <script src="~/Scripts/灯箱/picbox.js"></script>
+    <script src="~/Scripts/上传文件和下载文件/jquery-3.4.1.js"></script>
+    <style>
+        .input-clear {
+            display: none;
+            float: right;
+            margin-top: -17px;
+            margin-right: 10px;
+            transform: translateY(-50%);
+            z-index: 111;
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+            cursor: pointer;
+        }
+
+        .text .caption h5 {
+            text-shadow: 3px 2px 2px grey;
+            color: #0094ff;
+            margin-top: 2%;
+        }
+
+        .btn-file {
+            background: url('../../Scripts/图标/上传.png') no-repeat;
+            background-size: 30px;
+            background-position: 98%;
+        }
+
+        /*.file-preview {
+            display: none;
+        }*/
+        .col-md-1 {
+            width: 6%;
+        }
+
+        hr.new2 {
+            border-top: 2px dashed #ccc;
+        }
+
+        .ChangeColors {
+            background-color: #ffffde;
+        }
+
+        .ke-container-default {
+            margin-left: 105px;
+        }
+
+        .ke-edit-iframe {
+            background-color: #ffffde;
+        }
+
+        .ke-toolbar {
+            display: flex;
+        }
+
+        .ke-container-default {
+            margin-left: 0px;
+        }
+
+        .file-drop-zone {
+            border: none;
+        }
+
+        .file-preview {
+            border: none;
+        }
+
+        .krajee-default.file-preview-frame .file-thumbnail-footer {
+            height: auto;
+        }
+
+        .krajee-default.file-preview-frame {
+            margin: auto;
+        }
+
+        .file-thumbnail-footer {
+            margin-top: 3%;
+        }
+    </style>
+    <script>
+        //$(function () {
+        //    $(".ke-edit-iframe")[1].delegate("load", function (event) {//判断 iframe是否加载完成  这一步很重要
+        //        $("#lianjie", this.contentDocument).click(function () {//添加点击事件
+        //            alert("就是这样");
+        //        });
+        //    });
+        //    $("#lianjie").click(function () {
+        //        alert(1);
+        //        var href = $(this).attr("href");
+        //        var div = document.createElement('div');
+        //        div.innerHTML = '<span><a href="' + href + '">跳转链接</a></span>'; //设置显示的数据，可以是标签
+        //        var bo = document.body; //获取body对象.
+        //        //动态插入到body中
+        //        bo.insertBefore(div, bo.lastChild);
+        //    })
+
+        //});
+    </script>
+    @*模糊查询文本框*@
+    <script>
+        // 输入框清除
+        $(function () {
+            // 监听输入框内容变动
+            $(".input-group-clear").bind("input propertychange", function () {
+                // 获取输入框的值
+                var inputValue = $(this).children('input').val();
+                // 判断输入框是否有值
+                if (inputValue >= 1) {
+                    // 显示清除
+                    $(this).children('.input-clear').show();
+                } else {
+                    // 隐藏清除
+                    $(this).children('.input-clear').hide();
+                }
+
+            });
+
+            // 输入框获取焦点事件，判断输入框是否有值，有值则显示清除
+            $(".input-group-clear").children('input').focus(function () {
+
+                var inputValue = this.value.length;
+
+                if (inputValue >= 1) {
+                    $(this).siblings('.input-clear').show();
+                }
+
+            });
+
+            // 点击清除事件
+            $('.input-clear').click(function () {
+                // 清空输入框值
+                $(this).siblings('input').val('');
+                // 隐藏清除
+                $(this).hide();
+
+            });
+
+            // 离开输入框div事件，隐藏清除,此处不能使用blur，因为blur只对输入框有效
+            $(".input-group-clear").focusout(function () {
+
+                var igc = $(this);
+                // 设置一个定时器，离开输入框div，200毫秒后隐藏清除，不设置定时器会出现点击清除无效的情况
+                setTimeout(function () {
+                    igc.children('.input-clear').hide();
+                }, 200)
+
+            });
+        })
+
+    </script>
+    @*暂时不用*@
+    @*<script>
+            //jQuery的页面加载完成时触发的事件
+            $(document).ready(function () {
+                $("input[type='text']").on("blur focus", function () {
+                    var defaultvalue = $(this).attr("defaultvalue");
+
+                    //判断是否获取焦点
+                    if ($(this).is(":focus")) {
+                        //把输入框里面的文字颜色变为黑色
+                        $(this).css("color", "#000");
+                        //如果之前的内容是默认值，那么清空
+                        if ($(this).val() == defaultvalue) {
+                            $(this).val("");
+                        }
+                    } else {//失去焦点
+                        //判断内容是空的或默认值
+                        if ($(this).val() == "" || $(this).val() == defaultvalue) {
+                            //设置为默认值
+                            $(this).val(defaultvalue);
+                            //文字颜色设置为灰色
+                            $(this).css("color", "#999");
+                        } else {
+                            //文字设置为黑色
+                            $(this).css("color", "#000");
+                        }
+                    }
+                });
+            });
+        </script>*@
+    @*下载图片*@
+    <script>
+        function XiaZai(id) {
+            var img = document.getElementById(id); // 获取要下载的图片
+            var url = img.src;
+            let imgData = url;//这里放需要下载的base64
+            this.downloadFile('测试.gif', imgData);
+        };
+        //下载
+        function downloadFile(fileName, content) {
+            let aLink = document.createElement('a');
+            let blob = this.base64ToBlob(content); //new Blob([content]);
+
+            let evt = document.createEvent("HTMLEvents");
+            evt.initEvent("click", true, true);//initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
+            aLink.download = fileName;
+            aLink.href = URL.createObjectURL(blob);
+
+            // aLink.dispatchEvent(evt);
+            aLink.click()
+        };
+        //base64转blob
+        function base64ToBlob(code) {
+            let parts = code.split(';base64,');
+            let contentType = parts[0].split(':')[1];
+            let raw = window.atob(parts[1]);
+            let rawLength = raw.length;
+
+            let uInt8Array = new Uint8Array(rawLength);
+
+            for (let i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+            return new Blob([uInt8Array], { type: contentType });
+        }
+    </script>
+    @*富文本*@
+    <script>
+        KindEditor.ready(function (K) {
+            window.editor = K.create('.ke_demo');
+            allowImageUpload: false;
+        });
+        //跳转页面
+        function Tiaoz(parameter, num) {  //num-参数
+            var canshu = 1;  //参数控制
+            var createBy = '@ViewBag.AllCustomer.CreateBy';
+            var createDept = '@ViewBag.AllCustomer.CreateDept';
+            //加上过滤条件
+            if (parameter=="Index") {
+                @*window.location.href = "/KnowledgeBase/Index?userid=@ViewBag.userid&pageIndex=@ViewBag.pageIndex&pageSize=@ViewBag.pageSize&KeyWord=@ViewBag.KeyWord&TopicArea=@ViewBag.TopicArea";*@
+                 window.location.href = "/KnowledgeBase/Index?userid=@ViewBag.userid";
+            }
+            else {
+                if (Update(createBy, createDept) != 1) {
+                    alert('抱歉,您没有修改本条数据的权限！');
+                    canshu = 0;
+                }
+                if (canshu == 1) {
+                    window.location.href = "/KnowledgeBase/" + parameter + "?QnAID=" + num + "";
+                }
+            }
+
+        }
+        //修改判断权限
+        function Update(createBy, createDept) {
+            var num = 1;
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/KnowledgeBase/Authority",
+                data: {
+                    "createBy": createBy,
+                    "createDept": createDept
+                },
+                success: function (result) {
+                    if (result <= 2) {
+                        num = 0;
+                    }
+                }
+            });
+            return num;
+        }
+    </script>
+    @*进入页面查看次数+1*@
+    <script>
+        $(function () {
+            UpdateKnowledgeBase();
+        })
+        function UpdateKnowledgeBase() {
+            $.ajax({
+                url: '/KnowledgeBaseZSG/AddUpdateFunction?&num=3&QnAID='+@ViewBag.AllCustomer.QnAID,
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.id > 0) {
+                        console.log("1");
+                    } else {
+                        console.log("0");
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            });
+        }
+    </script>
+    @*板块*@
+    <script>
+        $(function () {
+            var name = getCookie("Language");
+            if (name == "zh-CN") {  //中文状态下
+                var Language = "Name_CN";
+            }
+            if (name == "en-US") {  //英文状态下
+                var Language = "Name_EN";
+            }
+            if (name == "vi") {   //越南文状态下
+                Language = "Name_VN";
+            }
+            var TopicArea = "";
+            var id = '@ViewBag.AllCustomer.QnAID';
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/KnowledgeBase/SelectBK?id=" + id,
+                data: { "Language": Language },
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        TopicArea += '<label id="TopicArea">'+value.Text+'</label > ';
+                        $("#TopicArea").append(TopicArea);
+                        return false;
+                    })
+                }
+            });
+        })
+        //取Cookie的某个参数
+        function getCookie(sName) { /*sName为要取的key名*/
+            var aCookie = document.cookie.split("; ");
+            for (var i = 0; i < aCookie.length; i++) {
+                var aCrumb = aCookie[i].split("=");
+                if (sName == aCrumb[0])
+                    return unescape(aCrumb[1]);
+            }
+            return null;
+        }
+    </script>
+    <script type='text/javascript'>
+        function Dayin() {
+            document.getElementById("iframeId").contentWindow.DayinGN();  //contentWindow-指定的iframe或者iframe所在的Window对象
+        }
+    </script>
+</head>
+<body>
+    <iframe src="~/KnowledgeBase/DetailsPrinting?QnAID=@ViewBag.AllCustomer.QnAID" width="100" height="100" name="iframName" id="iframeId" style="display:none">
+    </iframe>
+    <div class="container-fluid" style="width:98%">
+        <div style="float: left; margin-left: 20px; margin-top: 20px;">
+            <img src="/Scripts/image/logo.jpg" />
+        </div>
+        <div style="float: right; margin-right: 20px;">
+            <a style="margin-left: 25px;" href="#" onclick="Tiaoz('Index')"><img src="/Scripts/image/关闭.jpg" title="@Resources.CustomerRes.Gb" /></a>
+        </div>
+        <div>
+            <h1 style="text-align: center; margin-top: 50px;">
+                <span id="Title"> @Resources.CustomerRes.Xtjszsjlxx </span>
+            </h1>
+        </div>
+        <form id="Addform" action="##" onsubmit="return false" method="post">
+            <div style="border:#000000 1px solid;width:100%;margin: 0px auto;font-size:16px;clear:both;padding:5px">
+                <div style="width:100%;margin-left:2%;margin-top:1%;">
+                    <div class="col-md-3" style="margin-left:6px">
+                        <label>@Resources.CustomerRes.Ssbk：</label>
+                        <div style="display:initial;width:100%" id="TopicArea">
+                            @*<select name="TopicArea" style="width:30%" class="ChangeColors" disabled="disabled">
+                                </select>*@
+                        </div>
+                    </div>
+                    <div class="col-md-5" style="margin-left:-3%;">
+                        <label>@Resources.CustomerRes.Zzhe (@Resources.CustomerRes.Tcz)：</label>
+                        <div class="input-group-clear" style="display:inline-block;width:69%">
+                            <label name="Author" id="tcz" required autofocus">@ViewBag.AllCustomer.Author</label>
+                            <span class="input-clear isfocus">
+                                &times;
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;margin-top:50px;clear:both">
+                    <div class="col-md-14">
+                        <div class="text" style="width:3%;float:left">
+                            <div class="caption">
+                                <h5>@Resources.CustomerRes.Wen：</h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Zti：</span>
+                        @*<input type="text" name="Zti" id="Zti" defaultvalue="不超过500字!" value="不超过500字!" style="resize: none; width:92%;height:100px;padding-bottom:75px" maxlength="500" class="form-control ChangeColors" />*@
+                        <div name="Question" rows="20" cols="100" style="width:92%;height:auto;margin-left:105px">
+                            @*@{
+                                    @functions{ public static string RemoveHtml(String html)
+                                        {
+                                            if (html == null || html == "")
+                                            {
+                                                return html;
+                                            }
+                                            else
+                                            {
+                                                //将<br>转换成\n
+                                                string text = System.Text.RegularExpressions.Regex.Replace(html, "<br/>", "\n");
+                                                text = System.Text.RegularExpressions.Regex.Replace(html, "&nbsp;", " ");
+                                                text = System.Text.RegularExpressions.Regex.Replace(text, "<[^>]+>", "");  //去掉html标签函数
+                                                text = System.Text.RegularExpressions.Regex.Replace(text, "&[^;]+;", "");
+                                                return text;
+                                            }
+
+                                        }
+                                    } @*其他页面调用函数（helpers为函数的页面名字）@helpers.RemoveHtml(item.Content)};
+                                    var Question = RemoveHtml(@ViewBag.AllCustomer.Question);
+                                    var KeyWord = RemoveHtml(@ViewBag.AllCustomer.KeyWord);
+                                    var Answer = RemoveHtml(@ViewBag.AllCustomer.Answer);
+                                }*@
+                            @Html.Raw(@ViewBag.AllCustomer.Question)
+                        </div>
+                    </div>
+                    <div class="col-md-14">
+                        <div class="text" style="width:2%;float:left">
+                            <div class="caption">
+                                <h5></h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Gjz：</span>
+                        <div name="KeyWord" rows="20" cols="100" style="width:92%;height:auto;margin-left:105px">
+                            @if (@ViewBag.QnAID != 0)
+                            {
+                                @Html.Raw(@ViewBag.AllCustomer.@KeyWord)
+                            }
+                        </div>
+                    </div>
+                    <div style="width:100%;margin-top:1%;overflow:hidden;margin-bottom:-3%">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 001：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic01).Length == 0)
+                                {
+                                    <div class="file-drop-zone">
+                                        <div class="file-preview-thumbnails">
+                                            <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 194px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic01)" rel="lightbox-group" title="图片信息1">
+                                                        <img id="QPic01" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic01)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" title="点击查看图片" />
+                                                    </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic02)" rel="lightbox-group" title="图片信息2"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic03)" rel="lightbox-group" title="图片信息3"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic04)" rel="lightbox-group" title="图片信息4"></a>
+                                                    <div class="file-thumbnail-footer">
+                                                        <div class="file-actions">
+                                                            <div class="file-footer-buttons">
+                                                                <button type="button" class="glyphicon glyphicon-save btn btn-xs btn-default" title="@Resources.CustomerRes.Xztp" onclick="XiaZai('QPic01')"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 002：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic02).Length == 0)
+                                {
+                                    <div class="file-drop-zone">
+                                        <div class="file-preview-thumbnails">
+                                            <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 194px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic01)" rel="lightbox-group" title="图片信息1"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic02)" rel="lightbox-group" title="图片信息2">
+                                                        <img id="QPic02" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic02)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" title="点击查看图片" />
+                                                    </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic03)" rel="lightbox-group" title="图片信息3"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic04)" rel="lightbox-group" title="图片信息4"></a>
+                                                    <div class="file-thumbnail-footer">
+                                                        <div class="file-actions">
+                                                            <div class="file-footer-buttons">
+                                                                <button type="button" class="glyphicon glyphicon-save btn btn-xs btn-default" title="@Resources.CustomerRes.Xztp" onclick="XiaZai('QPic02')"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 003：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic03).Length == 0)
+                                {
+                                    <div class="file-drop-zone">
+                                        <div class="file-preview-thumbnails">
+                                            <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 194px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic01)" rel="lightbox-group" title="图片信息1"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic02)" rel="lightbox-group" title="图片信息2"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic03)" rel="lightbox-group" title="图片信息3">
+                                                        <img id="QPic03" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic03)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" title="点击查看图片" />
+                                                    </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic04)" rel="lightbox-group" title="图片信息4"></a>
+                                                    <div class="file-thumbnail-footer">
+                                                        <div class="file-actions">
+                                                            <div class="file-footer-buttons">
+                                                                <button type="button" class="glyphicon glyphicon-save btn btn-xs btn-default" title="@Resources.CustomerRes.Xztp" onclick="XiaZai('QPic03')"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 004：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic04).Length == 0)
+                                {
+                                    <div class="file-drop-zone">
+                                        <div class="file-preview-thumbnails">
+                                            <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 194px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic01)" rel="lightbox-group" title="图片信息1"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic02)" rel="lightbox-group" title="图片信息2"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic03)" rel="lightbox-group" title="图片信息3"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic04)" rel="lightbox-group" title="图片信息4">
+                                                        <img id="QPic04" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic04)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" title="点击查看图片" />
+                                                    </a>
+                                                    <div class="file-thumbnail-footer">
+                                                        <div class="file-actions">
+                                                            <div class="file-footer-buttons">
+                                                                <button type="button" class="glyphicon glyphicon-save btn btn-xs btn-default" title="@Resources.CustomerRes.Xztp" onclick="XiaZai('QPic04')"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="new2">
+                </div>
+                <div style="width:100%;clear:both">
+                    <div class="col-md-14">
+                        <div class="text" style="width:3%;float:left">
+                            <div class="caption">
+                                <h5>@Resources.CustomerRes.Da：</h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Cl：</span>
+                        @*<input type="text" name="Chuli" id="Chuli" value="不超过1500字！" defaultvalue="不超过1500字！" style="resize: none; width:92%;height:300px;padding-bottom:260px" maxlength="1500" class="form-control ChangeColors" />*@
+                        <div name="Answer" rows="20" cols="100" style="width:92%;height:auto;margin-left:105px">
+                            @Html.Raw(@ViewBag.AllCustomer.Answer)
+                        </div>
+                    </div>
+                    <div style="width:100%;margin-top:1%;overflow:hidden;margin-bottom:-2%">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 001：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic01).Length == 0)
+                                {
+                                    <div class="file-drop-zone">
+                                        <div class="file-preview-thumbnails">
+                                            <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 194px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic01)" rel="lightbox-group" title="图片信息1">
+                                                        <img id="APic01" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic01)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" title="点击查看图片" />
+                                                    </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic02)" rel="lightbox-group" title="图片信息2"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic03)" rel="lightbox-group" title="图片信息3"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic04)" rel="lightbox-group" title="图片信息4"></a>
+                                                    <div class="file-thumbnail-footer">
+                                                        <div class="file-actions">
+                                                            <div class="file-footer-buttons">
+                                                                <button type="button" class="glyphicon glyphicon-save btn btn-xs btn-default" title="@Resources.CustomerRes.Xztp" onclick="XiaZai('APic01')"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 002：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic02).Length == 0)
+                                {
+                                    <div class="file-drop-zone">
+                                        <div class="file-preview-thumbnails">
+                                            <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 194px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic01)" rel="lightbox-group" title="图片信息1"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic02)" rel="lightbox-group" title="图片信息2">
+                                                        <img id="APic02" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic02)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" title="点击查看图片" />
+                                                    </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic03)" rel="lightbox-group" title="图片信息3"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic04)" rel="lightbox-group" title="图片信息4"></a>
+                                                    <div class="file-thumbnail-footer" style="margin-top:3%">
+                                                        <div class="file-actions">
+                                                            <div class="file-footer-buttons">
+                                                                <button type="button" class="glyphicon glyphicon-save btn btn-xs btn-default" title="@Resources.CustomerRes.Xztp" onclick="XiaZai('APic02')"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 003：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic03).Length == 0)
+                                {
+                                    <div class="file-drop-zone">
+                                        <div class="file-preview-thumbnails">
+                                            <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 194px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic01)" rel="lightbox-group" title="图片信息1"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic02)" rel="lightbox-group" title="图片信息2">  </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic03)" rel="lightbox-group" title="图片信息3">
+                                                        <img id="APic03" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic03)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" title="点击查看图片" />
+                                                    </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic04)" rel="lightbox-group" title="图片信息4"></a>
+                                                    <div class="file-thumbnail-footer">
+                                                        <div class="file-actions">
+                                                            <div class="file-footer-buttons">
+                                                                <button type="button" class="glyphicon glyphicon-save btn btn-xs btn-default" title="@Resources.CustomerRes.Xztp" onclick="XiaZai('APic03')"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 004：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic04).Length == 0)
+                                {
+                                    <div class="file-drop-zone">
+                                        <div class="file-preview-thumbnails">
+                                            <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 194px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame krajee-default  kv-preview-thumb" data-fileindex="0">
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic01)" rel="lightbox-group" title="图片信息1"></a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic02)" rel="lightbox-group" title="图片信息2">  </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic03)" rel="lightbox-group" title="图片信息3">
+                                                    </a>
+                                                    <a href="data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic04)" rel="lightbox-group" title="图片信息4">
+                                                        <img id="APic04" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic04)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" title="点击查看图片" />
+                                                    </a>
+                                                    <div class="file-thumbnail-footer">
+                                                        <div class="file-actions">
+                                                            <div class="file-footer-buttons">
+                                                                <button type="button" class="glyphicon glyphicon-save btn btn-xs btn-default" title="@Resources.CustomerRes.Xztp" onclick="XiaZai('APic04')"></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+        <div style="width: 97%; overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+            <span style="float: left; margin-left: 3px;">
+                <span id="Label107">@Resources.CustomerRes.Cjxx</span>
+                <span id="lbl_CreateTime">@ViewBag.AllCustomer.CreateTime</span>
+                (<span id="lbl_CreateBy">@ViewBag.CreateBy</span>)
+                <span id="lbl_CreateDept">@ViewBag.CreateDept</span>
+            </span>
+            <span style="float: right; margin-right: 3px;">
+                <span id="Label109">@Resources.CustomerRes.Zhgx</span>
+                <span id="lbl_UpdateTime">@ViewBag.AllCustomer.UpdateTime</span>
+                (<span id="lbl_UpdateBy">@ViewBag.UpdateBy</span>)
+                <span id="lbl_UpdateDept">@ViewBag.UpdateDept</span>
+            </span>
+        </div>
+        <div id="OperationChi" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+            <input type="submit" name="Button1" value="@Resources.CustomerRes.Xg" id="SaveBtn" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" onclick="Tiaoz('UpdateKnowledgeBase','@ViewBag.AllCustomer.QnAID')" />
+            <input type="submit" name="Button1" value="@Resources.CustomerRes.Fuzhi" id="SaveBtn" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" onclick="Tiaoz('AddKnowledgeBase','@ViewBag.AllCustomer.QnAID')" />
+            <input type="button" value="@Resources.CustomerRes.Gb" onclick="Tiaoz('Index')" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" />
+            <input type="button" value="@Resources.CustomerRes.Dayin" onclick="Dayin()" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" />
+        </div>
+    </div>
+</body>
+
+</html>

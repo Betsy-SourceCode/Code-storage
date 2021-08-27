@@ -1,0 +1,245 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style>
+        .form-group {
+            margin-right: 20px;
+        }
+
+        .panel-heading {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .modal-backdrop {
+            opacity: 0 !important;
+            filter: alpha(opacity = 0) !important; /*模态框去掉遮罩层*/
+        }
+
+        #myModal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+    </style>
+    <script>
+        QJRemarks = null;
+        //作废记录
+        function ZuoFei(CreateTime, username, Ledger, FNumber, NewUnit) {
+            $('#myModal').modal({ backdrop: 'static', keyboard: false }); /*禁止点击空白处关闭模态框*/
+            $('.modal-body').find("p").remove();
+            var Message = "";
+            Message += '<p><b style = "color:red" value="这">这';
+            Message += '</b >';
+            Message += '' + " " + CreateTime + '' + " " + username + " 在 " + Ledger + " 账套建立的GIP产品号" + FNumber + "之" + NewUnit + "价格信息记录吗？";
+            Message += '</p>'
+            $(".modal-body").append(Message);
+        }
+        function ChangeCancel() {
+            var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
+            $.ajax({
+                url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
+                data: { "Cancel": false, "CPSerial": CPSerial, "num": 1 },
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success > 0) {
+                        alert("作废成功！");
+                        window.location.href ="/ProductPrice/ProductPrice/Index?userid=@ViewBag.userid";
+                    }
+                    else {
+                        alert("作废失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                }
+            })
+        }
+        //修改备注
+        function Remarks() {
+            if ('@ViewBag.ISARV' == 1) {
+                $("#RemarksFD_label").css("display", "none");
+                $("#Remarks_FD").css("display", "block");
+                QJRemarks = 1;            //财务部
+            }
+            else {
+                $("#RemarksMD_label").css("display", "none");
+                $("#Remarks_MD").css("display", "block");
+                QJRemarks = 2;            //业务部
+            }
+            $("#ChangeRemarks_button").css("display", "none");
+            $("#Save_button").css("display", "inline");
+        }
+        function ChangeRemarks() {
+            var Remarks_FD = null;
+            var Remarks_MD = null;
+            var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
+            if (QJRemarks == 1) { //财务部
+                Remarks_FD = $("#Remarks_FD").val();
+            }
+            if (QJRemarks == 2) { //业务部
+                 Remarks_MD = $("#Remarks_MD").val();
+            }
+            $.ajax({
+                url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
+                data: { "Remarks_MD": Remarks_MD, "Remarks_FD": Remarks_FD, "CPSerial": CPSerial, "num": 2 },
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    if (data.Success > 0) {
+                        alert("保存成功！");
+                        location.reload(); //刷新页面
+                    }
+                    else {
+                        alert("保存失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body style="max-width:96%;min-width:1250px; margin:0px auto;">
+    <div id="Mydiv" style="border: 2px solid #000000;background-color: #ddd;height:auto;">
+        <div id="top" style="background-color:#ccc;margin:2%">
+            <h1 style="text-align: center;">
+                <span id="Title">客 户 产 品 价 格 信 息 详 细</span>
+            </h1>
+            <h1 style="text-align: center;margin-top:-10px">
+                <span id="Title">Customer's Product Prices Record Details</span>
+            </h1>
+        </div>
+        <form style="padding:2% 0%;width:60%;margin:0px 26%">
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-6">
+                    <label style="font-weight:bold;text-align:right">业务员:</label>
+                    <label>@ViewBag.ProductPriceList.CreateBy</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">记录时间:</label>
+                    <label>@ViewBag.mydate</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-6">
+                    <label style="font-weight:bold;text-align:right">账套:</label>
+                    <label>@ViewBag.ProductPriceList.Ledger</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">客户:</label>
+                    <label>@ViewBag.ProductPriceList.ShortName</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-6">
+                    <label style="font-weight:bold;text-align:right">GIP产品号：</label>
+                    <label>@ViewBag.ProductPriceList.FNumber</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">客户产品代码:</label>
+                    <label>@ViewBag.ProductPriceList.CustProdCode</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-12">
+                    <label style="font-weight:bold;text-align:right">产品描述：</label>
+                    <label>@ViewBag.ProductPriceList.CustProdName</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-6">
+                    <label style="font-weight:bold;text-align:right">记录日单价：</label>
+                    <label>@ViewBag.ProductPriceList.NewPrvUnit</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">更新后单价:</label>
+                    <label>@ViewBag.ProductPriceList.NewUpdUnit</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-6">
+                    <label style="font-weight:bold;text-align:right">生效类型：</label>
+                    <label>@ViewBag.ProductPriceList.Name_EN</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">生效条件:</label>
+                    <label>@ViewBag.ProductPriceList.EffDetail</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-12">
+                    <label style="font-weight:bold;text-align:right">销售备注：</label>
+                    <label id="RemarksMD_label">@ViewBag.ProductPriceList.Remarks_MD</label><br />
+                    <textarea name="Remarks_MD" type="text" id="Remarks_MD" class="form-control input-content" style="width:86%;display:inline;height:100px;background-color:white;display:none">@ViewBag.ProductPriceList.Remarks_MD</textarea>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-12">
+                    <label style="font-weight:bold;text-align:right">财务笔记：</label>
+                    <label id="RemarksFD_label">@ViewBag.ProductPriceList.Remarks_FD</label><br />
+                    <textarea name="Remarks_FD" type="text" id="Remarks_FD" class="form-control input-content" style="width:86%;display:inline;height:100px;background-color:white;display:none">@ViewBag.ProductPriceList.Remarks_FD</textarea>
+                </div>
+            </div>
+        </form>
+        <div style="width:50%;margin:0px 37%;padding-bottom:2%">
+            @if (@ViewBag.Add == 1)
+            {
+                <button id="Savebtn" type="button" class="btn-lg btn-primary form-group" onclick="window.location.href = '/ProductPrice/ProductPrice/UpdateProductPrice?CPSerial='+@ViewBag.ProductPriceList.CPSerial">
+                    调&nbsp;&nbsp;价
+                </button>
+            }
+            <button type="button" class="btn-lg btn-primary form-group" onclick="window.location.href = '/ProductPrice/ProductPrice/Index?userid=@ViewBag.userid'">
+                关&nbsp;&nbsp;闭
+            </button>
+            @if (@ViewBag.GuanLi == 1 && @ViewBag.Cancel == true)
+            {
+                <button id="Savebtn" type="submit" class="btn-lg btn-primary form-group" onclick="ZuoFei('@ViewBag.mydate','@ViewBag.username','@ViewBag.ProductPriceList.Ledger','@ViewBag.ProductPriceList.FNumber','@ViewBag.ProductPriceList.NewPrvUnit')">
+                    作&nbsp;&nbsp;废
+                </button>
+            }
+            @if (@ViewBag.Cancel == true && (@ViewBag.ISARV == 1 || @ViewBag.GuanLi == 1))
+            {
+                <button id="ChangeRemarks_button" type="button" class="btn-lg btn-primary form-group" onclick="Remarks()">
+                    修&nbsp;&nbsp;改&nbsp;&nbsp;备&nbsp;&nbsp;注
+                </button>
+            }
+            <button id="Save_button" type="button" class="btn-lg btn-primary form-group" style="display:none" onclick="ChangeRemarks()">
+                保&nbsp;&nbsp;存
+            </button>
+        </div>
+    </div>
+    @*作废*@
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:65%">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel" style="color:red;text-align:center">
+                        <b>确认要作废</b>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer" style="text-align:center">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ChangeCancel()">
+                        是
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        否
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</body>
+</html>

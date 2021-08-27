@@ -1,0 +1,729 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Bc" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Bgdh" xml:space="preserve">
+    <value>办公电话</value>
+  </data>
+  <data name="Bj" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Bk" xml:space="preserve">
+    <value>板块</value>
+  </data>
+  <data name="Btx" xml:space="preserve">
+    <value>为必填项</value>
+  </data>
+  <data name="Bz" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="Cgzglx" xml:space="preserve">
+    <value>采购主管联系</value>
+  </data>
+  <data name="Cjxx" xml:space="preserve">
+    <value>创建信息</value>
+  </data>
+  <data name="Ckcs/zhgxsj" xml:space="preserve">
+    <value>查看次数/最后更新日期</value>
+  </data>
+  <data name="Cl" xml:space="preserve">
+    <value>处理</value>
+  </data>
+  <data name="Clrq" xml:space="preserve">
+    <value>成立日期</value>
+  </data>
+  <data name="Cnxse" xml:space="preserve">
+    <value>次年销售额</value>
+  </data>
+  <data name="Cnxse1" xml:space="preserve">
+    <value>次年销售额</value>
+  </data>
+  <data name="Cs" xml:space="preserve">
+    <value>城市</value>
+  </data>
+  <data name="Cwbbcxx" xml:space="preserve">
+    <value>财务部补充信息</value>
+  </data>
+  <data name="Cwbyj" xml:space="preserve">
+    <value>财务部意见</value>
+  </data>
+  <data name="Cygx" xml:space="preserve">
+    <value>成员关系</value>
+  </data>
+  <data name="Cz" xml:space="preserve">
+    <value>传真</value>
+  </data>
+  <data name="Da" xml:space="preserve">
+    <value>答</value>
+  </data>
+  <data name="Dangwj" xml:space="preserve">
+    <value>单个文件</value>
+  </data>
+  <data name="Dayin" xml:space="preserve">
+    <value>打印</value>
+  </data>
+  <data name="DbhRy" xml:space="preserve">
+    <value>担保函（如有）</value>
+  </data>
+  <data name="Dc" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="Dewmyhb" xml:space="preserve">
+    <value>第二位贸易伙伴信息</value>
+  </data>
+  <data name="Dewyyzxx" xml:space="preserve">
+    <value>第二位拥有者信息</value>
+  </data>
+  <data name="Dggjzyfhgk" xml:space="preserve">
+    <value>多个关键字用分号隔开</value>
+  </data>
+  <data name="Dghydzkjyxgs" xml:space="preserve">
+    <value>东莞毓华电子科技有限公司</value>
+  </data>
+  <data name="Dlwz" xml:space="preserve">
+    <value>地理位置</value>
+  </data>
+  <data name="Dt" xml:space="preserve">
+    <value>答图</value>
+  </data>
+  <data name="Duogwj" xml:space="preserve">
+    <value>多个文件</value>
+  </data>
+  <data name="Dy" xml:space="preserve">
+    <value>电邮</value>
+  </data>
+  <data name="dyr" xml:space="preserve">
+    <value>打印人</value>
+  </data>
+  <data name="dysj" xml:space="preserve">
+    <value>打印时间</value>
+  </data>
+  <data name="Dywmyhb" xml:space="preserve">
+    <value>第一位贸易伙伴信息</value>
+  </data>
+  <data name="Dywyyzxx" xml:space="preserve">
+    <value>第一位拥有者信息</value>
+  </data>
+  <data name="Dyyl" xml:space="preserve">
+    <value>打印预览</value>
+  </data>
+  <data name="Dz" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="D_d" xml:space="preserve">
+    <value>第</value>
+  </data>
+  <data name="Fdgsmc" xml:space="preserve">
+    <value>法定公司名称</value>
+  </data>
+  <data name="Fktk" xml:space="preserve">
+    <value>付款条款</value>
+  </data>
+  <data name="Fuzhi" xml:space="preserve">
+    <value>‎复制</value>
+  </data>
+  <data name="Fzr" xml:space="preserve">
+    <value>负责人</value>
+  </data>
+  <data name="Gb" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Ghtp" xml:space="preserve">
+    <value>更换图片</value>
+  </data>
+  <data name="Gj" xml:space="preserve">
+    <value>国家</value>
+  </data>
+  <data name="Gjz" xml:space="preserve">
+    <value>关键字</value>
+  </data>
+  <data name="Gjzhhm" xml:space="preserve">
+    <value>国际账户号码 (IBAN)</value>
+  </data>
+  <data name="Glgj" xml:space="preserve">
+    <value>管理工具</value>
+  </data>
+  <data name="Gngl" xml:space="preserve">
+    <value>功能管理</value>
+  </data>
+  <data name="Gsdz" xml:space="preserve">
+    <value>公司地址</value>
+  </data>
+  <data name="Gsjsy" xml:space="preserve">
+    <value>公司介绍（英）</value>
+  </data>
+  <data name="Gsjsz" xml:space="preserve">
+    <value>公司介绍（中）</value>
+  </data>
+  <data name="Gslx" xml:space="preserve">
+    <value>公司类型</value>
+  </data>
+  <data name="Gsmc" xml:space="preserve">
+    <value>公司名称</value>
+  </data>
+  <data name="Gsrgsyzdxxxt" xml:space="preserve">
+    <value>勾上如果是与账单信息相同</value>
+  </data>
+  <data name="G_g" xml:space="preserve">
+    <value>共</value>
+  </data>
+  <data name="Hb" xml:space="preserve">
+    <value>货币</value>
+  </data>
+  <data name="HuanY" xml:space="preserve">
+    <value>还原</value>
+  </data>
+  <data name="Hy" xml:space="preserve">
+    <value>行业</value>
+  </data>
+  <data name="Hyfl" xml:space="preserve">
+    <value>行业分类</value>
+  </data>
+  <data name="Hynyxgs" xml:space="preserve">
+    <value>Hossack (越南) 有限公司</value>
+  </data>
+  <data name="Hzgx" xml:space="preserve">
+    <value>合作关系</value>
+  </data>
+  <data name="Jc" xml:space="preserve">
+    <value>简称</value>
+  </data>
+  <data name="Jcxx" xml:space="preserve">
+    <value>基础信息</value>
+  </data>
+  <data name="Jjtg" xml:space="preserve">
+    <value>紧急通告</value>
+  </data>
+  <data name="Jszdddydz" xml:space="preserve">
+    <value>接收账单的电邮地址</value>
+  </data>
+  <data name="jwjtfdcc" xml:space="preserve">
+    <value>将文件拖放到此处</value>
+  </data>
+  <data name="Jyhb" xml:space="preserve">
+    <value>交易货币</value>
+  </data>
+  <data name="JyydywjszdfsQtgnddzyxdz" xml:space="preserve">
+    <value>建议以电邮为接收账单方式，请提供你的电子邮箱地址</value>
+  </data>
+  <data name="k3dm" xml:space="preserve">
+    <value>K3代码</value>
+  </data>
+  <data name="Kh" xml:space="preserve">
+    <value>客户</value>
+  </data>
+  <data name="Khdm" xml:space="preserve">
+    <value>客户代码</value>
+  </data>
+  <data name="Khds" xml:space="preserve">
+    <value>客户递属</value>
+  </data>
+  <data name="Khjb" xml:space="preserve">
+    <value>客户级别</value>
+  </data>
+  <data name="Khjc" xml:space="preserve">
+    <value>客户简称</value>
+  </data>
+  <data name="Khlb" xml:space="preserve">
+    <value>客户类别</value>
+  </data>
+  <data name="khmc" xml:space="preserve">
+    <value>客户名称</value>
+  </data>
+  <data name="Khqc_cn" xml:space="preserve">
+    <value>客户全称（中）</value>
+  </data>
+  <data name="Khqc_en" xml:space="preserve">
+    <value>客户全称（英）</value>
+  </data>
+  <data name="Khsfwssgs" xml:space="preserve">
+    <value>客户是否为上市公司</value>
+  </data>
+  <data name="Khwhlb" xml:space="preserve">
+    <value>客户维护列表</value>
+  </data>
+  <data name="Khxh" xml:space="preserve">
+    <value>客户序号</value>
+  </data>
+  <data name="Khxyxxy" xml:space="preserve">
+    <value>客户信用详细页</value>
+  </data>
+  <data name="Khxz" xml:space="preserve">
+    <value>客户性质</value>
+  </data>
+  <data name="Lxfs" xml:space="preserve">
+    <value>联系方式</value>
+  </data>
+  <data name="Lxlx" xml:space="preserve">
+    <value>联系类型</value>
+  </data>
+  <data name="Lxr" xml:space="preserve">
+    <value>联系人</value>
+  </data>
+  <data name="Lxxx" xml:space="preserve">
+    <value>联系信息</value>
+  </data>
+  <data name="Ms" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="My" xml:space="preserve">
+    <value>末页</value>
+  </data>
+  <data name="Myxs" xml:space="preserve">
+    <value>每页显示</value>
+  </data>
+  <data name="Ndsr" xml:space="preserve">
+    <value>年度收入</value>
+  </data>
+  <data name="Qb" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="QgsrgkhwssstBxytgyyzxx" xml:space="preserve">
+    <value>请勾上如果客户为上市实体，不需要提供拥有者信息</value>
+  </data>
+  <data name="Qgsrgxzyyjwjszdfs" xml:space="preserve">
+    <value>请勾上如果选择以邮寄为接收账单方式</value>
+  </data>
+  <data name="Qqmc" xml:space="preserve">
+    <value>确切名称</value>
+  </data>
+  <data name="Qt" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="Qtgbdylgzyyyzxx" xml:space="preserve">
+    <value>备注：请提供不多于两个主要拥有者信息</value>
+  </data>
+  <data name="Qtgljcwspywfyqxrdgyszwmyck" xml:space="preserve">
+    <value>备注：请提供两家财务水平与我方预期相若的供应商作为贸易参考</value>
+  </data>
+  <data name="Qx" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Qyyyqf" xml:space="preserve">
+    <value>企业拥有权份%</value>
+  </data>
+  <data name="Qzdzkjdgyxgs" xml:space="preserve">
+    <value>群智电子科技 (东莞) 有限公司</value>
+  </data>
+  <data name="Qznykjynyxgs" xml:space="preserve">
+    <value>群智能源科技越南有限公司</value>
+  </data>
+  <data name="Qznykjyxgs" xml:space="preserve">
+    <value>群智能源科技有限公司</value>
+  </data>
+  <data name="RsxykhzhyzzshcbzzsQlcqcygx" xml:space="preserve">
+    <value>如是现有客户之合约制造商或承包制造商，请列出其成员关系</value>
+  </data>
+  <data name="Sc" xml:space="preserve">
+    <value>上传</value>
+  </data>
+  <data name="Scbbcxx" xml:space="preserve">
+    <value>市场部补充信息</value>
+  </data>
+  <data name="Schuwj" xml:space="preserve">
+    <value>删除文件</value>
+  </data>
+  <data name="Scsy" xml:space="preserve">
+    <value>市场商誉</value>
+  </data>
+  <data name="Sctp" xml:space="preserve">
+    <value>上传图片</value>
+  </data>
+  <data name="Scwj" xml:space="preserve">
+    <value>上传文件</value>
+  </data>
+  <data name="Scxdwj" xml:space="preserve">
+    <value>删除选中文件</value>
+  </data>
+  <data name="Scxsbyj" xml:space="preserve">
+    <value>市场销售部意见</value>
+  </data>
+  <data name="Sfgx" xml:space="preserve">
+    <value>是否共享</value>
+  </data>
+  <data name="Shangcxdwj" xml:space="preserve">
+    <value>上传选中文件</value>
+  </data>
+  <data name="SHIjian" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="Sj" xml:space="preserve">
+    <value>手机</value>
+  </data>
+  <data name="Snxse" xml:space="preserve">
+    <value>首年销售额</value>
+  </data>
+  <data name="Ss" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="Ssbk" xml:space="preserve">
+    <value>所属板块</value>
+  </data>
+  <data name="Sscs" xml:space="preserve">
+    <value>所属城市</value>
+  </data>
+  <data name="Ssgj" xml:space="preserve">
+    <value>所属国家</value>
+  </data>
+  <data name="Swtsm" xml:space="preserve">
+    <value>三位提示码</value>
+  </data>
+  <data name="Sy" xml:space="preserve">
+    <value>首页</value>
+  </data>
+  <data name="Syczndhdzxglzm" xml:space="preserve">
+    <value>上一财政年度后的最新管理账目</value>
+  </data>
+  <data name="Sydjz" xml:space="preserve">
+    <value>商业登记证</value>
+  </data>
+  <data name="Syxysq" xml:space="preserve">
+    <value>商业信用申请</value>
+  </data>
+  <data name="Syy" xml:space="preserve">
+    <value>上页</value>
+  </data>
+  <data name="Szcs" xml:space="preserve">
+    <value>所在城市</value>
+  </data>
+  <data name="Szdm" xml:space="preserve">
+    <value>三字代码</value>
+  </data>
+  <data name="Tcz" xml:space="preserve">
+    <value>提出者</value>
+  </data>
+  <data name="Tg" xml:space="preserve">
+    <value>通过</value>
+  </data>
+  <data name="Th" xml:space="preserve">
+    <value>退回</value>
+  </data>
+  <data name="Tjsp" xml:space="preserve">
+    <value>提交审批</value>
+  </data>
+  <data name="Tz" xml:space="preserve">
+    <value>跳转</value>
+  </data>
+  <data name="Tzhi" xml:space="preserve">
+    <value>跳至</value>
+  </data>
+  <data name="T_t" xml:space="preserve">
+    <value>条</value>
+  </data>
+  <data name="Wen" xml:space="preserve">
+    <value>问</value>
+  </data>
+  <data name="Wjhdqd" xml:space="preserve">
+    <value>文件核对清单</value>
+  </data>
+  <data name="Wl" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="Wt" xml:space="preserve">
+    <value>问图</value>
+  </data>
+  <data name="Xg" xml:space="preserve">
+    <value>修改</value>
+  </data>
+  <data name="Xgkhlxxx" xml:space="preserve">
+    <value>修 改 客 户 联 系 信 息</value>
+  </data>
+  <data name="Xgkhxx" xml:space="preserve">
+    <value>修 改  客  户  信  息</value>
+  </data>
+  <data name="Xgxtjszsjl" xml:space="preserve">
+    <value>修 改 系 统 技 术 知 识 记 录</value>
+  </data>
+  <data name="Xh" xml:space="preserve">
+    <value>序号</value>
+  </data>
+  <data name="Xjkhlxxx" xml:space="preserve">
+    <value>新 建 客 户 联 系 信 息</value>
+  </data>
+  <data name="Xkhxysqb" xml:space="preserve">
+    <value>新客户信用申请表</value>
+  </data>
+  <data name="Xm" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="Xqsc" xml:space="preserve">
+    <value>取消上传</value>
+  </data>
+  <data name="Xsddjsst" xml:space="preserve">
+    <value>销售订单接收实体</value>
+  </data>
+  <data name="Xtjszsjlxx" xml:space="preserve">
+    <value>系 统 技 术 知 识 记 录 详 细</value>
+  </data>
+  <data name="Xtjszsk" xml:space="preserve">
+    <value>系 统 技 术 知 识 库</value>
+  </data>
+  <data name="Xxnr" xml:space="preserve">
+    <value>详细内容</value>
+  </data>
+  <data name="Xy" xml:space="preserve">
+    <value>下页</value>
+  </data>
+  <data name="XybgRdbssyzlgs" xml:space="preserve">
+    <value>信用报告（如 邓白氏商业资料公司）</value>
+  </data>
+  <data name="Xydj" xml:space="preserve">
+    <value>信用等级</value>
+  </data>
+  <data name="Xye" xml:space="preserve">
+    <value>信用额</value>
+  </data>
+  <data name="Xyhy" xml:space="preserve">
+    <value>协议合约</value>
+  </data>
+  <data name="Xyqx" xml:space="preserve">
+    <value>信用期限</value>
+  </data>
+  <data name="Xyxx" xml:space="preserve">
+    <value>信用信息</value>
+  </data>
+  <data name="Xz" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="Xztp" xml:space="preserve">
+    <value>下载图片</value>
+  </data>
+  <data name="Xzxtjszsjl" xml:space="preserve">
+    <value>新 增 系 统 技 术 知 识 记 录</value>
+  </data>
+  <data name="Yb" xml:space="preserve">
+    <value>邮编</value>
+  </data>
+  <data name="Ycxsl" xml:space="preserve">
+    <value>预测销售量</value>
+  </data>
+  <data name="Ye" xml:space="preserve">
+    <value>页</value>
+  </data>
+  <data name="Yfzklxxx" xml:space="preserve">
+    <value>应付账款联系信息</value>
+  </data>
+  <data name="Yhgjdm" xml:space="preserve">
+    <value>银行国际代码 (SWIFT)</value>
+  </data>
+  <data name="YhzxzmRy" xml:space="preserve">
+    <value>银行资信证明（如有）</value>
+  </data>
+  <data name="Ynw" xml:space="preserve">
+    <value>越南文</value>
+  </data>
+  <data name="Yqxytk" xml:space="preserve">
+    <value>预期信用条款</value>
+  </data>
+  <data name="Yszklxxx" xml:space="preserve">
+    <value>应收账款联系信息</value>
+  </data>
+  <data name="Yw" xml:space="preserve">
+    <value>英文</value>
+  </data>
+  <data name="Ywmc" xml:space="preserve">
+    <value>英文名称</value>
+  </data>
+  <data name="Yydz" xml:space="preserve">
+    <value>营业地址</value>
+  </data>
+  <data name="Yyzmc" xml:space="preserve">
+    <value>拥有者名称</value>
+  </data>
+  <data name="Y_Y" xml:space="preserve">
+    <value>（英-）</value>
+  </data>
+  <data name="Zc" xml:space="preserve">
+    <value>职称</value>
+  </data>
+  <data name="Zcdz" xml:space="preserve">
+    <value>注册地址</value>
+  </data>
+  <data name="Zcgj" xml:space="preserve">
+    <value>注册国家</value>
+  </data>
+  <data name="Zclx" xml:space="preserve">
+    <value>注册类型</value>
+  </data>
+  <data name="Zcrq" xml:space="preserve">
+    <value>注册日期</value>
+  </data>
+  <data name="Zdxx" xml:space="preserve">
+    <value>账单信息</value>
+  </data>
+  <data name="Zdx_x" xml:space="preserve">
+    <value>账单信息</value>
+  </data>
+  <data name="Zhgx" xml:space="preserve">
+    <value>最后更新</value>
+  </data>
+  <data name="Zj2gczndjsjdcwbb" xml:space="preserve">
+    <value>最近2个财政年度经审计的财务报表</value>
+  </data>
+  <data name="Zs" xml:space="preserve">
+    <value>州省</value>
+  </data>
+  <data name="Zsxzyx" xml:space="preserve">
+    <value>至少选择一项</value>
+  </data>
+  <data name="Zt" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Zt/fa" xml:space="preserve">
+    <value>主题/方案</value>
+  </data>
+  <data name="Zti" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Zw" xml:space="preserve">
+    <value>中文</value>
+  </data>
+  <data name="Zwmc" xml:space="preserve">
+    <value>中文名称</value>
+  </data>
+  <data name="Zxwz" xml:space="preserve">
+    <value>资讯网站</value>
+  </data>
+  <data name="Zycz" xml:space="preserve">
+    <value>主用传真</value>
+  </data>
+  <data name="Zydh" xml:space="preserve">
+    <value>主用电话</value>
+  </data>
+  <data name="Zyxx" xml:space="preserve">
+    <value>装运信息</value>
+  </data>
+  <data name="Zyyh" xml:space="preserve">
+    <value>主用银行</value>
+  </data>
+  <data name="Zz/tjrq" xml:space="preserve">
+    <value>作者/提交日期</value>
+  </data>
+  <data name="Zzhe" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="Zzscst" xml:space="preserve">
+    <value>制造生产实体</value>
+  </data>
+  <data name="Z_Z" xml:space="preserve">
+    <value>（中-）</value>
+  </data>
+</root>

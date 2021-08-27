@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActionLog2021">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="FunctionID" Type="smallint" Nullable="false" />
+    <Property Name="ActionType" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ActionTime" Type="datetime" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="TableKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QnA">
+    <Key>
+      <PropertyRef Name="QnAID" />
+    </Key>
+    <Property Name="QnAID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TopicArea" Type="nvarchar" MaxLength="10" />
+    <Property Name="Author" Type="nvarchar" MaxLength="30" />
+    <Property Name="KeyWord" Type="nvarchar(max)" />
+    <Property Name="Question" Type="nvarchar(max)" />
+    <Property Name="QPic01" Type="image" />
+    <Property Name="QPic02" Type="image" />
+    <Property Name="QPic03" Type="image" />
+    <Property Name="QPic04" Type="image" />
+    <Property Name="Answer" Type="nvarchar(max)" />
+    <Property Name="APic01" Type="image" />
+    <Property Name="APic02" Type="image" />
+    <Property Name="APic03" Type="image" />
+    <Property Name="APic04" Type="image" />
+    <Property Name="ClickTimes" Type="smallint" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="3" />
+    <Property Name="CreateTime" Type="datetime" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" />
+    <Property Name="UpdateBy" Type="nchar" MaxLength="3" />
+    <Property Name="UpdateTime" Type="datetime" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="TBWords">
+    <Key>
+      <PropertyRef Name="WordID" />
+    </Key>
+    <Property Name="WordID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WordCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+    <Property Name="Name_CN" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Name_VN" Type="nvarchar" MaxLength="50" />
+    <Property Name="Name_EN" Type="nvarchar" MaxLength="50" />
+    <Property Name="Del_Flag" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="OrderBy" Type="smallint" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="30" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="100" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="3" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="3" Nullable="false" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“WebStation.dbo.SelectKnowledgeBaseIndex”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="SelectKnowledgeBaseIndex">
+    <Key>
+      <PropertyRef Name="QnAID" />
+      <PropertyRef Name="Name_CN" />
+    </Key>
+    <Property Name="QnAID" Type="int" Nullable="false" />
+    <Property Name="TopicArea" Type="nvarchar" MaxLength="10" />
+    <Property Name="Author" Type="nvarchar" MaxLength="30" />
+    <Property Name="KeyWord" Type="nvarchar(max)" />
+    <Property Name="Question" Type="nvarchar(max)" />
+    <Property Name="Answer" Type="nvarchar(max)" />
+    <Property Name="ClickTimes" Type="smallint" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="3" />
+    <Property Name="CreateTime" Type="datetime" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" />
+    <Property Name="UpdateBy" Type="nchar" MaxLength="3" />
+    <Property Name="UpdateTime" Type="datetime" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="100" />
+    <Property Name="Name_CN" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="WebStationModelStoreContainer">
+    <EntitySet Name="ActionLog2021" EntityType="Self.ActionLog2021" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QnA" EntityType="Self.QnA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBWords" EntityType="Self.TBWords" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SelectKnowledgeBaseIndex" EntityType="Self.SelectKnowledgeBaseIndex" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [SelectKnowledgeBaseIndex].[QnAID] AS [QnAID], 
+    [SelectKnowledgeBaseIndex].[TopicArea] AS [TopicArea], 
+    [SelectKnowledgeBaseIndex].[Author] AS [Author], 
+    [SelectKnowledgeBaseIndex].[KeyWord] AS [KeyWord], 
+    [SelectKnowledgeBaseIndex].[Question] AS [Question], 
+    [SelectKnowledgeBaseIndex].[Answer] AS [Answer], 
+    [SelectKnowledgeBaseIndex].[ClickTimes] AS [ClickTimes], 
+    [SelectKnowledgeBaseIndex].[CreateBy] AS [CreateBy], 
+    [SelectKnowledgeBaseIndex].[CreateTime] AS [CreateTime], 
+    [SelectKnowledgeBaseIndex].[CreateDept] AS [CreateDept], 
+    [SelectKnowledgeBaseIndex].[UpdateBy] AS [UpdateBy], 
+    [SelectKnowledgeBaseIndex].[UpdateTime] AS [UpdateTime], 
+    [SelectKnowledgeBaseIndex].[UpdateDept] AS [UpdateDept], 
+    [SelectKnowledgeBaseIndex].[Name_CN] AS [Name_CN]
+    FROM [dbo].[SelectKnowledgeBaseIndex] AS [SelectKnowledgeBaseIndex]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

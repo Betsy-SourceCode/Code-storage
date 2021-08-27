@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="NewEmailDomain2GIP">
+    <Key>
+      <PropertyRef Name="DNSerial" />
+    </Key>
+    <Property Name="DNSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DomainName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FindDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="SourceType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="NewEmailDomain2GIP" EntityType="Self.NewEmailDomain2GIP" />
+    <EntitySet Name="NewEmailDomain2GIP_Select" EntityType="WebStationModel.NewEmailDomain2GIP_Select" />
+  </EntityContainer>
+  <EntityType Name="NewEmailDomain2GIP_Select">
+    <Key>
+      <PropertyRef Name="DNSerial" />
+      <PropertyRef Name="DomainName" />
+      <PropertyRef Name="FindDate" />
+      <PropertyRef Name="SourceType" />
+    </Key>
+    <Property Name="DNSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DomainName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FindDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="SourceTypeChinese" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+    <Property Name="SourceType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

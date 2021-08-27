@@ -1,0 +1,69 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/导出/excellentexport.js"></script>
+    <script src="~/Scripts/Index.js"></script>
+    <style>
+        .input-clear-a {
+            color: white;
+        }
+
+        .input-content:hover + .input-clear-a { /*文本框的清除小图标改变颜色*/
+            color: #d4d4d4;
+        }
+
+        .panel-heading {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .qq {
+            display: contents;
+        }
+    </style>
+</head>
+<body style="max-width:96%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="NewEmailDomainPTController">
+    <div id="mydiv">
+        <div id="Title">
+            <h1 style="text-align: center;">
+                <span>新到的电邮域名管理</span>
+            </h1>
+        </div>
+        <div id="top">
+            <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false">
+                <div class="panel-heading col-sm-3">
+                    新域名:<input name="DomainName" type="text" id="DomainName" class="form-control input-content" style="100%"/>
+                    <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                       style="pointer-events: auto;"
+                       onclick="$('#DomainName').val('')"></a>
+                </div>
+                <div class="panel-heading col-sm-3">
+                    <label style="font-weight:bold">日期:&nbsp;&nbsp;&nbsp;从&nbsp;&nbsp;</label>
+                    <input id="Start_Date" name="CreateTime" type="text" class="Wdate form-control" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'End_Date\')}'});" value="@ViewBag.date" style="cursor:pointer;height:34px;text-align:center;background-color:white" readonly="readonly" />
+                </div>
+                <div class="panel-heading col-sm-3">
+                    <label style="font-weight:bold;margin-left:3%;margin-right:3%">至</label>
+                    <input id="End_Date" name="EndTime" type="text" class="Wdate form-control"
+                           value="@ViewBag.today" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}'}); " style="cursor:pointer;height:34px;text-align:center;background-color:white" readonly="readonly" title="默认结束日期为当天！" />
+                </div>
+                <div class="panel-heading col-sm-1">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

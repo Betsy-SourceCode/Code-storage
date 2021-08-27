@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="LoadingListAddPOdata_Temp">
+    <Key>
+      <PropertyRef Name="LPSerial" />
+    </Key>
+    <Property Name="LPSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PONum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Fnumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LoadQty" Type="Decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="LoadUnit" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Supplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Material" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="POQty" Type="Decimal" Precision="10" Scale="3" />
+    <Property Name="POUnit" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="POCurr" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="UnitPrice" Type="Decimal" Precision="14" Scale="6" />
+    <Property Name="NeedDate" Type="DateTime" Precision="3" />
+    <Property Name="Remarks" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="USDRate" Type="Decimal" Precision="12" Scale="6" />
+  </EntityType>
+  <EntityType Name="LoadingListAddPOdata_Temp_Select">
+    <Key>
+      <PropertyRef Name="PONum" />
+      <PropertyRef Name="Fnumber" />
+      <PropertyRef Name="LoadUnit" />
+      <PropertyRef Name="LPSerial" />
+    </Key>
+    <Property Name="Ledger" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="OriCurr_tt_Amt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="USDRate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="USD_Unit_Price" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="USD_tt_Amt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="POQty" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LoadQty" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UnitPrice" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PONum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Fnumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Remarks" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="POCurr" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="POUnit" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="Material" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Supplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="LoadUnit" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LPSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NeedDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="LoadingListAddPOdata_Temp" EntityType="Self.LoadingListAddPOdata_Temp" />
+    <EntitySet Name="LoadingListAddPOdata_Temp_Select" EntityType="Self.LoadingListAddPOdata_Temp_Select" />
+    <EntitySet Name="ActionLog2021" EntityType="WebStationModel.ActionLog2021" />
+  </EntityContainer>
+  <EntityType Name="ActionLog2021">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="DeptID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="FunctionID" Type="Int16" Nullable="false" />
+    <Property Name="ActionType" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ActionTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TableName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="TableKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

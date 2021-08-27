@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WebStationModelStoreContainer" CdmEntityContainer="WebStationEntities">
+    <EntitySetMapping Name="LoadingListAddPOdata_Temp">
+      <EntityTypeMapping TypeName="WebStationModel.LoadingListAddPOdata_Temp">
+        <MappingFragment StoreEntitySet="LoadingListAddPOdata_Temp">
+          <ScalarProperty Name="LPSerial" ColumnName="LPSerial" />
+          <ScalarProperty Name="PONum" ColumnName="PONum" />
+          <ScalarProperty Name="Fnumber" ColumnName="Fnumber" />
+          <ScalarProperty Name="LoadQty" ColumnName="LoadQty" />
+          <ScalarProperty Name="LoadUnit" ColumnName="LoadUnit" />
+          <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="POQty" ColumnName="POQty" />
+          <ScalarProperty Name="POUnit" ColumnName="POUnit" />
+          <ScalarProperty Name="POCurr" ColumnName="POCurr" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="NeedDate" ColumnName="NeedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="USDRate" ColumnName="USDRate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoadingListAddPOdata_Temp_Select">
+      <EntityTypeMapping TypeName="WebStationModel.LoadingListAddPOdata_Temp_Select">
+        <MappingFragment StoreEntitySet="LoadingListAddPOdata_Temp_Select">
+          <ScalarProperty Name="Ledger" ColumnName="Ledger" />
+          <ScalarProperty Name="OriCurr_tt_Amt" ColumnName="OriCurr_tt_Amt" />
+          <ScalarProperty Name="USDRate" ColumnName="USDRate" />
+          <ScalarProperty Name="USD_Unit_Price" ColumnName="USD_Unit_Price" />
+          <ScalarProperty Name="USD_tt_Amt" ColumnName="USD_tt_Amt" />
+          <ScalarProperty Name="POQty" ColumnName="POQty" />
+          <ScalarProperty Name="LoadQty" ColumnName="LoadQty" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="PONum" ColumnName="PONum" />
+          <ScalarProperty Name="Fnumber" ColumnName="Fnumber" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="POCurr" ColumnName="POCurr" />
+          <ScalarProperty Name="POUnit" ColumnName="POUnit" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+          <ScalarProperty Name="LoadUnit" ColumnName="LoadUnit" />
+          <ScalarProperty Name="LPSerial" ColumnName="LPSerial" />
+          <ScalarProperty Name="NeedDate" ColumnName="NeedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActionLog2021">
+      <EntityTypeMapping TypeName="WebStationModel.ActionLog2021">
+        <MappingFragment StoreEntitySet="ActionLog2021">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="TableKey" ColumnName="TableKey" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="ActionTime" ColumnName="ActionTime" />
+          <ScalarProperty Name="ActionType" ColumnName="ActionType" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

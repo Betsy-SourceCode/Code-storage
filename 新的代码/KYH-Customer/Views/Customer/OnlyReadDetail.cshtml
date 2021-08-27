@@ -1,0 +1,1424 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>OnlyReadDetail</title>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/WdatePicker.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style type="text/css">
+        .bak {
+            background-color: #e9ffff;
+            width: 98%;
+            height: 25px;
+        }
+
+        td {
+            height: 25px;
+        }
+
+        a:hover {
+            cursor: pointer;
+        }
+
+        #linkInfoBody tr:hover {
+            background-color: #facfec;
+        }
+
+        td {
+            border: none;
+            padding-top: 5px;
+        }
+
+        #lianxitable td {
+            border: 1px solid #ACACAC;
+        }
+
+        #zhangdan:after {
+            content: "";
+            clear: left;
+            display: block;
+        }
+
+        #myTab li {
+            border: 1px solid #ddd;
+        }
+
+        .nav-tabs {
+            border-bottom: none;
+        }
+
+        .divgk {
+            margin-top: 5px;
+        }
+
+        .Changered {
+            color: red;
+        }
+        .zhangdanleftdiv {
+            width:11%;
+        }
+        .zdh{
+            width: 37.5%;
+        }
+    </style>
+    @*页面加载*@
+    <script>
+        $(function () {
+            @*if ("@ViewBag.SP" == "True") {
+                $("#Quanxian").css("display", "block");   //有审核权限
+            }*@
+            $("#myTab a").parent("li").css("border-bottom-color", "transparent");
+            $("#myTab a").parent("li").siblings().css("border-bottom", "1px solid #ddd");
+            var num = '@ViewBag.num';
+            var tabId = "#jichu";
+            if (num == "4") {
+                Updates();
+                $('#myTab a:last').tab('show');
+                tabId = "#lianxi";
+            }
+            if (num == "3") {
+                Updates();
+                $('#myTab a[href="#xinyong"]').tab('show');
+                tabId = "#xinyong";
+            }
+            if (num == "2") {
+                Updates();
+                $('#myTab a[href="#zhangdan"]').tab('show');
+                tabId = "#zhangdan";
+            }
+            if (num == "1") {
+                Updates();
+                $('#myTab a[href="#jichu"]').tab('show');
+                tabId = "#jichu";
+                $("#xianshi").css("display", "none");
+            }
+            if (num == "0") {
+                $('#myTab a[href="#jichu"]').tab('show');
+                tabId = "#jichu";
+                $("#xianshi").css("display", "none");
+                $("#myTab").css("display", "block");
+                $("#Two").css("display", "none");
+                $("#Three").css("display", "none");
+                $("#Four").css("display", "none");
+                $("#Updateform").css("margin-top","");
+            }
+            var color = $(tabId).css("background-color");
+            $("#xianshi").css("background-color", color);
+            $("#lasts").css("background-color", color);
+            $("#tabContent").css("background-color", color);
+            $("#myTab a").click(function (e) {
+                $(this).parent("li").css("border-bottom", "none");
+                $(this).parent("li").siblings().css("border-bottom", "1px solid #ddd");
+                var id = $(this).attr("href");
+                var color = $(id).css("background-color");
+                $("#xianshi").css("background-color", color);
+                $("#lasts").css("background-color", color);
+                $("#tabContent").css("background-color", color);
+
+            });
+            $("#myTab a").click(function (e) {
+                var id = $(this).attr("href");
+                var oldId = $("#myTab li.active").find("a").attr("href");
+                var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+                if (oldId != "#lianxi") {
+                    // checkModification(id);
+                }
+                if (id == "#lianxi") {
+                    if ('@ViewBag.AllCustomer.Status' != "审核") {
+                        $("#InsertBtn").css("display", "inline");
+                    }
+                    $("#SaveBtn").css("display", "none");
+                    $("#xianshi").css("display", "block");
+                }
+                else {
+                    $("#InsertBtn").css("display", "none");
+                    if ('@ViewBag.AllCustomer.Status' != "审核") {   //只能看不能修改
+                        $("#SaveBtn").css("display", "inline");
+                    }
+                    if (id == "#jichu") {
+                        $("#xianshi").css("display", "none");
+                    }
+                    else {
+                        $("#xianshi").css("display", "block");
+                    }
+                }
+            });
+            //上市公司勾选框赋值
+            var IsList = '@ViewBag.AllCustomer.IsList';
+            if (IsList == "True") {
+                $("#chk_IsList").prop("checked", true);
+            }
+        })
+    </script>
+    @*方法*@
+    <script>
+        //权限等级
+        function Updates() {
+            var CustomerID = @ViewBag.AllCustomer.CustomerID;
+            var createBy = '@ViewBag.AllCustomer.CreateBy1';
+            var createDept = '@ViewBag.AllCustomer.CreateDept1';
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/Authority",
+                data: {
+                    "createBy": createBy,
+                    "createDept": createDept
+                },
+                success: function (result) {
+                    if (result>1||'@ViewBag.SP' == "True") {  //显示页签
+                        $("#myTab").css("display", "block");
+                        $("#Updateform").css("margin-top", "");
+                        $("#xianshi").css("display", "block");
+                        if (result > 2) {
+                           // $("#Quanxian").css("display", "block");   //有审核权限
+                        }
+                        $("#XGbtn").css("display", "inline");
+                    }
+                    else {
+                        window.location.href = "/Customer/OnlyReadDetail?CustomerID=" + CustomerID + "&createBy=" + '@ViewBag.username' + "&createDept=" + '@ViewBag.DeptID' + CustomerID + "&num=" + 0;
+
+                    }
+                }
+            })
+        }
+        function history() {
+        var userid = '@ViewBag.id';
+        window.location.href = "/Customer/Default?userid="+userid;
+        }
+        //修改判断权限
+        function Update() {
+        var CustomerID = @ViewBag.AllCustomer.CustomerID;
+        var createBy = '@ViewBag.AllCustomer.CreateBy1';
+        var createDept = '@ViewBag.AllCustomer.CreateDept1';
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/Authority",
+                data: {
+                    "createBy": createBy,
+                    "createDept": createDept
+                },
+                success: function (result) {
+                    if (result > 2) {
+                        window.location.href = "/Customer/UpdateCustomer?CustomerID=" + CustomerID + "&num=" + 1;
+                    }
+                    else { alert('抱歉,您没有修改本条数据的权限！'); }
+                }
+            });
+        }
+        //打印
+        function Dayin() { window.print(); };
+    </script>
+</head>
+<body>
+    <div>
+        <div style="border: 2px solid #0000ff; width: 97%; margin: 0 auto;">
+            <div style="float: left; margin-left: 20px; margin-top: 20px;">
+                <img src="/Scripts/image/logo.jpg" style="margin-bottom:3px" />
+            </div>
+            <div style="float: right; margin-right: 20px;">
+                <a href="#" style="margin-left: 25px;"  onclick="history()"><img src="/Scripts/image/关闭.jpg" title="@Resources.CustomerRes.Gb"/></a>
+            </div>
+            <h1 style="text-align: center; margin-top: 50px;">
+                <span id="Label1">@Resources.CustomerRes.Khxyxxy</span>
+            </h1>
+            @*选项卡*@
+            <ul class="nav nav-tabs" role="tablist" id="myTab" style="display:none;margin-top:20px">
+                <li id="jichus" role="presentation" class="active">
+                    <a href="#jichu" role="tab" data-toggle="tab" style="background-color: #e7e1e1;">@Resources.CustomerRes.Jcxx</a>
+                </li>
+                <li id="Two" role="presentation">
+                    <a href="#zhangdan" role="tab" data-toggle="tab" style="background-color: #fdfff2;">@Resources.CustomerRes.Zdx_x</a>
+                </li>
+                <li id="Three" role="presentation">
+                    <a href="#xinyong" role="tab" data-toggle="tab" style="background-color:#f4f4ff;">@Resources.CustomerRes.Xyxx</a>
+                </li>
+                <li id="Four" role="presentation">
+                    <a href="#lianxi" role="tab" data-toggle="tab" style="background-color:#effff0;">@Resources.CustomerRes.Lxxx</a>
+                </li>
+
+            </ul>
+            <div id="xianshi" style="clear:both;display:none">
+                @*显示*@
+                <table style="width:100%;" rules="rows">
+                    <tr>
+                        <td style="text-align: right;width:11%">
+                            <span id="Label3">@Resources.CustomerRes.Khqc_cn：</span>
+                        </td>
+                        <td colspan="14" style="border-bottom-color: #ffffff;">
+                            <span id="lbl_FullName_CN" style="display: block; word-break: break-all;">@ViewBag.AllCustomer.FullName_CN &nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label4">@Resources.CustomerRes.Khdm：</span>
+                        </td>
+                        <td colspan="1">
+                            <label style="font-weight:100">@ViewBag.AllCustomer.id</label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label259">@Resources.CustomerRes.Khqc_en：</span>
+                        </td>
+                        <td colspan="14">
+                            <span id="lbl_FullName_EN" style="display: block; word-break: break-all;"> @ViewBag.AllCustomer.FullName_EN &nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label117">@Resources.CustomerRes.Zt：</span>
+                        </td>
+                        <td>
+                            <span id="Label118" style="display: block; word-break: break-all;">@ViewBag.AllCustomer.Status &nbsp;</span>
+                        </td>
+                        <td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label257">@Resources.CustomerRes.Khjc：</span>
+                        </td>
+                        <td colspan="10">
+                            <span id="lbl_ShortName" style="display: block; word-break: break-all;">@ViewBag.AllCustomer.ShortName &nbsp;</span>
+                        </td>
+                        <td style="text-align: right; width: 7%">
+                            <span id="Label263">@Resources.CustomerRes.Ssgj：</span>
+                        </td>
+                        <td style="width: 20%;">
+                            <span id="lbl_CountryID" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.XGCountryID &nbsp;</span>
+
+                        </td>
+                        <td style="text-align: right; width: 9%">
+                            <span id="Label7">@Resources.CustomerRes.Sscs：</span>
+                        </td>
+                        <td style="width: 16%;">
+
+                            <span id="lbl_CityID" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.XGCityID &nbsp;</span>
+
+                        </td>
+                        <td style="text-align: right; width: 9%">
+                            <span id="Label7">@Resources.CustomerRes.Swtsm：</span>
+                        </td>
+                        <td style="width: 16%;">
+                            <span id="lbl_CueCode" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.CueCode &nbsp;</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label261">@Resources.CustomerRes.Hyfl：</span>
+                        </td>
+                        <td colspan="10">
+                            <span id="lbl_Classify" style="display: block; word-break: break-all;width:110%">@ViewBag.AllCustomer.XGClassify &nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label115">@Resources.CustomerRes.Khds：</span>
+                        </td>
+                        <td>
+                            <span id="lbl_Belongs" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.XGkhds &nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label115">@Resources.CustomerRes.Khlb：</span>
+                        </td>
+                        <td colspan="1">
+                            <span id="lbl_Belongs" style="display: block; word-wrap: break-word;">公司&nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label115">@Resources.CustomerRes.k3dm：</span>
+                        </td>
+                        <td>
+                            <span id="lbl_K3Code" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.K3Code</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <form id="Updateform" action="##" onsubmit="return false" method="post" style="margin-top:30px">
+                <div id="tabContent" class="tab-content">
+                    <div id="jichu" role="tabpanel" class="tab-pane active" style="background-color:#e7e1e1;padding-top:10px">
+                        <table style="width: 95%; margin: 0 auto;" rules="rows">
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label4">@Resources.CustomerRes.Khdm：</span>
+                                </td>
+                                <td colspan="1">
+                                    <span style="border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.id &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label259">@Resources.CustomerRes.Swtsm：</span>
+                                </td>
+                                <td colspan="2">
+                                    <span name="CueCode" id="txt_CueCode" style="width:120%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.CueCode &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label259">@Resources.CustomerRes.k3dm：</span>
+                                </td>
+                                <td colspan="3">
+                                    <span name="K3Code" id="txt_K3Code" style="width: 98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.K3Code &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label105">@Resources.CustomerRes.Khlb：</span>
+                                </td>
+                                <td colspan="1">
+                                    <span name="drType" id="drType" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">公司</span>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label105">@Resources.CustomerRes.Khds：</span>
+                                </td>
+                                <td colspan="2">
+                                    <span name="SelectBelongs" id="SelectBelongs" style="width:120%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XGkhds &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label103">@Resources.CustomerRes.Khjb：</span>
+                                </td>
+                                <td colspan="3">
+                                    <span name="Type" id="jibie" style="width:98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQType &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label3">@Resources.CustomerRes.Khqc_cn：</span>
+                                </td>
+                                <td colspan="4">
+                                    <span name="FullName_CN" id="FullName_CN" style="border-bottom: #000000 solid 1px; display: block; word-break: break-all; width:105.5%">@ViewBag.AllCustomer.FullName_CN &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label257">@Resources.CustomerRes.Jc：</span>
+                                </td>
+                                <td colspan="3">
+                                    <span name="ShortName" id="txt_ShortName" style="width: 98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.ShortName &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label259">@Resources.CustomerRes.Khqc_en：</span>
+                                </td>
+                                <td colspan="6">
+                                    <span name="FullName_EN" id="FullName_EN" style="border-bottom: #000000 solid 1px; display: block; word-break: break-all; width:99.2%">@ViewBag.AllCustomer.FullName_EN &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;width: 8%">
+                                    <span id="Label263">@Resources.CustomerRes.Ssgj：</span>
+                                </td>
+                                <td style="width:25%;">
+                                    <span name="CountryID" id="Country" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQCountryID &nbsp;</span>
+                                </td>
+                                <td style="text-align: right; width: 9%">
+                                    <span id="Label7">@Resources.CustomerRes.Szcs：</span>
+                                </td>
+                                <td colspan="2" style="width: 13%;">
+                                    <span name="CityID" id="City" style="width:120%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQCityID &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label93">@Resources.CustomerRes.Dlwz：</span>
+                                </td>
+                                <td colspan="7">
+                                    <span name="Location" id="location" style="resize: none; width: 98%; height: 40px;margin-top:2px;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Location &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label261">@Resources.CustomerRes.Hyfl：</span>
+                                </td>
+                                <td colspan="1">
+                                    <span name="Selecttrade" id="Selecttrade" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQClassify &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label259">@Resources.CustomerRes.Ndsr：</span>
+                                </td>
+                                <td colspan="2">
+                                    <span name="AnnualRevenue" id="txt_AnnualRevenue" style="width:121%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.AnnualRevenue &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label101">@Resources.CustomerRes.Hzgx：</span>
+                                </td>
+                                <td colspan="3">
+                                    <span name="InBusiness" id="InBusiness" style="width:98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQInBusiness &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label99">@Resources.CustomerRes.Xydj：</span>
+                                </td>
+                                <td>
+                                    <span name="GoodWill" id="GoodWill" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQGoodWill &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label259">@Resources.CustomerRes.Xye：</span>
+                                </td>
+                                <td colspan="2">
+                                    <span name="CreditLimits" id="txt_CreditLimits" style="width:121%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.CreditLimits &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label259">@Resources.CustomerRes.Xyqx：</span>
+                                </td>
+                                <td colspan="2">
+                                    <span name="CreditPeriod" id="txt_CreditPeriod" style="width:98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.CreditPeriod &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label99">@Resources.CustomerRes.Khxz：</span>
+                                </td>
+                                <td>
+                                    <span name="SelectClasss" id="SelectClasss" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQclass &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label99">@Resources.CustomerRes.Xyhy：</span>
+                                </td>
+                                <td colspan="2">
+                                    <span name="Agreement" id="Agreement" style="width:120%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQAgreement &nbsp;</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label259">@Resources.CustomerRes.Fzr：</span>
+                                </td>
+                                <td colspan="2">
+                                    <span name="Manager" id="txt_FullName_EN" style="width:98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Manager &nbsp;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label95">@Resources.CustomerRes.Gsjsz：</span>
+                                </td>
+                                <td colspan="7">
+                                    <span name="Info_CN" id="Info_CN" style="resize: none; width: 99.3%; height:55px;margin-top:2px;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Info_CN &nbsp;</span>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label97">@Resources.CustomerRes.Gsjsy：</span>
+                                </td>
+                                <td colspan="7">
+                                    <span name="Info_EN" id="Info_EN" style="resize: none; width: 99.3%; height:55px;margin-top:2px;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Info_EN &nbsp;</span>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label97">@Resources.CustomerRes.Jjtg：</span>
+                                </td>
+                                <td colspan="7">
+                                    <span name="UrgNotice" id="UrgNotice" style="resize: none; width: 99.3%; height:55px;margin-top:2px;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.UrgNotice &nbsp;</span>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label97">@Resources.CustomerRes.Bz：</span>
+                                </td>
+                                <td colspan="7">
+                                    <span name="Remarks" id="Remarks" style="resize: none; width: 99.3%; height:55px;margin-top:2px;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Remarks &nbsp;</span>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="zhangdan" role="tabpanel" class="tab-pane" style="background-color:#fdfff2;">
+                        <hr style="border-color: #707070; margin: auto" />
+                        <div id="zdtable" style="width:47%; margin:15px auto;float:left;margin-left:20px">
+                            <div colspan="8" style="text-align: center; background-color:#ffc90d;">
+                                <span id="Label16">@Resources.CustomerRes.Zdxx</span>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align:left;width:17%;display:inline-block;">
+                                    <span id="Label18">@Resources.CustomerRes.Jszdddydz：</span>
+                                </div>
+                                <div style="display: inline-block;width:81%">
+                                    <span name="Inv2eMail" id="Inv2eMail" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Inv2EMail &nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align:left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label19">@Resources.CustomerRes.Gsmc：</span>
+                                </div>
+                                <div style="display: inline-block;width:88%">
+                                    <span name="Inv2Comp" id="txt_Inv2Comp" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Inv2Comp &nbsp;</span>
+                                </div>
+
+                            </div>
+                            <div class="divgk">
+                                <div style="display: inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label22">@Resources.CustomerRes.Gsdz：</span>
+                                </div>
+                                <div style="display:inline-block;width:88%">
+                                    <span name="Inv2Addr" id="txt_Inv2Addr" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Inv2Addr &nbsp;</span>
+                                </div>
+
+                            </div>
+
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label26">@Resources.CustomerRes.Gj：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="Inv2Cnty" id="Inv2Cnty" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQInv2Cnty &nbsp;</span>
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label24">@Resources.CustomerRes.Zs：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="Inv2State" id="Inv2State" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQInv2State &nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label23">@Resources.CustomerRes.Cs：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="Inv2City" id="Inv2City" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQInv2City &nbsp;</span>
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label25">@Resources.CustomerRes.Yb：</span>
+                                </div>
+                                <div style="display:inline-block;" class="zdh">
+                                    <span name="Inv2Post" id="txt_Inv2Post" style="width: 100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Inv2Post &nbsp;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:47%; margin: 15px auto;float:right;margin-right:20px">
+                            <div>
+                                <div colspan="8" style="text-align: center; background-color: #ffc90d;">
+                                    <span id="Label27">@Resources.CustomerRes.Zyxx</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="font-size:12px;display:inline-block;">
+                                    <p style="background-color: #fdfff2; margin: 0px;">
+                                        <span></span>
+                                        <span></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label30">@Resources.CustomerRes.Gsmc：</span>
+                                </div>
+                                <div style="display: inline-block;width:88%">
+                                    <span name="Ship2Comp" id="txt_Ship2Comp" style="width:101%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ship2Comp &nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label31">@Resources.CustomerRes.Gsdz：</span>
+                                </div>
+                                <div style="display: inline-block;width:88%">
+                                    <span name="Ship2Addr" id="txt_Ship2Addr" style="width:101%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ship2Addr &nbsp;</span>
+                                </div>
+
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label35">@Resources.CustomerRes.Gj：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="Ship2Cnty" id="Ship2Cnty" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQShip2Cnty &nbsp;</span>
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label33">@Resources.CustomerRes.Zs：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="Ship2State" id="Ship2State" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQShip2State &nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label32">@Resources.CustomerRes.Cs：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="Ship2City" id="Ship2City" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQShip2City &nbsp;</span>
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label34">@Resources.CustomerRes.Yb：</span>
+                                </div>
+                                <div style="display:inline-block;" class="zdh">
+                                    <span name="Ship2Post" id="txt_Ship2Post" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ship2Post &nbsp;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 47%; margin: 15px auto;float:left;clear:both;margin-left:20px">
+                            <div>
+                                <div colspan="8" style="text-align: center; background-color: #ffc90d;">
+                                    <span id="Label28">@Resources.CustomerRes.Yfzklxxx</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label29">@Resources.CustomerRes.Xm：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="APName" id="txt_APName" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.APName &nbsp;</span>
+                                </div>
+                                <div style="text-align: right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label37">@Resources.CustomerRes.Bgdh：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="APPhone" id="txt_APPhone" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.APPhone &nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label36">@Resources.CustomerRes.Zc：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="APTitle" id="txt_APTitle" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.APTitle &nbsp;</span>
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label39">@Resources.CustomerRes.Sj：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="APMobile" id="txt_APMobile" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.APMobile &nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label39">@Resources.CustomerRes.Dy：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="APEmail" id="txt_APEmail" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.APEmail &nbsp;</span>
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label38">@Resources.CustomerRes.Cz：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="APFax" id="txt_APFax" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.APFax &nbsp;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 47%; margin: 15px auto;float:right;margin-right:20px">
+                            <div colspan="8" style="text-align: center;background-color: #ffc90d;">
+                                <span id="Label41">@Resources.CustomerRes.Yszklxxx</span>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label42">@Resources.CustomerRes.Xm：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="ARName" id="txt_ARName" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.ARName &nbsp;</span>
+                                </div>
+                                <div style="text-align: right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label44">@Resources.CustomerRes.Bgdh：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="ARPhone" id="txt_ARPhone" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.ARPhone &nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label43">@Resources.CustomerRes.Zc：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="ARTitle" id="txt_ARTitle" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.ARTitle &nbsp;</span>
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label46">@Resources.CustomerRes.Sj：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="ARMobile" id="txt_ARMobile" style="width: 100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.ARMobile &nbsp;</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label47">@Resources.CustomerRes.Dy：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="AREmail" id="txt_AREmail" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.AREmail &nbsp;</span>
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="zhangdanleftdiv">
+                                    <span id="Label45">@Resources.CustomerRes.Cz：</span>
+                                </div>
+                                <div style="display: inline-block;" class="zdh">
+                                    <span name="ARFax" id="txt_ARFax" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.ARFax &nbsp;</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="xinyong" role="tabpanel" class="tab-pane" style="background-color:#f4f4ff;">
+                        <hr style="border-color:#707070; margin: auto" />
+                        <div style="width: 97%; margin: 10px auto;">
+                            <table style="width:100%; margin: 15px auto;" rules="rows">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; background-color:#00a3e8;">
+                                        <span id="Label48">@Resources.CustomerRes.Zyyh</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="Label49">@Resources.CustomerRes.Qqmc：</span>
+                                    </td>
+                                    <td colspan="7">
+                                        <span name="BankName" id="txt_BankName" style="width: 99%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.BankName &nbsp;</span>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="Label51">@Resources.CustomerRes.Dz：</span>
+                                    </td>
+                                    <td colspan="7">
+                                        <span name="BankAddr" id="txt_BankAddr" style="width: 99%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.BankAddr &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%">
+                                        <span id="Label53">@Resources.CustomerRes.Gjzhhm：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <span name="iBAN" id="txt_iBAN" style="width: 98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.iBAN &nbsp;</span>
+                                    </td>
+                                    <td width="9%">
+                                        <span id="Label54">@Resources.CustomerRes.Yhgjdm：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <span name="SWIFT" id="txt_SWIFT" style="width: 98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.SWIFT &nbsp;</span>
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <table style="width:100%">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; background-color: #00a3e8;">
+                                        <span id="Label50">@Resources.CustomerRes.Syxysq：</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="font-size: 12px;">
+                                        <p style="height: 25px; background-color: #ffffcc; margin: 0px;pointer-events:none">
+                                            <input id="chk_IsList" type="checkbox" name="chk_IsList" />
+                                            <label for="chk_IsList" id="Label125">@Resources.CustomerRes.Khsfwssgs</label>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width:47%; margin: 15px auto;float:left;border:none" rules="rows">
+                                <tr>
+                                    <td colspan="8" style="background-color:#4fc8e8;width:100%">
+                                        <span id="Label52">@Resources.CustomerRes.Dywyyzxx</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;width:11%">
+                                        <span id="Label55">@Resources.CustomerRes.Yyzmc：</span>
+                                    </td>
+                                    <td colspan="8">
+                                        <span name="Owner1Name" id="txt_Owner1Name" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner1Name &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label56">@Resources.CustomerRes.Zcdz：</span>
+                                    </td>
+                                    <td colspan="9">
+                                        <span name="Owner1Addr" id="txt_Owner1Addr" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner1Addr &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label62">@Resources.CustomerRes.Zcgj：</span>
+                                    </td>
+                                    <td colspan="9">
+                                        <span name="Owner1Cnty" id="Owner1Cnty" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQOwner1Cnty &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label64">@Resources.CustomerRes.Zcrq：</span>
+                                    </td>
+                                    <td width="37%">
+                                        <span id="Owner1Date" style="border-bottom: #000000 solid 1px; display: block; word-break: break-all;"> @ViewBag.AllCustomer.Owner1Date &nbsp;</span>
+                                    </td>
+                                    <td colspan="3" style="text-align:right">
+                                        <span id="Label60">@Resources.CustomerRes.Zxwz：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <span name="Owner1Web" id="txt_Owner1Web" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner1Web &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label66">@Resources.CustomerRes.Zclx：</span>
+                                    </td>
+                                    <td width="37%">
+                                        <span name="Owner1Type" id="Owner1Type" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQOwner1Type &nbsp;</span>
+                                    </td>
+                                    <td colspan="3" style="width:14%;text-align:right">
+                                        <span id="Label68">@Resources.CustomerRes.Qyyyqf：</span>
+                                    </td>
+                                    <td width="24%">
+                                        <span name="Owner1Ship" id="txt_Owner1Ship" style="width: 100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner1Ship &nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table style="width:47%; margin: 15px auto;float:right" rules="rows">
+                                <tr>
+                                    <td colspan="8" style="background-color: #4fc8e8;width:100%">
+                                        <span id="Label58">@Resources.CustomerRes.Dewyyzxx</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;width:11%">
+                                        <span id="Label59">@Resources.CustomerRes.Yyzmc：</span>
+                                    </td>
+                                    <td colspan="8">
+                                        <span name="Owner2Name" id="txt_Owner2Name" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner2Name &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td style="text-align:right">
+                                        <span id="Label57">@Resources.CustomerRes.Zcdz：</span>
+                                    </td>
+                                    <td colspan="9">
+                                        <span name="Owner2Addr" id="txt_Owner2Addr" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner2Addr &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label63">@Resources.CustomerRes.Zcgj：</span>
+                                    </td>
+                                    <td colspan="9">
+                                        <span name="Owner2Cnty" id="Owner2Cnty" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQOwner2Cnty &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td style="text-align:right">
+                                        <span id="Label65">@Resources.CustomerRes.Zcrq：</span>
+                                    </td>
+                                    <td width="37%">
+                                        <span id="Owner2Date" style="border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner2Date &nbsp; </span>
+                                    </td>
+                                    <td colspan="3" style="text-align:right">
+                                        <span id="Label61">@Resources.CustomerRes.Zxwz：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <span name="Owner2Web" id="txt_Owner2Web" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner2Web &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label67">@Resources.CustomerRes.Zclx：</span>
+                                    </td>
+                                    <td width="37%">
+                                        <span name="Owner2Type" id="Owner2Type" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQOwner2Type &nbsp;</span>
+                                    </td>
+                                    <td colspan="3" style="width:14%;text-align:right">
+                                        <span id="Label69">@Resources.CustomerRes.Qyyyqf：</span>
+                                    </td>
+                                    <td width="24%">
+                                        <span name="Owner2Ship" id="txt_Owner2Ship" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Owner2Ship &nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div style="width: 97%; margin: 10px auto;">
+                            <table style="width:47%; margin: 15px auto;float:left;border:none" rules="rows">
+                                <tr>
+                                    <td colspan="10" style="background-color: #4fc8e8;width:100%">
+                                        <span id="Label71">@Resources.CustomerRes.Dywmyhb</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:8.5%">
+                                        <span id="Label73">@Resources.CustomerRes.Gsmc：</span>
+                                    </td>
+                                    <td colspan="9">
+                                        <span name="Ref1Name" id="txt_Ref1Name" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref1Name &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="Label75">@Resources.CustomerRes.Yydz：</span>
+                                    </td>
+                                    <td colspan="9">
+                                        <span name="Ref1Addr" id="txt_Ref1Addr" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref1Addr  &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="Label77">@Resources.CustomerRes.Lxr：</span>
+                                    </td>
+                                    <td style="width:20%">
+                                        <span name="Ref1Contact" id="txt_Ref1Contact" style="width:90%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref1Contact &nbsp;</span>
+                                    </td>
+                                    <td width="5%">
+                                        <span id="Label79">@Resources.CustomerRes.Zc：</span>
+                                    </td>
+                                    <td width="20%">
+                                        <span name="Ref1Title" id="txt_Ref1Title" style="width: 96%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref1Title &nbsp;</span>
+                                    </td>
+                                    <td width="10%">
+                                        <span id="Label81">@Resources.CustomerRes.Bgdh：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <span name="Ref1Phone" id="txt_Ref1Phone" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref1Phone &nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table style="width:47%; margin: 15px auto;float:right;border:none" rules="rows">
+                                <tr>
+                                    <td colspan="10" style="background-color: #4fc8e8;width:100%">
+                                        <span id="Label72">@Resources.CustomerRes.Dewmyhb</span>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td width="8.5%">
+                                        <span id="Label74">@Resources.CustomerRes.Gsmc</span>
+                                    </td>
+                                    <td colspan="9">
+                                        <span name="Ref2Name" id="txt_Ref2Name" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref2Name &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        <span id="Label75">@Resources.CustomerRes.Yydz：</span>
+                                    </td>
+                                    <td colspan="9">
+                                        <span name="Ref2Addr" id="txt_Ref2Addr" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref2Addr  &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="Label77">@Resources.CustomerRes.Lxr：</span>
+                                    </td>
+                                    <td style="width:20%">
+                                        <span name="Ref2Contact" id="txt_Ref2Contact" style="width:90%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref2Contact &nbsp;</span>
+                                    </td>
+                                    <td width="5%">
+                                        <span id="Label79">@Resources.CustomerRes.Zc：</span>
+                                    </td>
+                                    <td width="20%">
+                                        <span name="Ref2Title" id="txt_Ref2Title" style="width: 96%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref2Title &nbsp;</span>
+                                    </td>
+                                    <td width="10%">
+                                        <span id="Label81">@Resources.CustomerRes.Bgdh：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <span name="Ref2Phone" id="txt_Ref2Phone" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Ref2Phone &nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr style="border-color:#50c9e8;clear:both" />
+                            <table style="width:100%; margin:5px auto; margin-top: 0px;" rules="rows">
+                                <tr>
+                                    <td colspan="1" style="background-color: #4fc8e8;width:5%;text-align:center">
+                                        <span id="Label70">@Resources.CustomerRes.Jyhb</span>
+                                    </td>
+                                    <td style="padding-left:20px;width:6%;text-align:right">
+                                        <span id="Label84">@Resources.CustomerRes.Hb 1：</span>
+                                    </td>
+                                    <td width="17%">
+                                        <span name="Curr1" id="Curr1" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQCurr1 &nbsp;</span>
+                                    </td>
+                                    <td style="text-align: right;width:6%;">
+                                        <span id="Label84">@Resources.CustomerRes.Hb 2：</span>
+                                    </td>
+                                    <td width="17%">
+                                        <span name="Curr2" id="Curr2" style="width:95%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQCurr2 &nbsp;</span>
+                                    </td>
+                                    <td style="text-align: right;width:6%;">
+                                        <span id="Label84">@Resources.CustomerRes.Hb 3：</span>
+                                    </td>
+                                    <td width="17%">
+                                        <span name="Curr3" id="Curr3" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQCurr3 &nbsp;</span>
+                                    </td>
+                                    <td style="text-align: right;width:6%;">
+                                        <span id="Label84">@Resources.CustomerRes.Hb 4：</span>
+                                    </td>
+                                    <td width="17%">
+                                        <span name="Curr4" id="Curr4" style="width:100%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.XQCurr4 &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" style="background-color: #4fc8e8;width:5%;text-align:center;">
+                                        <span id="Label83">@Resources.CustomerRes.Ycxsl</span>
+                                    </td>
+                                    <td style="padding-left:20px;text-align:right">
+                                        <span id="Label89">@Resources.CustomerRes.Snxse：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <span name="Yr1Forcast" id="txt_Yr1Forcast" style="width:98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Yr1Forcast &nbsp;</span>
+                                    </td>
+                                    <td style="width:5%;text-align:right">
+                                        <span id="Label91">@Resources.CustomerRes.Cnxse：</span>
+                                    </td>
+                                    <td colspan="6">
+                                        <span name="Yr2Forcast" id="txt_Yr2Forcast" style="width:99%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.Yr2Forcast &nbsp;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" style="background-color: #4fc8e8;width:5%;text-align:center">
+                                        <span id="Label88">@Resources.CustomerRes.Yqxytk</span>
+                                    </td>
+                                    <td style="padding-left:20px;text-align:right">
+                                        <span id="Label90">@Resources.CustomerRes.Xye：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <span name="CreditLimit" id="txt_CreditLimit" style="width:98%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.CreditLimits &nbsp;</span>
+                                    </td>
+                                    <td style="width:5%;text-align:right">
+                                        <span id="Label92">@Resources.CustomerRes.Fktk：</span>
+                                    </td>
+                                    <td colspan="6">
+                                        <span name="CreditTerms" id="txt_CreditTerms" style="width:99%;border-bottom: #000000 solid 1px; display: block; word-break: break-all;">@ViewBag.AllCustomer.CreditTerms &nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="lianxi" role="tabpanel" class="tab-pane" style="background-color:#effff0;">
+                        <hr style="border-color:#d9f18d;margin:auto" />
+                        <table ID="lianxitable" cellspacing="0" rules="all" border="1" style="width:100%;border-collapse:collapse;word-break:break-all;word-wrap:break-word;margin-top:10px;background-color:#effff0">
+                            <tr style="width:100%;margin:10px;background-color:#d9f18d">
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:15%;text-align:center">@Resources.CustomerRes.Lxlx</th>
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:25%;text-align:center">@Resources.CustomerRes.Ms</th>
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:15%;text-align:center">@Resources.CustomerRes.Cs</th>
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:25%;text-align:center">@Resources.CustomerRes.Xxnr</th>
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:10%;text-align:center">@Resources.CustomerRes.Sfgx</th>
+                            </tr>
+                            @foreach (var item in ViewBag.All)
+                            {
+                                <tbody id="linkInfoBody">
+                                    <tr style="Cursor:pointer">
+                                        <td align="center" style="font-size:10px;height:25px;">@item.ContactType</td>
+                                        <td align="center" style="font-size:10px;">@item.Remark</td>
+                                        <td align="center" style="font-size:10px;">@item.City</td>
+                                        <td align="center" style="font-size:10px;">@item.Contact</td>
+                                        <td align="center" style="font-size:10px;">@item.Share</td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+
+                </div>
+
+                <div id="lasts" style="width:100%; overflow: auto; font-size: 10px; color:#808080; margin: 0px auto;">
+
+                    <span style="float: left; margin-left:20px;">
+                        <span id="Label107">@Resources.CustomerRes.Cjxx</span>
+                        <span id="lbl_CreateTime">@ViewBag.AllCustomer.CreateTime</span>
+                        (<span id="lbl_CreateBy">@ViewBag.AllCustomer.CreateBy</span>)
+                        <span id="lbl_CreateDept">@ViewBag.AllCustomer.CreateDept</span>
+                    </span>
+                    <span style="float: right; margin-right:20px;">
+                        <span id="Label109">@Resources.CustomerRes.Zhgx</span>
+                        <span id="lbl_UpdateTime">@ViewBag.AllCustomer.UpdateTime</span>
+                        <span id="lbl_UpdateBy">@ViewBag.AllCustomer.UpdateBy</span>)
+                        <span id="lbl_UpdateDept">@ViewBag.AllCustomer.UpdateDept</span>
+                    </span>
+                </div>
+            </form>
+
+            <form id="form1" action="##" onsubmit="return false" method="post">
+                <div class="modal" id="themodal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" style="text-align:center">@Resources.CustomerRes.Xjkhlxxx</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Kh：</span>
+                                    <span>
+                                        @ViewBag.AllCustomer.ShortName
+                                        <input name="SourceID" type="hidden" value="@ViewBag.AllCustomer.SysID" />
+                                    </span>
+                                    <span>（@ViewBag.AllCustomer.id）</span>
+                                </p>
+                                <p style="width:100%">
+                                    <span id="Label99">@Resources.CustomerRes.Lxlx：</span>
+                                    <select name="ContactType" id="LXType" class="bak" style="width:85%;">
+                                        <option value="P4">公司电话</option>
+                                        <option value="F1">办公传真</option>
+                                        <option value="W1">知询网站</option>
+                                    </select>
+                                </p>
+                                <p style="display:inline-block;">
+                                    <span id="Label99">@Resources.CustomerRes.Cs：</span>
+                                    <div class="LXCity" style="display:inline-block;" id="LXCity"></div>
+                                </p>
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Ms：</span>
+                                    <input name="Remark" type="text" maxlength="100" id="txt_Remarks" style="width:90%" />
+                                </p>
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Xxnr：</span>
+                                    <input name="Contact" type="text" maxlength="50" id="txt_Contacts" style="width:85%" />
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="Insert()">@Resources.CustomerRes.Bc</button>
+                                <button id="Close" type="button" class="btn btn-default" data-dismiss="modal">@Resources.CustomerRes.Gb</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+            </form>
+
+            <form id="form2" action="##" onsubmit="return false" method="post">
+                <div class="modal" id="themodals" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" style="text-align:center">@Resources.CustomerRes.Xgkhlxxx</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Kh：</span>
+                                    <span>
+                                        @ViewBag.AllCustomer.ShortName
+                                        <input id="txt_ContactID" name="ContactID" type="hidden" />
+                                        <input name="SourceID" type="hidden" value="@ViewBag.AllCustomer.SysID" />
+                                    </span>
+                                    <span>（@ViewBag.AllCustomer.id）</span>
+                                </p>
+                                @*<p style="display:inline-block;">
+                                        <span id="Label99">@Resources.CustomerRes.Lxlx：</span>
+                                        <div class="LXType" style="display:inline-block;" id="LXType1"></div>
+                                    </p>*@
+                                <p style="width:100%">
+                                    <span id="Label99">@Resources.CustomerRes.Lxlx：</span>
+                                    <select name="ContactType" id="LXType1" class="bak" style="width:85%;">
+                                        <option value="P4">公司电话</option>
+                                        <option value="F1">办公传真</option>
+                                        <option value="W1">知询网站</option>
+                                    </select>
+                                </p>
+
+                                <p style="display:inline-block;">
+                                    <span id="Label99">@Resources.CustomerRes.Cs：</span>
+                                    <div class="LXCity" style="display:inline-block;" id="LXCity1"></div>
+                                </p>
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Ms：</span>
+                                    <input name="Remark" type="text" maxlength="100" id="txt_Remark" style="width:90%" />
+                                </p>
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Xxnr：</span>
+                                    <input name="Contact" type="text" maxlength="50" id="txt_Contact" style="width:85%" />
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="Updatebtn()">@Resources.CustomerRes.Bc</button>
+                                <button id="Close" type="button" class="btn btn-default" data-dismiss="modal">@Resources.CustomerRes.Gb</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+            </form>
+        </div>
+    </div>
+    @*有权限人可查看*@
+    <div id="Quanxian" style="pointer-events: none;display:none">
+        <div id="Shichangbu" style="pointer-events: none;">
+            <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf;">
+                <tr>
+                    <td colspan="8" style="background-color: #d8d8d8; text-align: center;background-color:#b5e61b;">
+                        <span id="Label931">@Resources.CustomerRes.Scbbcxx</span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center; width: 12%; border-right: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; background-color: #e2efd9;">
+                        <span id="Label1011">@Resources.CustomerRes.Xsddjsst</span>
+                    </td>
+
+                    <td colspan="4" style="text-align: center; width: 12%; border-bottom: 1px solid #bfbfbf; background-color: #e2efd9;">
+                        <span id="Label1021">@Resources.CustomerRes.Zzscst</span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" style="border-right: 1px solid #bfbfbf;">
+                        <input id="CheckBox4" type="checkbox" name="SORcvEntity" value="群智能源科技有限公司" />
+                        <label for="CheckBox4" id="Label1001">@Resources.CustomerRes.Qznykjyxgs</label>
+                    </td>
+                    <td colspan="4">
+                        <input id="CheckBox5" type="checkbox" name="MFGProcEntity" value="群智电子科技 (东莞) 有限公司" />
+                        <label for="CheckBox5" id="Label1031">@Resources.CustomerRes.Qzdzkjdgyxgs</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="border-right: 1px solid #bfbfbf;">
+                        <input id="CheckBox6" type="checkbox" name="SORcvEntity" value="群智电子科技 (东莞) 有限公司" />
+                        <label for="CheckBox6" id="Label1041">@Resources.CustomerRes.Qzdzkjdgyxgs</label>
+                    </td>
+                    <td colspan="4">
+                        <input id="CheckBox7" type="checkbox" name="MFGProcEntity" value="东莞毓华电子科技有限公司" />
+                        <label for="CheckBox7" id="Label1051">@Resources.CustomerRes.Dghydzkjyxgs</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="border-right: 1px solid #bfbfbf;">
+                        <input id="CheckBox8" type="checkbox" name="SORcvEntity" value="东莞毓华电子科技有限公司" />
+                        <label for="CheckBox8" id="Label1061">@Resources.CustomerRes.Dghydzkjyxgs</label>
+                    </td>
+                    <td colspan="4">
+                        <input id="CheckBox9" type="checkbox" name="MFGProcEntity" value="群智能源科技越南有限公司" />
+                        <label for="CheckBox9" id="Label1071">@Resources.CustomerRes.Qznykjynyxgs</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="border-right: 1px solid #bfbfbf;">
+                        <input id="CheckBox10" type="checkbox" name="SORcvEntity" value="群智能源科技越南有限公司" /><label for="CheckBox10" id="Label1081">@Resources.CustomerRes.Qznykjynyxgs</label>
+                    </td>
+                    <td colspan="4">
+                        <input id="CheckBox11" type="checkbox" name="MFGProcEntity" value="Hossack (越南) 有限公司" /><label for="CheckBox11" id="Label1091">@Resources.CustomerRes.Hynyxgs</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="border-right: 1px solid #bfbfbf; font-style: italic">
+                        <span id="Label1101">@Resources.CustomerRes.Zsxzyx</span>
+                    </td>
+                    <td colspan="4" style="font-style: italic">
+                        <span id="Label1101">@Resources.CustomerRes.Zsxzyx</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center; width: 12%; border-right: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; background-color: #e2efd9;">
+                        <span id="Label1121">@Resources.CustomerRes.Cygx</span>
+                    </td>
+
+                    <td colspan="4" style="text-align: center; width: 12%; border-bottom: 1px solid #bfbfbf; background-color: #e2efd9;">
+                        <span id="Label1131">@Resources.CustomerRes.Wjhdqd</span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" style="border-right: 1px solid #bfbfbf; font-size: 12px;">
+                        <span id="Label1141">@Resources.CustomerRes.RsxykhzhyzzshcbzzsQlcqcygx</span>
+                    </td>
+                    <td colspan="4">
+                        <input id="CheckBox13" type="checkbox" name="DocCheckList" value="最近2个财政年度经审计的财务报表" />
+                        <label for="CheckBox13" id="Label1151">@Resources.CustomerRes.Zj2gczndjsjdcwbb</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="5" colspan="4" style="border-right: 1px solid #bfbfbf; text-align: right">
+                        <textarea name="TextArea1" id="Guanxi" style="resize: none; width:97%; height:100%;margin:10px;">@ViewBag.AuditInfo.FamilyTree</textarea>
+                    </td>
+                    <td colspan="4">
+                        <input id="CheckBox12" type="checkbox" name="DocCheckList" value="上一财政年度后的最新管理账目" />
+                        <label for="CheckBox12" id="Label1171">@Resources.CustomerRes.Syczndhdzxglzm</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <input id="CheckBox14" type="checkbox" name="DocCheckList" value="商业登记证" />
+                        <label for="CheckBox14" id="Label1161">@Resources.CustomerRes.Sydjz</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <input id="CheckBox15" type="checkbox" name="DocCheckList" value="信用报告（如 邓白氏商业资料公司）" />
+                        <label for="CheckBox15" id="Label1181">@Resources.CustomerRes.XybgRdbssyzlgs</label>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td colspan="4">
+                        <input id="CheckBox16" type="checkbox" name="DocCheckList" value="银行资信证明（如有）" />
+                        <label for="CheckBox16" id="Label119">@Resources.CustomerRes.YhzxzmRy</label>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td colspan="4">
+                        <input id="CheckBox17" type="checkbox" name="DocCheckList" value="担保函（如有）" />
+                        <label for="CheckBox17" id="Label120">@Resources.CustomerRes.DbhRy</label>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf;">
+                <tr>
+                    <td colspan="8" style="background-color: #d8d8d8; text-align: center">
+                        <span id="Label121">@Resources.CustomerRes.Scxsbyj</span>
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td colspan="8" style="text-align:center;">
+                        <textarea name="TextArea2" id="ShichangbuTxt" style="resize: none; width:99%; height:200px;margin:5px" maxlength="1000">@ViewBag.AuditInfo.SCACOpinion</textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 97%; overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+            <span style="float: left; margin-left: 3px;">
+                <span id="Label83">@Resources.CustomerRes.Cjxx：</span>
+                <span id="scb_CreateTime">@ViewBag.AuditInfo.MDCreateTime</span>
+                (<span id="scb_CreateBy">@ViewBag.AuditInfo.MDCreateBy</span>)
+                <span id="scb_CreateDept">@ViewBag.AuditInfo.MDCreateDept</span>
+            </span>
+        </div>
+
+        <div id="Caiwubu" style="border: 2px solid #0000ff; width: 97%; margin: 10px auto; margin-top:50px">
+            <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf;">
+                <tr>
+                    <td colspan="8" style="background-color: #d8d8d8; text-align: center;background-color:#b5e61b;">
+                        <span id="Label931">@Resources.CustomerRes.Cwbbcxx</span>
+                    </td>
+
+                </tr>
+
+            </table>
+            <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf;">
+                <tr>
+                    <td colspan="8" style="background-color: #d8d8d8; text-align: center">
+                        <span id="Label121">@Resources.CustomerRes.Cwbyj</span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="8" style="text-align:center;">
+                        <textarea name="TextArea2" id="CaiwubuTxt" style="resize: none; width:99%; height:200px;margin:5px; pointer-events:none;" maxlength="1000">@ViewBag.AuditInfo.CWACOpinion</textarea>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="width: 97%; overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+            <span style="float: left; margin-left: 3px;">
+                <span id="Label83">@Resources.CustomerRes.Cjxx</span>
+                <span id="scb_CreateTime">@ViewBag.AuditInfo.ACCreateTime</span>
+                (<span id="cwb_CreateBy">@ViewBag.AuditInfo.ACCreateBy</span>)
+                <span id="cwb_CreateDept">@ViewBag.AuditInfo.ACCreateDept</span>
+            </span>
+        </div>
+    </div>
+    <div id="OperationChi" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+        <input type="button" value="@Resources.CustomerRes.Gb" onclick="history()" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" />
+
+        <input type="button" name="Button1" value="@Resources.CustomerRes.Xg" id="XGbtn" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;display:none" onclick="Update()" />
+
+        @*<input type="button" name="Button1" value="@Resources.CustomerRes.Dayin" id="Dayin" class="btn btn-primary" style="height:30px;width:80px;font-size: 18px; margin-left: 5%; background-color: #0070c0; color:white;cursor:pointer;" onclick="Dayin()" />*@
+    </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WebStationModelStoreContainer" CdmEntityContainer="WebStationEntitiess">
+    <EntitySetMapping Name="ActionLog2021">
+      <EntityTypeMapping TypeName="WebStationModel.ActionLog2021">
+        <MappingFragment StoreEntitySet="ActionLog2021">
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="ActionType" ColumnName="ActionType" />
+          <ScalarProperty Name="ActionTime" ColumnName="ActionTime" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="TableKey" ColumnName="TableKey" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QnA">
+      <EntityTypeMapping TypeName="WebStationModel.QnA">
+        <MappingFragment StoreEntitySet="QnA">
+          <ScalarProperty Name="QnAID" ColumnName="QnAID" />
+          <ScalarProperty Name="TopicArea" ColumnName="TopicArea" />
+          <ScalarProperty Name="Author" ColumnName="Author" />
+          <ScalarProperty Name="KeyWord" ColumnName="KeyWord" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="QPic01" ColumnName="QPic01" />
+          <ScalarProperty Name="QPic02" ColumnName="QPic02" />
+          <ScalarProperty Name="QPic03" ColumnName="QPic03" />
+          <ScalarProperty Name="QPic04" ColumnName="QPic04" />
+          <ScalarProperty Name="Answer" ColumnName="Answer" />
+          <ScalarProperty Name="APic01" ColumnName="APic01" />
+          <ScalarProperty Name="APic02" ColumnName="APic02" />
+          <ScalarProperty Name="APic03" ColumnName="APic03" />
+          <ScalarProperty Name="APic04" ColumnName="APic04" />
+          <ScalarProperty Name="ClickTimes" ColumnName="ClickTimes" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TBWords">
+      <EntityTypeMapping TypeName="WebStationModel.TBWords">
+        <MappingFragment StoreEntitySet="TBWords">
+          <ScalarProperty Name="WordID" ColumnName="WordID" />
+          <ScalarProperty Name="WordCode" ColumnName="WordCode" />
+          <ScalarProperty Name="Name_CN" ColumnName="Name_CN" />
+          <ScalarProperty Name="Name_VN" ColumnName="Name_VN" />
+          <ScalarProperty Name="Name_EN" ColumnName="Name_EN" />
+          <ScalarProperty Name="Del_Flag" ColumnName="Del_Flag" />
+          <ScalarProperty Name="OrderBy" ColumnName="OrderBy" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SelectKnowledgeBaseIndex">
+      <EntityTypeMapping TypeName="WebStationModel.SelectKnowledgeBaseIndex">
+        <MappingFragment StoreEntitySet="SelectKnowledgeBaseIndex">
+          <ScalarProperty Name="QnAID" ColumnName="QnAID" />
+          <ScalarProperty Name="TopicArea" ColumnName="TopicArea" />
+          <ScalarProperty Name="Author" ColumnName="Author" />
+          <ScalarProperty Name="KeyWord" ColumnName="KeyWord" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="Answer" ColumnName="Answer" />
+          <ScalarProperty Name="ClickTimes" ColumnName="ClickTimes" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="Name_CN" ColumnName="Name_CN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

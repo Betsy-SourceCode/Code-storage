@@ -1,0 +1,223 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style>
+        .form-group {
+            margin-right: 20px;
+        }
+
+        .panel-heading {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            background-color: #efe1cd;
+        }
+
+        .green {
+            background-color: #dff0d8;
+        }
+        /* 普通IE浏览器 样式清除 */
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+        }
+        /* 火狐浏览器样式清除 */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+    <script>
+        $(function () {
+        //货币下拉框
+        var CurrList = "";
+        $.ajax({
+            type: "post",
+            async: false,
+            dataType: 'JSON',
+            url: "/ProductPrice/ProductPrice/GetCurrList",
+            success: function (result) {
+                $.each(result.Data, function (key, value) {
+                    CurrList += '<option value="' + value.Value + '"';
+                    CurrList += ">" + value.Text + '</option > ';
+                })
+                $("#CurrList").append(CurrList);
+                //设置默认值
+                var Curr = '@ViewBag.ProductPriceList.UpdCurr';
+                $("#CurrList").find("option[value='" + Curr + "']").attr("selected", true);
+                return false;
+            }
+        });
+        //生效类型下拉框
+        var EffTypeList = "";
+        $.ajax({
+            type: "post",
+            async: false,
+            dataType: 'JSON',
+            url: "/ProductPrice/ProductPrice/GetEffType",
+            success: function (result) {
+                $.each(result.Data, function (key, value) {
+                    EffTypeList += '<option value="' + value.Value + '"';
+                    EffTypeList += ">" + value.Text + '</option > ';
+                })
+                $("#EffTypeList").append(EffTypeList);
+                //设置默认值
+                var EffType = '@ViewBag.ProductPriceList.EffType';
+                $("#EffTypeList").find("option[value='" + EffType + "']").attr("selected", true);
+                return false;
+            }
+        });
+        })
+        //保存数据
+        function SaveMyform(Cancel) {
+            var EffDetail = document.getElementById('EffDetail');
+            var UpdUnit = document.getElementById('UpdUnit');
+            if (EffDetail.value.length<5) {
+                alert("生效类型不能少于5个字符！");
+                EffDetail.focus();
+                return false;
+            }
+            if (UpdUnit.value=='') {
+                alert("价格不能为空！");
+                UpdUnit.focus();
+                return false;
+            }
+            var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
+            var data = $('#myform').serialize();
+            $.ajax({
+                url: "/ProductPrice/ProductPriceZG/AddCustProductPrice",
+                type: 'POST',
+                dataType: 'json',
+                data: $.param({ 'CPSerial': CPSerial }) + '&'+ $.param({ 'num': 1}) + '&'+ data,
+                success: function (result) {
+                    if (result.Success > 0) {
+                        alert("保存成功！");
+                        window.location.href = "/ProductPrice/ProductPrice/DetailsProductPrice?CPSerial=" + result.id;//跳转到详情页
+                    }
+                    else {
+                        alert("保存失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body style="max-width:96%;margin:0px auto;min-width:1250px">
+    <div id="Mydiv" style="border: 2px solid #000000;background-color: #ddd;height:auto;">
+        <div id="top" style="background-color:#ccc;margin:2%">
+            <h1 style="text-align: center;">
+                <span id="Title">调 整 客 户 产 品 价 格 信 息</span>
+            </h1>
+            <h1 style="text-align: center;margin-top:-10px">
+                <span id="Title">Amend Customer's Product Prices Records</span>
+            </h1>
+        </div>
+        <form id="myform" style="width:70%;margin-left:25%" method="post" class="form-inline" role="form" onsubmit="return false" enctype="multipart/form-data">
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-5">
+                    <label style="font-weight:bold;text-align:right">业务员：</label>
+                    <label>@ViewBag.ProductPriceList.CreateBy</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">原信息记录时间：</label>
+                    <label>@ViewBag.ProductPriceList.CreateTime</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-5">
+                    <label style="font-weight:bold;text-align:right">账套：</label>
+                    <label>@ViewBag.ProductPriceList.Ledger</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">客户:</label>
+                    <label>@ViewBag.ProductPriceList.CustomerDisplayName</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-5">
+                    <label style="font-weight:bold;text-align:right">GIP产品号：</label>
+                    <label>@ViewBag.ProductPriceList.FNumber</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">客户产品代码：</label>
+                    <label>@ViewBag.ProductPriceList.CustProdCode</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-9">
+                    <label style="font-weight:bold;text-align:right">产品描述：</label>
+                    <label>@ViewBag.ProductPriceList.CustProdName</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-5">
+                    <label style="font-weight:bold;text-align:right">原记录单价&nbsp;&nbsp;&nbsp;货币：</label>
+                    <label>@ViewBag.ProductPriceList.PrvCurr</label>
+                </div>
+                <div class="col-sm-6">
+                    <label style="font-weight:bold">价格：</label>
+                    <label>@ViewBag.ProductPriceList.PrvUnit</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-5">
+                    <p style="color:red;display:inline">*</p>
+                    <label style="font-weight:bold;text-align:right">更新后价格&nbsp;&nbsp;&nbsp;货币：</label>
+                    <select class="form-control green" style="width:40%;display:inline" id="CurrList" name="UpdCurr">
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <p style="color:red;display:inline">*</p>
+                    <label style="font-weight:bold;text-align:right">价格：</label>
+                    <input name="UpdUnit" type="number" step="0.000000000000000001" min=" 0.0000" max="999999999.9999"  id="UpdUnit" class="form-control input-content" style="width:63%; display:inline" value="@ViewBag.ProductPriceList.UpdUnit" required="required" oninput="if(value.length>14)value=value.slice(0,14)">
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-5">
+                    <p style="color:red;display:inline">*</p>
+                    <label style="font-weight:bold;text-align:right">生效类型：</label>
+                    <select class="form-control green" style="width:57%;display:inline" id="EffTypeList" name="EffType">
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <p style="color:red;display:inline">*</p>
+                    <label style="font-weight:bold">生效条件：</label>
+                    <input name="EffDetail" type="text" minlength="5" id="EffDetail" class="form-control input-content" style="width:57%; display:inline;" value="@ViewBag.EffDetail" placeholder="Please put relevant info as refer to “生效类型”！">
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-11">
+                    <label style="font-weight:bold;text-align:right">销售备注：</label>
+                    <textarea name="Remarks_MD" type="text" id="CP_input" class="form-control input-content" style="width:78%;display:inline;height:100px;background-color:white">@ViewBag.ProductPriceList.Remarks_MD</textarea>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-11">
+                    <label style="font-weight:bold;text-align:right">财务笔记：</label>
+                    <label>@ViewBag.ProductPriceList.Remarks_FD</label>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div style="padding-bottom:2%;text-align:right;margin-left:-2%" class="col-sm-6">
+                    <button id="Savebtn" type="button" class="btn-lg btn-primary form-group" onclick="SaveMyform()">
+                        保&nbsp;&nbsp;存
+                    </button>
+                    <button type="button" class="btn-lg btn-primary form-group" onclick="window.location.href = '/ProductPrice/ProductPrice/Index?userid=@ViewBag.userid'">
+                        取&nbsp;&nbsp;消
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

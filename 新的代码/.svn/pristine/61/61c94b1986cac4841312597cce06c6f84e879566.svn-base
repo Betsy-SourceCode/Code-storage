@@ -1,0 +1,16 @@
+﻿.input-clear-a {
+    color: white;
+}
+
+.input-content:hover + .input-clear-a { /*文本框的清除小图标改变颜色*/
+    color: #d4d4d4;
+}
+
+.panel-heading {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.qq {
+    display: contents;
+}

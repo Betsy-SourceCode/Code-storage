@@ -1,0 +1,2201 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UpdateCustomer</title>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/WdatePicker.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style type="text/css">
+        .bak {
+            background-color: #e9ffff;
+            width: 98%;
+            height: 25px;
+        }
+
+        td {
+            height: 25px;
+        }
+
+        a:hover {
+            cursor: pointer;
+        }
+
+        #linkInfoBody tr:hover {
+            background-color: #facfec;
+        }
+
+        td {
+            border: none;
+            /*padding-top: 5px;*/
+            padding: 3px;
+        }
+
+        #lianxitable td {
+            border: 1px solid #ACACAC;
+        }
+
+        #zhangdan:after {
+            content: "";
+            clear: left;
+            display: block;
+        }
+
+        #myTab li {
+            border: 1px solid #ddd;
+        }
+
+        .nav-tabs {
+            border-bottom: none;
+        }
+
+        .divgk {
+            margin-top: 5px;
+        }
+
+        input[type='text'], select {
+            width: 100%;
+        }
+
+        .Changered {
+            color: red;
+        }
+
+        .zhangdanleftdiv {
+            width: 11%;
+        }
+
+        .wbk {
+            width: 39.5%;
+        }
+
+        .divwz {
+            width: 9%;
+        }
+
+        #ruler {
+            position: absolute;
+            visibility: hidden;
+            white-space: nowrap;
+            z-index: -100;
+        }
+    </style>
+    @*其他*@
+    <script type="text/javascript">
+        $(function () {
+            $("#OperationChi").css("display", "");
+            window.scrollTo(0, $("#hdnvalue").val());
+        });
+        function tab(a) {
+            document.getElementById(a).focus();
+        }
+        //禁用Enter键表单自动提交
+        document.onkeydown = function (event) {
+            var target, code, tag;
+            if (!event) {
+                event = window.event; //针对ie浏览器
+                target = event.srcElement;
+                code = event.keyCode;
+                if (code == 13) {
+                    tag = target.tagName;
+                    if (tag == "TEXTAREA") { return true; }
+                    else { return false; }
+                }
+            }
+            else {
+                target = event.target; //针对遵循w3c标准的浏览器，如Firefox
+                code = event.keyCode;
+                if (code == 13) {
+                    tag = target.tagName;
+                    if (tag == "INPUT") { return false; }
+                    else { return true; }
+                }
+            }
+        };
+        // $(function ())是文档document加载完自动调用的函数
+        $(function () {
+            /*
+             获取form元素，调用其ajaxForm(...)方法
+             内部的function(data)的data就是后台返回的数据
+            */
+            $("#Form1").ajaxSubmit(function (message) {
+                // 提交成功后处理，message为提交页面的返回内容 
+                alert("添加成功！");
+            });
+        });
+    </script>
+    @*页面加载*@
+    <script>
+        $(function () {
+            if ('@ViewBag.AllCustomer.Status'=="审核") {   //只能看不能修改
+                $(".GN").css("display", "none");
+            }
+            else {
+                $("#SaveBtn").css("display", "inline");
+            }
+            $("#myTab a").parent("li").css("border-bottom-color", "transparent");
+            $("#myTab a").parent("li").siblings().css("border-bottom", "1px solid #ddd");
+            var num = '@ViewBag.num';
+            var tabId = "#jichu";
+            if (num == "4") {
+                Updates();
+                $('#myTab a:last').tab('show');
+                tabId = "#lianxi";
+                if ('@ViewBag.AllCustomer.Status'!="审核") {
+                  $("#InsertBtn").css("display", "inline");
+                }
+                else {
+                    $("#InsertBtn").css("display", "none");
+                }
+                $("#SaveBtn").css("display", "none");
+            }
+            if (num == "3") {
+                Updates();
+                $('#myTab a[href="#xinyong"]').tab('show');
+                tabId = "#xinyong";
+            }
+            if (num == "2") {
+                Updates();
+                $('#myTab a[href="#zhangdan"]').tab('show');
+                tabId = "#zhangdan";
+            }
+            if (num == "1") {
+                Updates();
+                $('#myTab a[href="#jichu"]').tab('show');
+                tabId = "#jichu";
+                $("#xianshi").css("display", "none");
+            }
+            if (num == "0") {
+                $('#myTab a[href="#jichu"]').tab('show');
+                tabId = "#jichu";
+                $("#xianshi").css("display", "none");
+            }
+            var color = $(tabId).css("background-color");
+            $("#xianshi").css("background-color", color);
+            $("#lasts").css("background-color", color);
+            $("#tabContent").css("background-color", color);
+            $("#myTab a").click(function (e) {
+                $(this).parent("li").css("border-bottom", "none");
+                $(this).parent("li").siblings().css("border-bottom", "1px solid #ddd");
+                var id = $(this).attr("href");
+                var color = $(id).css("background-color");
+                $("#xianshi").css("background-color", color);
+                $("#lasts").css("background-color", color);
+                $("#tabContent").css("background-color", color);
+
+            });
+            $("#myTab a").click(function (e) {
+                var id = $(this).attr("href");
+                var oldId = $("#myTab li.active").find("a").attr("href");
+                var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+                if (oldId != "#lianxi") {
+                    checkModification(id);
+                }
+                if (id == "#lianxi") {
+                if ('@ViewBag.AllCustomer.Status'!="审核") {
+                  $("#InsertBtn").css("display", "inline");
+                }
+                    $("#SaveBtn").css("display", "none");
+                    $("#xianshi").css("display", "block");
+                }
+                else {
+                    $("#InsertBtn").css("display", "none");
+                    if ('@ViewBag.AllCustomer.Status'!="审核") {   //只能看不能修改
+                        $("#SaveBtn").css("display", "inline");
+                    }
+                    if (id == "#jichu") {
+                        $("#xianshi").css("display", "none");
+                    }
+                    else {
+                        $("#xianshi").css("display", "block");
+                    }
+                }
+            });
+            //上市公司勾选框赋值
+            var IsList = '@ViewBag.AllCustomer.IsList';
+            if (IsList=="True") {
+                $("#chk_IsList").prop("checked", true);
+            }
+              //行业下拉框绑定
+            var Selecttrade = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectTBWord?WordCode=CR",
+                success: function (result) {
+                        Selecttrade += '<select name="Classify" id="Classify" class="bak" style="width:100%">'
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        Selecttrade += '<option value="' + value.Value + '"';
+                        if ('@ViewBag.AllCustomer.Classify'==value.Value) {   //设置默认值
+                            Selecttrade += "selected='selected'";
+                        }
+                        else if ('F' == value.Value){
+                            Selecttrade += "selected='selected'";
+                        }
+                        Selecttrade += ">" + value.Text + '</option > ';
+                    })
+                    Selecttrade += ' </select>'
+                    $("#Selecttrade").append(Selecttrade);
+                    return false;
+                }
+            });
+            //公司下拉框
+            var SelectCompany = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectTBWord?WordCode=BT",
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        SelectCompany += '<option value="' + value.Value + '"';
+                        SelectCompany += ">" + value.Text + '</option > ';
+                    })
+                    $(".type").find("select").append(SelectCompany);
+                     var company = "@ViewBag.AllCustomer.Biz_Type"
+                    $("#SelectCompany").find("option[value='" + company + "']").attr("selected", true);
+                    //默认注册类型
+                     var ZDcompany1 = "@ViewBag.AllCustomer.Owner1Type"
+                    $("#type1").find("option[value='" + ZDcompany1 + "']").attr("selected", true);
+                     var ZDcompany2 = "@ViewBag.AllCustomer.Owner2Type"
+                    $("#type2").find("option[value='" + ZDcompany2 + "']").attr("selected", true);
+                    return false;
+                }
+            });
+             //货币下拉框
+            var SelectCurr = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectCurr",
+                success: function (result) {
+                    SelectCurr += '<option value=""></option >'
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        SelectCurr += '<option value="' + value.Value + '"';
+                        SelectCurr += ">" + value.Text + '</option > ';
+                    })
+                    $(".SelectCurr").find("select").append(SelectCurr);
+                    var factory1 = "@ViewBag.AllCustomer.Curr1";
+                    var factory2 = "@ViewBag.AllCustomer.Curr2";
+                    var factory3 = "@ViewBag.AllCustomer.Curr3";
+                    var factory4 ="@ViewBag.AllCustomer.Curr4";
+                    $("#huobi1").find("option[value='" + factory1 + "']").attr("selected", true);
+                    $("#huobi2").find("option[value='" + factory2 + "']").attr("selected", true);
+                    $("#huobi3").find("option[value='" + factory3 + "']").attr("selected", true);
+                    $("#huobi4").find("option[value='" + factory4 + "']").attr("selected", true);
+                    $("#huobi1").find("option[value='']").remove();  //移除空白项
+                    return false;
+                }
+            });
+            //合作关系默认值
+            var InBusiness ="@ViewBag.AllCustomer.ComInBusiness";
+            $("#dr_InBusiness").find("option[value='" + InBusiness + "']").attr("selected", true);
+            ///信用等级
+            var GoodWill = "@ViewBag.AllCustomer.ComGoodWill";
+            $("#dr_GoodWill").find("option[value='" + GoodWill + "']").attr("selected", true);
+            //客户性质
+            var SelectClass = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectAllClass",
+                success: function (result) {
+                        SelectClass += '<select name="Class" id="Class" class="bak" style="width:102%">'
+                        $.each(result.Data.DropDownList, function (key, value) {
+                        SelectClass += '<option value="' + value.Value + '"';
+                        SelectClass += ">" + value.Text + '</option > ';
+                    })
+                        SelectClass += ' </select>'
+                    $("#SelectClasss").append(SelectClass);
+                    var Class = "@ViewBag.AllCustomer.Class";
+                    $("#SelectClasss").find("option[value='" + Class + "']").attr("selected", true);
+                    return false;
+                }
+            });
+             //客户递属
+            var SelectBelongs = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectAllBelongs",
+                success: function (result) {
+                        SelectBelongs += '<select name="Belongs" id="Belongs" class="bak" style="width:100%">'
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        var selectText = value.Text;
+                        if (selectText.length >20) {
+                            selectText = value.Text.substring(0,18) + "...";   //下拉框字符过长处理
+                        }
+                        SelectBelongs += '<option value="' + value.Value + '"';
+                        SelectBelongs += 'title="' + value.Text+'"';
+                        SelectBelongs += ">" + selectText + '</option > ';
+                        })
+
+                        SelectBelongs += ' </select>'
+                    $("#SelectBelongs").append(SelectBelongs);
+                    var Belongs = "@ViewBag.AllCustomer.Belongs";
+                    $("#SelectBelongs").find("option[value='" + Belongs + "']").attr("selected", true);
+                    return false;
+                }
+            });
+            //客户级别默认
+            var Type = "@ViewBag.AllCustomer.Type";
+            $("#jibie").find("option[value='" + Type + "']").attr("selected", true);
+              //协议合约默认
+             var Class = "@ViewBag.AllCustomer.Agreement";
+            $("#xieyi").find("option[value='" + Class + "']").attr("selected", true);
+            //模态框-联系类型
+            var LXType = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectLXType",
+                success: function (result) {
+
+                        LXType += '<select name="ContactType" id="LXType" class="bak" style="width:82%;">';
+                        $.each(result.Data.DropDownList, function (key, value) {
+                        LXType += '<option value="' + value.Value + '"';
+                        LXType += ">" + value.Text + '</option > ';
+                    })
+                        LXType += ' </select>'
+                    $(".LXType").append(LXType);
+                    return false;
+                }
+            });
+            //模态框-城市列表
+            var LXCity = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectLXCity",
+                success: function (result) {
+                        LXCity += '<select name="City" id="LXCity" class="bak" style="width:100%;">';
+                        $.each(result.Data.DropDownList, function (key, value) {
+                        LXCity += '<option value="' + value.Value + '"';
+                        LXCity += ">" + value.Text + '</option > ';
+                    })
+                        LXCity += ' </select>'
+                    $(".LXCity").append(LXCity);
+                    return false;
+                }
+            });
+        })
+        $(function () {
+            //下拉框选择内容自适应
+            function changeOption() {
+                var selectLength = $("#Belongs").width();
+                $("#Belongs").find("option").each(function () {
+                    var titleLength = $(this).attr("title").visualLength("#Belongs");
+                    var oneLength = "单".visualLength();//获取单个字符长度
+                    if (titleLength > selectLength - 3 * oneLength) {
+                        var subLength = Math.floor((selectLength / titleLength) * $(this).attr("title").length);
+                        $(this).text($(this).attr("title").substring(0, subLength - 3) + "...");
+                    } else {
+                        $(this).text($(this).attr("title"));
+                    }
+                    var subLength = selectLength
+                });
+            }
+
+            String.prototype.visualLength = function (id) {
+                var size = $(id).css("font-size");
+                var family = $(id).css("font-family");
+                var ruler = $("#ruler").css({
+                    "font-size": size || "inherit",
+                    "font-family": family || "inherit"
+                });
+                ruler.text(this);
+                return ruler.width();
+            }
+
+            $("#Belongs").mouseover(function () {
+                changeOption();
+            });
+        })
+    </script>
+    @*二三级下拉框*@
+    <script>
+        //联动框总合
+        function set_city(CountryId,CityId) {
+            var c = $("#" + CountryId).find("select")[0].value;
+                var SelectCity = "";
+                $.ajax({
+                    type: "post",
+                    async: false,
+                    dataType: 'JSON',
+                    url: "/Customer/SelectCity",
+                    data: { "Country": c },
+                    success: function (result) {
+                        $("#" + CityId).find("select").empty();
+                        SelectCity += '<option value=""></option>';
+                        $.each(result.Data.DropDownList, function (key, value) {
+                            SelectCity += '<option value="' + value.Value + '"';
+                            SelectCity += ">" + value.Text + '</option > ';
+                        })
+                        $("#SelectCity").find("select").append(SelectCity);
+                          var factory = "@ViewBag.AllCustomer.CityID"
+                        $("#SelectCity").find("option[value='" + factory + "']").attr("selected", true);
+                        return false;
+
+                    }
+                })
+        }
+        $(function () {
+        //国家+城市下拉框（二级联动）
+        var SelectCountry = "";
+        $.ajax({
+            type: "post",
+            async: false,
+            dataType: 'JSON',
+            url: "/Customer/SelectCountry",
+            success: function (result) {
+                $.each(result.Data.DropDownList, function (key, value) {
+                    SelectCountry += '<option value="' + value.Value + '"';
+                    SelectCountry += ">" + value.Text + '</option > ';
+                })
+                $(".LD").find("select").append(SelectCountry);
+                var Country = "@ViewBag.AllCustomer.CountryID"
+                //默认国家
+                $("#SelectCountry").find("option[value='" + Country + "']").attr("selected", true);
+                //默认注册国家
+                var ZDCountry1 = "@ViewBag.AllCustomer.Owner1Cnty"
+                $("#ZDCountry1").find("option[value='" + ZDCountry1 + "']").attr("selected", true);
+                var ZDCountry2 = "@ViewBag.AllCustomer.Owner2Cnty"
+                $("#ZDCountry2").find("option[value='" + ZDCountry2 + "']").attr("selected", true);
+                set_city('SelectCountry', 'SelectCity')
+                return false;
+            }
+        });
+            //联动国家+省州+城市（三级联动）
+            var countrys1 = "";
+            var countrys2 = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectCountry",
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        countrys1 += '<option value="' + value.Value + '"';
+                        countrys1 += ">" + value.Text + '</option > ';
+                        countrys2 += '<option value="' + value.Value + '"';
+                        countrys2 += ">" + value.Text + '</option > ';
+                    })
+                    $(".LDC1").find("select").append(countrys1);
+                    $(".LDC2").find("select").append(countrys2);
+                    //默认国家
+                    var country1 = "@ViewBag.AllCustomer.Inv2Cnty";
+                    var country2 = "@ViewBag.AllCustomer.Ship2Cnty";
+                    $("#country1").find("option[value='" + country1 + "']").attr("selected", true);
+                    $("#country2").find("option[value='" + country2 + "']").attr("selected", true);
+                    Province('country2', 'SelectProvince2', 'LDcitys2');
+                    Province('country1', 'SelectProvince1', 'LDcitys1');
+                    return false;
+                }
+            });
+        })
+        function LDcity(ProviceID,CityId) {
+            var c = $("#" + ProviceID).find("select")[0].value;
+            var LDcity = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectLDCity",
+                data: { "Province": c },
+                success: function (result) {
+                    $("#" + CityId).find("select").empty();
+                    LDcity += '<option value=""></option>';
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        LDcity += '<option value="' + value.Value + '"';
+                        LDcity += ">" + value.Text + '</option > ';
+                    })
+                    $("#" + CityId).find("select").append(LDcity);
+                    //默认城市
+                    var city1 = "@ViewBag.AllCustomer.Inv2City";
+                    var city2 = "@ViewBag.AllCustomer.Ship2City";
+                    $("#LDcitys1").find("option[value='" + city1 + "']").attr("selected", true);
+                    $("#LDcitys2").find("option[value='" + city2 + "']").attr("selected", true);
+                    return false;
+
+                }
+            })
+
+        }
+        function set_Province(CountryId,ProvinceId,CityId) {
+            var c = $("#" + CountryId).find("select")[0].value;
+            var SelectProvince1 = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectProvince",
+                data: { "Country": c },
+                success: function (result) {
+                    $("#" + ProvinceId).find("select").empty();
+                    SelectProvince1 += '<option value=""></option>';
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        SelectProvince1 += '<option value="' + value.Value + '"';
+                        SelectProvince1 += ">" + value.Text.replace('\r\n', '') + '</option > ';
+                    })
+                    $("#" + ProvinceId).find("select").append(SelectProvince1);
+                     //默认州省
+                    var Province1 = "@ViewBag.AllCustomer.Inv2State";
+                    var Province2 = "@ViewBag.AllCustomer.Ship2State";
+                    $("#SelectProvince1").find("option[value='" + Province1 + "']").attr("selected", true);
+                    $("#SelectProvince2").find("option[value='" + Province2 + "']").attr("selected", true);
+                    LDcity(ProvinceId, CityId);
+                    return false;
+                }
+            })
+        }
+        function Province(CountryId,ProviceId,CityID) {
+            set_Province(CountryId, ProviceId, CityID);
+        }
+    </script>
+    @*方法*@
+    <script>
+        //跳转页面
+        function history() {
+            var CustomerID = '@ViewBag.AllCustomer.CustomerID';   //跳转到详情页（维护状态）
+                         window.location.href = "/Customer/Detail?CustomerID=" + CustomerID + "&createBy=" + '@ViewBag.username' + "&createDept=" + '@ViewBag.DeptID';
+        }
+        //验证勾选框
+        function checkboxOnclick(checkbox) {
+            if (checkbox.checked == true) {
+                $("#Inv2eMail").css('background-color', '');
+                $("#Inv2eMail").removeAttr("readonly");
+            } else {
+                $("#Inv2eMail").attr("readonly", "readonly");
+                $("#Inv2eMail").css('background-color', '#d8d8d8');
+            }
+        }
+        //验证简称框
+        function checkShortName() {
+            var txt_ShortName = $("#txt_ShortName").val().trim();
+            if (txt_ShortName == "") {
+                alert("请输入简称!");
+                document.getElementById("txt_ShortName").focus();
+                return false;
+            }
+            return true;
+        }
+        //验证电邮
+        function checkemail(em) {
+            @*var s3 = /^([A-Z]|[a-z]|[0-9]|_|-|\.){3,20}@{@Html.Raw("@");}([A-Z]|[a-z]|[0-9]|_|-|\.){1,20|_|-|\.}(\.([A-Z]|[a-z]|[0-9]|_|-|){1,20|_|-|\.}){1,3|_|-}$/;*@
+            var s3 = /^[\w\-]+[\.]?[\w\-]+@{@Html.Raw("@");}[a-zA-Z0-9_\-]{2,20}(?:\.[a-z]{2,20}){1,3}$/;  //解决@符号冲突
+            var email = $(em).val();
+            if (email != "") {
+                if (!email.match(s3)) {
+                   result = "false";
+                    alert('电邮格式错误！');
+                    $(em).val("");
+                }
+            }
+        }
+        //查询所属省份
+        function SelectProvinceID(cityID) {
+            var cityID = $("#City").val();
+            var provinceId = "1";
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/SelectProvinceId",
+                data: { "cityID": cityID },
+                success: function (result) {
+                    if (result != null) {
+                        provinceId = result;
+                    }
+                    else {
+                        provinceId = "";
+                    }
+                }
+
+
+            })
+            return provinceId;
+        }
+        //根据类型名查类型ID（第四页签联系类型下拉框绑定）
+        function SelectContactType(TypeName) {
+            var TypeNameId = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/SelectContactType",
+                data:
+                    { "TypeName":TypeName },
+                success: function (result) {
+                    if (result != null) {
+                        TypeNameId=result;
+                    }
+                }
+            })
+            return TypeNameId;
+        }
+    </script>
+    <script>
+        function Updates() {
+            var CustomerID = @ViewBag.AllCustomer.CustomerID;
+            var createBy = '@ViewBag.AllCustomer.CreateBy1';
+            var createDept = '@ViewBag.AllCustomer.CreateDept1';
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/Authority",
+                data: {
+                    "createBy": createBy,
+                    "createDept": createDept
+                },
+                success: function (result) {
+                    if (result == 3 || result==4) {  //显示页签
+                        $("#myTab").css("display", "block");
+                        $("#Updateform").css("margin-top", "");
+                        $("#xianshi").css("display", "block");
+                    }
+                    else {
+                        window.location.href = "/Customer/UpdateCustomer?CustomerID=" + CustomerID + "&num=" + 0;
+                        $("#myTab").css("display", "block");
+                        $("#Two").css("display", "none");
+                        $("#Three").css("display", "none");
+                        $("#Four").css("display", "none");
+
+                    }
+                }
+            })
+        }
+        function centerModals() {
+            $('#themodal').each(function (i) {
+                var $clone = $(this).clone().css('display', 'block').appendTo('body');
+                var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+                top = top > 0 ? top : 0;
+                $clone.remove();
+                $(this).find('.modal-content').css("margin-top", top);
+            });
+            $('#themodals').each(function (i) {
+                var $clone = $(this).clone().css('display', 'block').appendTo('body');
+                var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+                top = top > 0 ? top : 0;
+                $clone.remove();
+                $(this).find('.modal-content').css("margin-top", top);
+            });
+        };
+        // 页面编辑数据
+        var inputsData;
+        var textareasData;
+        var selectsData;
+        //判断表单中值是否被修改了
+        function checkModification(id, close) {
+            var inputs = document.getElementsByTagName("input");
+            var textareas = document.getElementsByTagName("textarea");
+            var selects = document.getElementsByTagName("select");
+            var oldId = $("#myTab li.active").find("a").attr("href");
+            var hasBeenChanged = false;
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type == "radio" && (inputs[i].checked != inputsData[i])) {
+                    hasBeenChanged = true;
+                    inputsData[i] = inputs[i].checked;
+                }
+                if (inputs[i].type != "radio" && inputsData[i] != inputs[i].value) {
+                    if (inputs[i].name != "actionType") {
+                        hasBeenChanged = true;
+                    }
+                    inputsData[i] = inputs[i].value;
+                }
+            }
+            for (var i = 0; i < textareas.length; i++) {
+                if (textareasData[i] != textareas[i].value) {
+                    hasBeenChanged = true;
+                    textareasData[i] = textareas[i].value;
+                }
+            }
+            for (var i = 0; i < selects.length; i++) {
+                if (selectsData[i] != selects[i].value) {
+                    hasBeenChanged = true;
+                    selectsData[i] = selects[i].value;
+                }
+            }
+            if ('@ViewBag.AllCustomer.Status'!="审核") {
+            if (hasBeenChanged && confirm("数据已经改变,是否保存？")) {
+                if (close == null) {
+                    var num = "0";
+                    if (id == "#jichu") {
+                        //保存第一个选项卡的信息
+                        num = "1";
+                    } else if (id == "#zhangdan") {
+                        //保存第二个选项卡的信息
+                        num = "2";
+                    } else if (id == "#xinyong") {
+                        //保存第三个选项卡的信息
+                        num = "3";
+                    }
+                    else if (id == "#lianxi") {
+                        //保存第三个选项卡的信息
+                        num = "4";
+                    }
+                    if (oldId == "#jichu") {
+                        //保存第一个选项卡的信息
+                        XUpdateCustomer("UpdateIndex", num);
+                    } else if (oldId == "#zhangdan") {
+                        //保存第二个选项卡的信息
+                        XUpdateCustomer("UpdateTwo", num);
+                    } else if (oldId == "#xinyong") {
+                        //保存第三个选项卡的信息
+                        XUpdateCustomer("UpdateThree", num);
+                    }
+                }
+                else {
+                    var id = $("#myTab li.active").find("a").attr("href");
+                    var num = "0";
+                    if (id == "#jichu") {
+                        //保存第一个选项卡的信息
+                        num = "1";
+                        XUpdateCustomer("UpdateIndex", num);
+                    } else if (id == "#zhangdan") {
+                        //保存第二个选项卡的信息
+                        num = "2";
+                        XUpdateCustomer("UpdateTwo", num);
+                    } else if (id == "#xinyong") {
+                        //保存第三个选项卡的信息
+                        num = "3";
+                        XUpdateCustomer("UpdateThree", num);
+                    }
+                    else if (id == "#lianxi") {
+                        //保存第三个选项卡的信息
+                        num = "4";
+                    }
+                }
+            }
+            else {
+                if (close != null) {
+                 var CustomerID = '@ViewBag.AllCustomer.CustomerID';   //跳转到详情页（维护状态）
+                         window.location.href = "/Customer/Detail?CustomerID=" + CustomerID + "&createBy=" + '@ViewBag.username' + "&createDept=" + '@ViewBag.DeptID';
+                }
+
+                }
+            }
+            else {
+                if (close != null) {
+                  var CustomerID = '@ViewBag.AllCustomer.CustomerID';   //跳转到详情页（维护状态）
+                         window.location.href = "/Customer/Detail?CustomerID=" + CustomerID + "&createBy=" + '@ViewBag.username' + "&createDept=" + '@ViewBag.DeptID';
+                }
+            }
+        }
+        $(document).ready(function () {
+            $("#InsertBtn").click(function () {
+                $("#themodal").modal();
+            });
+            $('#themodal').on('show.bs.modal', centerModals);
+            //禁用空白处点击关闭
+            $('#themodal').modal({
+                backdrop: 'static',
+                keyboard: false,//禁止键盘
+                show: false
+            });
+            $('#themodals').on('show.bs.modal', centerModals);
+            $('#themodals').modal({
+                backdrop: 'static',
+                keyboard: false,//禁止键盘
+                show: false
+            });
+            //页面大小变化是仍然保证模态框水平垂直居中
+            $(window).on('resize', centerModals);
+        });
+    </script>
+    <script>
+        function CheckClose() {
+            var id = $(this).attr("href");
+            checkModification(id, "1");
+        }
+        // 记录下表单中的原始值
+        function initFileds() {
+            var inputs = document.getElementsByTagName("input");
+            var textareas = document.getElementsByTagName("textarea");
+            var selects = document.getElementsByTagName("select");
+            inputsData = new Array(inputs.length);
+            for (var i = 0; i < inputs.length; i++) {
+                inputsData[i] = inputs[i].value;
+                if (inputs[i].type == "radio") {
+                    inputsData[i] = inputs[i].checked;
+                }
+            }
+            textareasData = new Array(textareas.length);
+            for (var i = 0; i < textareas.length; i++) {
+                textareasData[i] = textareas[i].value;
+            }
+            selectsData = new Array(selects.length);
+            for (var i = 0; i < selects.length; i++) {
+                selectsData[i] = selects[i].value;
+            }
+        }
+        $(function myfunction() {
+            initFileds();  //记录下表单中的原始值
+        });
+        Date.prototype.Format = function (fmt) { // author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, // 月份
+                "d+": this.getDate(), // 日
+                "h+": this.getHours(), // 小时
+                "m+": this.getMinutes(), // 分
+                "s+": this.getSeconds(), // 秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+                "S": this.getMilliseconds() // 毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+            //保存修改方法
+        function XUpdateCustomer(Index, num) {
+            if (Index == null) {
+                var id =$("#myTab li.active").find("a").attr("href");
+                var num = "0";
+                if (id == "#jichu") {
+                    //保存第一个选项卡的信息
+                    num = "1";
+                    Index = "UpdateIndex";
+                    if (!checkShortName()) {
+                        return false;
+                    }
+                    var FullName_CN = $("#FullName_CN").val().trim();
+                    var FullName_EN = $("#FullName_EN").val().trim();
+                    if ((FullName_CN.length + FullName_EN.length) < 3) {
+                        document.getElementById("FullName_CN").focus();
+                        alert("请填完整客户中文或英文名称");
+                        return false;
+                    }
+                } else if (id == "#zhangdan") {
+                    //保存第二个选项卡的信息
+                    num = "2";
+                    Index = "UpdateTwo";
+                    var Inv2eMail = $("#Inv2eMail").val();
+                    if ($("#CheckBox1").is(":checked")) {   //勾选后一定要填电邮地址
+                        if (Inv2eMail == "") {
+                            alert("选择以邮寄为接收账单方式必须填写电邮地址");
+                            document.getElementById("Inv2eMail").focus();
+                            return false;
+                        }
+                    }
+                    var Inv2Comp = $("#txt_Inv2Comp").val();
+                    var Inv2Addr = $("#txt_Inv2Addr").val();
+                    var Ship2Comp = $("#txt_Ship2Comp").val();
+                    var Ship2Addr = $("#txt_Ship2Addr").val();
+                    if (Inv2Comp == "" || Inv2Addr == "" || Ship2Comp == "" || Ship2Addr == "") {
+                        if (Inv2Comp == "" || Inv2Addr == "") {
+                            alert("账单信息请填写完整！");
+                            document.getElementById("txt_Inv2Comp").focus();
+                            return false;
+                        }
+                            if (Ship2Comp == "" || Ship2Addr == "") {
+                                document.getElementById("txt_Ship2Comp").focus();
+                                alert("装运信息请填写完整！");
+                                return false;
+                        }
+                    }
+                } else if (id == "#xinyong") {
+                    //保存第三个选项卡的信息
+                    num = "3";
+                    Index = "UpdateThree";
+                }
+                else if (id == "#lianxi") {
+                    //保存第三个选项卡的信息
+                    num = "4";
+                }
+            }
+            var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+            CompanyID = '@ViewBag.AllCustomer.SysID';
+            var ProvinceID = SelectProvinceID(); //所属省份
+            var BillShipID = '@ViewBag.AllCustomer.BillShipID';
+            var IsList = "";
+            if ($("#chk_IsList").is(":checked")) {
+                var IsList = "true";
+            }
+            else {
+                IsList = "false";
+            }
+             $.ajax({            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                 url: "/FunctionOperation/"+Index+"", //url
+                 data: $.param({ 'CustomerID': CustomerID }) + '&'
+                     + $.param({ 'CompanyID': CompanyID }) + '&'
+                     + $.param({ 'ProvinceID': ProvinceID }) + '&'
+                     + $.param({ 'BillShipID': BillShipID }) + '&'
+                     + $.param({ 'IsList': IsList }) + '&'
+                     + $('#Updateform').serialize(),
+                 success: function (result) {
+                     if (result>0) {
+                    alert("修改成功！");
+                         var CustomerID = '@ViewBag.AllCustomer.CustomerID';   //跳转到详情页（维护状态）
+                         window.location.href = "/Customer/Detail?CustomerID=" + CustomerID + "&createBy=" + '@ViewBag.username' + "&createDept=" + '@ViewBag.DeptID';
+                    }
+                     else {
+                         alert("修改失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                    ;
+                }
+            });
+        }
+    </script>
+    <script>
+        //第四页签相关功能
+         //联系表格-新增
+        function Insert() {
+            var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+            $.ajax({            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "/FunctionOperation/customerUpdateAdd",//url
+                data: $.param({ 'CustomerID': CustomerID }) + '&'
+                    + $('#form1').serialize(),
+                success: function (result) {
+                    if (result > 0) {
+                    alert("添加成功！");
+                    var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+                        window.location.href = "/Customer/UpdateCustomer?CustomerID=" + CustomerID + "&num=" + "4";
+                    }
+                    else {
+                        alert("添加失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                    ;
+                }
+            });
+        }
+        //联系表格——删除
+        function Del(ContactID) {
+             var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+            if (confirm("是否删除此条数据？")) {
+                $.ajax({
+                    type: "post",
+                    url: "/FunctionOperation/customerUpdateDel",//url
+                    data: {
+                        "ContactID": ContactID,
+                        "CustomerID": CustomerID
+                    },
+                    success: function (result) {
+                        if (result>0) {
+                         alert("删除成功！");
+                         var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+                        window.location.href = "/Customer/UpdateCustomer?CustomerID=" + CustomerID + "&num=" + "4";
+                        }
+                        else {
+                            alert("删除失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                        }
+
+                    }
+                });
+            }
+        }
+        //联系表格——修改按钮
+        function Upd(LXType, LXCity, Remark, Contact, ContactID) {
+            //获得类型编号
+            var TypeNameId=SelectContactType(LXType);
+            $("#LXType1").find("option[value='" + TypeNameId + "']").attr("selected", true);
+            $("#LXCity1").find("option[value='" + LXCity + "']").attr("selected", true);
+            $("#txt_Remark").val(Remark);
+            $("#txt_Contact").val(Contact);
+            $("#txt_ContactID").val(ContactID);
+            $("#themodals").modal();
+            $('#themodals').on('show.bs.modal', centerModals);
+            //禁用空白处点击关闭
+            $('#themodals').modal({
+                backdrop: 'static',
+                keyboard: false,//禁止键盘
+                show: false
+            });
+            //页面大小变化是仍然保证模态框水平垂直居中
+            $(window).on('resize', centerModals);
+        }
+        //联系表格——修改功能
+        function Updatebtn() {
+                var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+              $.ajax({            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                  url: "/FunctionOperation/customerUpdateUpd",//url
+                  data: $.param({ 'CustomerID': CustomerID }) + '&'
+                        +$('#form2').serialize(),
+                success: function (result) {
+                    if (result > 0) {
+                    alert("修改成功！");
+                    var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+                    window.location.href = "/Customer/UpdateCustomer?CustomerID=" + CustomerID + "&num=" + "4";
+                    }
+                    else {
+                        alert("修改失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                    ;
+                }
+            });
+        }
+        //联系表格——复制功能
+        function Copys(LXType, LXCity, Remark, Contact) {
+            //获得类型编号
+            var TypeNameId = SelectContactType(LXType);
+            $("#LXType").find("option[value='" + TypeNameId + "']").attr("selected", true);
+            $("#LXCity").find("option[value='" + LXCity + "']").attr("selected", true);
+            $("#txt_Remarks").val(Remark);
+            $("#txt_Contacts").val(Contact);
+            alert("复制成功！");
+        }
+        //联系表格——共享功能
+        function IsShare(ContactID, Share) {
+            if (Share=="是") {
+                Share = "A";
+            }
+            if (Share == "否") {
+                Share = "N";
+            }
+             var CustomerID = '@ViewBag.AllCustomer.CustomerID';
+                   $.ajax({
+                    type: "post",
+                       url: "/FunctionOperation/UpdateShare",//url
+                    data: {
+                        "ContactID": ContactID,
+                        "CustomerID": CustomerID,
+                        "Share": Share
+                    },
+                    success: function (result) {
+                        if (result>0) {
+                         alert("操作成功！");
+                        window.location.href = "/Customer/UpdateCustomer?CustomerID=" + CustomerID + "&num=" + "4";
+                        }
+                        else {
+                            alert("操作失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                        }
+
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+    <input name="hdnvalue" type="hidden" id="hdnvalue" value="0" />
+    <input type="hidden" name="hid_language" id="hid_language" value="1" />
+    <div>
+        <div style="border: 2px solid #0000ff; width: 97%; margin: 0 auto;">
+            <div style="float: left; margin-left: 20px; margin-top: 20px;">
+                <img src="/Scripts/image/logo.jpg" style="margin-bottom:3px" />
+            </div>
+            <div style="float: right; margin-right: 20px;">
+                <a href="#" style="margin-left: 25px;" onclick="CheckClose()"><img src="/Scripts/image/关闭.jpg" title="@Resources.CustomerRes.Gb" /></a>
+            </div>
+            <h1 style="text-align: center; margin-top: 50px;">
+                <span id="Label1">@Resources.CustomerRes.Xgkhxx</span>
+            </h1>
+            @*选项卡*@
+            <ul class="nav nav-tabs" role="tablist" id="myTab" style="display:none;margin-top:20px">
+                <li id="jichus" role="presentation" class="active">
+                    <a href="#jichu" role="tab" data-toggle="tab" style="background-color: #e7e1e1;">@Resources.CustomerRes.Jcxx</a>
+                </li>
+                <li id="Two" role="presentation">
+                    <a href="#zhangdan" role="tab" data-toggle="tab" style="background-color: #fdfff2;">@Resources.CustomerRes.Zdx_x</a>
+                </li>
+                <li id="Three" role="presentation">
+                    <a href="#xinyong" role="tab" data-toggle="tab" style="background-color:#f4f4ff;">@Resources.CustomerRes.Xyxx</a>
+                </li>
+                <li id="Four" role="presentation">
+                    <a href="#lianxi" role="tab" data-toggle="tab" style="background-color:#effff0;">@Resources.CustomerRes.Lxxx</a>
+                </li>
+                <div style="display: inline-block;float:right;margin-right:1%;margin-top:20px">
+                    <span id="*" style="font-size:15px;color:red">
+                        * @Resources.CustomerRes.Btx
+                    </span>
+                </div>
+            </ul>
+            <div id="xianshi" style="clear:both;display:none">
+                @*显示*@
+                <table style="width:100%;" rules="rows">
+                    <tr>
+                        <td style="text-align: right;width:11%">
+                            <span id="Label3">@Resources.CustomerRes.Khqc_cn：</span>
+                        </td>
+                        <td colspan="14" style="border-bottom-color: #ffffff;">
+                            <span id="lbl_FullName_CN" style="display: block; word-break: break-all;">@ViewBag.AllCustomer.FullName_CN &nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label4">@Resources.CustomerRes.Khdm：</span>
+                        </td>
+                        <td colspan="1">
+                            <label style="font-weight:100">@ViewBag.AllCustomer.id</label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label259">@Resources.CustomerRes.Khqc_en：</span>
+                        </td>
+                        <td colspan="14">
+                            <span id="lbl_FullName_EN" style="display: block; word-break: break-all;"> @ViewBag.AllCustomer.FullName_EN &nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label117">@Resources.CustomerRes.Zt：</span>
+                        </td>
+                        <td>
+                            <span id="Label118" style="display: block; word-break: break-all;">@ViewBag.AllCustomer.Status &nbsp;</span>
+                        </td>
+                        <td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label257">@Resources.CustomerRes.Khjc：</span>
+                        </td>
+                        <td colspan="10">
+                            <span id="lbl_ShortName" style="display: block; word-break: break-all;">@ViewBag.AllCustomer.ShortName &nbsp;</span>
+                        </td>
+                        <td style="text-align: right; width:80px">
+                            <span id="Label263">@Resources.CustomerRes.Ssgj：</span>
+                        </td>
+                        <td style="width: 20%;">
+                            <span id="lbl_CountryID" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.XGCountryID &nbsp;</span>
+
+                        </td>
+                        <td style="text-align: right; width: 9%">
+                            <span id="Label7">@Resources.CustomerRes.Sscs：</span>
+                        </td>
+                        <td style="width: 16%;">
+
+                            <span id="lbl_CityID" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.XGCityID &nbsp;</span>
+
+                        </td>
+                        <td style="text-align: right; width: 9%">
+                            <span id="Label7">@Resources.CustomerRes.Swtsm：</span>
+                        </td>
+                        <td style="width: 16%;">
+                            <span id="lbl_CueCode" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.CueCode &nbsp;</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label261">@Resources.CustomerRes.Hyfl：</span>
+                        </td>
+                        <td colspan="10">
+                            <span id="lbl_Classify" style="display: block; word-break: break-all;width:110%">@ViewBag.AllCustomer.XGClassify &nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label115">@Resources.CustomerRes.Khds：</span>
+                        </td>
+                        <td>
+                            <span id="lbl_Belongs" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.XGkhds &nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label115">@Resources.CustomerRes.Khlb：</span>
+                        </td>
+                        <td colspan="1">
+                            <span id="lbl_Belongs" style="display: block; word-wrap: break-word;">公司&nbsp;</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label115">@Resources.CustomerRes.k3dm：</span>
+                        </td>
+                        <td>
+                            <span id="lbl_K3Code" style="display: block; word-wrap: break-word;">@ViewBag.AllCustomer.K3Code</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <form id="Updateform" action="##" onsubmit="return false" method="post" style="margin-top:30px">
+                <div id="tabContent" class="tab-content">
+                    <div id="jichu" role="tabpanel" class="tab-pane active" style="background-color:#e7e1e1;padding-top:10px">
+                        <table style="width: 95%; margin: 0 auto;" rules="rows">
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label4">@Resources.CustomerRes.Khdm：</span>
+                                </td>
+                                <td colspan="1">
+                                    <label>@ViewBag.AllCustomer.id</label>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label259">@Resources.CustomerRes.Swtsm：</span>
+                                </td>
+                                <td colspan="2">
+                                    <input name="CueCode" type="text" value="@ViewBag.AllCustomer.CueCode" maxlength="3" id="txt_CueCode" style="width:100%" />
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label259">@Resources.CustomerRes.k3dm：</span>
+                                </td>
+                                <td colspan="3">
+                                    <input name="K3Code" type="text" value="@ViewBag.AllCustomer.K3Code" maxlength="50" id="txt_K3Code" style="width: 98%" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label105">@Resources.CustomerRes.Khlb：</span>
+                                </td>
+                                <td colspan="1">
+                                    <select name="drType" id="drType" class="bak" style="width:100%">
+                                        <option value="N">公司</option>
+                                    </select>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label105">@Resources.CustomerRes.Khds：</span>
+                                </td>
+                                <td colspan="2">
+                                    <span id="ruler">test</span>
+                                    <div style="display:inline-block;width:100%" id="SelectBelongs"></div>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label103">@Resources.CustomerRes.Khjb：</span>
+                                </td>
+                                <td colspan="3">
+                                    <select name="Type" id="jibie" class="bak">
+                                        <option value="I">重点</option>
+                                        <option value="C">普通</option>
+                                        <option value="L">潜在</option>
+                                        <option value="P">问题</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label3">@Resources.CustomerRes.Khqc_cn：</span>
+                                </td>
+                                <td colspan="4">
+                                    <input name="FullName_CN" type="text" maxlength="50" id="FullName_CN" value="@ViewBag.AllCustomer.FullName_CN" style="background-color: #fff4f4; width:100%" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+
+                                </td>
+
+
+                                <td style="text-align: right;" class="Changered">
+
+                                    <span id="Label257">@Resources.CustomerRes.Jc：</span>
+                                </td>
+                                <td colspan="3">
+                                    <input name="ShortName" type="text" value="@ViewBag.AllCustomer.ShortName" maxlength="25" id="txt_ShortName" style="width: 98%; background-color: #fff4f4;" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label259">@Resources.CustomerRes.Khqc_en：</span>
+                                </td>
+                                <td colspan="7">
+                                    <input name="FullName_EN" type="text" value="@ViewBag.AllCustomer.FullName_EN" maxlength="100" id="FullName_EN" style="background-color: #fff4f4; width: 99.2%" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;width: 8%">
+                                    <span id="Label263">@Resources.CustomerRes.Ssgj：</span>
+                                </td>
+                                <td style="width: 19%;">
+                                    <div style="display:inline-block;width:96%" class="LD" id="SelectCountry">
+                                        <select name="CountryID" id="Country" class="bak" style="width:104%;" onChange="set_city('SelectCountry','SelectCity');">
+                                        </select>
+                                    </div>
+                                </td>
+                                <td style="text-align: right; width: 9%">
+                                    <span id="Label7">@Resources.CustomerRes.Szcs：</span>
+                                </td>
+                                <td colspan="2" style="width: 13%;">
+                                    <div style="display:inline-block;width:100%" id="SelectCity">
+                                        <select name="CityID" id="City" class="bak" style="width:100%;display: inline-block;">
+                                        </select>
+                                    </div>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label93">@Resources.CustomerRes.Dlwz：</span>
+                                </td>
+                                <td colspan="7">
+                                    <textarea name="Location" id="location" style="resize: none; width: 98%; height: 40px;margin-top:2px;" maxlength="100">@ViewBag.AllCustomer.Location</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label261">@Resources.CustomerRes.Hyfl：</span>
+                                </td>
+                                <td colspan="1">
+                                    <div style="display:inline-block;" id="Selecttrade"></div>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label259">@Resources.CustomerRes.Ndsr：</span>
+                                </td>
+                                <td colspan="2">
+                                    <input name="AnnualRevenue" type="text" value="@ViewBag.AllCustomer.AnnualRevenue" maxlength="8" id="txt_AnnualRevenue" style="width:100%" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]" />
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label101">@Resources.CustomerRes.Hzgx：</span>
+                                </td>
+                                <td colspan="3">
+                                    <select name="InBusiness" id="dr_InBusiness" class="bak">
+                                        <option value="N">正常</option>
+                                        <option value="C">小心</option>
+                                        <option value="S">停止</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label99">@Resources.CustomerRes.Xydj：</span>
+                                </td>
+                                <td>
+                                    <select name="GoodWill" id="dr_GoodWill" class="bak" style="width:100%">
+                                        <option value="N">一般</option>
+                                        <option value="G">优良</option>
+                                        <option value="B">低坏</option>
+                                    </select>
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label259">@Resources.CustomerRes.Xye：</span>
+                                </td>
+                                <td colspan="2">
+                                    <input name="CreditLimits" type="text" value="@ViewBag.AllCustomer.CreditLimits" maxlength="8" id="txt_CreditLimits" style="width:100%" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]" />
+                                </td>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label259">@Resources.CustomerRes.Xyqx：</span>
+                                </td>
+                                <td colspan="2">
+                                    <input name="CreditPeriod" type="text" value="@ViewBag.AllCustomer.CreditPeriod" maxlength="3" id="txt_CreditPeriod" style="width:98%" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" class="Changered">
+                                    <span id="Label99">@Resources.CustomerRes.Khxz：</span>
+                                </td>
+                                <td>
+                                    <div style="display:inline-block;width:98%" id="SelectClasss"></div>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label99">@Resources.CustomerRes.Xyhy：</span>
+                                </td>
+                                <td colspan="2">
+                                    <select name="Agreement" id="xieyi" class="bak" style="width:100%">
+                                        <option value="False">不是</option>
+                                        <option value="True">是</option>
+                                    </select>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span id="Label259">@Resources.CustomerRes.Fzr：</span>
+                                </td>
+                                <td colspan="2">
+                                    <input name="Manager" type="text" value="@ViewBag.AllCustomer.Manager" maxlength="100" id="txt_FullName_EN" style="width:98%" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label95">@Resources.CustomerRes.Gsjsz：</span>
+                                </td>
+                                <td colspan="7">
+                                    <textarea name="Info_CN" id="Info_CN" style="resize: none; width: 99.3%; height:55px;margin-top:2px;">@ViewBag.AllCustomer.Info_CN</textarea>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label97">@Resources.CustomerRes.Gsjsy：</span>
+                                </td>
+                                <td colspan="7">
+                                    <textarea name="Info_EN" id="Info_EN" style="resize: none; width: 99.3%; height:55px;margin-top:2px;">@ViewBag.AllCustomer.Info_EN</textarea>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label97">@Resources.CustomerRes.Jjtg：</span>
+                                </td>
+                                <td colspan="7">
+                                    <textarea name="UrgNotice" id="UrgNotice" style="resize: none; width: 99.3%; height:55px;margin-top:2px;" maxlength="300">@ViewBag.AllCustomer.UrgNotice</textarea>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <span id="Label97">@Resources.CustomerRes.Bz：</span>
+                                </td>
+                                <td colspan="7">
+                                    <textarea name="Remarks" id="Remarks" style="resize: none; width: 99.3%; height:55px;margin-top:2px;">@ViewBag.AllCustomer.Remarks</textarea>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="zhangdan" role="tabpanel" class="tab-pane" style="background-color:#fdfff2;">
+                        <hr style="border-color: #707070; margin: auto" />
+                        <div id="zdtable" style="width:47%; margin:15px auto;float:left;margin-left:20px">
+                            <div colspan="8" style="text-align: center; background-color:#ffc90d;">
+                                <span id="Label16">@Resources.CustomerRes.Zdxx</span>
+                            </div>
+                            <div class="divgk">
+                                <div style="font-size: 12px;display:inline-block;">
+                                    <p style="height: 25px; background-color: #fdfff2; margin: 0px;">
+                                        <input id="CheckBox1" type="checkbox" name="CheckBox1" onclick="checkboxOnclick(this)" />
+                                        <label for="CheckBox1" id="Label123">@Resources.CustomerRes.Qgsrgxzyyjwjszdfs*</label>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align:left;width:33%;min-width:140px;display:inline-block;">
+                                    <span id="Label18">@Resources.CustomerRes.Jszdddydz：</span>
+                                </div>
+                                <div style="display: inline-block;width:65.5%">
+                                    <input name="Inv2eMail" type="email" maxlength="50" id="Inv2eMail" onblur="checkemail('#Inv2eMail');" value="@ViewBag.AllCustomer.Inv2EMail" style="width:100%;background-color:#d8d8d8" readonly="readonly" />
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div class="zhangdanleftdiv" style="text-align:left;display:inline-block;">
+                                    <span id="Label19">@Resources.CustomerRes.Gsmc：</span>
+                                </div>
+                                <div style="display: inline-block;width:87.5%">
+                                    <input name="Inv2Comp" type="text" maxlength="50" id="txt_Inv2Comp" value="@ViewBag.AllCustomer.Inv2Comp" style="width:100%; background-color: #fff4f4;" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                                </div>
+
+                            </div>
+                            <div class="divgk">
+                                <div class="zhangdanleftdiv" style="display: inline-block;">
+                                    <span id="Label22">@Resources.CustomerRes.Gsdz：</span>
+                                </div>
+                                <div style="display:inline-block;width:87.5%">
+                                    <input name="Inv2Addr" type="text" maxlength="150" id="txt_Inv2Addr" value="@ViewBag.AllCustomer.Inv2Addr" style="width:100%; background-color: #fff4f4;" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                                </div>
+
+                            </div>
+
+                            <div class="divgk">
+                                <div class="zhangdanleftdiv" style="text-align: left;display:inline-block;">
+                                    <span id="Label26">@Resources.CustomerRes.Gj：</span>
+                                </div>
+                                <div style="display:inline-block;width:36.5%" class="LDC2" id="country1">
+                                    <select name='Inv2Cnty' id='LDCountrys2' class='bak' style='width:100%;' onChange="Province('country1','SelectProvince1','LDcitys1');">
+                                    </select>
+                                </div>
+                                <div style="text-align:right; width: 8%;display:inline-block;">
+                                    <span id="Label24">@Resources.CustomerRes.Zs：</span>
+                                </div>
+                                <div style="display:inline-block;width:42%" class="Province2" id="SelectProvince1">
+                                    <select name="Inv2State" id="Inv2State" class="bak" style="width:100%;" onChange="LDcity('SelectProvince1','LDcitys1');">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div class="zhangdanleftdiv" style="text-align: left;display:inline-block;">
+                                    <span id="Label23">@Resources.CustomerRes.Cs：</span>
+                                </div>
+                                <div style="display:inline-block;width:36.5%" class="LDcityy2" id="LDcitys1">
+                                    <select name="Inv2City" id="ldCity" class="bak" style="width:100%;margin-right:20px;">
+                                    </select>
+                                </div>
+                                <div style="text-align:right; width:8%;display:inline-block;">
+                                    <span id="Label25">@Resources.CustomerRes.Yb：</span>
+                                </div>
+                                <div style="width:42%;display:inline-block;">
+                                    <input name="Inv2Post" type="text" maxlength="50" id="txt_Inv2Post" value="@ViewBag.AllCustomer.Inv2Post" style="width: 100%" />
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:47%; margin: 15px auto;float:right;margin-right:20px">
+                            <div>
+                                <div colspan="8" style="text-align: center; background-color: #ffc90d;">
+                                    <span id="Label27">@Resources.CustomerRes.Zyxx</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="font-size: 12px;display:inline-block;">
+                                    <p style="height: 25px; background-color: #fdfff2; margin: 0px;">
+                                        <span></span>
+                                        <span></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align:left;width:17%;display:inline-block;">
+                                    <span id="Label18"></span>
+                                    <span id="Label146"></span>
+                                </div>
+                                <div style="display: inline-block;">
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div class="zhangdanleftdiv" style="text-align: left;display:inline-block;">
+                                    <span id="Label30">@Resources.CustomerRes.Gsmc：</span>
+                                </div>
+                                <div style="display: inline-block;width:88%">
+                                    <input name="Ship2Comp" type="text" maxlength="50" id="txt_Ship2Comp" value="@ViewBag.AllCustomer.Ship2Comp" style="width: 100%; background-color: #fff4f4;" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div class="zhangdanleftdiv" style="text-align: left;display:inline-block;">
+                                    <span id="Label31">@Resources.CustomerRes.Gsdz：</span>
+                                </div>
+                                <div style="display: inline-block;width:88%">
+                                    <input name="Ship2Addr" type="text" maxlength="150" id="txt_Ship2Addr" value="@ViewBag.AllCustomer.Ship2Addr" style="width:100%; background-color: #fff4f4;" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                                </div>
+
+                            </div>
+                            <div class="divgk">
+                                <div class="zhangdanleftdiv" style="text-align: left;display:inline-block;">
+                                    <span id="Label35">@Resources.CustomerRes.Gj：</span>
+                                </div>
+                                <div style="display:inline-block;width:36.5%" class="LDC1" id="country2">
+                                    <select name='Ship2Cnty' id='LDCountrys1' class='bak' style='width:100%;' onChange="Province('country2','SelectProvince2','LDcitys2');">
+                                    </select>
+                                </div>
+                                <div class="zhangdanleftdiv" style="text-align:right;display:inline-block;width:8%">
+                                    <span id="Label33">@Resources.CustomerRes.Zs：</span>
+                                </div>
+                                <div style="display:inline-block;width:42%" class="Province1" id="SelectProvince2">
+                                    <select name="Ship2State" id="Ship2State" class="bak" style="width:102.5%;" onChange="LDcity('SelectProvince2','LDcitys2');">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div class="zhangdanleftdiv" style="text-align: left;display:inline-block;">
+                                    <span id="Label32">@Resources.CustomerRes.Cs：</span>
+                                </div>
+                                <div style="display:inline-block;width:36.5%" class="LDcityy1" id="LDcitys2">
+                                    <select name="Ship2City" id="ldCity" class="bak" style="width:100%;margin-right:20px;"></select>
+                                </div>
+
+                                <div style="text-align:right; width:8%;display:inline-block;">
+                                    <span id="Label34">@Resources.CustomerRes.Yb：</span>
+                                </div>
+                                <div style="width:42%;display:inline-block;">
+                                    <input name="Ship2Post" type="text" maxlength="50" id="txt_Ship2Post" value="@ViewBag.AllCustomer.Ship2Post" style="width:102.5%" />
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 47%; margin: 15px auto;float:left;clear:both;margin-left:20px">
+                            <div>
+                                <div colspan="8" style="text-align: center; background-color: #ffc90d;">
+                                    <span id="Label28">@Resources.CustomerRes.Yfzklxxx</span>
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="divwz">
+                                    <span id="Label29">@Resources.CustomerRes.Xm：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="APName" type="text" maxlength="50" id="txt_APName" value="@ViewBag.AllCustomer.APName" style="width:100%" />
+                                </div>
+                                <div style="text-align: right;display:inline-block;" class="divwz">
+                                    <span id="Label37">@Resources.CustomerRes.Bgdh：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="APPhone" class="wbk" type="text" maxlength="50" id="txt_APPhone" value="@ViewBag.AllCustomer.APPhone" style="width:100%" />
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="divwz">
+                                    <span id="Label36">@Resources.CustomerRes.Zc：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="APTitle" type="text" maxlength="50" id="txt_APTitle" value="@ViewBag.AllCustomer.APTitle" style="width:100%" />
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="divwz">
+                                    <span id="Label39">@Resources.CustomerRes.Sj：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="APMobile" type="text" maxlength="50" id="txt_APMobile" value="@ViewBag.AllCustomer.APMobile" style="width: 100%" />
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="divwz">
+                                    <span id="Label39">@Resources.CustomerRes.Dy：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="APEmail" type="text" maxlength="50" id="txt_APEmail" value="@ViewBag.AllCustomer.APEmail" onblur="checkemail('#txt_APEmail');" style="width:100%" />
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="divwz">
+                                    <span id="Label38">@Resources.CustomerRes.Cz：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="APFax" type="text" maxlength="50" id="txt_APFax" value="@ViewBag.AllCustomer.APFax" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 47%; margin: 15px auto;float:right;margin-right:20px">
+                            <div colspan="8" style="text-align: center;background-color: #ffc90d;">
+                                <span id="Label41">@Resources.CustomerRes.Yszklxxx</span>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="divwz">
+                                    <span id="Label42">@Resources.CustomerRes.Xm：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="ARName" type="text" maxlength="50" id="txt_ARName" value="@ViewBag.AllCustomer.ARName" style="width:100%" />
+                                </div>
+                                <div style="text-align: right;display:inline-block;" class="divwz">
+                                    <span id="Label44">@Resources.CustomerRes.Bgdh：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="ARPhone" type="text" maxlength="50" id="txt_ARPhone" value="@ViewBag.AllCustomer.ARPhone" style="width:100%" />
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="divwz">
+                                    <span id="Label43">@Resources.CustomerRes.Zc：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="ARTitle" type="text" maxlength="50" id="txt_ARTitle" value="@ViewBag.AllCustomer.ARTitle" style="width:100%" />
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="divwz">
+                                    <span id="Label46">@Resources.CustomerRes.Sj：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="ARMobile" type="text" maxlength="50" id="txt_ARMobile" value="@ViewBag.AllCustomer.ARMobile" style="width: 100%" />
+                                </div>
+                            </div>
+                            <div class="divgk">
+                                <div style="text-align: left;display:inline-block;" class="divwz">
+                                    <span id="Label47">@Resources.CustomerRes.Dy：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="AREmail" type="text" maxlength="50" id="txt_AREmail" value="@ViewBag.AllCustomer.AREmail" onblur="checkemail('#txt_AREmail');" style="width:100%" />
+                                </div>
+                                <div style="text-align:right;display:inline-block;" class="divwz">
+                                    <span id="Label45">@Resources.CustomerRes.Cz：</span>
+                                </div>
+                                <div style="display: inline-block;" class="wbk">
+                                    <input name="ARFax" type="text" maxlength="50" id="txt_ARFax" value="@ViewBag.AllCustomer.ARFax" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="xinyong" role="tabpanel" class="tab-pane" style="background-color:#f4f4ff;">
+                        <hr style="border-color:#707070; margin: auto" />
+                        <div style="width: 97%; margin: 10px auto;">
+                            <table style="width:100%; margin: 15px auto;" rules="rows">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; background-color:#00a3e8;">
+                                        <span id="Label48">@Resources.CustomerRes.Zyyh</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="Label49">@Resources.CustomerRes.Qqmc：</span>
+                                    </td>
+                                    <td colspan="7">
+                                        <input name="BankName" type="text" maxlength="50" id="txt_BankName" value="@ViewBag.AllCustomer.BankName" style="width: 100%" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span id="Label51">@Resources.CustomerRes.Dz：</span>
+                                    </td>
+                                    <td colspan="7">
+                                        <input name="BankAddr" type="text" maxlength="50" id="txt_BankAddr" value="@ViewBag.AllCustomer.BankAddr" style="width: 100%" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%">
+                                        <span id="Label53">@Resources.CustomerRes.Gjzhhm：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="iBAN" type="text" maxlength="25" id="txt_iBAN" value="@ViewBag.AllCustomer.iBAN" style="width: 100%" />
+                                    </td>
+                                    <td style="text-align: right;width: 17%;">
+                                        <span id="Label54">@Resources.CustomerRes.Yhgjdm：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="SWIFT" type="text" maxlength="25" id="txt_SWIFT" value="@ViewBag.AllCustomer.SWIFT" style="width: 100%" />
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <table style="width:100%">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; background-color: #00a3e8;">
+                                        <span id="Label50">@Resources.CustomerRes.Syxysq：</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="font-size: 12px;">
+                                        <p style="height: 25px; background-color: #ffffcc; margin: 0px;">
+                                            <input id="chk_IsList" type="checkbox" name="chk_IsList" />
+                                            <label for="chk_IsList" id="Label125">@Resources.CustomerRes.QgsrgkhwssstBxytgyyzxx。</label>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width:47%; margin: 15px auto;float:left;border:none" rules="rows">
+                                <tr>
+                                    <td colspan="8" style="background-color:#4fc8e8;width:100%">
+                                        <span id="Label52">@Resources.CustomerRes.Dywyyzxx</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;width:11%">
+                                        <span id="Label55">@Resources.CustomerRes.Yyzmc：</span>
+                                    </td>
+                                    <td colspan="8">
+                                        <input name="Owner1Name" type="text" maxlength="50" id="txt_Owner1Name" value="@ViewBag.AllCustomer.Owner1Name" style="width:100%;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label56">@Resources.CustomerRes.Zcdz：</span>
+                                    </td>
+                                    <td colspan="8">
+                                        <input name="Owner1Addr" type="text" maxlength="50" id="txt_Owner1Addr" value="@ViewBag.AllCustomer.Owner1Addr" style="width:100%;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label62">@Resources.CustomerRes.Zcgj：</span>
+                                    </td>
+                                    <td colspan="8">
+                                        <div style="display:inline-block;width:100%" class="LD" id="ZDCountry1">
+                                            <select name="Owner1Cnty" id="Country" class="bak" style="width:100%;">
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label64">@Resources.CustomerRes.Zcrq：</span>
+                                    </td>
+                                    <td colspan="1">
+                                        <input name="Owner1Date" type="text" id="in_Owner1Date" class="Wdate" value="@ViewBag.AllCustomer.Owner1Date" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" onclick="WdatePicker()" style="width:100%; background-color: #e9ffff;cursor:pointer;" />
+                                    </td>
+                                    <td colspan="3" style="text-align:right">
+                                        <span id="Label60">@Resources.CustomerRes.Zxwz：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <input name="Owner1Web" type="text" maxlength="50" id="txt_Owner1Web" value="@ViewBag.AllCustomer.Owner1Web" style="width:100%;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label66">@Resources.CustomerRes.Zclx：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <div style="display:inline-block;width:100%" id="type1" class="type">
+                                            <select name="Owner1Type" id="CompanyType" class="bak" style="width:100%">
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td colspan="1" style="width: 26%;text-align: right;">
+                                        <span id="Label68">@Resources.CustomerRes.Qyyyqf：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <input name="Owner1Ship" type="text" id="txt_Owner1Ship" value="@ViewBag.AllCustomer.Owner1Ship" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]" style="width: 100%;" />
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table style="width:47%; margin: 15px auto;float:right" rules="rows">
+                                <tr>
+                                    <td colspan="8" style="background-color: #4fc8e8;width:100%">
+                                        <span id="Label58">@Resources.CustomerRes.Dewyyzxx</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right;width:11%">
+                                        <span id="Label59">@Resources.CustomerRes.Yyzmc：</span>
+                                    </td>
+                                    <td colspan="8">
+                                        <input name="Owner2Name" type="text" maxlength="50" id="txt_Owner2Name" value="@ViewBag.AllCustomer.Owner2Name" style="width:100%" />
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td style="text-align:right">
+                                        <span id="Label57">@Resources.CustomerRes.Zcdz：</span>
+                                    </td>
+                                    <td colspan="8">
+                                        <input name="Owner2Addr" type="text" maxlength="50" id="txt_Owner2Addr" value="@ViewBag.AllCustomer.Owner2Addr" style="width:100%" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label63">@Resources.CustomerRes.Zcgj：</span>
+                                    </td>
+                                    <td colspan="8">
+                                        <div style="display:inline-block;width:100%" class="LD" id="ZDCountry2">
+                                            <select name="Owner2Cnty" id="Country" class="bak" style="width:100%;">
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td style="text-align:right">
+                                        <span id="Label65">@Resources.CustomerRes.Zcrq：</span>
+                                    </td>
+                                    <td colspan="1">
+
+                                        <input name="Owner2Date" type="text" id="in_Owner2Date" class="Wdate" value="@ViewBag.AllCustomer.Owner2Date" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" onclick="WdatePicker()" style="width:100%; background-color: #e9ffff;cursor:pointer;" />
+                                    </td>
+                                    <td colspan="3" style="text-align:right">
+                                        <span id="Label61">@Resources.CustomerRes.Zxwz：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <input name="Owner2Web" type="text" maxlength="50" id="txt_Owner2Web" value="@ViewBag.AllCustomer.Owner2Web" style="width:100%" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span id="Label67">@Resources.CustomerRes.Zclx：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <div style="display:inline-block;width:100%" id="type2" class="type">
+                                            <select name="Owner2Type" id="CompanyType" class="bak" style="width:100%">
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td colspan="1" style="width: 26%;text-align: right;">
+                                        <span id="Label69">@Resources.CustomerRes.Qyyyqf：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <input name="Owner2Ship" type="text" id="txt_Owner2Ship" value="@ViewBag.AllCustomer.Owner2Ship" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]" style="width: 100%" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div style="width: 97%; margin: 10px auto;">
+                            <table style="width:47%; margin: 15px auto;float:left;border:none" rules="rows">
+                                <tr>
+                                    <td colspan="10" style="background-color: #4fc8e8;width:100%">
+                                        <span id="Label71">@Resources.CustomerRes.Dywmyhb</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:11%;text-align:right">
+                                        <span id="Label73">@Resources.CustomerRes.Gsmc：</span>
+                                    </td>
+                                    <td colspan="10">
+                                        <input name="Ref1Name" type="text" maxlength="50" id="txt_Ref1Name" value="@ViewBag.AllCustomer.Ref1Name" style="width:100%;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:11%;text-align:right">
+                                        <span id="Label75">@Resources.CustomerRes.Yydz：</span>
+                                    </td>
+                                    <td colspan="10">
+                                        <input name="Ref1Addr" type="text" maxlength="50" id="txt_Ref1Addr" value="@ViewBag.AllCustomer.Ref1Addr" style="width: 100%;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:11%;text-align:right">
+                                        <span id="Label77">@Resources.CustomerRes.Lxr：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="Ref1Contact" type="text" maxlength="25" id="txt_Ref1Contact" value="@ViewBag.AllCustomer.Ref1Contact" style="width: 98%;" />
+                                    </td>
+                                    <td>
+                                        <span id="Label79">@Resources.CustomerRes.Zc：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="Ref1Title" type="text" maxlength="25" id="txt_Ref1Title" value="@ViewBag.AllCustomer.Ref1Title" style="width: 98%;" />
+                                    </td>
+                                    <td>
+                                        <span id="Label81">@Resources.CustomerRes.Bgdh：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="Ref1Phone" type="text" maxlength="25" id="txt_Ref1Phone" value="@ViewBag.AllCustomer.Ref1Phone" style="width:100%;" />
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table style="width:47%; margin: 15px auto;float:right;border:none" rules="rows">
+                                <tr>
+                                    <td colspan="10" style="background-color: #4fc8e8;width:100%">
+                                        <span id="Label72">@Resources.CustomerRes.Dewmyhb</span>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td style="width:11%;text-align:right">
+                                        <span id="Label74">@Resources.CustomerRes.Gsmc</span>
+                                    </td>
+                                    <td colspan="10">
+                                        <input name="Ref2Name" type="text" maxlength="50" id="txt_Ref2Name" value="@ViewBag.AllCustomer.Ref2Name" style="width: 100%" />
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td style="width:11%;text-align:right">
+                                        <span id="Label75">@Resources.CustomerRes.Yydz：</span>
+                                    </td>
+                                    <td colspan="10">
+                                        <input name="Ref2Addr" type="text" maxlength="25" id="txt_Ref2Addr" value="@ViewBag.AllCustomer.Ref2Addr" style="width: 100%" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:11%;text-align:right">
+                                        <span id="Label77">@Resources.CustomerRes.Lxr：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="Ref2Contact" type="text" maxlength="25" id="txt_Ref2Contact" value="@ViewBag.AllCustomer.Ref2Contact" style="width: 98%" />
+                                    </td>
+                                    <td>
+                                        <span id="Label79">@Resources.CustomerRes.Zc：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="Ref2Title" type="text" maxlength="25" id="txt_Ref2Title" value="@ViewBag.AllCustomer.Ref2Title" style="width: 98%" />
+                                    </td>
+                                    <td>
+                                        <span id="Label81">@Resources.CustomerRes.Bgdh：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <input name="Ref2Phone" type="text" maxlength="25" id="txt_Ref2Phone" value="@ViewBag.AllCustomer.Ref2Phone" style="width:100%" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr style="border-color:#50c9e8;clear:both" />
+                            <table style="width:100%; margin:5px auto; margin-top: 0px;" rules="rows">
+                                <tr>
+                                    <td colspan="1" style="background-color: #4fc8e8;width:5%;text-align:center">
+                                        <span id="Label70">@Resources.CustomerRes.Jyhb</span>
+                                    </td>
+                                    <td style="padding-left:20px;width:6%;text-align:right">
+                                        <span id="Label84">@Resources.CustomerRes.Hb 1：</span>
+                                    </td>
+                                    <td colspan="2">
+                                        <div id="huobi1" style="display:inline-block;width:100%" class="SelectCurr">
+                                            <select name="Curr1" id="Curr" class="bak" style="width:96%">
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span id="Label84">@Resources.CustomerRes.Hb 2：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <div id="huobi2" style="display:inline-block;width:95%" class="SelectCurr">
+                                            <select name="Curr2" id="Curr" class="bak" style="width:100%">
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span id="Label84">@Resources.CustomerRes.Hb 3：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <div id="huobi3" style="display:inline-block;width:100%" class="SelectCurr">
+                                            <select name="Curr3" id="Curr" class="bak" style="width:98%">
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span id="Label84">@Resources.CustomerRes.Hb 4：</span>
+                                    </td>
+                                    <td colspan="3">
+                                        <div id="huobi4" style="display:inline-block;width:100%" class="SelectCurr">
+                                            <select name="Curr4" id="Curr" class="bak" style="width:98%">
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" style="background-color: #4fc8e8;width:5%;text-align:center;">
+                                        <span id="Label83">@Resources.CustomerRes.Ycxsl</span>
+                                    </td>
+                                    <td style="padding-left:20px;text-align:right">
+                                        <span id="Label89">@Resources.CustomerRes.Snxse：</span>
+                                    </td>
+                                    <td colspan="6">
+                                        <input name="Yr1Forcast" type="text" maxlength="25" id="txt_Yr1Forcast" value="@ViewBag.AllCustomer.Yr1Forcast" style="width:98%;" />
+                                    </td>
+                                    <td style="width:6%">
+                                        <span id="Label91">@Resources.CustomerRes.Cnxse：</span>
+                                    </td>
+                                    <td colspan="6">
+                                        <input name="Yr2Forcast" type="text" maxlength="25" id="txt_Yr2Forcast" value="@ViewBag.AllCustomer.Yr2Forcast" style="width:99%;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" style="background-color: #4fc8e8;width:6%;text-align:center">
+                                        <span id="Label88">@Resources.CustomerRes.Yqxytk</span>
+                                    </td>
+                                    <td style="padding-left:20px;text-align:right">
+                                        <span id="Label90">@Resources.CustomerRes.Xye：</span>
+                                    </td>
+                                    <td colspan="6">
+                                        <input name="CreditLimit" type="text" maxlength="20" id="txt_CreditLimit" value="@ViewBag.AllCustomer.CreditLimits" style="width:98%" />
+                                    </td>
+                                    <td style="width:5%">
+                                        <span id="Label92">@Resources.CustomerRes.Fktk：</span>
+                                    </td>
+                                    <td colspan="6">
+                                        <input name="CreditTerms" type="text" maxlength="20" id="txt_CreditTerms" value="@ViewBag.AllCustomer.CreditTerms" style="width:99%" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="lianxi" role="tabpanel" class="tab-pane" style="background-color:#effff0;">
+                        <hr style="border-color:#d9f18d;margin:auto" />
+                        <table ID="lianxitable" cellspacing="0" rules="all" border="1" style="width:100%;border-collapse:collapse;word-break:break-all;word-wrap:break-word;margin-top:10px;background-color:#effff0">
+                            <tr style="width:100%;margin:10px;background-color:#d9f18d">
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:15%;text-align:center">@Resources.CustomerRes.Lxlx</th>
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:25%;text-align:center">@Resources.CustomerRes.Ms</th>
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:15%;text-align:center">@Resources.CustomerRes.Cs</th>
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:25%;text-align:center">@Resources.CustomerRes.Xxnr</th>
+                                <th scope="col" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:10%;text-align:center">@Resources.CustomerRes.Sfgx</th>
+                                <th scope="col" class="GN" style="color:Black;background-color:#d9f28c;font-size:14px;height:30px;width:35%;text-align:center">@Resources.CustomerRes.Gngl</th>
+                            </tr>
+                            @foreach (var item in ViewBag.All)
+                            {
+                                <tbody id="linkInfoBody">
+                                    <tr style="Cursor:pointer">
+                                        <td align="center" style="font-size:10px;height:25px;">@item.ContactType</td>
+                                        <td align="center" style="font-size:10px;">@item.Remark</td>
+                                        <td align="center" style="font-size:10px;">@item.City</td>
+                                        <td align="center" style="font-size:10px;">@item.Contact</td>
+                                        <td align="center" style="font-size:10px;">@item.Share</td>
+                                        <td class="GN" align="center" style="font-size:10px;width:50%;">
+                                            <a onclick="Copys('@item.ContactType', '@item.City', '@item.Remark', '@item.Contact')">
+                                                <img src="~/Scripts/image/复制.gif" alt="复制" title="复制">
+                                            </a>
+                                            <a onclick="Upd('@item.ContactType','@item.City','@item.Remark','@item.Contact','@item.ContactID')" style="margin-left:5%;"><img src='~/Scripts/image/修改.gif' alt='修改' title='修改' /></a>
+                                            <a onclick="Del(@item.ContactID)" style="margin-left:5%;">
+                                                <img src="~/Scripts/图标/删除.png" alt="删除" title="删除" />
+                                            </a>
+                                            <a onclick="IsShare('@item.ContactID','@item.Share')" style="margin-left:5%;">
+                                                <img src="~/Scripts/图标/Share.gif" alt='共享' title='共享' />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+
+                </div>
+
+                <div id="lasts" style="width:100%; overflow: auto; font-size: 10px; color:#808080; margin: 0px auto;">
+
+                    <span style="float: left; margin-left:20px;">
+                        <span id="Label107">@Resources.CustomerRes.Cjxx</span>
+                        <span id="lbl_CreateTime">@ViewBag.AllCustomer.CreateTime</span>
+                        (<span id="lbl_CreateBy">@ViewBag.AllCustomer.CreateBy</span>)
+                        <span id="lbl_CreateDept">@ViewBag.AllCustomer.CreateDept</span>
+                    </span>
+                    <span style="float: right; margin-right:20px;">
+                        <span id="Label109">@Resources.CustomerRes.Zhgx</span>
+                        <span id="lbl_UpdateTime">@ViewBag.AllCustomer.UpdateTime</span>
+                        <span id="lbl_UpdateBy">@ViewBag.AllCustomer.UpdateBy</span>)
+                        <span id="lbl_UpdateDept">@ViewBag.AllCustomer.UpdateDept</span>
+                    </span>
+                </div>
+            </form>
+
+            <form id="form1" action="##" onsubmit="return false" method="post">
+                <div class="modal" id="themodal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" style="text-align:center">@Resources.CustomerRes.Xjkhlxxx</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Kh：</span>
+                                    <span>
+                                        @ViewBag.AllCustomer.ShortName
+                                        <input name="SourceID" type="hidden" value="@ViewBag.AllCustomer.SysID" />
+                                    </span>
+                                    <span>（@ViewBag.AllCustomer.id）</span>
+                                </p>
+                                <p style="width:100%">
+                                    <span id="Label99">@Resources.CustomerRes.Lxlx：</span>
+                                    <select name="ContactType" id="LXType" class="bak" style="width:82%;">
+                                        <option value="P4">公司电话</option>
+                                        <option value="F1">办公传真</option>
+                                        <option value="W1">知询网站</option>
+                                    </select>
+                                </p>
+                                <p style="display:inline-block;">
+                                    <span id="Label99">@Resources.CustomerRes.Cs：</span>
+                                    <div class="LXCity" style="display:inline-block;width:88%" id="LXCity"></div>
+                                </p>
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Ms：</span>
+                                    <input name="Remark" type="text" maxlength="100" id="txt_Remarks" style="width:87%" />
+                                </p>
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Xxnr：</span>
+                                    <input name="Contact" type="text" maxlength="50" id="txt_Contacts" style="width:82%" />
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="Insert()">@Resources.CustomerRes.Bc</button>
+                                <button id="Close" type="button" class="btn btn-default" data-dismiss="modal">@Resources.CustomerRes.Gb</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+            </form>
+
+            <form id="form2" action="##" onsubmit="return false" method="post">
+                <div class="modal" id="themodals" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" style="text-align:center">@Resources.CustomerRes.Xgkhlxxx</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Kh：</span>
+                                    <span>
+                                        @ViewBag.AllCustomer.ShortName
+                                        <input id="txt_ContactID" name="ContactID" type="hidden" />
+                                        <input name="SourceID" type="hidden" value="@ViewBag.AllCustomer.SysID" />
+                                    </span>
+                                    <span>（@ViewBag.AllCustomer.id）</span>
+                                </p>
+                                @*<p style="display:inline-block;">
+                                        <span id="Label99">@Resources.CustomerRes.Lxlx：</span>
+                                        <div class="LXType" style="display:inline-block;" id="LXType1"></div>
+                                    </p>*@
+                                <p style="width:100%">
+                                    <span id="Label99">@Resources.CustomerRes.Lxlx：</span>
+                                    <select name="ContactType" id="LXType1" class="bak" style="width:82%;">
+                                        <option value="P4">公司电话</option>
+                                        <option value="F1">办公传真</option>
+                                        <option value="W1">知询网站</option>
+                                    </select>
+                                </p>
+
+                                <p style="display:inline-block;">
+                                    <span id="Label99">@Resources.CustomerRes.Cs：</span>
+                                    <div class="LXCity" style="display:inline-block;width:88%" id="LXCity1"></div>
+                                </p>
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Ms：</span>
+                                    <input name="Remark" type="text" maxlength="100" id="txt_Remark" style="width:87%" />
+                                </p>
+                                <p>
+                                    <span id="Label90">@Resources.CustomerRes.Xxnr：</span>
+                                    <input name="Contact" type="text" maxlength="50" id="txt_Contact" style="width:82%" />
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="Updatebtn()">@Resources.CustomerRes.Bc</button>
+                                <button id="Close" type="button" class="btn btn-default" data-dismiss="modal">@Resources.CustomerRes.Gb</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+            </form>
+        </div>
+        <div id="OperationChi" style="text-align:center; margin-top: 20px; margin-bottom: 20px;">
+            <input type="submit" name="Button1" value="@Resources.CustomerRes.Xz" id="InsertBtn" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;display:none" />
+            <input type="button" value="@Resources.CustomerRes.Qx" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" onclick="history();" />
+            <input type="submit" name="Button1" value="@Resources.CustomerRes.Bc" id="SaveBtn" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;display:none" onclick="XUpdateCustomer()" />
+        </div>
+    </div>
+</body>
+</html>

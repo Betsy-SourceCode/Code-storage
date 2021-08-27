@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ActionLog2021">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="DeptID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="FunctionID" Type="Int16" Nullable="false" />
+    <Property Name="ActionType" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ActionTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TableName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TableKey" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QnA">
+    <Key>
+      <PropertyRef Name="QnAID" />
+    </Key>
+    <Property Name="QnAID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TopicArea" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Author" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="KeyWord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="QPic01" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="QPic02" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="QPic03" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="QPic04" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="APic01" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="APic02" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="APic03" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="APic04" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="ClickTimes" Type="Int16" />
+    <Property Name="CreateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="CreateTime" Type="DateTime" Precision="3" />
+    <Property Name="CreateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="UpdateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+    <Property Name="UpdateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TBWords">
+    <Key>
+      <PropertyRef Name="WordID" />
+    </Key>
+    <Property Name="WordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WordCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name_CN" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name_VN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Name_EN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Del_Flag" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="OrderBy" Type="Int16" Nullable="false" />
+    <Property Name="Value" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreateBy" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreateDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdateBy" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UpdateDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SelectKnowledgeBaseIndex">
+    <Key>
+      <PropertyRef Name="QnAID" />
+      <PropertyRef Name="Name_CN" />
+    </Key>
+    <Property Name="QnAID" Type="Int32" Nullable="false" />
+    <Property Name="TopicArea" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Author" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="KeyWord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClickTimes" Type="Int16" />
+    <Property Name="CreateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="CreateTime" Type="DateTime" Precision="3" />
+    <Property Name="CreateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="UpdateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+    <Property Name="UpdateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Name_CN" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="WebStationEntitiess" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ActionLog2021" EntityType="Self.ActionLog2021" />
+    <EntitySet Name="QnA" EntityType="Self.QnA" />
+    <EntitySet Name="TBWords" EntityType="Self.TBWords" />
+    <EntitySet Name="SelectKnowledgeBaseIndex" EntityType="Self.SelectKnowledgeBaseIndex" />
+  </EntityContainer>
+</Schema>

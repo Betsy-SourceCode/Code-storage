@@ -1,0 +1,686 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WebStationModelStoreContainer" CdmEntityContainer="WebStationEntities">
+    <EntitySetMapping Name="ActionLog2021">
+      <EntityTypeMapping TypeName="WebStationModel.ActionLog2021">
+        <MappingFragment StoreEntitySet="ActionLog2021">
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="ActionType" ColumnName="ActionType" />
+          <ScalarProperty Name="ActionTime" ColumnName="ActionTime" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="TableKey" ColumnName="TableKey" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="City">
+      <EntityTypeMapping TypeName="WebStationModel.City">
+        <MappingFragment StoreEntitySet="City">
+          <ScalarProperty Name="CityID" ColumnName="CityID" />
+          <ScalarProperty Name="CityName_CN" ColumnName="CityName_CN" />
+          <ScalarProperty Name="CityName_EN" ColumnName="CityName_EN" />
+          <ScalarProperty Name="CityName_s" ColumnName="CityName_s" />
+          <ScalarProperty Name="ICode" ColumnName="ICode" />
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="IsCapital" ColumnName="IsCapital" />
+          <ScalarProperty Name="TelCode" ColumnName="TelCode" />
+          <ScalarProperty Name="ZIPCode" ColumnName="ZIPCode" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="GMTTime" ColumnName="GMTTime" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="Photo_s" ColumnName="Photo_s" />
+          <ScalarProperty Name="Introduction" ColumnName="Introduction" />
+          <ScalarProperty Name="OrderBy" ColumnName="OrderBy" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Company">
+      <EntityTypeMapping TypeName="WebStationModel.Company">
+        <MappingFragment StoreEntitySet="Company">
+          <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="FullName_CN" ColumnName="FullName_CN" />
+          <ScalarProperty Name="FullName_EN" ColumnName="FullName_EN" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="Reg_Addr" ColumnName="Reg_Addr" />
+          <ScalarProperty Name="Biz_Type" ColumnName="Biz_Type" />
+          <ScalarProperty Name="Biz_Date" ColumnName="Biz_Date" />
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+          <ScalarProperty Name="CityID" ColumnName="CityID" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Postal" ColumnName="Postal" />
+          <ScalarProperty Name="Classify" ColumnName="Classify" />
+          <ScalarProperty Name="Manager" ColumnName="Manager" />
+          <ScalarProperty Name="Agreement" ColumnName="Agreement" />
+          <ScalarProperty Name="GoodWill" ColumnName="GoodWill" />
+          <ScalarProperty Name="InBusiness" ColumnName="InBusiness" />
+          <ScalarProperty Name="UrgNotice" ColumnName="UrgNotice" />
+          <ScalarProperty Name="Info_CN" ColumnName="Info_CN" />
+          <ScalarProperty Name="Info_EN" ColumnName="Info_EN" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="Logo" ColumnName="Logo" />
+          <ScalarProperty Name="Banner" ColumnName="Banner" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Contacts">
+      <EntityTypeMapping TypeName="WebStationModel.Contacts">
+        <MappingFragment StoreEntitySet="Contacts">
+          <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Share" ColumnName="Share" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Country">
+      <EntityTypeMapping TypeName="WebStationModel.Country">
+        <MappingFragment StoreEntitySet="Country">
+          <ScalarProperty Name="Icode" ColumnName="Icode" />
+          <ScalarProperty Name="CntyName_CN" ColumnName="CntyName_CN" />
+          <ScalarProperty Name="CntyName_EN" ColumnName="CntyName_EN" />
+          <ScalarProperty Name="CntyName_s" ColumnName="CntyName_s" />
+          <ScalarProperty Name="LongCode" ColumnName="LongCode" />
+          <ScalarProperty Name="Continent" ColumnName="Continent" />
+          <ScalarProperty Name="TelCode" ColumnName="TelCode" />
+          <ScalarProperty Name="Capital" ColumnName="Capital" />
+          <ScalarProperty Name="NationalFlag" ColumnName="NationalFlag" />
+          <ScalarProperty Name="GMTTime" ColumnName="GMTTime" />
+          <ScalarProperty Name="GeoSize" ColumnName="GeoSize" />
+          <ScalarProperty Name="Population" ColumnName="Population" />
+          <ScalarProperty Name="Language" ColumnName="Language" />
+          <ScalarProperty Name="Voltage" ColumnName="Voltage" />
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
+          <ScalarProperty Name="Introduction" ColumnName="Introduction" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="Photo_s" ColumnName="Photo_s" />
+          <ScalarProperty Name="OrderBy" ColumnName="OrderBy" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustBillShip">
+      <EntityTypeMapping TypeName="WebStationModel.CustBillShip">
+        <MappingFragment StoreEntitySet="CustBillShip">
+          <ScalarProperty Name="BillShipID" ColumnName="BillShipID" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="Inv2EMail" ColumnName="Inv2EMail" />
+          <ScalarProperty Name="Inv2Comp" ColumnName="Inv2Comp" />
+          <ScalarProperty Name="Inv2Addr" ColumnName="Inv2Addr" />
+          <ScalarProperty Name="Inv2City" ColumnName="Inv2City" />
+          <ScalarProperty Name="Inv2State" ColumnName="Inv2State" />
+          <ScalarProperty Name="Inv2Post" ColumnName="Inv2Post" />
+          <ScalarProperty Name="Inv2Cnty" ColumnName="Inv2Cnty" />
+          <ScalarProperty Name="Ship2Comp" ColumnName="Ship2Comp" />
+          <ScalarProperty Name="Ship2Addr" ColumnName="Ship2Addr" />
+          <ScalarProperty Name="Ship2City" ColumnName="Ship2City" />
+          <ScalarProperty Name="Ship2State" ColumnName="Ship2State" />
+          <ScalarProperty Name="Ship2Post" ColumnName="Ship2Post" />
+          <ScalarProperty Name="Ship2Cnty" ColumnName="Ship2Cnty" />
+          <ScalarProperty Name="APName" ColumnName="APName" />
+          <ScalarProperty Name="APTitle" ColumnName="APTitle" />
+          <ScalarProperty Name="APPhone" ColumnName="APPhone" />
+          <ScalarProperty Name="APFax" ColumnName="APFax" />
+          <ScalarProperty Name="APMobile" ColumnName="APMobile" />
+          <ScalarProperty Name="APEmail" ColumnName="APEmail" />
+          <ScalarProperty Name="ARName" ColumnName="ARName" />
+          <ScalarProperty Name="ARTitle" ColumnName="ARTitle" />
+          <ScalarProperty Name="ARPhone" ColumnName="ARPhone" />
+          <ScalarProperty Name="ARFax" ColumnName="ARFax" />
+          <ScalarProperty Name="ARMobile" ColumnName="ARMobile" />
+          <ScalarProperty Name="AREmail" ColumnName="AREmail" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customer">
+      <EntityTypeMapping TypeName="WebStationModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="CustType" ColumnName="CustType" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="SysID" ColumnName="SysID" />
+          <ScalarProperty Name="K3Code" ColumnName="K3Code" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="Belongs" ColumnName="Belongs" />
+          <ScalarProperty Name="PUR_Name" ColumnName="PUR_Name" />
+          <ScalarProperty Name="PUR_Title" ColumnName="PUR_Title" />
+          <ScalarProperty Name="PUR_Phone" ColumnName="PUR_Phone" />
+          <ScalarProperty Name="PUR_Fax" ColumnName="PUR_Fax" />
+          <ScalarProperty Name="PUR_Mobile" ColumnName="PUR_Mobile" />
+          <ScalarProperty Name="PUR_Email" ColumnName="PUR_Email" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="BankAddr" ColumnName="BankAddr" />
+          <ScalarProperty Name="iBAN" ColumnName="iBAN" />
+          <ScalarProperty Name="SWIFT" ColumnName="SWIFT" />
+          <ScalarProperty Name="IsList" ColumnName="IsList" />
+          <ScalarProperty Name="Owner1Name" ColumnName="Owner1Name" />
+          <ScalarProperty Name="Owner1Addr" ColumnName="Owner1Addr" />
+          <ScalarProperty Name="Owner1Web" ColumnName="Owner1Web" />
+          <ScalarProperty Name="Owner1Cnty" ColumnName="Owner1Cnty" />
+          <ScalarProperty Name="Owner1Date" ColumnName="Owner1Date" />
+          <ScalarProperty Name="Owner1Type" ColumnName="Owner1Type" />
+          <ScalarProperty Name="Owner1Ship" ColumnName="Owner1Ship" />
+          <ScalarProperty Name="Owner2Name" ColumnName="Owner2Name" />
+          <ScalarProperty Name="Owner2Addr" ColumnName="Owner2Addr" />
+          <ScalarProperty Name="Owner2Web" ColumnName="Owner2Web" />
+          <ScalarProperty Name="Owner2Cnty" ColumnName="Owner2Cnty" />
+          <ScalarProperty Name="Owner2Date" ColumnName="Owner2Date" />
+          <ScalarProperty Name="Owner2Type" ColumnName="Owner2Type" />
+          <ScalarProperty Name="Owner2Ship" ColumnName="Owner2Ship" />
+          <ScalarProperty Name="Ref1Name" ColumnName="Ref1Name" />
+          <ScalarProperty Name="Ref1Addr" ColumnName="Ref1Addr" />
+          <ScalarProperty Name="Ref1Contact" ColumnName="Ref1Contact" />
+          <ScalarProperty Name="Ref1Title" ColumnName="Ref1Title" />
+          <ScalarProperty Name="Ref1Phone" ColumnName="Ref1Phone" />
+          <ScalarProperty Name="Ref2Name" ColumnName="Ref2Name" />
+          <ScalarProperty Name="Ref2Addr" ColumnName="Ref2Addr" />
+          <ScalarProperty Name="Ref2Contact" ColumnName="Ref2Contact" />
+          <ScalarProperty Name="Ref2Title" ColumnName="Ref2Title" />
+          <ScalarProperty Name="Ref2Phone" ColumnName="Ref2Phone" />
+          <ScalarProperty Name="Curr1" ColumnName="Curr1" />
+          <ScalarProperty Name="Curr2" ColumnName="Curr2" />
+          <ScalarProperty Name="Curr3" ColumnName="Curr3" />
+          <ScalarProperty Name="Curr4" ColumnName="Curr4" />
+          <ScalarProperty Name="Yr1Forcast" ColumnName="Yr1Forcast" />
+          <ScalarProperty Name="Yr2Forcast" ColumnName="Yr2Forcast" />
+          <ScalarProperty Name="CreditLimits" ColumnName="CreditLimits" />
+          <ScalarProperty Name="CreditTerms" ColumnName="CreditTerms" />
+          <ScalarProperty Name="CreditPeriod" ColumnName="CreditPeriod" />
+          <ScalarProperty Name="CueCode" ColumnName="CueCode" />
+          <ScalarProperty Name="AnnualRevenue" ColumnName="AnnualRevenue" />
+          <ScalarProperty Name="ServiceBy" ColumnName="ServiceBy" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee">
+      <EntityTypeMapping TypeName="WebStationModel.Employee">
+        <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+          <ScalarProperty Name="GIPCode" ColumnName="GIPCode" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="ActDeptID" ColumnName="ActDeptID" />
+          <ScalarProperty Name="ActPosition" ColumnName="ActPosition" />
+          <ScalarProperty Name="Deputy" ColumnName="Deputy" />
+          <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="SurName" ColumnName="SurName" />
+          <ScalarProperty Name="GivenName" ColumnName="GivenName" />
+          <ScalarProperty Name="AliasName" ColumnName="AliasName" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Manager" ColumnName="Manager" />
+          <ScalarProperty Name="Substitute" ColumnName="Substitute" />
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
+          <ScalarProperty Name="LeftDate" ColumnName="LeftDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TBWords">
+      <EntityTypeMapping TypeName="WebStationModel.TBWords">
+        <MappingFragment StoreEntitySet="TBWords">
+          <ScalarProperty Name="WordID" ColumnName="WordID" />
+          <ScalarProperty Name="WordCode" ColumnName="WordCode" />
+          <ScalarProperty Name="Name_CN" ColumnName="Name_CN" />
+          <ScalarProperty Name="Name_VN" ColumnName="Name_VN" />
+          <ScalarProperty Name="Name_EN" ColumnName="Name_EN" />
+          <ScalarProperty Name="Del_Flag" ColumnName="Del_Flag" />
+          <ScalarProperty Name="OrderBy" ColumnName="OrderBy" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SelectCustomerAll">
+      <EntityTypeMapping TypeName="WebStationModel.SelectCustomerAll">
+        <MappingFragment StoreEntitySet="SelectCustomerAll">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="SysID" ColumnName="SysID" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="Belongs" ColumnName="Belongs" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="BankAddr" ColumnName="BankAddr" />
+          <ScalarProperty Name="iBAN" ColumnName="iBAN" />
+          <ScalarProperty Name="SWIFT" ColumnName="SWIFT" />
+          <ScalarProperty Name="IsList" ColumnName="IsList" />
+          <ScalarProperty Name="Owner1Name" ColumnName="Owner1Name" />
+          <ScalarProperty Name="Owner1Addr" ColumnName="Owner1Addr" />
+          <ScalarProperty Name="Owner1Web" ColumnName="Owner1Web" />
+          <ScalarProperty Name="Owner1Cnty" ColumnName="Owner1Cnty" />
+          <ScalarProperty Name="Owner1Date" ColumnName="Owner1Date" />
+          <ScalarProperty Name="Owner1Type" ColumnName="Owner1Type" />
+          <ScalarProperty Name="Owner1Ship" ColumnName="Owner1Ship" />
+          <ScalarProperty Name="Owner2Name" ColumnName="Owner2Name" />
+          <ScalarProperty Name="Owner2Addr" ColumnName="Owner2Addr" />
+          <ScalarProperty Name="Owner2Web" ColumnName="Owner2Web" />
+          <ScalarProperty Name="Owner2Cnty" ColumnName="Owner2Cnty" />
+          <ScalarProperty Name="Owner2Date" ColumnName="Owner2Date" />
+          <ScalarProperty Name="Owner2Type" ColumnName="Owner2Type" />
+          <ScalarProperty Name="Owner2Ship" ColumnName="Owner2Ship" />
+          <ScalarProperty Name="Ref1Name" ColumnName="Ref1Name" />
+          <ScalarProperty Name="Ref1Addr" ColumnName="Ref1Addr" />
+          <ScalarProperty Name="Ref1Contact" ColumnName="Ref1Contact" />
+          <ScalarProperty Name="Ref1Title" ColumnName="Ref1Title" />
+          <ScalarProperty Name="Ref1Phone" ColumnName="Ref1Phone" />
+          <ScalarProperty Name="Ref2Name" ColumnName="Ref2Name" />
+          <ScalarProperty Name="Ref2Addr" ColumnName="Ref2Addr" />
+          <ScalarProperty Name="Ref2Contact" ColumnName="Ref2Contact" />
+          <ScalarProperty Name="Ref2Title" ColumnName="Ref2Title" />
+          <ScalarProperty Name="Ref2Phone" ColumnName="Ref2Phone" />
+          <ScalarProperty Name="Curr1" ColumnName="Curr1" />
+          <ScalarProperty Name="Curr2" ColumnName="Curr2" />
+          <ScalarProperty Name="Curr3" ColumnName="Curr3" />
+          <ScalarProperty Name="Curr4" ColumnName="Curr4" />
+          <ScalarProperty Name="Yr2Forcast" ColumnName="Yr2Forcast" />
+          <ScalarProperty Name="CreditLimits" ColumnName="CreditLimits" />
+          <ScalarProperty Name="CreditTerms" ColumnName="CreditTerms" />
+          <ScalarProperty Name="PUR_Name" ColumnName="PUR_Name" />
+          <ScalarProperty Name="PUR_Title" ColumnName="PUR_Title" />
+          <ScalarProperty Name="PUR_Phone" ColumnName="PUR_Phone" />
+          <ScalarProperty Name="PUR_Fax" ColumnName="PUR_Fax" />
+          <ScalarProperty Name="PUR_Mobile" ColumnName="PUR_Mobile" />
+          <ScalarProperty Name="PUR_Email" ColumnName="PUR_Email" />
+          <ScalarProperty Name="Inv2EMail" ColumnName="Inv2EMail" />
+          <ScalarProperty Name="Inv2Comp" ColumnName="Inv2Comp" />
+          <ScalarProperty Name="Inv2Addr" ColumnName="Inv2Addr" />
+          <ScalarProperty Name="Inv2City" ColumnName="Inv2City" />
+          <ScalarProperty Name="Inv2State" ColumnName="Inv2State" />
+          <ScalarProperty Name="Inv2Cnty" ColumnName="Inv2Cnty" />
+          <ScalarProperty Name="Ship2Comp" ColumnName="Ship2Comp" />
+          <ScalarProperty Name="Ship2Addr" ColumnName="Ship2Addr" />
+          <ScalarProperty Name="Ship2City" ColumnName="Ship2City" />
+          <ScalarProperty Name="Ship2State" ColumnName="Ship2State" />
+          <ScalarProperty Name="Ship2Post" ColumnName="Ship2Post" />
+          <ScalarProperty Name="Ship2Cnty" ColumnName="Ship2Cnty" />
+          <ScalarProperty Name="APName" ColumnName="APName" />
+          <ScalarProperty Name="APTitle" ColumnName="APTitle" />
+          <ScalarProperty Name="APPhone" ColumnName="APPhone" />
+          <ScalarProperty Name="APFax" ColumnName="APFax" />
+          <ScalarProperty Name="APMobile" ColumnName="APMobile" />
+          <ScalarProperty Name="APEmail" ColumnName="APEmail" />
+          <ScalarProperty Name="ARName" ColumnName="ARName" />
+          <ScalarProperty Name="ARTitle" ColumnName="ARTitle" />
+          <ScalarProperty Name="ARPhone" ColumnName="ARPhone" />
+          <ScalarProperty Name="ARFax" ColumnName="ARFax" />
+          <ScalarProperty Name="ARMobile" ColumnName="ARMobile" />
+          <ScalarProperty Name="AREmail" ColumnName="AREmail" />
+          <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+          <ScalarProperty Name="FullName_CN" ColumnName="FullName_CN" />
+          <ScalarProperty Name="FullName_EN" ColumnName="FullName_EN" />
+          <ScalarProperty Name="Reg_Addr" ColumnName="Reg_Addr" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="Classify" ColumnName="Classify" />
+          <ScalarProperty Name="Biz_Type" ColumnName="Biz_Type" />
+          <ScalarProperty Name="Biz_Date" ColumnName="Biz_Date" />
+          <ScalarProperty Name="CityID" ColumnName="CityID" />
+          <ScalarProperty Name="GoodWill" ColumnName="GoodWill" />
+          <ScalarProperty Name="InBusiness" ColumnName="InBusiness" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateBy1" ColumnName="CreateBy1" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="CreateDept1" ColumnName="CreateDept1" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="Manager" ColumnName="Manager" />
+          <ScalarProperty Name="ComGoodWill" ColumnName="ComGoodWill" />
+          <ScalarProperty Name="Agreement" ColumnName="Agreement" />
+          <ScalarProperty Name="ComInBusiness" ColumnName="ComInBusiness" />
+          <ScalarProperty Name="UrgNotice" ColumnName="UrgNotice" />
+          <ScalarProperty Name="Info_CN" ColumnName="Info_CN" />
+          <ScalarProperty Name="Info_EN" ColumnName="Info_EN" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Expr4" ColumnName="Expr4" />
+          <ScalarProperty Name="Expr5" ColumnName="Expr5" />
+          <ScalarProperty Name="Expr6" ColumnName="Expr6" />
+          <ScalarProperty Name="Expr7" ColumnName="Expr7" />
+          <ScalarProperty Name="Inv2Post" ColumnName="Inv2Post" />
+          <ScalarProperty Name="Expr8" ColumnName="Expr8" />
+          <ScalarProperty Name="Expr9" ColumnName="Expr9" />
+          <ScalarProperty Name="Expr10" ColumnName="Expr10" />
+          <ScalarProperty Name="Expr11" ColumnName="Expr11" />
+          <ScalarProperty Name="Expr12" ColumnName="Expr12" />
+          <ScalarProperty Name="Expr13" ColumnName="Expr13" />
+          <ScalarProperty Name="Expr14" ColumnName="Expr14" />
+          <ScalarProperty Name="Expr15" ColumnName="Expr15" />
+          <ScalarProperty Name="Expr16" ColumnName="Expr16" />
+          <ScalarProperty Name="Expr17" ColumnName="Expr17" />
+          <ScalarProperty Name="Expr18" ColumnName="Expr18" />
+          <ScalarProperty Name="Expr19" ColumnName="Expr19" />
+          <ScalarProperty Name="K3Code" ColumnName="K3Code" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Expr20" ColumnName="Expr20" />
+          <ScalarProperty Name="Expr21" ColumnName="Expr21" />
+          <ScalarProperty Name="Expr22" ColumnName="Expr22" />
+          <ScalarProperty Name="Expr23" ColumnName="Expr23" />
+          <ScalarProperty Name="Expr24" ColumnName="Expr24" />
+          <ScalarProperty Name="Expr25" ColumnName="Expr25" />
+          <ScalarProperty Name="Expr26" ColumnName="Expr26" />
+          <ScalarProperty Name="Yr1Forcast" ColumnName="Yr1Forcast" />
+          <ScalarProperty Name="CueCode" ColumnName="CueCode" />
+          <ScalarProperty Name="Expr27" ColumnName="Expr27" />
+          <ScalarProperty Name="Expr28" ColumnName="Expr28" />
+          <ScalarProperty Name="AnnualRevenue" ColumnName="AnnualRevenue" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="BillShipID" ColumnName="BillShipID" />
+          <ScalarProperty Name="CreditPeriod" ColumnName="CreditPeriod" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="XGkhds" ColumnName="XGkhds" />
+          <ScalarProperty Name="XGClassify" ColumnName="XGClassify" />
+          <ScalarProperty Name="XGCityID" ColumnName="XGCityID" />
+          <ScalarProperty Name="XGCountryID" ColumnName="XGCountryID" />
+          <ScalarProperty Name="XQKhds" ColumnName="XQKhds" />
+          <ScalarProperty Name="XQType" ColumnName="XQType" />
+          <ScalarProperty Name="XQCountryID" ColumnName="XQCountryID" />
+          <ScalarProperty Name="XQCityID" ColumnName="XQCityID" />
+          <ScalarProperty Name="XQClassify" ColumnName="XQClassify" />
+          <ScalarProperty Name="XQInBusiness" ColumnName="XQInBusiness" />
+          <ScalarProperty Name="XQGoodWill" ColumnName="XQGoodWill" />
+          <ScalarProperty Name="XQclass" ColumnName="XQclass" />
+          <ScalarProperty Name="XQAgreement" ColumnName="XQAgreement" />
+          <ScalarProperty Name="XQInv2Cnty" ColumnName="XQInv2Cnty" />
+          <ScalarProperty Name="XQInv2State" ColumnName="XQInv2State" />
+          <ScalarProperty Name="XQInv2City" ColumnName="XQInv2City" />
+          <ScalarProperty Name="XQShip2Cnty" ColumnName="XQShip2Cnty" />
+          <ScalarProperty Name="XQShip2State" ColumnName="XQShip2State" />
+          <ScalarProperty Name="XQShip2City" ColumnName="XQShip2City" />
+          <ScalarProperty Name="XQOwner1Cnty" ColumnName="XQOwner1Cnty" />
+          <ScalarProperty Name="XQOwner1Type" ColumnName="XQOwner1Type" />
+          <ScalarProperty Name="XQOwner2Cnty" ColumnName="XQOwner2Cnty" />
+          <ScalarProperty Name="XQOwner2Type" ColumnName="XQOwner2Type" />
+          <ScalarProperty Name="XQCurr1" ColumnName="XQCurr1" />
+          <ScalarProperty Name="XQCurr2" ColumnName="XQCurr2" />
+          <ScalarProperty Name="XQCurr3" ColumnName="XQCurr3" />
+          <ScalarProperty Name="XQCurr4" ColumnName="XQCurr4" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SelectDetail">
+      <EntityTypeMapping TypeName="WebStationModel.SelectDetail">
+        <MappingFragment StoreEntitySet="SelectDetail">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="SysID" ColumnName="SysID" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="Belongs" ColumnName="Belongs" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="BankAddr" ColumnName="BankAddr" />
+          <ScalarProperty Name="iBAN" ColumnName="iBAN" />
+          <ScalarProperty Name="SWIFT" ColumnName="SWIFT" />
+          <ScalarProperty Name="IsList" ColumnName="IsList" />
+          <ScalarProperty Name="Owner1Name" ColumnName="Owner1Name" />
+          <ScalarProperty Name="Owner1Addr" ColumnName="Owner1Addr" />
+          <ScalarProperty Name="Owner1Web" ColumnName="Owner1Web" />
+          <ScalarProperty Name="Owner1Cnty" ColumnName="Owner1Cnty" />
+          <ScalarProperty Name="Owner1Date" ColumnName="Owner1Date" />
+          <ScalarProperty Name="Owner1Type" ColumnName="Owner1Type" />
+          <ScalarProperty Name="Owner1Ship" ColumnName="Owner1Ship" />
+          <ScalarProperty Name="Owner2Name" ColumnName="Owner2Name" />
+          <ScalarProperty Name="Owner2Addr" ColumnName="Owner2Addr" />
+          <ScalarProperty Name="Owner2Web" ColumnName="Owner2Web" />
+          <ScalarProperty Name="Owner2Cnty" ColumnName="Owner2Cnty" />
+          <ScalarProperty Name="Owner2Date" ColumnName="Owner2Date" />
+          <ScalarProperty Name="Owner2Type" ColumnName="Owner2Type" />
+          <ScalarProperty Name="Owner2Ship" ColumnName="Owner2Ship" />
+          <ScalarProperty Name="Ref1Name" ColumnName="Ref1Name" />
+          <ScalarProperty Name="Ref1Addr" ColumnName="Ref1Addr" />
+          <ScalarProperty Name="Ref1Contact" ColumnName="Ref1Contact" />
+          <ScalarProperty Name="Ref1Title" ColumnName="Ref1Title" />
+          <ScalarProperty Name="Ref1Phone" ColumnName="Ref1Phone" />
+          <ScalarProperty Name="Ref2Name" ColumnName="Ref2Name" />
+          <ScalarProperty Name="Ref2Addr" ColumnName="Ref2Addr" />
+          <ScalarProperty Name="Ref2Contact" ColumnName="Ref2Contact" />
+          <ScalarProperty Name="Ref2Title" ColumnName="Ref2Title" />
+          <ScalarProperty Name="Ref2Phone" ColumnName="Ref2Phone" />
+          <ScalarProperty Name="Curr1" ColumnName="Curr1" />
+          <ScalarProperty Name="Curr2" ColumnName="Curr2" />
+          <ScalarProperty Name="Curr3" ColumnName="Curr3" />
+          <ScalarProperty Name="Curr4" ColumnName="Curr4" />
+          <ScalarProperty Name="Yr1Forcast" ColumnName="Yr1Forcast" />
+          <ScalarProperty Name="Yr2Forcast" ColumnName="Yr2Forcast" />
+          <ScalarProperty Name="CreditLimits" ColumnName="CreditLimits" />
+          <ScalarProperty Name="CreditTerms" ColumnName="CreditTerms" />
+          <ScalarProperty Name="PUR_Name" ColumnName="PUR_Name" />
+          <ScalarProperty Name="PUR_Title" ColumnName="PUR_Title" />
+          <ScalarProperty Name="PUR_Phone" ColumnName="PUR_Phone" />
+          <ScalarProperty Name="PUR_Fax" ColumnName="PUR_Fax" />
+          <ScalarProperty Name="PUR_Mobile" ColumnName="PUR_Mobile" />
+          <ScalarProperty Name="PUR_Email" ColumnName="PUR_Email" />
+          <ScalarProperty Name="Inv2EMail" ColumnName="Inv2EMail" />
+          <ScalarProperty Name="Inv2Comp" ColumnName="Inv2Comp" />
+          <ScalarProperty Name="Inv2Addr" ColumnName="Inv2Addr" />
+          <ScalarProperty Name="Inv2City" ColumnName="Inv2City" />
+          <ScalarProperty Name="Inv2State" ColumnName="Inv2State" />
+          <ScalarProperty Name="Inv2Post" ColumnName="Inv2Post" />
+          <ScalarProperty Name="Inv2Cnty" ColumnName="Inv2Cnty" />
+          <ScalarProperty Name="Ship2Comp" ColumnName="Ship2Comp" />
+          <ScalarProperty Name="Ship2Addr" ColumnName="Ship2Addr" />
+          <ScalarProperty Name="Ship2City" ColumnName="Ship2City" />
+          <ScalarProperty Name="Ship2State" ColumnName="Ship2State" />
+          <ScalarProperty Name="Ship2Post" ColumnName="Ship2Post" />
+          <ScalarProperty Name="Ship2Cnty" ColumnName="Ship2Cnty" />
+          <ScalarProperty Name="APName" ColumnName="APName" />
+          <ScalarProperty Name="APTitle" ColumnName="APTitle" />
+          <ScalarProperty Name="APPhone" ColumnName="APPhone" />
+          <ScalarProperty Name="APFax" ColumnName="APFax" />
+          <ScalarProperty Name="APMobile" ColumnName="APMobile" />
+          <ScalarProperty Name="APEmail" ColumnName="APEmail" />
+          <ScalarProperty Name="ARName" ColumnName="ARName" />
+          <ScalarProperty Name="ARTitle" ColumnName="ARTitle" />
+          <ScalarProperty Name="ARPhone" ColumnName="ARPhone" />
+          <ScalarProperty Name="ARFax" ColumnName="ARFax" />
+          <ScalarProperty Name="ARMobile" ColumnName="ARMobile" />
+          <ScalarProperty Name="AREmail" ColumnName="AREmail" />
+          <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+          <ScalarProperty Name="FullName_CN" ColumnName="FullName_CN" />
+          <ScalarProperty Name="FullName_EN" ColumnName="FullName_EN" />
+          <ScalarProperty Name="Reg_Addr" ColumnName="Reg_Addr" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="Classify" ColumnName="Classify" />
+          <ScalarProperty Name="Biz_Type" ColumnName="Biz_Type" />
+          <ScalarProperty Name="Biz_Date" ColumnName="Biz_Date" />
+          <ScalarProperty Name="CityID" ColumnName="CityID" />
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Info_CN" ColumnName="Info_CN" />
+          <ScalarProperty Name="Info_EN" ColumnName="Info_EN" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="GoodWill" ColumnName="GoodWill" />
+          <ScalarProperty Name="InBusiness" ColumnName="InBusiness" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Web" ColumnName="Web" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateBy1" ColumnName="CreateBy1" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="CreateDept1" ColumnName="CreateDept1" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="XQOwner2Cnty" ColumnName="XQOwner2Cnty" />
+          <ScalarProperty Name="XQOwner2Type" ColumnName="XQOwner2Type" />
+          <ScalarProperty Name="XQInv2City" ColumnName="XQInv2City" />
+          <ScalarProperty Name="XQInv2State" ColumnName="XQInv2State" />
+          <ScalarProperty Name="XQInv2Cnty" ColumnName="XQInv2Cnty" />
+          <ScalarProperty Name="XQShip2City" ColumnName="XQShip2City" />
+          <ScalarProperty Name="XQShip2State" ColumnName="XQShip2State" />
+          <ScalarProperty Name="XQShip2Cnty" ColumnName="XQShip2Cnty" />
+          <ScalarProperty Name="XQClassify" ColumnName="XQClassify" />
+          <ScalarProperty Name="XQBizType" ColumnName="XQBizType" />
+          <ScalarProperty Name="XQCityID" ColumnName="XQCityID" />
+          <ScalarProperty Name="XQCountryID" ColumnName="XQCountryID" />
+          <ScalarProperty Name="XQkhjb" ColumnName="XQkhjb" />
+          <ScalarProperty Name="XQKhds" ColumnName="XQKhds" />
+          <ScalarProperty Name="XQOwner1Cnty" ColumnName="XQOwner1Cnty" />
+          <ScalarProperty Name="XQOwner1Type" ColumnName="XQOwner1Type" />
+          <ScalarProperty Name="XQCurr1" ColumnName="XQCurr1" />
+          <ScalarProperty Name="XQCurr2" ColumnName="XQCurr2" />
+          <ScalarProperty Name="XQCurr3" ColumnName="XQCurr3" />
+          <ScalarProperty Name="XQCurr4" ColumnName="XQCurr4" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SelectIndexs">
+      <EntityTypeMapping TypeName="WebStationModel.SelectIndexs">
+        <MappingFragment StoreEntitySet="SelectIndexs">
+          <ScalarProperty Name="CustomerIDs" ColumnName="CustomerIDs" />
+          <ScalarProperty Name="CustType" ColumnName="CustType" />
+          <ScalarProperty Name="SysID" ColumnName="SysID" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="CityName_s" ColumnName="CityName_s" />
+          <ScalarProperty Name="CityID" ColumnName="CityID" />
+          <ScalarProperty Name="Name_CN" ColumnName="Name_CN" />
+          <ScalarProperty Name="K3Code" ColumnName="K3Code" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="InBusiness" ColumnName="InBusiness" />
+          <ScalarProperty Name="DeptName_CN" ColumnName="DeptName_CN" />
+          <ScalarProperty Name="CueCode" ColumnName="CueCode" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+          <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+          <ScalarProperty Name="Expr4" ColumnName="Expr4" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Belongs" ColumnName="Belongs" />
+          <ScalarProperty Name="PUR_Name" ColumnName="PUR_Name" />
+          <ScalarProperty Name="PUR_Title" ColumnName="PUR_Title" />
+          <ScalarProperty Name="PUR_Phone" ColumnName="PUR_Phone" />
+          <ScalarProperty Name="PUR_Fax" ColumnName="PUR_Fax" />
+          <ScalarProperty Name="PUR_Mobile" ColumnName="PUR_Mobile" />
+          <ScalarProperty Name="PUR_Email" ColumnName="PUR_Email" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="BankAddr" ColumnName="BankAddr" />
+          <ScalarProperty Name="iBAN" ColumnName="iBAN" />
+          <ScalarProperty Name="SWIFT" ColumnName="SWIFT" />
+          <ScalarProperty Name="IsList" ColumnName="IsList" />
+          <ScalarProperty Name="Owner1Name" ColumnName="Owner1Name" />
+          <ScalarProperty Name="Owner1Addr" ColumnName="Owner1Addr" />
+          <ScalarProperty Name="Owner1Web" ColumnName="Owner1Web" />
+          <ScalarProperty Name="Owner1Cnty" ColumnName="Owner1Cnty" />
+          <ScalarProperty Name="Owner1Date" ColumnName="Owner1Date" />
+          <ScalarProperty Name="Owner1Type" ColumnName="Owner1Type" />
+          <ScalarProperty Name="Owner1Ship" ColumnName="Owner1Ship" />
+          <ScalarProperty Name="Owner2Name" ColumnName="Owner2Name" />
+          <ScalarProperty Name="Owner2Addr" ColumnName="Owner2Addr" />
+          <ScalarProperty Name="Owner2Web" ColumnName="Owner2Web" />
+          <ScalarProperty Name="Owner2Cnty" ColumnName="Owner2Cnty" />
+          <ScalarProperty Name="Owner2Date" ColumnName="Owner2Date" />
+          <ScalarProperty Name="Owner2Type" ColumnName="Owner2Type" />
+          <ScalarProperty Name="Owner2Ship" ColumnName="Owner2Ship" />
+          <ScalarProperty Name="Ref1Name" ColumnName="Ref1Name" />
+          <ScalarProperty Name="Ref1Addr" ColumnName="Ref1Addr" />
+          <ScalarProperty Name="Ref1Contact" ColumnName="Ref1Contact" />
+          <ScalarProperty Name="Ref1Title" ColumnName="Ref1Title" />
+          <ScalarProperty Name="Ref1Phone" ColumnName="Ref1Phone" />
+          <ScalarProperty Name="Ref2Name" ColumnName="Ref2Name" />
+          <ScalarProperty Name="Ref2Addr" ColumnName="Ref2Addr" />
+          <ScalarProperty Name="Ref2Contact" ColumnName="Ref2Contact" />
+          <ScalarProperty Name="Ref2Title" ColumnName="Ref2Title" />
+          <ScalarProperty Name="Ref2Phone" ColumnName="Ref2Phone" />
+          <ScalarProperty Name="Curr1" ColumnName="Curr1" />
+          <ScalarProperty Name="Curr2" ColumnName="Curr2" />
+          <ScalarProperty Name="Curr3" ColumnName="Curr3" />
+          <ScalarProperty Name="Curr4" ColumnName="Curr4" />
+          <ScalarProperty Name="Yr1Forcast" ColumnName="Yr1Forcast" />
+          <ScalarProperty Name="Yr2Forcast" ColumnName="Yr2Forcast" />
+          <ScalarProperty Name="CreditLimits" ColumnName="CreditLimits" />
+          <ScalarProperty Name="CreditTerms" ColumnName="CreditTerms" />
+          <ScalarProperty Name="CreditPeriod" ColumnName="CreditPeriod" />
+          <ScalarProperty Name="Expr5" ColumnName="Expr5" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="AnnualRevenue" ColumnName="AnnualRevenue" />
+          <ScalarProperty Name="FullName_EN" ColumnName="FullName_EN" />
+          <ScalarProperty Name="Classify" ColumnName="Classify" />
+          <ScalarProperty Name="FullName_CN" ColumnName="FullName_CN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customer_AuditInfo">
+      <EntityTypeMapping TypeName="WebStationModel.Customer_AuditInfo">
+        <MappingFragment StoreEntitySet="Customer_AuditInfo">
+          <ScalarProperty Name="ACCreateTime" ColumnName="ACCreateTime" />
+          <ScalarProperty Name="ACCreateDept" ColumnName="ACCreateDept" />
+          <ScalarProperty Name="ACCreateBy" ColumnName="ACCreateBy" />
+          <ScalarProperty Name="CWACOpinion" ColumnName="CWACOpinion" />
+          <ScalarProperty Name="MDCreateTime" ColumnName="MDCreateTime" />
+          <ScalarProperty Name="MDCreateDept" ColumnName="MDCreateDept" />
+          <ScalarProperty Name="MDCreateBy" ColumnName="MDCreateBy" />
+          <ScalarProperty Name="SCACOpinion" ColumnName="SCACOpinion" />
+          <ScalarProperty Name="DocCheckList" ColumnName="DocCheckList" />
+          <ScalarProperty Name="FamilyTree" ColumnName="FamilyTree" />
+          <ScalarProperty Name="MFGProcEntity" ColumnName="MFGProcEntity" />
+          <ScalarProperty Name="SORcvEntity" ColumnName="SORcvEntity" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

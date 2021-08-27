@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WebStationModelStoreContainer" CdmEntityContainer="WebStationEntities">
+    <EntitySetMapping Name="NewEmailDomain2GIP">
+      <EntityTypeMapping TypeName="WebStationModel.NewEmailDomain2GIP">
+        <MappingFragment StoreEntitySet="NewEmailDomain2GIP">
+          <ScalarProperty Name="DNSerial" ColumnName="DNSerial" />
+          <ScalarProperty Name="DomainName" ColumnName="DomainName" />
+          <ScalarProperty Name="FindDate" ColumnName="FindDate" />
+          <ScalarProperty Name="SourceType" ColumnName="SourceType" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NewEmailDomain2GIP_Select">
+      <EntityTypeMapping TypeName="WebStationModel.NewEmailDomain2GIP_Select">
+        <MappingFragment StoreEntitySet="NewEmailDomain2GIP_Select">
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="SourceType" ColumnName="SourceType" />
+          <ScalarProperty Name="SourceTypeChinese" ColumnName="SourceTypeChinese" />
+          <ScalarProperty Name="FindDate" ColumnName="FindDate" />
+          <ScalarProperty Name="DomainName" ColumnName="DomainName" />
+          <ScalarProperty Name="DNSerial" ColumnName="DNSerial" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

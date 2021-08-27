@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="C6Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <Function Name="SelectOA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Serial_Num" Type="varchar" Mode="In" />
+    <Parameter Name="K3PO_Num" Type="varchar" Mode="In" />
+    <Parameter Name="Buyer" Type="varchar" Mode="In" />
+    <Parameter Name="Start_Date" Type="varchar" Mode="In" />
+    <Parameter Name="End_Date" Type="varchar" Mode="In" />
+    <Parameter Name="Mat_Code" Type="nvarchar" Mode="In" />
+    <Parameter Name="Mat_Name" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="C6ModelStoreContainer" />
+</Schema>

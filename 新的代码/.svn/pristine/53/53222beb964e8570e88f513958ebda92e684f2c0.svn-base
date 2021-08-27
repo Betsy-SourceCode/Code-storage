@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActionLog2021">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="FunctionID" Type="smallint" Nullable="false" />
+    <Property Name="ActionType" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ActionTime" Type="datetime" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="TableKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpID" />
+    </Key>
+    <Property Name="EmpID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="PersonID" Type="int" />
+    <Property Name="GIPCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="ActDeptID" Type="nchar" MaxLength="2" />
+    <Property Name="ActPosition" Type="char" MaxLength="1" />
+    <Property Name="Deputy" Type="nchar" MaxLength="3" />
+    <Property Name="JobTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="Position" Type="char" MaxLength="1" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="SurName" Type="nvarchar" MaxLength="20" />
+    <Property Name="GivenName" Type="nvarchar" MaxLength="20" />
+    <Property Name="AliasName" Type="nvarchar" MaxLength="20" />
+    <Property Name="Gender" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="BirthDate" Type="smalldatetime" />
+    <Property Name="Manager" Type="nchar" MaxLength="3" />
+    <Property Name="Substitute" Type="nchar" MaxLength="3" />
+    <Property Name="JoinDate" Type="datetime" />
+    <Property Name="LeftDate" Type="datetime" />
+    <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="3" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="3" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Tools_Acquire_Trace">
+    <Key>
+      <PropertyRef Name="FID" />
+    </Key>
+    <Property Name="FID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ApplyDate" Type="datetime" Nullable="false" />
+    <Property Name="OAFlow_Num" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Mat_Code" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Mat_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Unit" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="Qty" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="Arr_Date" Type="datetime" />
+    <Property Name="Approval" Type="nvarchar" MaxLength="20" />
+    <Property Name="K3PO_Num" Type="nvarchar" MaxLength="30" />
+    <Property Name="K3PO_Date" Type="datetime" />
+    <Property Name="Supplier" Type="nvarchar" MaxLength="100" />
+    <Property Name="K3Unit" Type="nvarchar" MaxLength="10" />
+    <Property Name="K3Qty" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="Buyer" Type="nvarchar" MaxLength="20" />
+    <Property Name="Prop_Arr_Date" Type="datetime" />
+    <Property Name="K3Recv_Date" Type="datetime" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="300" />
+    <Property Name="UpdateNumber" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="WebStationModelStoreContainer">
+    <EntitySet Name="ActionLog2021" EntityType="Self.ActionLog2021" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tools_Acquire_Trace" EntityType="Self.Tools_Acquire_Trace" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

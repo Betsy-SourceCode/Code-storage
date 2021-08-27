@@ -1,0 +1,104 @@
+﻿.table, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border: 1px solid black;
+}
+
+.table {
+    min-height: 100%;
+}
+
+th {
+    background-color: #ccc;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+
+.form-group {
+    margin-right: 20px;
+}
+
+#GridView td {
+    vertical-align: middle;
+    word-wrap: break-word;
+    word-break: break-all; /*内容多自动换行 */
+}
+
+.input-clear-a {
+    color: white;
+}
+
+.input-content:hover + .input-clear-a {
+    color: #d4d4d4;
+}
+
+.panel-default {
+    border-color: #ddd;
+}
+
+.panel-heading {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.table-hover > tbody > tr:hover {
+    background-color: #fcf8e3 !important; /*优先级最高*/
+}
+
+.red {
+    background-color: #ffe9e9;
+    text-align: center;
+}
+
+.violet {
+    background-color: #dedeff;
+    color: #305496;
+    text-align: center;
+}
+
+.grey {
+    background-color: #f2f2f2;
+    text-align: right;
+}
+
+th {
+    vertical-align: middle;
+}
+
+table {
+    width: 100%;
+    table-layout: fixed; /*只有定义了表格的布局算法为fixed，下面td的定义才能起作用。*/
+}
+
+a {
+    color: #305496;
+}
+
+    a:hover {
+        text-decoration: none;
+    }
+
+.redTitle {
+    background-color: #ffcbcb;
+}
+
+.violetTitle {
+    color: #305496;
+    background-color: #c8c8ff;
+}
+
+.greyTitle {
+    background-color: #cbcbcb;
+}
+
+.one{
+    border: 0;
+    background: transparent url('图标/ImportLoadingList.png') no-repeat 0 0;
+    background-size:210px 70px;
+}
+    .one:hover {
+      /*  border: 0;
+        background: transparent url('图标/ImportLoadingList-Hover.png') no-repeat 0 0;
+        background-size: 210px 70px;*/
+      color:red;
+    }

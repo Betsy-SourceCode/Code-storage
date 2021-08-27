@@ -1,0 +1,377 @@
+﻿
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <link href="~/Scripts/WdatePicker/skin/WdatePicker.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/WdatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/页面/Index.js"></script>
+    <script src="~/Scripts/导出/demo.page.js"></script>
+    <script src="~/Scripts/导出/excel-gen.js"></script>
+    <script src="~/Scripts/导出/FileSaver.js"></script>
+    <script src="~/Scripts/导出/jszip.min.js"></script>
+    <script src="~/Scripts/导出/tableExport.min.js"></script>
+    <style>
+        .table, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: #ccc;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid black;
+        }
+
+        .form-group {
+            margin-right: 20px;
+        }
+
+        #GridView td {
+            vertical-align: middle;
+            word-wrap: break-word;
+            word-break: break-all; /*内容多自动换行 */
+        }
+
+        .input-clear-a {
+            color: white;
+        }
+
+        .input-content:hover + .input-clear-a {
+            color: #d4d4d4;
+        }
+
+        .qq {
+            display: contents;
+        }
+
+        .panel-default {
+            border-color: #ddd;
+        }
+
+        .panel-heading {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .checkbox_lable {
+            font-size: 17px;
+            position: relative;
+            top: -6px;
+        }
+
+        .my_table tr:nth-child(even) { /*颜色交替*/
+            background: #dff0d8;
+        }
+
+        .my_table tr:nth-child(odd) { /*颜色交替*/
+            background: White;
+        }
+
+        .my_table tr:hover {
+            background: #fcf8e3 !important;
+        }
+
+        .table-hover > tbody > tr:hover {
+            background-color: #fcf8e3 !important; /*优先级最高*/
+        }
+
+        .my_table tr td {
+            font-size: 12px;
+        }
+
+            .my_table tr td:last-child span {
+                font-size: 7px;
+            }
+
+        .modal-backdrop {
+            opacity: 0 !important;
+            filter: alpha(opacity = 0) !important; /*模态框去掉遮罩层*/
+        }
+
+        #myModal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+    </style>
+</head>
+<body style="max-width:96%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="ProductPriceController">
+    @*打印页面嵌套过来调用打印页面的方法实现打印*@
+    <iframe src="~/ProductPrice/IndexPrinting" height="500" name="iframName" id="iframeId" style=" display:none;width:100%">
+    </iframe>
+    <div id="Mydiv">
+        <h1 style="text-align: center;">
+            <span id="Title">市场部提供客户产品价格信息记录</span>
+        </h1>
+        <h1 style="text-align: center;margin-top:-10px">
+            <span id="Title">MDs' Products' Prices Records</span>
+        </h1>
+
+        <div class="panel panel-default" style="height:auto">
+            <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false">
+                <div class="container-fluid">
+                    <div class="row panel-heading">
+                        <div class="has-feedback col-sm-3">
+                            业务员:<input name="CreateBy" type="text" id="CreateBy" class="form-control input-content" style="width:70%" />
+                            <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                               style="pointer-events: auto;"
+                               onclick="$('#CreateBy').val('')"></a>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group-clear">
+                                <label style="font-weight:bold">产品:</label>
+                                <input name="CustProd" type="text" id="CustProd" class="form-control input-content" style="width:70%;display:inline">
+                                <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                                   style="pointer-events: auto;"
+                                   onclick="$('#CustProd').val('')"></a>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group-clear">
+                                <label style="font-weight:bold">客户:</label>
+                                <input name="CustomerDisplayName" type="text" id="CustomerDisplayName" class="form-control input-content" style="width:70%">
+                                <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                                   style="pointer-events: auto;"
+                                   onclick="$('#CustomerDisplayName').val('')"></a>
+                            </div>
+                        </div>
+                        <input type="submit" name="btn_select" value="搜&nbsp;&nbsp;索" id="btn_select" class="btn btn-primary" ng-click="IndexList()" />
+                        @if (@ViewBag.PrintExport == 1)
+                        {
+                            <input type="submit" name="btn_select" value="导&nbsp;&nbsp;出" id="btn_select" class="btn btn-primary" onclick="DaoChu('@ViewBag.username')" />
+                        }
+
+                        @if (@ViewBag.Add == 1)
+                        {
+                            <input type="button" name="btn_select" value="新&nbsp;&nbsp;增" id="btn_select" class="btn btn-primary" ng-click="tiaozhuan('AddProductPrice')" />
+                        }
+                    </div>
+                    <div class="row panel-heading">
+                        <div class="col-sm-4">
+                            <div class="input-group-clear">
+                                <label style="font-weight:bold">日期:&nbsp;&nbsp;&nbsp;从&nbsp;&nbsp;</label>
+                                <input id="Start_Date" name="CreateTime" type="text" class="Wdate form-control" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'End_Date\')}'});" value="@ViewBag.date" style="cursor:pointer;height:34px;text-align:center;width:32%;background-color:white" readonly="readonly"/>
+                                <label style="font-weight:bold;margin-left:3%;margin-right:3%">至</label>
+                                <input id="End_Date" name="EndTime" type="text" class="Wdate form-control"
+                                       value="@ViewBag.today" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}'}); " style="cursor:pointer;height:34px;text-align:center;width:32%;background-color:white" readonly="readonly" title="默认结束日期为当天！" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="checkbox">
+                                <input type="checkbox" name="Cancel" id="Cancel" style="zoom:180%" checked onchange="OnChange()">
+                                <label style=" font-weight: bold;" class="checkbox_lable" for="Cancel">不显示作废记录</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group-clear">
+                                <label style="font-weight:bold">备注:</label>
+                                <input name="Remarks_MD" type="text" id="Remarks_MD" class="form-control  input-content" style="width:70%">
+                                <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                                   style="pointer-events: auto;"
+                                   onclick="$('#Remarks_MD').val('')"></a>
+                            </div>
+                        </div>
+                        <input type="button" name="btn_select" value="离&nbsp;&nbsp;开" id="btn_select" class="btn btn-primary" onclick="window.location.href = 'http://192.166.7.241/Admin/ProjectList.aspx?userid=@ViewBag.userid',sessionStorage.clear()" />
+                        @if (@ViewBag.PrintExport == 1)
+                        {
+                            <input type="button" name="btn_select" value="打&nbsp;&nbsp;印" id="btn_select" class="btn btn-primary" ng-click="Dayin()" />
+                        }
+                        @if (@ViewBag.Assign == 1)
+                        {
+                            <input type="button" name="btn_select" value="设定业务员" id="btn_select" class="btn btn-primary" ng-click="tiaozhuan('SetupCustomer')" />
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+        @*表格*@
+        <table id="GridView" class="table table-bordered table-hover my_table">
+            <thead>
+                @*<tr>
+                        <th rowspan="2" style="width:5%;text-align:center">Date</th>
+                        <th rowspan="2" scope="col" class="default-th" style="width:3%;text-align:center">Sales</th>
+                        <th rowspan="2" scope="col" class="default-th" style="width:3%; text-align: center">Ledger</th>
+                        <th rowspan="2" scope="col" class="default-th" style="width:8%;text-align:left">Customer</th>
+                        <th rowspan="2" scope="col" class="default-th" style="width:6%;text-align:center">GIP<br />Product Code</th>
+                        <th scope="col" colspan="2" class="default-th" style="width:22%;text-align:center">
+                            Customer's Product
+                        </th>
+                        <th scope="col" colspan="2" class="default-th" style="width:10%;text-align:center">
+                            Previous Price
+                        </th>
+                        <th scope="col" colspan="2" class="default-th" style="width:10%;text-align:center">
+                            Updated Price
+                        </th>
+                        <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:6%;text-align:left">
+                            Effective Type
+                        </th>
+                        <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                            Efffective Details
+                        </th>
+                        <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                            MD's Remarks
+                        </th>
+                        <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                            Finance's Notes
+                        </th>
+                        @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
+                        {
+                            <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:5%;text-align:center">
+                                Ctrl
+                            </th>
+                        }
+                    </tr>
+                    <tr>
+                        <th scope="col" class="default-th" style="width:7%;text-align:left"> Code</th>
+                        <th scope="col" class="default-th" style="width:15%;text-align:left"> Description</th>
+                        <th scope="col" class="default-th" style="width:3%;text-align:right"> Curr.</th>
+                        <th scope="col" class="default-th" style="width:7%;text-align:right"> Unit</th>
+                        <th scope="col" class="default-th" style="width:3%;text-align:right"> Curr.</th>
+                        <th scope="col" class="default-th" style="width:7%;text-align:right"> Unit</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" style="width:5%;text-align:center">日期</th>
+                        <th rowspan="2" scope="col" class="default-th" style="width:4%;text-align:center">业务员</th>
+                        <th rowspan="2" scope="col" class="default-th" style="width:3%; text-align: center">账套</th>
+                        <th rowspan="2" scope="col" class="default-th" style="width:8%;text-align:left"> 客户</th>
+                        <th rowspan="2" scope="col" class="default-th" style="width:6%;text-align:center">GIP<br />产品号</th>
+                        <th scope="col" colspan="2" class="default-th" style="width:22%;text-align:center">
+                            客户产品
+                        </th>
+                        <th scope="col" colspan="2" class="default-th" style="width:10%;text-align:center">
+                            现价
+                        </th>
+                        <th scope="col" colspan="2" class="default-th" style="width:10%;text-align:center">
+                            更新价
+                        </th>
+                        <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:6%;text-align:left">
+                            生效类型
+                        </th>
+                        <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                            生效条件
+                        </th>
+                        <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                            销售备注
+                        </th>
+                        <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                            财务笔记
+                        </th>
+                        @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
+                        {
+                            <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:5%;text-align:center">
+                                管理
+                            </th>
+                        }
+                    </tr>
+                    <tr>
+                        <th scope="col" class="default-th" style="width:7%;text-align:left">  代码</th>
+                        <th scope="col" class="default-th" style="width:15%;text-align:left"> 描述</th>
+                        <th scope="col" class="default-th" style="width:3%;text-align:right"> 货币</th>
+                        <th scope="col" class="default-th" style="width:7%;text-align:right"> 单价</th>
+                        <th scope="col" class="default-th" style="width:3%;text-align:right"> 货币</th>
+                        <th scope="col" class="default-th" style="width:7%;text-align:right"> 单价</th>
+                    </tr>*@
+                <tr>
+                    <th rowspan="2" style="width:5%;text-align:center">日期<br />Date</th>
+                    <th rowspan="2" style="width:4%;text-align:center">业务员<br />Sales</th>
+                    <th rowspan="2" style="width:4%;text-align:center">账套<br />Ledger</th>
+                    <th rowspan="2" style="width:9%;text-align:left">客户<br />Customer</th>
+                    <th rowspan="2" style="width:7%;text-align:center">GIP<br />产品号<br />Product Code</th>
+                    <th colspan="2" style="width:22%;text-align:center">客户产品<br />Customer's Product</th>
+                    <th colspan="2" style="width:10%;text-align:center">现价&nbsp;&nbsp;&nbsp;Previous Price</th>
+                    <th colspan="2" style="width:10%;text-align:center">更新价&nbsp;&nbsp;&nbsp;Updated Price</th>
+                    <th rowspan="2" style="width:6%;text-align:left">生效类型<br /> Effective Type</th>
+                    <th rowspan="2" style="width:8%;text-align:left">生效条件<br />  Efffective Details</th>
+                    <th rowspan="2" style="width:6%;text-align:left">销售备注<br />  MD's Remarks</th>
+                    <th rowspan="2" style="width:5%;text-align:left">财务笔记<br />   Finance's Notes</th>
+                    @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
+                    {
+                        <th rowspan="2" style="width:4%;text-align:center">管理<br />   Ctrl</th>
+                    }
+                </tr>
+                <tr>
+                    <th style="width:6%;text-align:left">代码&nbsp;&nbsp;&nbsp;Code</th>
+                    <th style="width:16%;text-align:left">描述&nbsp;&nbsp;&nbsp;Description</th>
+                    <th style="width:3%;text-align:center">货币Curr.</th>
+                    <th style="width:7%;text-align:right">单价&nbsp;&nbsp;&nbsp; Unit</th>
+                    <th style="width:3%;text-align:center">货币Curr.</th>
+                    <th style="width:7%;text-align:right">单价&nbsp;&nbsp;&nbsp; Unit</th>
+                </tr>
+            </thead>
+            <tbody id="OAContent">
+                <tr ng-repeat="i in List track by $index" repeat-finish="ngRepeatFinished"
+                    style="cursor: pointer" ng-dblclick="tiaozhuan('DetailsProductPrice?CPSerial='+i.CPSerial)">
+                    <td align="center" style="white-space: pre-line">{{i.CreateTime}}</td>
+                    <td align="center">{{i.CreateBy}}</td>
+                    <td align="center">{{i.Ledger}}</td>
+                    <td align="left">{{i.CustomerDisplayName}}</td>
+                    <td align="center">{{i.FNumber}}</td>
+                    <td align="left">{{i.CustProdCode}}</td>
+                    <td align="left">{{i.CustProdName}}</td>
+                    <td align="center">{{i.PrvCurr}}</td>
+                    <td ng-if="!i.Cancel" align="right"><s>{{i.PrvUnit}}</s></td>
+                    <td ng-if="i.Cancel" align="right">{{i.PrvUnit}}</td>
+                    <td align="center">{{i.UpdCurr}}</td>
+                    <td ng-if="!i.Cancel" align="right"><s>{{i.UpdUnit}}</s></td>
+                    <td ng-if="i.Cancel" align="right">{{i.UpdUnit}}</td>
+                    <td align="left">{{i.Name_EN}}</td>
+                    <td align="left">{{i.EffDetail}}</td>
+                    <td align="left">{{i.Remarks_MD}}</td>
+                    <td align="left">{{i.Remarks_FD}}</td>
+                    @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
+                    {
+                        <td align="center">
+                            @if (@ViewBag.Add == 1)
+                            {
+
+                                <img title="更新价格" src="~/Scripts/图标/更新价格.png" ng-click="tiaozhuan('UpdateProductPrice?CPSerial='+i.CPSerial)" style="padding-right:12%" />
+                            }
+                            @if (@ViewBag.GuanLi == 1)
+                            {
+                                <img ng-if="i.Cancel" title="记录作废" src="~/Scripts/图标/记录作废.png" ng-click="ZuoFei(i.CreateTime,'@ViewBag.username',i.Ledger,i.FNumber,i.NewPrvUnit,i.CPSerial)" />
+                            }
+
+                        </td>
+                    }
+
+                </tr>
+            </tbody>
+        </table>
+        @*作废*@
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:65%">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel" style="color:red;text-align:center">
+                            <b>确认要作废</b>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer" style="text-align:center">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="ChangeCancel()">
+                            是
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            否
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+</body>
+</html>

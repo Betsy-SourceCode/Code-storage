@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="C6Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="SelectOA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Serial_Num" Type="varchar" Mode="In" />
+          <Parameter Name="K3PO_Num" Type="varchar" Mode="In" />
+          <Parameter Name="Buyer" Type="varchar" Mode="In" />
+          <Parameter Name="Start_Date" Type="varchar" Mode="In" />
+          <Parameter Name="End_Date" Type="varchar" Mode="In" />
+          <Parameter Name="Mat_Code" Type="nvarchar" Mode="In" />
+          <Parameter Name="Mat_Name" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="C6ModelStoreContainer" />
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="C6Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="C6Entities2" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="SelectOA" ReturnType="Collection(C6Model.SelectOA_Result)">
+            <Parameter Name="Serial_Num" Mode="In" Type="String" />
+            <Parameter Name="K3PO_Num" Mode="In" Type="String" />
+            <Parameter Name="Buyer" Mode="In" Type="String" />
+            <Parameter Name="Start_Date" Mode="In" Type="String" />
+            <Parameter Name="End_Date" Mode="In" Type="String" />
+            <Parameter Name="Mat_Code" Mode="In" Type="String" />
+            <Parameter Name="Mat_Name" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SelectOA_Result">
+          <Property Type="Int64" Name="rownum" Nullable="true" />
+          <Property Type="DateTime" Name="ApplyDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Serial_Num" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Mat_Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Mat_Name" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Unit" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Qty" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="DateTime" Name="RequireDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="AppD_Name" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Applicant_CN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="K3PO_Num" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="K3PO_Date" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Supplier" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="K3Qty" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="String" Name="Buyer" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="Prop_Arr_Date" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="K3Recv_Date" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Remark" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="K3Unit" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="MainID" Nullable="true" MaxLength="11" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="C6ModelStoreContainer" CdmEntityContainer="C6Entities2" >
+          <FunctionImportMapping FunctionImportName="SelectOA" FunctionName="C6Model.Store.SelectOA">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="C6Model.SelectOA_Result">
+                <ScalarProperty Name="rownum" ColumnName="rownum" />
+                <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
+                <ScalarProperty Name="Serial_Num" ColumnName="Serial_Num" />
+                <ScalarProperty Name="Mat_Code" ColumnName="Mat_Code" />
+                <ScalarProperty Name="Mat_Name" ColumnName="Mat_Name" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="RequireDate" ColumnName="RequireDate" />
+                <ScalarProperty Name="AppD_Name" ColumnName="AppD_Name" />
+                <ScalarProperty Name="Applicant_CN" ColumnName="Applicant_CN" />
+                <ScalarProperty Name="K3PO_Num" ColumnName="K3PO_Num" />
+                <ScalarProperty Name="K3PO_Date" ColumnName="K3PO_Date" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="K3Qty" ColumnName="K3Qty" />
+                <ScalarProperty Name="Buyer" ColumnName="Buyer" />
+                <ScalarProperty Name="Prop_Arr_Date" ColumnName="Prop_Arr_Date" />
+                <ScalarProperty Name="K3Recv_Date" ColumnName="K3Recv_Date" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="K3Unit" ColumnName="K3Unit" />
+                <ScalarProperty Name="MainID" ColumnName="MainID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

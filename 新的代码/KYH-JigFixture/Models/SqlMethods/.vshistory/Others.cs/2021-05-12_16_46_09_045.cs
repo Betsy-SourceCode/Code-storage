@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace KYH_JigFixture.Models.SqlMethods
+{
+    public class Others
+    {
+        public string K3PO_Num { get; set; }
+        public Nullable<System.DateTime> K3PO_Date { get; set; }
+        public string Supplier { get; set; }
+        public string Buyer { get; set; }
+        public string k3Unit { get; set; }
+        public Nullable<decimal> K3FQty { get; set; }
+        public Nullable<System.DateTime> Prop_Arr_Date { get; set; }
+        public Nullable<System.DateTime> K3Recv_Date { get; set; }
+        public object Data { get; set; }
+    }
+}

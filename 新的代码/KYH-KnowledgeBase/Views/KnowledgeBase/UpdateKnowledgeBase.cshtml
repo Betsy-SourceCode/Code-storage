@@ -1,0 +1,1030 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>修改系统技术知识记录</title>
+    @*<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>*@
+    <script src="~/Scripts/jquery1.10.2.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/富文本/themes/default/default.css" rel="stylesheet" />
+    <link href="~/Scripts/富文本/plugins/code/prettify.css" rel="stylesheet" />
+    <link href="~/Scripts/富文本/themes/simple/simple.css" rel="stylesheet" />
+    <link href="~/Scripts/灯箱/picbox.css" rel="stylesheet" />
+    <link href="~/Scripts/修改图片/bootstrap-fileinput.css" rel="stylesheet" />
+    <link href="~/Scripts/上传文件和下载文件/fileinput.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jQuery.print.js"></script>
+    <script src="~/Scripts/富文本/kindeditor-all.js"></script>
+    <script src="~/Scripts/富文本/zh-CN.js"></script>
+    <script src="~/Scripts/富文本/plugins/code/prettify.js"></script>
+    <script src="~/Scripts/修改图片/bootstrap-fileinput.js"></script>
+    <script src="~/Scripts/灯箱/picbox.js"></script>
+    <script src="~/Scripts/上传文件和下载文件/jquery-3.4.1.js"></script>
+    <style>
+        .input-clear {
+            display: none;
+            float: right;
+            margin-top: -17px;
+            margin-right: 10px;
+            transform: translateY(-50%);
+            z-index: 111;
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+            cursor: pointer;
+        }
+
+        .text .caption h5 {
+            text-shadow: 3px 2px 2px grey;
+            color: #0094ff;
+            margin-top: 2%;
+        }
+        /*.file-preview {
+            display: none;
+        }*/
+        .col-md-1 {
+            width: 6%;
+        }
+
+        hr.new2 {
+            border-top: 2px dashed #ccc;
+        }
+
+        .ChangeColors {
+            background-color: #eaeaff;
+        }
+
+        .ke-edit-iframe {
+            background-color: #eaeaff;
+        }
+
+        .file-drop-zone {
+            border: none;
+        }
+
+        .file-preview {
+            border: none;
+        }
+    </style>
+    @*进入页面再次判断权限/输入框限制符号（除分号）*@
+    <script>
+        $(function () {
+            if (Update(createBy, createDept) != 1) {
+                alert('抱歉,您没有修改本条数据的权限！');
+                window.location.href = "/KnowledgeBase/Index?userid=" + userid + "";
+            }
+        })
+        //修改判断权限
+        function Update(createBy, createDept) {
+            var num = 1;
+            createBy = '@ViewBag.AllCustomer.CreateBy';
+            createDept = '@ViewBag.AllCustomer.CreateDept';
+            createBy=''
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/KnowledgeBase/Authority",
+                data: {
+                    "createBy": createBy,
+                    "createDept": createDept
+                },
+                success: function (result) {
+                    if (result <= 2) {
+                        num = 0;
+                    }
+                }
+            });
+            return num;
+        }
+
+        //输入框限制符号（除分号）
+        function YanZheng(em) {
+            var zz = /[^A-Za-z\u4e00-\u9fa5\d;；]+$/;
+            var yanzheng = $(em).val();
+            if (yanzheng != "") {
+                if (yanzheng.match(zz)) {
+                    $(em).val(yanzheng.replace(zz, ''));
+                    //alert("只能输入字母中文数字和分号！");
+                    $(em).focus();
+                }
+            }
+        }
+    </script>
+    @*模糊查询文本框*@
+    <script>
+        // 输入框清除
+        $(function () {
+
+            // 监听输入框内容变动
+            $(".input-group-clear").bind("input propertychange", function () {
+                // 获取输入框的值
+                var inputValue = $(this).children('input').val();
+                // 判断输入框是否有值
+                if (inputValue >= 1) {
+                    // 显示清除
+                    $(this).children('.input-clear').show();
+                } else {
+                    // 隐藏清除
+                    $(this).children('.input-clear').hide();
+                }
+
+            });
+
+            // 输入框获取焦点事件，判断输入框是否有值，有值则显示清除
+            $(".input-group-clear").children('input').focus(function () {
+
+                var inputValue = this.value.length;
+
+                if (inputValue >= 1) {
+                    $(this).siblings('.input-clear').show();
+                }
+
+            });
+
+            // 点击清除事件
+            $('.input-clear').click(function () {
+                // 清空输入框值
+                $(this).siblings('input').val('');
+                // 隐藏清除
+                $(this).hide();
+
+            });
+
+            // 离开输入框div事件，隐藏清除,此处不能使用blur，因为blur只对输入框有效
+            $(".input-group-clear").focusout(function () {
+
+                var igc = $(this);
+                // 设置一个定时器，离开输入框div，200毫秒后隐藏清除，不设置定时器会出现点击清除无效的情况
+                setTimeout(function () {
+                    igc.children('.input-clear').hide();
+                }, 200)
+
+            });
+        })
+
+    </script>
+    @*暂时不要*@
+    @*<script>
+            //jQuery的页面加载完成时触发的事件
+            $(document).ready(function () {
+
+                $("input[type='text']").on("blur focus", function () {
+                    var defaultvalue = $(this).attr("defaultvalue");
+
+                    //判断是否获取焦点
+                    if ($(this).is(":focus")) {
+                        //把输入框里面的文字颜色变为黑色
+                        $(this).css("color", "#000");
+                        //如果之前的内容是默认值，那么清空
+                        if ($(this).val() == defaultvalue) {
+                            $(this).val("");
+                        }
+                    } else {//失去焦点
+                        //判断内容是空的或默认值
+                        if ($(this).val() == "" || $(this).val() == defaultvalue) {
+                            //设置为默认值
+                            $(this).val(defaultvalue);
+                            //文字颜色设置为灰色
+                            $(this).css("color", "#999");
+                        } else {
+                            //文字设置为黑色
+                            $(this).css("color", "#000");
+                        }
+                    }
+                });
+            });
+        </script>*@
+    <script>
+        $(function myfunction() {
+            //设置Cookie
+            if (getCookie("Language") == "") {
+                document.cookie = "Language=en-US"
+            }
+            // initFileInput("file-Portrait", "/");
+        })
+        //初始化fileinput控件（第一次初始化）
+        function initFileInput(ctrlName, uploadUrl) {
+            var control = $('.' + ctrlName);
+            control.fileinput({
+                language: 'zh', //设置语言
+                uploadAsync: false, //默认异步上传
+                uploadUrl: uploadUrl, //上传的地址
+                allowedFileType: ['image'],
+                allowedFileExtensions: ['jpg', 'png', 'gif'],//接收的文件后缀
+                showUpload: false, //是否显示上传按钮
+                showCaption: false,//是否显示标题
+                showRemove: false,
+                browseClass: "form-control", //按钮样式
+                previewFileIcon: "<i class='form-control'></i>",
+                maxFileSize: 4096   //上传的文件大小
+            })
+        }
+        //function fileSelected() {
+        //    $(".file-preview").css("display", "block");
+        //}
+        // 获取指定名称的cookie
+        function getCookie(name) {
+            var strcookie = document.cookie;//获取cookie字符串
+            var arrcookie = strcookie.split("; ");//分割
+            //遍历匹配
+            for (var i = 0; i < arrcookie.length; i++) {
+                var arr = arrcookie[i].split("=");
+                if (arr[0] == name) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        //跳转页面
+        function history() {
+            window.location.href = "/KnowledgeBase/Index?userid=@ViewBag.userid";
+        }
+    </script>
+    @*富文本*@
+    <script>
+        KindEditor.ready(function (K) {
+            //window.editor = K.create('.ke_demo');
+            allowImageUpload: false;
+            var editor;
+            KindEditor.ready(function (K) {
+                editor = K.create(".ke_demo", {
+                    afterCreate: function () { this.sync(); },//解决富文本框值为空
+                    afterBlur: function () { this.sync(); },
+                    afterChange: function () {             //限制字数
+                        if (this.count('text') > 500) {
+                            var strValue = this.text();
+                            this.text("");
+                            this.appendHtml(strValue.substring(0, 500));
+                        }
+                        //this.sync();
+                    }
+                });
+            });
+        })
+        KindEditor.ready(function (K) {
+            //window.editor = K.create('.ke_demo');
+            allowImageUpload: false;
+            var editor;
+            KindEditor.ready(function (K) {
+                editor = K.create(".ke_demo1", {
+                    afterCreate: function () { this.sync(); },//解决富文本框值为空
+                    afterBlur: function () { this.sync(); },
+                    afterChange: function () {             //限制字数
+                        if (this.count('text') > 500) {
+                            var strValue = this.text();
+                            this.text("");
+                            this.appendHtml(strValue.substring(0, 500));
+                        }
+                        //this.sync();
+                    }
+                });
+            });
+        })
+        KindEditor.ready(function (K) {
+            //window.editor = K.create('.ke_demo');
+            allowImageUpload: false;
+            var editor;
+            KindEditor.ready(function (K) {
+                editor = K.create(".ke_demo2", {
+                    afterCreate: function () { this.sync(); },//解决富文本框值为空
+                    afterBlur: function () { this.sync(); },
+                    afterChange: function () {             //限制字数
+                        if (this.count('text') > 1500) {
+                            var strValue = this.text();
+                            this.text("");
+                            this.appendHtml(strValue.substring(0, 1500));
+                        }
+                        //this.sync();
+                    }
+                });
+            });
+        })
+    </script>
+    @*保存*@
+    <script>
+        function UpdateKnowledgeBase() {
+            var isFK = FeiKong();
+            if (!isFK) {
+                return;
+            };
+            var data = new FormData($('#Addform')[0]);
+            $.ajax({
+                url: '/KnowledgeBaseZSG/AddUpdateFunction?&num=2&QnAID='+@ViewBag.AllCustomer.QnAID,
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result.id > 0) {
+                        alert("修改成功！");
+                        //location.reload(); //测试用
+                        window.location.href = "/KnowledgeBase/DetailsKnowledgeBase?QnAID=" + result.Success;   //返回详情页
+                    } else {
+                        alert("添加失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            });
+        }
+        //判断文本框非空
+        function FeiKong() {
+            var Author = $("#Author").val().trim();
+            var Question = $("#Question").val().replace(/&nbsp;/g, '').trim();
+            var Answer = $("#Answer").val().replace(/&nbsp;/g, '').trim();
+            if (Author == "") {
+                alert("作者（提出者）不可为空!");
+                document.getElementById("Author").focus();
+                return false;
+            }
+            if (RemoveHtml(Question) == "") {
+                alert("主题描述不可为空!");
+                return false;
+            }
+            if (RemoveHtml(Answer) == "") {
+                alert("处理描述不可为空!");
+                return false;
+            }
+            return true;
+        }
+        //移除html代码
+        function RemoveHtml(htmlStr) {
+
+            if (htmlStr == null || htmlStr == "") {
+                return "";
+            }
+            else {
+                var reg1 = /<(?:.|\s)*?>/g;
+                var reg2 = /& [^;]/g;
+                var text = htmlStr.replace(reg1, ""); //去掉html标签函数
+                text = text.replace(reg1, ""); //去掉html标签函数
+                text = text.replace(reg2, "");
+                if (text.length > 50) {
+                    text = text.substring(0, 48) + "...";
+                }
+                return text;
+            }
+        }
+    </script>
+    @*板块下拉框*@
+    <script>
+        $(function () {
+            var name = getCookie("Language");
+            if (name == "zh-CN") {  //中文状态下
+                var Language = "Name_CN";
+            }
+            if (name == "en-US") {  //英文状态下
+                Language = "Name_EN";
+            }
+            if (name == "vi") {   //越南文状态下
+                Language = "Name_VN";
+            }
+            var TopicArea = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/KnowledgeBase/SelectBK",
+                data: { "Language": Language },
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        TopicArea += '<option value="' + value.Value + '"';
+                        if ('@ViewBag.AllCustomer.TopicArea'==value.Value) {   //设置默认值
+                            TopicArea += "selected='selected'";
+                        }
+                        TopicArea += ">" + value.Text + '</option > ';
+                    })
+                    $("#TopicArea").find("select").append(TopicArea);
+                    return false;
+                }
+            });
+        })
+        //取Cookie的某个参数
+        function getCookie(sName) { /*sName为要取的key名*/
+            var aCookie = document.cookie.split("; ");
+            for (var i = 0; i < aCookie.length; i++) {
+                var aCrumb = aCookie[i].split("=");
+                if (sName == aCrumb[0])
+                    return unescape(aCrumb[1]);
+            }
+            return null;
+        }
+    </script>
+</head>
+<body>
+    <div class="container-fluid" style="width:98%">
+        <div style="float: left; margin-left: 20px; margin-top: 20px;">
+            <img src="/Scripts/image/logo.jpg" />
+        </div>
+        <div style="float: right; margin-right: 20px;">
+            <a style="margin-left: 25px;" href="#" onclick="history()"><img src="/Scripts/image/关闭.jpg" title="@Resources.CustomerRes.Gb" /></a>
+        </div>
+        <div>
+            <h1 style="text-align: center; margin-top: 50px;">
+                <span id="Title"> @Resources.CustomerRes.Xgxtjszsjl </span>
+            </h1>
+        </div>
+        <form id="Addform" action="##" onsubmit="return false" method="post" enctype="multipart/form-data">
+            <div style="border:#000000 1px solid;width:100%;margin: 0px auto;font-size:16px;clear:both;padding:5px">
+                <div style="width:100%;margin-left:2%;margin-top:1%;">
+                    <div class="col-md-3" style="margin-top:5px">
+                        <label>@Resources.CustomerRes.Ssbk：</label>
+                        <div style="display:initial;width:100%" id="TopicArea">
+                            <select name="TopicArea" style="width:30%" class="ChangeColors">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5" style="margin-left:-3%;">
+                        <label>@Resources.CustomerRes.Zzhe (@Resources.CustomerRes.Tcz)：</label>
+                        <div class="input-group-clear" style="display:inline-block;width:69%">
+                            <input name="Author" type="text" id="Author" class="form-control ChangeColors" value="@ViewBag.AllCustomer.Author" required autofocus maxlength="30">
+                            <span class="input-clear isfocus">
+                                &times;
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;margin-top:50px;clear:both">
+                    <div class="col-md-14" style="margin-top:4%">
+                        <div class="text" style="width:3%;float:left">
+                            <div class="caption">
+                                <h5>@Resources.CustomerRes.Wen：</h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Zti：</span>
+                        <textarea class="ke_demo" name="Question" id="Question" rows="20" cols="100" style="width:92%;height:200px;visibility:hidden;margin-left:105px">
+                        @ViewBag.AllCustomer.Question
+                        </textarea>
+                    </div>
+                    <div class="col-md-14" style="margin-top:1%">
+                        <div class="text" style="width:2%;float:left">
+                            <div class="caption">
+                                <h5></h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Gjz：</span>
+                        @{
+                            @functions{ public static string RemoveHtml(String html)
+                                {
+                                    if (html == null || html == "")
+                                    {
+                                        return html;
+                                    }
+                                    else
+                                    {
+                                        string text = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]+>", "");  //去掉html标签函数
+                                        text = System.Text.RegularExpressions.Regex.Replace(text, "&[^;]+;", "").Trim();
+                                        return text;
+                                    }
+
+                                }
+                            }
+                        } @*其他页面调用函数（helpers为函数的页面名字）@helpers.RemoveHtml(item.Content)};*@
+
+                        @if (@ViewBag.QnAID != 0)
+                        {
+                            var KeyWord = RemoveHtml(@ViewBag.AllCustomer.KeyWord);
+                            <input type="text" name="KeyWord" id="KeyWord" style="width:60%;float:left" maxlength="500" class="form-control ChangeColors" onkeyup="YanZheng('#KeyWord')" value="@Html.Raw(@ViewBag.AllCustomer.KeyWord)" />
+                            <label style="margin-top:7px;margin-left:1%;color:red">@Resources.CustomerRes.Dggjzyfhgk</label>
+                        }
+                    </div>
+                    <div style="width:100%;margin-top:10px;overflow:hidden;margin-bottom:-4%">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 001：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic01).Length == 0)
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <input type="file" name="pic1" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" class="file" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img id="QPic01" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic01)' class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <input type="file" name="pic1" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" class="file" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 002：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic02).Length == 0)
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <input type="file" name="pic2" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img id="QPic02" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic02)' class="file-preview-image fileInput" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <input type="file" name="pic2" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" class="file" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 003：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic03).Length == 0)
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <input type="file" name="pic3" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" class="file" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img id="QPic03" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic03)' class="file-preview-image " style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <input type="file" name="pic3" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 004：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic04).Length == 0)
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <input type="file" name="pic4" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img id="QPic04" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic04)' class="file-preview-image fileInput" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <input type="file" name="pic4" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="new2">
+                </div>
+                <div style="width:100%;clear:both">
+                    <div class="col-md-14">
+                        <div class="text" style="width:3%;float:left">
+                            <div class="caption">
+                                <h5>@Resources.CustomerRes.Da：</h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Cl：</span>
+                        <textarea class="ke_demo2" name="Answer" id="Answer" rows="20" cols="100" style="width:92%;height:200px;visibility:hidden;margin-left:105px">
+                         @ViewBag.AllCustomer.Answer
+                        </textarea>
+                    </div>
+                    <div style="width:100%;margin-top:10px;overflow:hidden;margin-bottom:-3%">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 001：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic01).Length == 0)
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <input type="file" name="pic5" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img id="APic01" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic01)' class="file-preview-image fileInput" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <input type="file" name="pic5" class="piclick" id="picID" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 002：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic02).Length == 0)
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <input type="file" name="pic6" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img id="APic02" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic02)' class="file-preview-image fileInput" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <input type="file" name="pic6" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 003：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic03).Length == 0)
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <input type="file" name="pic7" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img id="APic03" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic03)' class="file-preview-image fileInput" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <input type="file" name="pic7" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 004：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic04).Length == 0)
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img src="~/Scripts/上传文件和下载文件/默认.png" class="file-preview-image" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Sctp</button>
+                                                                <input type="file" name="pic8" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="file-preview">
+                                        <div class="file-drop-zone">
+                                            <div class="file-preview-thumbnails">
+                                                <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                        <div class="fileinput-new thumbnail">
+                                                            <img id="APic04" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic04)' class="file-preview-image fileInput" style="width: 100%; height: 160px;" rel="lightbox-group" />
+                                                        </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                        <div>
+                                                            <span class="btn-file">
+                                                                <button type="button" class="fileinput-new glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <button type="button" class="fileinput-exists glyphicon glyphicon-picture btn btn-xs btn-default">@Resources.CustomerRes.Ghtp</button>
+                                                                <input type="file" name="pic8" id="picID" class="piclick" accept="image/gif,image/jpeg,image/x-png" />
+                                                            </span>
+                                                            <a href="javascript:;" class="fileinput-exists glyphicon glyphicon-trash btn btn-xs btn-default" data-dismiss="fileinput" title="@Resources.CustomerRes.HuanY"></a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div style="width: 97%; overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+            <span style="float: left; margin-left: 3px;">
+                <span id="Label107">@Resources.CustomerRes.Cjxx</span>
+                <span id="lbl_CreateTime">@ViewBag.AllCustomer.CreateTime</span>
+                (<span id="lbl_CreateBy">@ViewBag.CreateBy</span>)
+                <span id="lbl_CreateDept">@ViewBag.CreateDept</span>
+            </span>
+            <span style="float: right; margin-right: 3px;">
+                <span id="Label109">@Resources.CustomerRes.Zhgx</span>
+                <span id="lbl_UpdateTime">@ViewBag.AllCustomer.UpdateTime</span>
+                (<span id="lbl_UpdateBy">@ViewBag.UpdateBy</span>)
+                <span id="lbl_UpdateDept">@ViewBag.UpdateDept</span>
+            </span>
+        </div>
+        <div id="OperationChi" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+            <input type="submit" name="Button1" value="@Resources.CustomerRes.Bc" id="SaveBtn" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" onclick="UpdateKnowledgeBase()" />
+            <input type="button" value="@Resources.CustomerRes.Gb" onclick="history()" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" />
+        </div>
+    </div>
+</body>
+</html>

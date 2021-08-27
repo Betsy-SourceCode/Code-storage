@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActionLog2021">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="FunctionID" Type="smallint" Nullable="false" />
+    <Property Name="ActionType" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ActionTime" Type="datetime" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="TableKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustType" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Status" Type="nchar" MaxLength="1" />
+    <Property Name="Type" Type="nchar" MaxLength="1" />
+    <Property Name="SysID" Type="int" />
+    <Property Name="K3Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="Class" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Belongs" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="PUR_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Phone" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Fax" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Mobile" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BankAddr" Type="nvarchar" MaxLength="50" />
+    <Property Name="iBAN" Type="nvarchar" MaxLength="25" />
+    <Property Name="SWIFT" Type="nvarchar" MaxLength="25" />
+    <Property Name="IsList" Type="bit" Nullable="false" />
+    <Property Name="Owner1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Cnty" Type="nchar" MaxLength="2" />
+    <Property Name="Owner1Date" Type="datetime" />
+    <Property Name="Owner1Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner1Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Owner2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Cnty" Type="nchar" MaxLength="2" />
+    <Property Name="Owner2Date" Type="datetime" />
+    <Property Name="Owner2Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner2Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Ref1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref2Addr" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Curr1" Type="nchar" MaxLength="3" />
+    <Property Name="Curr2" Type="nchar" MaxLength="3" />
+    <Property Name="Curr3" Type="nchar" MaxLength="3" />
+    <Property Name="Curr4" Type="nchar" MaxLength="3" />
+    <Property Name="Yr1Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="Yr2Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="CreditLimits" Type="nvarchar" MaxLength="20" />
+    <Property Name="CreditTerms" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreditPeriod" Type="int" />
+    <Property Name="CueCode" Type="nchar" MaxLength="3" />
+    <Property Name="AnnualRevenue" Type="nvarchar" MaxLength="20" />
+    <Property Name="ServiceBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CustProductPriceRecords">
+    <Key>
+      <PropertyRef Name="CPSerial" />
+    </Key>
+    <Property Name="CPSerial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ledger" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="FNumber" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CustProdCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustProdName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="PrvCurr" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="PrvUnit" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+    <Property Name="UpdCurr" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="UpdUnit" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+    <Property Name="EffType" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="EffDetail" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="Remarks_MD" Type="nvarchar(max)" />
+    <Property Name="Remarks_FD" Type="nvarchar(max)" />
+    <Property Name="Cancel" Type="bit" Nullable="false" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“WebStation.dbo.GetProductPriceList”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="GetProductPriceList">
+    <Key>
+      <PropertyRef Name="CreateBy" />
+      <PropertyRef Name="ShortName" />
+      <PropertyRef Name="CustomerDisplayName" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="Ledger" />
+      <PropertyRef Name="CPSerial" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="CustProdCode" />
+      <PropertyRef Name="CustProdName" />
+      <PropertyRef Name="PrvCurr" />
+      <PropertyRef Name="PrvUnit" />
+      <PropertyRef Name="UpdCurr" />
+      <PropertyRef Name="UpdUnit" />
+      <PropertyRef Name="EffType" />
+      <PropertyRef Name="EffDetail" />
+      <PropertyRef Name="FNumber" />
+      <PropertyRef Name="Cancel" />
+      <PropertyRef Name="CreateDept" />
+      <PropertyRef Name="UpperDept" />
+      <PropertyRef Name="DeptID" />
+    </Key>
+    <Property Name="CreateBy" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="ShortName" Type="nvarchar" MaxLength="25" Nullable="false" />
+    <Property Name="CustomerDisplayName" Type="nvarchar" MaxLength="34" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="Ledger" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="CPSerial" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="CustProdCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CustProdName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="PrvCurr" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="PrvUnit" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+    <Property Name="NewPrvUnit" Type="varchar" MaxLength="43" />
+    <Property Name="UpdCurr" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="UpdUnit" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+    <Property Name="NewUpdUnit" Type="varchar" MaxLength="43" />
+    <Property Name="EffType" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="EffDetail" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="Remarks_MD" Type="nvarchar(max)" />
+    <Property Name="Remarks_FD" Type="nvarchar(max)" />
+    <Property Name="FNumber" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Name_EN" Type="nvarchar" MaxLength="50" />
+    <Property Name="Cancel" Type="bit" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpperDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="WebStationModelStoreContainer">
+    <EntitySet Name="ActionLog2021" EntityType="Self.ActionLog2021" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustProductPriceRecords" EntityType="Self.CustProductPriceRecords" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GetProductPriceList" EntityType="Self.GetProductPriceList" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [GetProductPriceList].[CreateBy] AS [CreateBy], 
+    [GetProductPriceList].[ShortName] AS [ShortName], 
+    [GetProductPriceList].[CustomerDisplayName] AS [CustomerDisplayName], 
+    [GetProductPriceList].[CreateTime] AS [CreateTime], 
+    [GetProductPriceList].[Ledger] AS [Ledger], 
+    [GetProductPriceList].[CPSerial] AS [CPSerial], 
+    [GetProductPriceList].[CustomerID] AS [CustomerID], 
+    [GetProductPriceList].[CustProdCode] AS [CustProdCode], 
+    [GetProductPriceList].[CustProdName] AS [CustProdName], 
+    [GetProductPriceList].[PrvCurr] AS [PrvCurr], 
+    [GetProductPriceList].[PrvUnit] AS [PrvUnit], 
+    [GetProductPriceList].[NewPrvUnit] AS [NewPrvUnit], 
+    [GetProductPriceList].[UpdCurr] AS [UpdCurr], 
+    [GetProductPriceList].[UpdUnit] AS [UpdUnit], 
+    [GetProductPriceList].[NewUpdUnit] AS [NewUpdUnit], 
+    [GetProductPriceList].[EffType] AS [EffType], 
+    [GetProductPriceList].[EffDetail] AS [EffDetail], 
+    [GetProductPriceList].[Remarks_MD] AS [Remarks_MD], 
+    [GetProductPriceList].[Remarks_FD] AS [Remarks_FD], 
+    [GetProductPriceList].[FNumber] AS [FNumber], 
+    [GetProductPriceList].[Name_EN] AS [Name_EN], 
+    [GetProductPriceList].[Cancel] AS [Cancel], 
+    [GetProductPriceList].[CreateDept] AS [CreateDept], 
+    [GetProductPriceList].[UpperDept] AS [UpperDept], 
+    [GetProductPriceList].[DeptID] AS [DeptID]
+    FROM [dbo].[GetProductPriceList] AS [GetProductPriceList]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

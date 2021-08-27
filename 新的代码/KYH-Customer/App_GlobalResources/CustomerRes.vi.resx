@@ -1,0 +1,612 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Bc" xml:space="preserve">
+    <value>Lưu lại </value>
+  </data>
+  <data name="Bgdh" xml:space="preserve">
+    <value>Điện thoại văn phòng </value>
+  </data>
+  <data name="Bj" xml:space="preserve">
+    <value>Biên tập </value>
+  </data>
+  <data name="Btx" xml:space="preserve">
+    <value>Hạng mục bắt buộc phải điền</value>
+  </data>
+  <data name="Bz" xml:space="preserve">
+    <value>Ghi chú </value>
+  </data>
+  <data name="Cgzglx" xml:space="preserve">
+    <value>Liên hệ  chủ quản thu mua </value>
+  </data>
+  <data name="Cjxx" xml:space="preserve">
+    <value>Tạo thông tin </value>
+  </data>
+  <data name="Clrq" xml:space="preserve">
+    <value>Ngày thành lập </value>
+  </data>
+  <data name="Cnxse" xml:space="preserve">
+    <value>Doanh số bán hàng năm thứ hai</value>
+  </data>
+  <data name="Cs" xml:space="preserve">
+    <value>Thành phố</value>
+  </data>
+  <data name="Cwbbcxx" xml:space="preserve">
+    <value>Bộ phận tài vụ bổ sung thông tin </value>
+  </data>
+  <data name="Cwbyj" xml:space="preserve">
+    <value>Ý kiến bộ phận tài vụ </value>
+  </data>
+  <data name="Cygx" xml:space="preserve">
+    <value>Quan hệ thành viên </value>
+  </data>
+  <data name="Cz" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="Dayin" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="DbhRy" xml:space="preserve">
+    <value>Thư đảm bảo (nếu có )</value>
+  </data>
+  <data name="Dc" xml:space="preserve">
+    <value>Xuất khẩu </value>
+  </data>
+  <data name="Dewmyhb" xml:space="preserve">
+    <value>Thông tin đối tác thương mại thứ hai </value>
+  </data>
+  <data name="Dewyyzxx" xml:space="preserve">
+    <value>Thông tin chủ sở hữu thứ hai </value>
+  </data>
+  <data name="Dghydzkjyxgs" xml:space="preserve">
+    <value>Công ty TNHH công nghệ điện tử Dong Quan Yu Hua</value>
+  </data>
+  <data name="Dlwz" xml:space="preserve">
+    <value>Vị trí địa lý </value>
+  </data>
+  <data name="Dy" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="dyr" xml:space="preserve">
+    <value>Người in </value>
+  </data>
+  <data name="dysj" xml:space="preserve">
+    <value>Thời gian in </value>
+  </data>
+  <data name="Dywmyhb" xml:space="preserve">
+    <value>Thông tin đối tác thương mại thứ hai </value>
+  </data>
+  <data name="Dywyyzxx" xml:space="preserve">
+    <value>Thông tin chủ sở hữu thứ hai </value>
+  </data>
+  <data name="Dyyl" xml:space="preserve">
+    <value>Bản xem trước khi in </value>
+  </data>
+  <data name="Dz" xml:space="preserve">
+    <value>Địa chỉ </value>
+  </data>
+  <data name="D_d" xml:space="preserve">
+    <value>Thứ</value>
+  </data>
+  <data name="Fdgsmc" xml:space="preserve">
+    <value>Tên công ty hợp pháp </value>
+  </data>
+  <data name="Fktk" xml:space="preserve">
+    <value>Điều khoản thanh toán </value>
+  </data>
+  <data name="Fzr" xml:space="preserve">
+    <value>Người phụ trách </value>
+  </data>
+  <data name="Gb" xml:space="preserve">
+    <value>Đóng </value>
+  </data>
+  <data name="Gj" xml:space="preserve">
+    <value>Quốc gia </value>
+  </data>
+  <data name="Gjzhhm" xml:space="preserve">
+    <value>Số tài khoản quốc tế </value>
+  </data>
+  <data name="Glgj" xml:space="preserve">
+    <value>Công cụ quản lý </value>
+  </data>
+  <data name="Gngl" xml:space="preserve">
+    <value>Quản lý công năng </value>
+  </data>
+  <data name="Gsdz" xml:space="preserve">
+    <value>Địa chỉ công ty </value>
+  </data>
+  <data name="Gsjsy" xml:space="preserve">
+    <value>Giới thiệu công ty (Tiếng Anh)</value>
+  </data>
+  <data name="Gsjsz" xml:space="preserve">
+    <value>Giới thiệu công ty (Tiếng Trung )</value>
+  </data>
+  <data name="Gslx" xml:space="preserve">
+    <value>Loại hình công ty </value>
+  </data>
+  <data name="Gsmc" xml:space="preserve">
+    <value>Tên công ty </value>
+  </data>
+  <data name="Gsrgsyzdxxxt" xml:space="preserve">
+    <value>Kiểm tra xem có giống với thông tin thanh toán không </value>
+  </data>
+  <data name="G_g" xml:space="preserve">
+    <value>Tổng cộng</value>
+  </data>
+  <data name="Hb" xml:space="preserve">
+    <value>Tiền tệ </value>
+  </data>
+  <data name="Hy" xml:space="preserve">
+    <value>Ngành nghề </value>
+  </data>
+  <data name="Hyfl" xml:space="preserve">
+    <value>Phân loại ngành nghề </value>
+  </data>
+  <data name="Hynyxgs" xml:space="preserve">
+    <value>Công ty TNHH Hossack (Việt Nam)</value>
+  </data>
+  <data name="Hzgx" xml:space="preserve">
+    <value>Quan hệ hợp tác </value>
+  </data>
+  <data name="Jc" xml:space="preserve">
+    <value>Tên gọi tắt </value>
+  </data>
+  <data name="Jcxx" xml:space="preserve">
+    <value>Thông tin cơ bản </value>
+  </data>
+  <data name="Jjtg" xml:space="preserve">
+    <value>Thông báo khẩn cấp </value>
+  </data>
+  <data name="Jszdddydz" xml:space="preserve">
+    <value>Địa chỉ e-mail nhận hóa đơn </value>
+  </data>
+  <data name="Jyhb" xml:space="preserve">
+    <value>Tiền tệ giao dịch </value>
+  </data>
+  <data name="JyydywjszdfsQtgnddzyxdz" xml:space="preserve">
+    <value>Kiến nghị dùng e-mail làm phương thức nhận hóa đơn, vui lòng cung cấp địa chỉ e-mail của bạn </value>
+  </data>
+  <data name="k3dm" xml:space="preserve">
+    <value>Mã K3 </value>
+  </data>
+  <data name="Kh" xml:space="preserve">
+    <value>Khách hàng </value>
+  </data>
+  <data name="Khdm" xml:space="preserve">
+    <value>mã khách hàng</value>
+  </data>
+  <data name="Khds" xml:space="preserve">
+    <value>Thuộc về khách hàng </value>
+  </data>
+  <data name="Khjb" xml:space="preserve">
+    <value>Cấp bậc khách hàng </value>
+  </data>
+  <data name="Khjc" xml:space="preserve">
+    <value>Tên gọi tắt của khách hàng </value>
+  </data>
+  <data name="Khlb" xml:space="preserve">
+    <value>Loại khách hàng </value>
+  </data>
+  <data name="khmc" xml:space="preserve">
+    <value>Tên khách hàng </value>
+  </data>
+  <data name="Khqc_cn" xml:space="preserve">
+    <value>Tên đầy đủ khách hàng (Tiếng Trung )</value>
+  </data>
+  <data name="Khqc_en" xml:space="preserve">
+    <value>Tên đầy đủ khách hàng ( Tiếng Anh )</value>
+  </data>
+  <data name="Khsfwssgs" xml:space="preserve">
+    <value>Khách hàng có phải là công ty niêm yết  không </value>
+  </data>
+  <data name="Khwhlb" xml:space="preserve">
+    <value>Danh sách bảo trì khách hàng </value>
+  </data>
+  <data name="Khxh" xml:space="preserve">
+    <value>Số sê ri khách hàng </value>
+  </data>
+  <data name="Khxyxxy" xml:space="preserve">
+    <value>Trang chi tiết tín dụng khách hàng </value>
+  </data>
+  <data name="Khxz" xml:space="preserve">
+    <value>Tính chất khách hàng </value>
+  </data>
+  <data name="Lxfs" xml:space="preserve">
+    <value>Phương thức liên hệ</value>
+  </data>
+  <data name="Lxlx" xml:space="preserve">
+    <value>Loại liên hệ </value>
+  </data>
+  <data name="Lxr" xml:space="preserve">
+    <value>Người liên hệ </value>
+  </data>
+  <data name="Lxxx" xml:space="preserve">
+    <value>Thông tin liên hệ </value>
+  </data>
+  <data name="Ms" xml:space="preserve">
+    <value>Mô tả </value>
+  </data>
+  <data name="My" xml:space="preserve">
+    <value>Trang cuối </value>
+  </data>
+  <data name="Myxs" xml:space="preserve">
+    <value>Hiển thị mỗi trang </value>
+  </data>
+  <data name="Ndsr" xml:space="preserve">
+    <value>Thu nhập hằng năm </value>
+  </data>
+  <data name="QgsrgkhwssstBxytgyyzxx" xml:space="preserve">
+    <value>Xin đánh dấu nếu khách hàng là thực thể niêm yết, không cần cung cấp thông tin chủ sở hữu </value>
+  </data>
+  <data name="Qgsrgxzyyjwjszdfs" xml:space="preserve">
+    <value> Xin đánh dấu nếu chọn phương thức nhận hóa đơn qua bưu điện </value>
+  </data>
+  <data name="Qqmc" xml:space="preserve">
+    <value>Tên chính xác</value>
+  </data>
+  <data name="Qtgbdylgzyyyzxx" xml:space="preserve">
+    <value>Ghi chú : vui lòng cung ấp không quá 2 thông tin của chủ sở hữu chính </value>
+  </data>
+  <data name="Qtgljcwspywfyqxrdgyszwmyck" xml:space="preserve">
+    <value>Ghi chú : xin cung cấp hai nhà cung ứng có mức tài chính tương đương với kì vọng của chúng tôi làm thao khảo thương mại</value>
+  </data>
+  <data name="Qx" xml:space="preserve">
+    <value>Hủy bỏ </value>
+  </data>
+  <data name="Qyyyqf" xml:space="preserve">
+    <value>quyền sở hữu doanh nghiệp %</value>
+  </data>
+  <data name="Qzdzkjdgyxgs" xml:space="preserve">
+    <value>Cty TNHH công nghệ điện tử Qun Zhi ( DongQuan) </value>
+  </data>
+  <data name="Qznykjynyxgs" xml:space="preserve">
+    <value>Cty TNHH công nghệ năng lượng Qun Zhi Việt Nam </value>
+  </data>
+  <data name="Qznykjyxgs" xml:space="preserve">
+    <value>Cty TNHH công nghệ năng lượng Qun Zhi </value>
+  </data>
+  <data name="RsxykhzhyzzshcbzzsQlcqcygx" xml:space="preserve">
+    <value>Nếu đó là nhà sẩn xuất nhận thầu hoặc nhà sản xuất hợp đồng của khách hàng hiện tại xin liệt kê quan hệ các thành viên </value>
+  </data>
+  <data name="Scbbcxx" xml:space="preserve">
+    <value>Bộ phận marketing bổ sung thông tin </value>
+  </data>
+  <data name="Scsy" xml:space="preserve">
+    <value>Danh tiếng thị trường </value>
+  </data>
+  <data name="Scwj" xml:space="preserve">
+    <value>Upload files</value>
+  </data>
+  <data name="Scxsbyj" xml:space="preserve">
+    <value>Ý kiến phòng marketing </value>
+  </data>
+  <data name="Sfgx" xml:space="preserve">
+    <value>Có chia sẻ không </value>
+  </data>
+  <data name="Sj" xml:space="preserve">
+    <value>Điện thoại </value>
+  </data>
+  <data name="Snxse" xml:space="preserve">
+    <value>Doanh thu năm đầu tiên </value>
+  </data>
+  <data name="Ss" xml:space="preserve">
+    <value>Tìm kiếm </value>
+  </data>
+  <data name="Sscs" xml:space="preserve">
+    <value>Thuộc về thành phố </value>
+  </data>
+  <data name="Ssgj" xml:space="preserve">
+    <value>Thuộc về quốc gia </value>
+  </data>
+  <data name="Swtsm" xml:space="preserve">
+    <value>Mã nhắc 3 chữ số </value>
+  </data>
+  <data name="Sy" xml:space="preserve">
+    <value>Trang đầu </value>
+  </data>
+  <data name="Syczndhdzxglzm" xml:space="preserve">
+    <value>Các tài khoản quản lý mới nhất sau năm tài chính trước</value>
+  </data>
+  <data name="Sydjz" xml:space="preserve">
+    <value>Giấy chứng nhận đăng ký kinh doanh</value>
+  </data>
+  <data name="Syxysq" xml:space="preserve">
+    <value>Đơn đăng ký tín dụng kinh doanh</value>
+  </data>
+  <data name="Syy" xml:space="preserve">
+    <value>Trang trước</value>
+  </data>
+  <data name="Szcs" xml:space="preserve">
+    <value>Thành phố </value>
+  </data>
+  <data name="Szdm" xml:space="preserve">
+    <value>Mã 3 chữ </value>
+  </data>
+  <data name="Tg" xml:space="preserve">
+    <value>Thông qua</value>
+  </data>
+  <data name="Th" xml:space="preserve">
+    <value>Trở về</value>
+  </data>
+  <data name="Tjsp" xml:space="preserve">
+    <value>Gửi đi xét duyệt </value>
+  </data>
+  <data name="Tz" xml:space="preserve">
+    <value>Nhảy</value>
+  </data>
+  <data name="T_t" xml:space="preserve">
+    <value>Dải</value>
+  </data>
+  <data name="Wjhdqd" xml:space="preserve">
+    <value>Danh sách tài liệu đối chiếu </value>
+  </data>
+  <data name="Xg" xml:space="preserve">
+    <value>Sửa đổi</value>
+  </data>
+  <data name="Xgkhlxxx" xml:space="preserve">
+    <value>Sửa đổi thông tin liên hệ của khách hàng</value>
+  </data>
+  <data name="Xgkhxx" xml:space="preserve">
+    <value>Sửa đổi thông tin khách hàng</value>
+  </data>
+  <data name="Xjkhlxxx" xml:space="preserve">
+    <value>Thông tin liên hệ khách hàng mới</value>
+  </data>
+  <data name="Xkhxysqb" xml:space="preserve">
+    <value>Đơn đăng ký tín dụng khách hàng mới</value>
+  </data>
+  <data name="Xm" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="Xsddjsst" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Xxnr" xml:space="preserve">
+    <value>Nội dung chi tiết </value>
+  </data>
+  <data name="Xy" xml:space="preserve">
+    <value>Trang sau </value>
+  </data>
+  <data name="XybgRdbssyzlgs" xml:space="preserve">
+    <value>Báo cáo tín dụng  (ví dụ Cty thông tin thương mại Deng Bai Shi )</value>
+  </data>
+  <data name="Xydj" xml:space="preserve">
+    <value>Xếp hạng tín dụng</value>
+  </data>
+  <data name="Xye" xml:space="preserve">
+    <value>Giới hạn tín dụng</value>
+  </data>
+  <data name="Xyhy" xml:space="preserve">
+    <value>Hợp đồng thỏa thuận</value>
+  </data>
+  <data name="Xyqx" xml:space="preserve">
+    <value>Thời hạn tín dụng</value>
+  </data>
+  <data name="Xyxx" xml:space="preserve">
+    <value>Thông tin tín dụng</value>
+  </data>
+  <data name="Xz" xml:space="preserve">
+    <value>Thêm mới</value>
+  </data>
+  <data name="Yb" xml:space="preserve">
+    <value>Mã bưu điện</value>
+  </data>
+  <data name="Ycxsl" xml:space="preserve">
+    <value>Doanh số dự báo</value>
+  </data>
+  <data name="Ye" xml:space="preserve">
+    <value>Trang </value>
+  </data>
+  <data name="Yfzklxxx" xml:space="preserve">
+    <value>Thông tin liên hệ khoản phải trả</value>
+  </data>
+  <data name="Yhgjdm" xml:space="preserve">
+    <value>Mã quốc tế ngân hàng (SWIFT)</value>
+  </data>
+  <data name="YhzxzmRy" xml:space="preserve">
+    <value>Chứng nhận tín dụng ngân hàng( nếu có )</value>
+  </data>
+  <data name="Ynw" xml:space="preserve">
+    <value>Tiếng Việt</value>
+  </data>
+  <data name="Yqxytk" xml:space="preserve">
+    <value>Điều khoản tín dụng dự kiến</value>
+  </data>
+  <data name="Yszklxxx" xml:space="preserve">
+    <value>Thông tin liên hệ khoản phải thu</value>
+  </data>
+  <data name="Yw" xml:space="preserve">
+    <value>Tiếng anh</value>
+  </data>
+  <data name="Ywmc" xml:space="preserve">
+    <value>Tên tiếng anh </value>
+  </data>
+  <data name="Yydz" xml:space="preserve">
+    <value>Địa chỉ doanh nghiệp</value>
+  </data>
+  <data name="Yyzmc" xml:space="preserve">
+    <value>Tên chủ sở hữu</value>
+  </data>
+  <data name="Y_Y" xml:space="preserve">
+    <value>(Anh-)</value>
+  </data>
+  <data name="Zc" xml:space="preserve">
+    <value>Chức danh </value>
+  </data>
+  <data name="Zcdz" xml:space="preserve">
+    <value>Địa chỉ đăng ký</value>
+  </data>
+  <data name="Zcgj" xml:space="preserve">
+    <value>Quốc gia đăng ký</value>
+  </data>
+  <data name="Zclx" xml:space="preserve">
+    <value>Loại đăng ký</value>
+  </data>
+  <data name="Zcrq" xml:space="preserve">
+    <value>Ngày đăng ký</value>
+  </data>
+  <data name="Zdxx" xml:space="preserve">
+    <value>Thông tin thanh toán</value>
+  </data>
+  <data name="Zdx_x" xml:space="preserve">
+    <value>Thông tin thanh toán</value>
+  </data>
+  <data name="Zhgx" xml:space="preserve">
+    <value>Cập nhật lần cuối </value>
+  </data>
+  <data name="Zj2gczndjsjdcwbb" xml:space="preserve">
+    <value>Báo cáo tài chính đã được kiểm toán cho 2 năm tài chính gần nhất</value>
+  </data>
+  <data name="Zs" xml:space="preserve">
+    <value>Tỉnh /bang </value>
+  </data>
+  <data name="Zsxzyx" xml:space="preserve">
+    <value>Lựa chọn ít nhất 1 hạng mục </value>
+  </data>
+  <data name="Zt" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="Zw" xml:space="preserve">
+    <value>Tiếng trung </value>
+  </data>
+  <data name="Zwmc" xml:space="preserve">
+    <value>Tên tiếng trung</value>
+  </data>
+  <data name="Zxwz" xml:space="preserve">
+    <value>Trang mạng </value>
+  </data>
+  <data name="Zycz" xml:space="preserve">
+    <value>Fax chính</value>
+  </data>
+  <data name="Zydh" xml:space="preserve">
+    <value>Điện thoại chính</value>
+  </data>
+  <data name="Zyxx" xml:space="preserve">
+    <value>Thông tin vận chuyển</value>
+  </data>
+  <data name="Zyyh" xml:space="preserve">
+    <value>Ngân hàng chính </value>
+  </data>
+  <data name="Zzscst" xml:space="preserve">
+    <value>Thực thể sản xuất chế tạo </value>
+  </data>
+  <data name="Z_Z" xml:space="preserve">
+    <value>（Trung-)</value>
+  </data>
+</root>

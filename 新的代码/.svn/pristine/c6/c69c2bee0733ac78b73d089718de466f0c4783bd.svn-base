@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="C6Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="C6Entities2" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="SelectOA" ReturnType="Collection(C6Model.SelectOA_Result)">
+      <Parameter Name="Serial_Num" Mode="In" Type="String" />
+      <Parameter Name="K3PO_Num" Mode="In" Type="String" />
+      <Parameter Name="Buyer" Mode="In" Type="String" />
+      <Parameter Name="Start_Date" Mode="In" Type="String" />
+      <Parameter Name="End_Date" Mode="In" Type="String" />
+      <Parameter Name="Mat_Code" Mode="In" Type="String" />
+      <Parameter Name="Mat_Name" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="SelectOA_Result">
+    <Property Type="Int64" Name="rownum" Nullable="true" />
+    <Property Type="DateTime" Name="ApplyDate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Serial_Num" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Mat_Code" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Mat_Name" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Unit" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="Qty" Nullable="true" Precision="16" Scale="2" />
+    <Property Type="DateTime" Name="RequireDate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="AppD_Name" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="Applicant_CN" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="K3PO_Num" Nullable="true" MaxLength="30" />
+    <Property Type="DateTime" Name="K3PO_Date" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Supplier" Nullable="true" MaxLength="100" />
+    <Property Type="Decimal" Name="K3Qty" Nullable="true" Precision="10" Scale="2" />
+    <Property Type="String" Name="Buyer" Nullable="true" MaxLength="20" />
+    <Property Type="DateTime" Name="Prop_Arr_Date" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="K3Recv_Date" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Remark" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="K3Unit" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="MainID" Nullable="true" MaxLength="11" />
+  </ComplexType>
+</Schema>

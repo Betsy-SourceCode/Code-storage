@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="C6ModelStoreContainer" CdmEntityContainer="C6Entities2">
+    <FunctionImportMapping FunctionImportName="SelectOA" FunctionName="C6Model.Store.SelectOA">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="C6Model.SelectOA_Result">
+          <ScalarProperty Name="rownum" ColumnName="rownum" />
+          <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
+          <ScalarProperty Name="Serial_Num" ColumnName="Serial_Num" />
+          <ScalarProperty Name="Mat_Code" ColumnName="Mat_Code" />
+          <ScalarProperty Name="Mat_Name" ColumnName="Mat_Name" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="RequireDate" ColumnName="RequireDate" />
+          <ScalarProperty Name="AppD_Name" ColumnName="AppD_Name" />
+          <ScalarProperty Name="Applicant_CN" ColumnName="Applicant_CN" />
+          <ScalarProperty Name="K3PO_Num" ColumnName="K3PO_Num" />
+          <ScalarProperty Name="K3PO_Date" ColumnName="K3PO_Date" />
+          <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+          <ScalarProperty Name="K3Qty" ColumnName="K3Qty" />
+          <ScalarProperty Name="Buyer" ColumnName="Buyer" />
+          <ScalarProperty Name="Prop_Arr_Date" ColumnName="Prop_Arr_Date" />
+          <ScalarProperty Name="K3Recv_Date" ColumnName="K3Recv_Date" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="K3Unit" ColumnName="K3Unit" />
+          <ScalarProperty Name="MainID" ColumnName="MainID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

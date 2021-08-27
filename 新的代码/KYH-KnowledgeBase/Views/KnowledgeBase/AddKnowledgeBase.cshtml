@@ -1,0 +1,717 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>新增系统技术知识记录</title>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/上传文件和下载文件/fileinput.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/富文本/themes/default/default.css" rel="stylesheet" />
+    <script src="~/Scripts/上传文件和下载文件/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/上传文件和下载文件/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/上传文件和下载文件/fileinput.min.js"></script>
+    @*<script src="~/Scripts/上传文件和下载文件/zh.js"></script>*@
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/jQuery.print.js"></script>
+    <script src="~/Scripts/富文本/kindeditor-all.js"></script>
+    <script src="~/Scripts/富文本/zh-CN.js"></script>
+    <style>
+        .input-clear {
+            display: none;
+            float: right;
+            margin-top: -17px;
+            margin-right: 10px;
+            transform: translateY(-50%);
+            z-index: 111;
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+            cursor: pointer;
+        }
+
+        .text .caption h5 {
+            text-shadow: 3px 2px 2px grey;
+            color: #0094ff;
+            margin-top: 2%;
+        }
+
+        /*   .btn-file {
+            background: url('../../Scripts/图标/上传.png') no-repeat;
+            background-size: 30px;
+            background-position: 98%;
+        }*/
+
+        /*.file-preview {
+                    display: none;
+                }*/
+        .col-md-1 {
+            width: 6%;
+        }
+
+        hr.new2 {
+            border-top: 2px dashed #ccc;
+        }
+
+        .ChangeColors {
+            background-color: #eaeaff;
+        }
+
+        .ke-edit-iframe {
+            background-color: #eaeaff;
+        }
+
+        body {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+
+        /* Set padding to keep content from hitting the edges */
+        .body-content {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        /* Override the default bootstrap behavior where horizontal description lists
+           will truncate terms that are too long to fit in the left column
+        */
+        .dl-horizontal dt {
+            white-space: normal;
+        }
+    </style>
+    @*进入页面再次判断权限*@
+    <script>
+        $(function () {
+             if ("@ViewBag.User"!= "True") {
+                 alert('抱歉,您没有新增权限！');
+                 var userid = '@ViewBag.userid';
+                 window.location.href = "/KnowledgeBase/Index?userid=" + userid + "";
+            }
+            //调用上传插件
+            initFileInput("file");
+            @* 模糊查询文本框 *@
+            // 监听输入框内容变动
+            $(".input-group-clear").bind("input propertychange", function () {
+                // 获取输入框的值
+                var inputValue = $(this).children('input').val();
+                // 判断输入框是否有值
+                if (inputValue >= 1) {
+                    // 显示清除
+                    $(this).children('.input-clear').show();
+                } else {
+                    // 隐藏清除
+                    $(this).children('.input-clear').hide();
+                }
+
+            });
+
+            // 输入框获取焦点事件，判断输入框是否有值，有值则显示清除
+            $(".input-group-clear").children('input').focus(function () {
+
+                var inputValue = this.value.length;
+
+                if (inputValue >= 1) {
+                    $(this).siblings('.input-clear').show();
+                }
+
+            });
+
+            // 点击清除事件
+            $('.input-clear').click(function () {
+                // 清空输入框值
+                $(this).siblings('input').val('');
+                // 隐藏清除
+                $(this).hide();
+
+            });
+
+            // 离开输入框div事件，隐藏清除,此处不能使用blur，因为blur只对输入框有效
+            $(".input-group-clear").focusout(function () {
+
+                var igc = $(this);
+                // 设置一个定时器，离开输入框div，200毫秒后隐藏清除，不设置定时器会出现点击清除无效的情况
+                setTimeout(function () {
+                    igc.children('.input-clear').hide();
+                }, 200)
+
+            });
+        } )
+    </script>
+    @*上传文件插件*@
+    <script>
+        //初始化fileinput控件（第一次初始化）
+        function initFileInput(ctrlName) {
+            var control = $('.' + ctrlName);
+            control.fileinput({
+                language: 'zh', //设置语言
+                uploadUrl: "/", //上传的地址
+                uploadAsync: true, //默认异步上传
+                allowedFileType: ['image'],
+                //allowedFileExtensions: ,//接收的文件后缀
+                showUpload: false, //是否显示上传按钮
+                dropZoneEnabled: true,
+                showCaption: false,//是否显示标题
+                showRemove: false,
+                browseClass: "form-control", //按钮样式
+                enctype: 'multipart/form-data',
+                validateInitialCount: true,
+                showCancel: false,
+                previewFileIcon: "<i class='form-control'></i>",
+                maxFileSize: 4096,   //上传的文件大小
+                layoutTemplates: {
+                    actionUpload: '',//去掉上传图标
+                    indicatorNew: '',
+                    indicator: ''
+                }
+            })
+    }
+        //语言包
+        (function ($) {
+        "use strict";
+        $.fn.fileinputLocales['zh'] = {
+            fileSingle: '@Resources.CustomerRes.Dangwj',
+            filePlural: '@Resources.CustomerRes.Duogwj',
+            browseLabel: '@Resources.CustomerRes.Scwj',
+            removeLabel: '@Resources.CustomerRes.Schuwj',
+            removeTitle: '@Resources.CustomerRes.Scxdwj',
+            cancelLabel: '@Resources.CustomerRes.Qx',
+            cancelTitle: '@Resources.CustomerRes.Xqsc',
+            pauseLabel: 'Pause',
+            pauseTitle: 'Pause ongoing upload',
+            uploadLabel: '@Resources.CustomerRes.Sc',
+            uploadTitle: '@Resources.CustomerRes.Shangcxdwj',
+            msgNo: '没有',
+            msgNoFilesSelected: '未选择文件',
+            msgPaused: 'Paused',
+            msgCancelled: '取消',
+            msgPlaceholder: '选择 {files} ...',
+            msgZoomModalHeading: '详细预览',
+            msgFileRequired: '必须选择一个文件上传.',
+            msgSizeTooSmall: '文件 "{name}" (<b>{size} KB</b>) 必须大于限定大小 <b>{minSize} KB</b>.',
+            msgSizeTooLarge: '文件 "{name}" (<b>{size} KB</b>) 超过了允许大小 <b>{maxSize} KB</b>.',
+            msgFilesTooLess: '你必须选择最少 <b>{n}</b> {files} 来上传. ',
+            msgFilesTooMany: '选择的上传文件个数 <b>({n})</b> 超出最大文件的限制个数 <b>{m}</b>.',
+            msgTotalFilesTooMany: 'You can upload a maximum of <b>{m}</b> files (<b>{n}</b> files detected).',
+            msgFileNotFound: '文件 "{name}" 未找到!',
+            msgFileSecured: '安全限制，为了防止读取文件 "{name}".',
+            msgFileNotReadable: '文件 "{name}" 不可读.',
+            msgFilePreviewAborted: '取消 "{name}" 的预览.',
+            msgFilePreviewError: '读取 "{name}" 时出现了一个错误.',
+            msgInvalidFileName: '文件名 "{name}" 包含非法字符.',
+            msgInvalidFileType: '不正确的类型 "{name}". 只支持 "{types}" 类型的文件.',
+            msgInvalidFileExtension: '不正确的文件扩展名 "{name}". 只支持 "{extensions}" 的文件扩展名.',
+            msgFileTypes: {
+                'image': 'image',
+                'html': 'HTML',
+                'text': 'text',
+                'video': 'video',
+                'audio': 'audio',
+                'flash': 'flash',
+                'pdf': 'PDF',
+                'object': 'object'
+            },
+            msgUploadAborted: '该文件上传被中止',
+            msgUploadThreshold: '处理中 &hellip;',
+            msgUploadBegin: '正在初始化 &hellip;',
+            msgUploadEnd: '完成',
+            msgUploadResume: 'Resuming upload &hellip;',
+            msgUploadEmpty: '无效的文件上传.',
+            msgUploadError: 'Upload Error',
+            msgDeleteError: 'Delete Error',
+            msgProgressError: '上传出错',
+            msgValidationError: '验证错误',
+            msgLoading: '加载第 {index} 文件 共 {files} &hellip;',
+            msgProgress: '加载第 {index} 文件 共 {files} - {name} - {percent}% 完成.',
+            msgSelected: '{n} {files} 选中',
+            msgFoldersNotAllowed: '只支持拖拽文件! 跳过 {n} 拖拽的文件夹.',
+            msgImageWidthSmall: '图像文件的"{name}"的宽度必须是至少{size}像素.',
+            msgImageHeightSmall: '图像文件的"{name}"的高度必须至少为{size}像素.',
+            msgImageWidthLarge: '图像文件"{name}"的宽度不能超过{size}像素.',
+            msgImageHeightLarge: '图像文件"{name}"的高度不能超过{size}像素.',
+            msgImageResizeError: '无法获取的图像尺寸调整。',
+            msgImageResizeException: '调整图像大小时发生错误。<pre>{errors}</pre>',
+            msgAjaxError: '{operation} 发生错误. 请重试!',
+            msgAjaxProgressError: '{operation} 失败',
+            msgDuplicateFile: 'File "{name}" of same size "{size} KB" has already been selected earlier. Skipping duplicate selection.',
+            msgResumableUploadRetriesExceeded: 'Upload aborted beyond <b>{max}</b> retries for file <b>{file}</b>! Error Details: <pre>{error}</pre>',
+            msgPendingTime: '{time} remaining',
+            msgCalculatingTime: 'calculating time remaining',
+            ajaxOperations: {
+                deleteThumb: '删除文件',
+                uploadThumb: '上传文件',
+                uploadBatch: '批量上传',
+                uploadExtra: '表单数据上传'
+            },
+            dropZoneTitle: '@Resources.CustomerRes.jwjtfdcc	&hellip;',
+            dropZoneClickTitle: '<br>(或点击{files}按钮选择文件)',
+            fileActionSettings: {
+                removeTitle: '删除文件',
+                uploadTitle: '上传文件',
+                downloadTitle: '下载文件',
+                uploadRetryTitle: '重试',
+                zoomTitle: '查看详情',
+                dragTitle: '移动 / 重置',
+                indicatorNewTitle: '没有上传',
+                indicatorSuccessTitle: '上传',
+                indicatorErrorTitle: '上传错误',
+                indicatorPausedTitle: 'Upload Paused',
+                indicatorLoadingTitle: '上传 &hellip;'
+            },
+            previewZoomButtonTitles: {
+                prev: '预览上一个文件',
+                next: '预览下一个文件',
+                toggleheader: '缩放',
+                fullscreen: '全屏',
+                borderless: '无边界模式',
+                close: '关闭当前预览'
+            }
+        };
+        })
+        (window.jQuery);
+    </script>
+
+    @*暂时不要*@
+    @*<script>
+            //jQuery的页面加载完成时触发的事件
+            $(document).ready(function () {
+
+                $("input[type='text']").on("blur focus", function () {
+                    var defaultvalue = $(this).attr("defaultvalue");
+
+                    //判断是否获取焦点
+                    if ($(this).is(":focus")) {
+                        //把输入框里面的文字颜色变为黑色
+                        $(this).css("color", "#000");
+                        //如果之前的内容是默认值，那么清空
+                        if ($(this).val() == defaultvalue) {
+                            $(this).val("");
+                        }
+                    } else {//失去焦点
+                        //判断内容是空的或默认值
+                        if ($(this).val() == "" || $(this).val() == defaultvalue) {
+                            //设置为默认值
+                            $(this).val(defaultvalue);
+                            //文字颜色设置为灰色
+                            $(this).css("color", "#999");
+                        } else {
+                            //文字设置为黑色
+                            $(this).css("color", "#000");
+                        }
+                    }
+                });
+            });
+        </script>*@
+    <script>
+        $(function myfunction() {
+            //设置Cookie
+            if (getCookie("Language") == "") {
+                document.cookie = "Language=en-US"
+            }
+        })
+        // 获取指定名称的cookie
+        function getCookie(name) {
+            var strcookie = document.cookie;//获取cookie字符串
+            var arrcookie = strcookie.split("; ");//分割
+            //遍历匹配
+            for (var i = 0; i < arrcookie.length; i++) {
+                var arr = arrcookie[i].split("=");
+                if (arr[0] == name) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        //跳转页面
+        function history() {
+            window.location.href = "/KnowledgeBase/Index?userid=@ViewBag.userid";
+        }
+    </script>
+    @*保存按钮功能/输入框限制符号（除分号）*@
+    <script>
+        function AddKnowledgeBase() {
+            var isFK = FeiKong();
+            if (!isFK) {
+                return;
+            };
+            var data = new FormData($('#Addform')[0]);
+            $.ajax({
+                url: "/KnowledgeBaseZSG/AddUpdateFunction?&num=1",
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                async: false,
+                cache: false,
+                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                processData: false,   // 告诉jQuery不要去处理发送的数据
+                success: function (result) {
+                    if (result.id > 0) {
+                        alert("添加成功！");   //跳转到
+                        window.location.href = "/KnowledgeBase/DetailsKnowledgeBase?QnAID=" + result.Success;
+                    }
+                    else {
+                        alert("添加失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                }
+            });
+        }
+        //判断文本框非空
+        function FeiKong() {
+            var Author = $("#Author").val().trim();
+            var Question = $("#Question").val().replace(/&nbsp;/g, '').trim();
+            var Answer = $("#Answer").val().replace(/&nbsp;/g, '').trim();
+            if (Author == "") {
+                alert("作者（提出者）不可为空!");
+                document.getElementById("Author").focus();
+                return false;
+            }
+            if (Question == "") {
+                alert("主题描述不可为空!");
+                return false;
+            }
+            if (Answer == "") {
+                alert("处理描述不可为空!");
+                return false;
+            }
+            ////获取到文件列表
+            //var uploadQuestionflag = false;
+            //var uploadAnswerflag = false;
+            //for (var i = 0; i < 8; i++) {
+            //    var files = $('.file').eq(i).prop('files');
+            //    if (files.length > 0 && i < 4) {
+            //        uploadQuestionflag = true;
+            //    }
+            //    if (files.length > 0 && i >= 4) {
+            //        uploadAnswerflag = true;
+            //    }
+            //}
+            //if (!uploadQuestionflag) {
+            //    alert('问题描述至少上传一张图片！');
+            //    return false;
+            //}
+            //if (!uploadAnswerflag) {
+            //    alert('答案描述至少上传一张图片！');
+            //    return false;
+            //}
+
+            //var files = $('.file').prop('files');
+            //for (var i = 1; i <= 8; i++) {
+            //    if (i > 0 && i <= 4) {
+            //        if (files[i].length == 0) {
+            //            alert('问题描述至少上传一张图片！');
+            //           return false;
+            //        }
+            //    }
+            //    else {
+            //        if (files[i].length == 0) {
+            //            alert('答案描述至少上传一张图片！');
+            //            return false;
+            //        }
+            //    }
+            //}
+
+            return true;
+        }
+        //输入框限制符号（除分号）
+        function YanZheng(em) {
+            var zz = /[^A-Za-z\u4e00-\u9fa5\d;；]+$/;
+            var yanzheng = $(em).val();
+            if (yanzheng != "") {
+                if (yanzheng.match(zz)) {
+                    $(em).val(yanzheng.replace(zz, ''));
+                    //alert("只能输入字母中文数字和分号！");
+                    $(em).focus();
+                }
+            }
+        }
+    </script>
+    @*富文本*@
+    <script>
+        KindEditor.ready(function (K) {
+            //window.editor = K.create('.ke_demo');
+            allowImageUpload: false;
+            var editor;
+            KindEditor.ready(function (K) {
+                editor = K.create(".ke_demo", {
+                    afterCreate: function () { this.sync(); },//解决富文本框值为空
+                    afterBlur: function () { this.sync(); },
+                    afterChange: function () {             //限制字数
+                        if (this.count('text') > 500) {
+                            var strValue = this.text();
+                            this.text("");
+                            this.appendHtml(strValue.substring(0, 500));
+                        }
+                        //this.sync();
+                    }
+                });
+            });
+        })
+        KindEditor.ready(function (K) {
+            //window.editor = K.create('.ke_demo');
+            allowImageUpload: false;
+            var editor;
+            KindEditor.ready(function (K) {
+                editor = K.create(".ke_demo1", {
+                    afterCreate: function () { this.sync(); },//解决富文本框值为空
+                    afterBlur: function () { this.sync(); },
+                    afterChange: function () {             //限制字数
+                        if (this.count('text') > 500) {
+                            var strValue = this.text();
+                            this.text("");
+                            this.appendHtml(strValue.substring(0, 500));
+                        }
+                        //this.sync();
+                    }
+                });
+            });
+        })
+        KindEditor.ready(function (K) {
+            //window.editor = K.create('.ke_demo');
+            allowImageUpload: false;
+            var editor;
+            KindEditor.ready(function (K) {
+                editor = K.create(".ke_demo2", {
+                    afterCreate: function () { this.sync(); },//解决富文本框值为空
+                    afterBlur: function () { this.sync(); },
+                    afterChange: function () {             //限制字数
+                        if (this.count('text') > 1500) {
+                            var strValue = this.text();
+                            this.text("");
+                            this.appendHtml(strValue.substring(0, 1500));
+                        }
+                        //this.sync();
+                    }
+                });
+            });
+        })
+    </script>
+    @*板块下拉框*@
+    <script>
+        $(function () {
+            var name = getCookie("Language");
+            if (name == "zh-CN") {  //中文状态下
+                var Language = "Name_CN";
+            }
+            if (name == "en-US") {  //英文状态下
+                var Language = "Name_EN";
+            }
+            if (name == "vi") {   //越南文状态下
+                Language = "Name_VN";
+            }
+            var TopicArea = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/KnowledgeBase/SelectBK",
+                data: { "Language": Language },
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        TopicArea += '<option value="' + value.Value + '"';
+                        TopicArea += ">" + value.Text + '</option > ';
+                    })
+                    $("#TopicArea").find("select").append(TopicArea);
+                    return false;
+                }
+            });
+        })
+    </script>
+</head>
+<body>
+    <div class="container-fluid" style="width:98%">
+        <div style="float: left; margin-left: 20px; margin-top: 20px;">
+            <img src="/Scripts/image/logo.jpg" />
+        </div>
+        <div style="float: right; margin-right: 20px;">
+            <a style="margin-left: 25px;" href="#" onclick="history()"><img src="/Scripts/image/关闭.jpg" title="@Resources.CustomerRes.Gb" /></a>
+        </div>
+        <div>
+            <h1 style="text-align: center; margin-top: 50px;">
+                <span id="Title"> @Resources.CustomerRes.Xzxtjszsjl </span>
+            </h1>
+        </div>
+        <form id="Addform" action="##" onsubmit="return false" method="post" enctype="multipart/form-data">
+            <div style="border:#000000 1px solid;width:100%;margin: 0px auto;font-size:16px;clear:both;padding:5px">
+                <div style="width:100%;margin-left:2%;margin-top:1%;">
+                    <div class="col-md-3" style="margin-top:5px">
+                        <label>@Resources.CustomerRes.Ssbk：</label>
+                        <div style="display:initial;width:100%" id="TopicArea">
+                            <select name="TopicArea" style="width:30%" class="ChangeColors">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5" style="margin-left:-3%;">
+                        <label>@Resources.CustomerRes.Zzhe (@Resources.CustomerRes.Tcz)：</label>
+                        <div class="input-group-clear" style="display:inline-block;width:69%">
+                            @if (@ViewBag.QnAID == 0)
+                            {
+                                <input name="Author" type="text" id="Author" class="form-control ChangeColors" required autofocus maxlength="30">
+                            }
+                            else
+                            {
+                                <input name="Author" type="text" id="Author" class="form-control ChangeColors" value="@ViewBag.AllCustomer.Author" required autofocus maxlength="30">
+                            }
+                            <span class="input-clear isfocus">
+                                &times;
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;margin-top:50px;clear:both">
+                    <div is="qsion" class="col-md-14" style="margin-top:4%">
+                        <div class="text" style="width:3%;float:left">
+                            <div class="caption">
+                                <h5>@Resources.CustomerRes.Wen：</h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Zti：</span>
+                        <textarea class="ke_demo" name="Question" id="Question" rows="20" cols="100" style="width:92%;height:200px;visibility:hidden;margin-left:105px;" maxlength="500">
+                          @if (@ViewBag.QnAID!=0) {
+
+                                @ViewBag.AllCustomer.Question;
+                          }
+                    </textarea>
+                    </div>
+                    <div class="col-md-14" style="margin-top:1%;margin-bottom:5%">
+                        <div class="text" style="width:2%;float:left">
+                            <div class="caption">
+                                <h5></h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left;margin-top:7px">@Resources.CustomerRes.Gjz：</span>
+                        @{
+                            @functions{ public static string RemoveHtml(String html)
+                                {
+                                    if (html == null || html == "")
+                                    {
+                                        return html;
+                                    }
+                                    else
+                                    {
+                                        string text = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]+>", "");  //去掉html标签函数
+                                        text = System.Text.RegularExpressions.Regex.Replace(text, "&[^;]+;", "").Trim();
+                                        return text;
+                                    }
+
+                                }
+                            } @*其他页面调用函数（helpers为函数的页面名字）@helpers.RemoveHtml(item.Content)};*@
+                        }
+                        @if (@ViewBag.QnAID != 0)
+                        {
+                            <input type="text" name="KeyWord" id="KeyWord" style="width:60%;float:left" maxlength="500" class="form-control ChangeColors" onkeyup="YanZheng('#KeyWord')" value="@Html.Raw(@ViewBag.AllCustomer.KeyWord)" />
+                            <label style="margin-top:7px;margin-left:1%;color:red">@Resources.CustomerRes.Dggjzyfhgk</label>
+                        }
+                        else
+                        {
+                            <input type="text" name="KeyWord" id="KeyWord" style="width:92%;float:left" maxlength="500" class="form-control ChangeColors" placeholder="@Resources.CustomerRes.Dggjzyfhgk" onkeyup="YanZheng('#KeyWord')" />
+                        }
+
+                    </div>
+                    <div style="width:100%;margin-top:10px;overflow:hidden;margin-bottom:2%">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 001：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <input id="file-Portrait1" name="pic01" type="file" class="file">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 002：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <input id="file-Portrait2" name="pic02" type="file" class="file">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 003：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <input id="file-Portrait3" name="pic03" type="file" class="file">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Wt 004：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <input id="file-Portrait4" name="pic04" type="file" class="file">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="new2">
+                </div>
+                <div style="width:100%;clear:both">
+                    <div class="col-md-14" id="awer">
+                        <div class="text" style="width:3%;float:left">
+                            <div class="caption">
+                                <h5>@Resources.CustomerRes.Da：</h5>
+                            </div>
+                        </div>
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Cl：</span>
+                        <textarea class="ke_demo2" name="Answer" id="Answer" rows="20" cols="100" style="width:92%;height:200px;visibility:hidden;margin-left:105px" maxlength="500">
+                         @if (@ViewBag.QnAID!=0) {
+                                @ViewBag.AllCustomer.Answer;
+                          }
+                        </textarea>
+                    </div>
+                    <div style="width:100%;margin-top:10px;overflow:hidden;margin-bottom:2%">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 001：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <input id="file-Portrait1" name="pic01" type="file" class="file">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 002：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <input id="file-Portrait2" name="pic02" type="file" class="file">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 003：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <input id="file-Portrait3" name="pic03" type="file" class="file">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Resources.CustomerRes.Dt 004：</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <input id="file-Portrait4" name="pic04" type="file" class="file">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="OperationChi" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                <input type="submit" name="Button1" value="@Resources.CustomerRes.Bc" id="SaveBtn" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" onclick="AddKnowledgeBase()" />
+                <input type="button" value="@Resources.CustomerRes.Gb" onclick="history()" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>

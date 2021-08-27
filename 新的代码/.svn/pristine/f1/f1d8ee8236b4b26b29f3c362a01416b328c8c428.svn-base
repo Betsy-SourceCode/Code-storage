@@ -1,0 +1,1137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActionLog2021">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="FunctionID" Type="smallint" Nullable="false" />
+    <Property Name="ActionType" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ActionTime" Type="datetime" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="TableKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="CityID" />
+    </Key>
+    <Property Name="CityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CityName_CN" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CityName_EN" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CityName_s" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ICode" Type="nchar" MaxLength="3" />
+    <Property Name="CountryID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="IsCapital" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="TelCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="ZIPCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="Province" Type="int" />
+    <Property Name="GMTTime" Type="real" />
+    <Property Name="Photo" Type="varchar(max)" />
+    <Property Name="Photo_s" Type="varchar(max)" />
+    <Property Name="Introduction" Type="nvarchar(max)" />
+    <Property Name="OrderBy" Type="tinyint" />
+    <Property Name="Remark" Type="nvarchar(max)" />
+    <Property Name="CreateTime" Type="datetime" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="3" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdateTime" Type="datetime" />
+    <Property Name="UpdateBy" Type="nchar" MaxLength="3" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="CompanyID" />
+    </Key>
+    <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="FullName_CN" Type="nvarchar" MaxLength="50" />
+    <Property Name="FullName_EN" Type="nvarchar" MaxLength="100" />
+    <Property Name="ShortName" Type="nvarchar" MaxLength="25" Nullable="false" />
+    <Property Name="Reg_Addr" Type="nvarchar" MaxLength="200" />
+    <Property Name="Biz_Type" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Biz_Date" Type="datetime" />
+    <Property Name="CountryID" Type="nchar" MaxLength="2" />
+    <Property Name="ProvinceID" Type="int" />
+    <Property Name="CityID" Type="int" />
+    <Property Name="Location" Type="nvarchar" MaxLength="100" />
+    <Property Name="Postal" Type="nchar" MaxLength="10" />
+    <Property Name="Classify" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Manager" Type="nvarchar" MaxLength="100" />
+    <Property Name="Agreement" Type="bit" Nullable="false" />
+    <Property Name="GoodWill" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="InBusiness" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="UrgNotice" Type="nvarchar" MaxLength="300" />
+    <Property Name="Info_CN" Type="nvarchar(max)" />
+    <Property Name="Info_EN" Type="nvarchar(max)" />
+    <Property Name="Photo" Type="image" />
+    <Property Name="Logo" Type="image" />
+    <Property Name="Banner" Type="image" />
+    <Property Name="Remarks" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Contacts">
+    <Key>
+      <PropertyRef Name="ContactID" />
+    </Key>
+    <Property Name="ContactID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Source" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SourceID" Type="int" Nullable="false" />
+    <Property Name="City" Type="nvarchar" MaxLength="30" />
+    <Property Name="ContactType" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="Contact" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Remark" Type="ntext" />
+    <Property Name="Share" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="Icode" />
+    </Key>
+    <Property Name="Icode" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="CntyName_CN" Type="nvarchar" MaxLength="50" />
+    <Property Name="CntyName_EN" Type="nvarchar" MaxLength="50" />
+    <Property Name="CntyName_s" Type="nvarchar" MaxLength="50" />
+    <Property Name="LongCode" Type="nvarchar" MaxLength="5" />
+    <Property Name="Continent" Type="nvarchar" MaxLength="30" />
+    <Property Name="TelCode" Type="nvarchar" MaxLength="5" />
+    <Property Name="Capital" Type="int" />
+    <Property Name="NationalFlag" Type="varbinary(max)" />
+    <Property Name="GMTTime" Type="real" />
+    <Property Name="GeoSize" Type="nvarchar" MaxLength="100" />
+    <Property Name="Population" Type="nvarchar" MaxLength="100" />
+    <Property Name="Language" Type="nvarchar" MaxLength="100" />
+    <Property Name="Voltage" Type="nvarchar" MaxLength="100" />
+    <Property Name="Currency" Type="nvarchar" MaxLength="100" />
+    <Property Name="Introduction" Type="nvarchar(max)" />
+    <Property Name="Photo" Type="varbinary(max)" />
+    <Property Name="Photo_s" Type="varbinary(max)" />
+    <Property Name="OrderBy" Type="tinyint" />
+    <Property Name="Remark" Type="nvarchar(max)" />
+    <Property Name="CreateTime" Type="datetime" />
+    <Property Name="CreateBy" Type="nchar" MaxLength="3" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdateTime" Type="datetime" />
+    <Property Name="UpdateBy" Type="nchar" MaxLength="3" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="CustBillShip">
+    <Key>
+      <PropertyRef Name="BillShipID" />
+    </Key>
+    <Property Name="BillShipID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="Inv2EMail" Type="nvarchar" MaxLength="50" />
+    <Property Name="Inv2Comp" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Inv2Addr" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Inv2City" Type="int" Nullable="false" />
+    <Property Name="Inv2State" Type="int" />
+    <Property Name="Inv2Post" Type="nvarchar" MaxLength="50" />
+    <Property Name="Inv2Cnty" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="Ship2Comp" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Ship2Addr" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Ship2City" Type="int" Nullable="false" />
+    <Property Name="Ship2State" Type="int" />
+    <Property Name="Ship2Post" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ship2Cnty" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="APName" Type="nvarchar" MaxLength="50" />
+    <Property Name="APTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="APPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="APFax" Type="nvarchar" MaxLength="50" />
+    <Property Name="APMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="APEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARFax" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="AREmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustType" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Status" Type="nchar" MaxLength="1" />
+    <Property Name="Type" Type="nchar" MaxLength="1" />
+    <Property Name="SysID" Type="int" />
+    <Property Name="K3Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="Class" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Belongs" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="PUR_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Phone" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Fax" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Mobile" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BankAddr" Type="nvarchar" MaxLength="50" />
+    <Property Name="iBAN" Type="nvarchar" MaxLength="25" />
+    <Property Name="SWIFT" Type="nvarchar" MaxLength="25" />
+    <Property Name="IsList" Type="bit" Nullable="false" />
+    <Property Name="Owner1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Cnty" Type="nchar" MaxLength="2" />
+    <Property Name="Owner1Date" Type="datetime" />
+    <Property Name="Owner1Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner1Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Owner2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Cnty" Type="nchar" MaxLength="2" />
+    <Property Name="Owner2Date" Type="datetime" />
+    <Property Name="Owner2Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner2Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Ref1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref2Addr" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Curr1" Type="nchar" MaxLength="3" />
+    <Property Name="Curr2" Type="nchar" MaxLength="3" />
+    <Property Name="Curr3" Type="nchar" MaxLength="3" />
+    <Property Name="Curr4" Type="nchar" MaxLength="3" />
+    <Property Name="Yr1Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="Yr2Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="CreditLimits" Type="nvarchar" MaxLength="20" />
+    <Property Name="CreditTerms" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreditPeriod" Type="int" />
+    <Property Name="CueCode" Type="nchar" MaxLength="3" />
+    <Property Name="AnnualRevenue" Type="nvarchar" MaxLength="20" />
+    <Property Name="ServiceBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customer_AuditInfo">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="SORcvEntity" Type="nvarchar" MaxLength="500" />
+    <Property Name="MFGProcEntity" Type="nvarchar" MaxLength="500" />
+    <Property Name="FamilyTree" Type="text" />
+    <Property Name="DocCheckList" Type="nvarchar" MaxLength="500" />
+    <Property Name="SCACOpinion" Type="nvarchar" MaxLength="1000" />
+    <Property Name="MDCreateBy" Type="nchar" MaxLength="3" />
+    <Property Name="MDCreateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="MDCreateTime" Type="datetime" />
+    <Property Name="CWACOpinion" Type="nvarchar" MaxLength="1000" />
+    <Property Name="ACCreateBy" Type="nchar" MaxLength="3" />
+    <Property Name="ACCreateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="ACCreateTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpID" />
+    </Key>
+    <Property Name="EmpID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="PersonID" Type="int" />
+    <Property Name="GIPCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="ActDeptID" Type="nchar" MaxLength="2" />
+    <Property Name="ActPosition" Type="char" MaxLength="1" />
+    <Property Name="Deputy" Type="nchar" MaxLength="3" />
+    <Property Name="JobTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="Position" Type="char" MaxLength="1" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="SurName" Type="nvarchar" MaxLength="20" />
+    <Property Name="GivenName" Type="nvarchar" MaxLength="20" />
+    <Property Name="AliasName" Type="nvarchar" MaxLength="20" />
+    <Property Name="Gender" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="BirthDate" Type="smalldatetime" />
+    <Property Name="Manager" Type="nchar" MaxLength="3" />
+    <Property Name="Substitute" Type="nchar" MaxLength="3" />
+    <Property Name="JoinDate" Type="datetime" />
+    <Property Name="LeftDate" Type="datetime" />
+    <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="3" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="3" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TBWords">
+    <Key>
+      <PropertyRef Name="WordID" />
+    </Key>
+    <Property Name="WordID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WordCode" Type="nvarchar" MaxLength="3" Nullable="false" />
+    <Property Name="Name_CN" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Name_VN" Type="nvarchar" MaxLength="50" />
+    <Property Name="Name_EN" Type="nvarchar" MaxLength="50" />
+    <Property Name="Del_Flag" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="OrderBy" Type="smallint" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="30" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="100" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="3" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="3" Nullable="false" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“WebStation.dbo.SelectCustomerAll”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="SelectCustomerAll">
+    <Key>
+      <PropertyRef Name="SysID" />
+      <PropertyRef Name="Class" />
+      <PropertyRef Name="Belongs" />
+      <PropertyRef Name="BankName" />
+      <PropertyRef Name="IsList" />
+      <PropertyRef Name="Inv2Comp" />
+      <PropertyRef Name="Inv2Addr" />
+      <PropertyRef Name="Inv2City" />
+      <PropertyRef Name="Inv2State" />
+      <PropertyRef Name="Ship2Comp" />
+      <PropertyRef Name="Ship2Addr" />
+      <PropertyRef Name="Ship2City" />
+      <PropertyRef Name="Ship2State" />
+      <PropertyRef Name="CityID" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="CreateBy1" />
+      <PropertyRef Name="CreateDept1" />
+      <PropertyRef Name="UpdateTime" />
+      <PropertyRef Name="Expr27" />
+      <PropertyRef Name="Expr28" />
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="id" Type="varchar" MaxLength="12" />
+    <Property Name="SysID" Type="int" Nullable="false" />
+    <Property Name="Class" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Belongs" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="BankAddr" Type="nvarchar" MaxLength="50" />
+    <Property Name="iBAN" Type="nvarchar" MaxLength="25" />
+    <Property Name="SWIFT" Type="nvarchar" MaxLength="25" />
+    <Property Name="IsList" Type="bit" Nullable="false" />
+    <Property Name="Owner1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Cnty" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Owner1Date" Type="datetime" />
+    <Property Name="Owner1Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner1Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Owner2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Cnty" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Owner2Date" Type="datetime" />
+    <Property Name="Owner2Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner2Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Ref1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref2Addr" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Curr1" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Curr2" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Curr3" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Curr4" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Yr2Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="CreditLimits" Type="nvarchar" MaxLength="20" />
+    <Property Name="CreditTerms" Type="nvarchar" MaxLength="200" />
+    <Property Name="PUR_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Phone" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Fax" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Mobile" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Inv2EMail" Type="nvarchar" MaxLength="50" />
+    <Property Name="Inv2Comp" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Inv2Addr" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Inv2City" Type="int" Nullable="false" />
+    <Property Name="Inv2State" Type="int" Nullable="false" />
+    <Property Name="Inv2Cnty" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Ship2Comp" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Ship2Addr" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Ship2City" Type="int" Nullable="false" />
+    <Property Name="Ship2State" Type="int" Nullable="false" />
+    <Property Name="Ship2Post" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ship2Cnty" Type="nvarchar" MaxLength="4000" />
+    <Property Name="APName" Type="nvarchar" MaxLength="50" />
+    <Property Name="APTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="APPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="APFax" Type="nvarchar" MaxLength="50" />
+    <Property Name="APMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="APEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARFax" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="AREmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="CompanyID" Type="int" />
+    <Property Name="FullName_CN" Type="nvarchar" MaxLength="50" />
+    <Property Name="FullName_EN" Type="nvarchar" MaxLength="100" />
+    <Property Name="Reg_Addr" Type="nvarchar" MaxLength="200" />
+    <Property Name="ShortName" Type="nvarchar" MaxLength="25" />
+    <Property Name="Classify" Type="nchar" MaxLength="1" />
+    <Property Name="Biz_Type" Type="nchar" MaxLength="1" />
+    <Property Name="Biz_Date" Type="datetime" />
+    <Property Name="CityID" Type="int" Nullable="false" />
+    <Property Name="GoodWill" Type="varchar" MaxLength="4" />
+    <Property Name="InBusiness" Type="varchar" MaxLength="4" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="51" />
+    <Property Name="CreateBy1" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateDept1" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="51" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location" Type="nvarchar" MaxLength="100" />
+    <Property Name="Expr1" Type="int" />
+    <Property Name="ProvinceID" Type="int" />
+    <Property Name="CountryID" Type="nchar" MaxLength="2" />
+    <Property Name="Manager" Type="nvarchar" MaxLength="100" />
+    <Property Name="ComGoodWill" Type="nchar" MaxLength="1" />
+    <Property Name="Agreement" Type="bit" />
+    <Property Name="ComInBusiness" Type="nchar" MaxLength="1" />
+    <Property Name="UrgNotice" Type="nvarchar" MaxLength="300" />
+    <Property Name="Info_CN" Type="nvarchar(max)" />
+    <Property Name="Info_EN" Type="nvarchar(max)" />
+    <Property Name="Remarks" Type="nvarchar(max)" />
+    <Property Name="Expr4" Type="nvarchar" MaxLength="50" />
+    <Property Name="Expr5" Type="nvarchar" MaxLength="150" />
+    <Property Name="Expr6" Type="int" />
+    <Property Name="Expr7" Type="int" />
+    <Property Name="Inv2Post" Type="nvarchar" MaxLength="50" />
+    <Property Name="Expr8" Type="nchar" MaxLength="2" />
+    <Property Name="Expr9" Type="nvarchar" MaxLength="50" />
+    <Property Name="Expr10" Type="nvarchar" MaxLength="150" />
+    <Property Name="Expr11" Type="int" />
+    <Property Name="Expr12" Type="int" />
+    <Property Name="Expr13" Type="datetime" />
+    <Property Name="Expr14" Type="nvarchar" MaxLength="100" />
+    <Property Name="Expr15" Type="nvarchar" MaxLength="30" />
+    <Property Name="Expr16" Type="datetime" />
+    <Property Name="Expr17" Type="nvarchar" MaxLength="100" />
+    <Property Name="Expr18" Type="nvarchar" MaxLength="30" />
+    <Property Name="Expr19" Type="nchar" MaxLength="2" />
+    <Property Name="K3Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="Type" Type="nchar" MaxLength="1" />
+    <Property Name="Expr20" Type="nvarchar" MaxLength="50" />
+    <Property Name="Expr21" Type="nchar" MaxLength="2" />
+    <Property Name="Expr22" Type="nchar" MaxLength="2" />
+    <Property Name="Expr23" Type="nchar" MaxLength="3" />
+    <Property Name="Expr24" Type="nchar" MaxLength="3" />
+    <Property Name="Expr25" Type="nchar" MaxLength="3" />
+    <Property Name="Expr26" Type="nchar" MaxLength="3" />
+    <Property Name="Yr1Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="CueCode" Type="nchar" MaxLength="3" />
+    <Property Name="Expr27" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Expr28" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="AnnualRevenue" Type="nvarchar" MaxLength="20" />
+    <Property Name="Status" Type="varchar" MaxLength="4" />
+    <Property Name="BillShipID" Type="int" />
+    <Property Name="CreditPeriod" Type="int" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="XGkhds" Type="nvarchar" MaxLength="103" />
+    <Property Name="XGClassify" Type="nvarchar" MaxLength="83" />
+    <Property Name="XGCityID" Type="nvarchar" MaxLength="109" />
+    <Property Name="XGCountryID" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQKhds" Type="nvarchar" MaxLength="103" />
+    <Property Name="XQType" Type="varchar" MaxLength="4" />
+    <Property Name="XQCountryID" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQCityID" Type="nvarchar" MaxLength="109" />
+    <Property Name="XQClassify" Type="nvarchar" MaxLength="83" />
+    <Property Name="XQInBusiness" Type="varchar" MaxLength="4" />
+    <Property Name="XQGoodWill" Type="varchar" MaxLength="4" />
+    <Property Name="XQclass" Type="varchar" MaxLength="27" />
+    <Property Name="XQAgreement" Type="varchar" MaxLength="4" />
+    <Property Name="XQInv2Cnty" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQInv2State" Type="nvarchar" MaxLength="108" />
+    <Property Name="XQInv2City" Type="nvarchar" MaxLength="109" />
+    <Property Name="XQShip2Cnty" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQShip2State" Type="nvarchar" MaxLength="108" />
+    <Property Name="XQShip2City" Type="nvarchar" MaxLength="109" />
+    <Property Name="XQOwner1Cnty" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQOwner1Type" Type="nvarchar" MaxLength="83" />
+    <Property Name="XQOwner2Cnty" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQOwner2Type" Type="nvarchar" MaxLength="83" />
+    <Property Name="XQCurr1" Type="nvarchar" MaxLength="67" />
+    <Property Name="XQCurr2" Type="nvarchar" MaxLength="67" />
+    <Property Name="XQCurr3" Type="nvarchar" MaxLength="67" />
+    <Property Name="XQCurr4" Type="nvarchar" MaxLength="67" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“WebStation.dbo.SelectDetail”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="SelectDetail">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="SysID" />
+      <PropertyRef Name="Class" />
+      <PropertyRef Name="Belongs" />
+      <PropertyRef Name="IsList" />
+      <PropertyRef Name="Inv2City" />
+      <PropertyRef Name="Inv2State" />
+      <PropertyRef Name="Ship2City" />
+      <PropertyRef Name="Ship2State" />
+      <PropertyRef Name="CityID" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="CreateBy1" />
+      <PropertyRef Name="CreateDept1" />
+      <PropertyRef Name="UpdateTime" />
+    </Key>
+    <Property Name="id" Type="varchar" MaxLength="12" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="SysID" Type="int" Nullable="false" />
+    <Property Name="Class" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Belongs" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BankAddr" Type="nvarchar" MaxLength="50" />
+    <Property Name="iBAN" Type="nvarchar" MaxLength="25" />
+    <Property Name="SWIFT" Type="nvarchar" MaxLength="25" />
+    <Property Name="IsList" Type="bit" Nullable="false" />
+    <Property Name="Owner1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Cnty" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Owner1Date" Type="datetime" />
+    <Property Name="Owner1Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner1Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Owner2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Cnty" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Owner2Date" Type="datetime" />
+    <Property Name="Owner2Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner2Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Ref1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref2Addr" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Curr1" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Curr2" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Curr3" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Curr4" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Yr1Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="Yr2Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="CreditLimits" Type="nvarchar" MaxLength="20" />
+    <Property Name="CreditTerms" Type="nvarchar" MaxLength="200" />
+    <Property Name="PUR_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Phone" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Fax" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Mobile" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Inv2EMail" Type="nvarchar" MaxLength="50" />
+    <Property Name="Inv2Comp" Type="nvarchar" MaxLength="50" />
+    <Property Name="Inv2Addr" Type="nvarchar" MaxLength="150" />
+    <Property Name="Inv2City" Type="int" Nullable="false" />
+    <Property Name="Inv2State" Type="int" Nullable="false" />
+    <Property Name="Inv2Post" Type="nvarchar" MaxLength="50" />
+    <Property Name="Inv2Cnty" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Ship2Comp" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ship2Addr" Type="nvarchar" MaxLength="150" />
+    <Property Name="Ship2City" Type="int" Nullable="false" />
+    <Property Name="Ship2State" Type="int" Nullable="false" />
+    <Property Name="Ship2Post" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ship2Cnty" Type="nvarchar" MaxLength="4000" />
+    <Property Name="APName" Type="nvarchar" MaxLength="50" />
+    <Property Name="APTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="APPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="APFax" Type="nvarchar" MaxLength="50" />
+    <Property Name="APMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="APEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARFax" Type="nvarchar" MaxLength="50" />
+    <Property Name="ARMobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="AREmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="CompanyID" Type="int" />
+    <Property Name="FullName_CN" Type="nvarchar" MaxLength="50" />
+    <Property Name="FullName_EN" Type="nvarchar" MaxLength="100" />
+    <Property Name="Reg_Addr" Type="nvarchar" MaxLength="200" />
+    <Property Name="ShortName" Type="nvarchar" MaxLength="25" />
+    <Property Name="Classify" Type="nchar" MaxLength="1" />
+    <Property Name="Biz_Type" Type="nchar" MaxLength="1" />
+    <Property Name="Biz_Date" Type="datetime" />
+    <Property Name="CityID" Type="int" Nullable="false" />
+    <Property Name="CountryID" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Location" Type="nvarchar" MaxLength="100" />
+    <Property Name="Info_CN" Type="nvarchar(max)" />
+    <Property Name="Info_EN" Type="nvarchar(max)" />
+    <Property Name="Status" Type="varchar" MaxLength="4" />
+    <Property Name="GoodWill" Type="varchar" MaxLength="4" />
+    <Property Name="InBusiness" Type="varchar" MaxLength="4" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="100" />
+    <Property Name="Fax" Type="nvarchar" MaxLength="100" />
+    <Property Name="Web" Type="nvarchar" MaxLength="100" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="51" />
+    <Property Name="CreateBy1" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateDept1" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="51" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="50" />
+    <Property Name="XQOwner2Cnty" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQOwner2Type" Type="nvarchar" MaxLength="83" />
+    <Property Name="XQInv2City" Type="nvarchar" MaxLength="109" />
+    <Property Name="XQInv2State" Type="nvarchar" MaxLength="108" />
+    <Property Name="XQInv2Cnty" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQShip2City" Type="nvarchar" MaxLength="109" />
+    <Property Name="XQShip2State" Type="nvarchar" MaxLength="108" />
+    <Property Name="XQShip2Cnty" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQClassify" Type="nvarchar" MaxLength="83" />
+    <Property Name="XQBizType" Type="nvarchar" MaxLength="83" />
+    <Property Name="XQCityID" Type="nvarchar" MaxLength="109" />
+    <Property Name="XQCountryID" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQkhjb" Type="nvarchar" MaxLength="83" />
+    <Property Name="XQKhds" Type="nvarchar" MaxLength="103" />
+    <Property Name="XQOwner1Cnty" Type="nvarchar" MaxLength="88" />
+    <Property Name="XQOwner1Type" Type="nvarchar" MaxLength="83" />
+    <Property Name="XQCurr1" Type="nvarchar" MaxLength="67" />
+    <Property Name="XQCurr2" Type="nvarchar" MaxLength="67" />
+    <Property Name="XQCurr3" Type="nvarchar" MaxLength="67" />
+    <Property Name="XQCurr4" Type="nvarchar" MaxLength="67" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“WebStation.dbo.SelectIndexs”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="SelectIndexs">
+    <Key>
+      <PropertyRef Name="ShortName" />
+      <PropertyRef Name="InBusiness" />
+      <PropertyRef Name="CustomerID" />
+      <PropertyRef Name="Expr1" />
+      <PropertyRef Name="Class" />
+      <PropertyRef Name="Belongs" />
+      <PropertyRef Name="IsList" />
+      <PropertyRef Name="CreateBy" />
+      <PropertyRef Name="CreateDept" />
+      <PropertyRef Name="CreateTime" />
+      <PropertyRef Name="UpdateBy" />
+      <PropertyRef Name="UpdateDept" />
+      <PropertyRef Name="UpdateTime" />
+      <PropertyRef Name="Classify" />
+    </Key>
+    <Property Name="CustomerIDs" Type="varchar" MaxLength="12" />
+    <Property Name="CustType" Type="varchar" MaxLength="4" />
+    <Property Name="SysID" Type="int" />
+    <Property Name="ShortName" Type="nvarchar" MaxLength="25" Nullable="false" />
+    <Property Name="CityName_s" Type="nvarchar" MaxLength="54" />
+    <Property Name="CityID" Type="int" />
+    <Property Name="Name_CN" Type="nvarchar" MaxLength="30" />
+    <Property Name="K3Code" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="varchar" MaxLength="4" />
+    <Property Name="InBusiness" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="DeptName_CN" Type="nvarchar" MaxLength="50" />
+    <Property Name="CueCode" Type="nchar" MaxLength="3" />
+    <Property Name="CustomerID" Type="int" Nullable="false" />
+    <Property Name="Expr1" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Expr2" Type="nchar" MaxLength="1" />
+    <Property Name="Expr3" Type="int" />
+    <Property Name="Expr4" Type="nvarchar" MaxLength="50" />
+    <Property Name="Class" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="Type" Type="nchar" MaxLength="1" />
+    <Property Name="Belongs" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="PUR_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="PUR_Phone" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Fax" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Mobile" Type="nvarchar" MaxLength="20" />
+    <Property Name="PUR_Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="BankName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BankAddr" Type="nvarchar" MaxLength="50" />
+    <Property Name="iBAN" Type="nvarchar" MaxLength="25" />
+    <Property Name="SWIFT" Type="nvarchar" MaxLength="25" />
+    <Property Name="IsList" Type="bit" Nullable="false" />
+    <Property Name="Owner1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner1Cnty" Type="nchar" MaxLength="2" />
+    <Property Name="Owner1Date" Type="datetime" />
+    <Property Name="Owner1Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner1Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Owner2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Web" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner2Cnty" Type="nchar" MaxLength="2" />
+    <Property Name="Owner2Date" Type="datetime" />
+    <Property Name="Owner2Type" Type="nchar" MaxLength="1" />
+    <Property Name="Owner2Ship" Type="decimal" Precision="5" Scale="2" />
+    <Property Name="Ref1Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Addr" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref1Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref1Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ref2Addr" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Contact" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="Ref2Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Curr1" Type="nchar" MaxLength="3" />
+    <Property Name="Curr2" Type="nchar" MaxLength="3" />
+    <Property Name="Curr3" Type="nchar" MaxLength="3" />
+    <Property Name="Curr4" Type="nchar" MaxLength="3" />
+    <Property Name="Yr1Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="Yr2Forcast" Type="nvarchar" MaxLength="25" />
+    <Property Name="CreditLimits" Type="nvarchar" MaxLength="20" />
+    <Property Name="CreditTerms" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreditPeriod" Type="int" />
+    <Property Name="Expr5" Type="nchar" MaxLength="3" />
+    <Property Name="CreateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="CreateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="UpdateDept" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+    <Property Name="AnnualRevenue" Type="nvarchar" MaxLength="20" />
+    <Property Name="FullName_EN" Type="nvarchar" MaxLength="100" />
+    <Property Name="Classify" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="FullName_CN" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_CustBillShip_CustBillShip">
+    <End Role="CustBillShip" Type="Self.CustBillShip" Multiplicity="1" />
+    <End Role="CustBillShip1" Type="Self.CustBillShip" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="CustBillShip">
+        <PropertyRef Name="BillShipID" />
+      </Principal>
+      <Dependent Role="CustBillShip1">
+        <PropertyRef Name="BillShipID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Customer_AuditInfo_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+    <End Role="Customer_AuditInfo" Type="Self.Customer_AuditInfo" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="Customer_AuditInfo">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WebStationModelStoreContainer">
+    <EntitySet Name="ActionLog2021" EntityType="Self.ActionLog2021" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Contacts" EntityType="Self.Contacts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustBillShip" EntityType="Self.CustBillShip" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customer_AuditInfo" EntityType="Self.Customer_AuditInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TBWords" EntityType="Self.TBWords" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SelectCustomerAll" EntityType="Self.SelectCustomerAll" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [SelectCustomerAll].[id] AS [id], 
+    [SelectCustomerAll].[SysID] AS [SysID], 
+    [SelectCustomerAll].[Class] AS [Class], 
+    [SelectCustomerAll].[Belongs] AS [Belongs], 
+    [SelectCustomerAll].[BankName] AS [BankName], 
+    [SelectCustomerAll].[BankAddr] AS [BankAddr], 
+    [SelectCustomerAll].[iBAN] AS [iBAN], 
+    [SelectCustomerAll].[SWIFT] AS [SWIFT], 
+    [SelectCustomerAll].[IsList] AS [IsList], 
+    [SelectCustomerAll].[Owner1Name] AS [Owner1Name], 
+    [SelectCustomerAll].[Owner1Addr] AS [Owner1Addr], 
+    [SelectCustomerAll].[Owner1Web] AS [Owner1Web], 
+    [SelectCustomerAll].[Owner1Cnty] AS [Owner1Cnty], 
+    [SelectCustomerAll].[Owner1Date] AS [Owner1Date], 
+    [SelectCustomerAll].[Owner1Type] AS [Owner1Type], 
+    [SelectCustomerAll].[Owner1Ship] AS [Owner1Ship], 
+    [SelectCustomerAll].[Owner2Name] AS [Owner2Name], 
+    [SelectCustomerAll].[Owner2Addr] AS [Owner2Addr], 
+    [SelectCustomerAll].[Owner2Web] AS [Owner2Web], 
+    [SelectCustomerAll].[Owner2Cnty] AS [Owner2Cnty], 
+    [SelectCustomerAll].[Owner2Date] AS [Owner2Date], 
+    [SelectCustomerAll].[Owner2Type] AS [Owner2Type], 
+    [SelectCustomerAll].[Owner2Ship] AS [Owner2Ship], 
+    [SelectCustomerAll].[Ref1Name] AS [Ref1Name], 
+    [SelectCustomerAll].[Ref1Addr] AS [Ref1Addr], 
+    [SelectCustomerAll].[Ref1Contact] AS [Ref1Contact], 
+    [SelectCustomerAll].[Ref1Title] AS [Ref1Title], 
+    [SelectCustomerAll].[Ref1Phone] AS [Ref1Phone], 
+    [SelectCustomerAll].[Ref2Name] AS [Ref2Name], 
+    [SelectCustomerAll].[Ref2Addr] AS [Ref2Addr], 
+    [SelectCustomerAll].[Ref2Contact] AS [Ref2Contact], 
+    [SelectCustomerAll].[Ref2Title] AS [Ref2Title], 
+    [SelectCustomerAll].[Ref2Phone] AS [Ref2Phone], 
+    [SelectCustomerAll].[Curr1] AS [Curr1], 
+    [SelectCustomerAll].[Curr2] AS [Curr2], 
+    [SelectCustomerAll].[Curr3] AS [Curr3], 
+    [SelectCustomerAll].[Curr4] AS [Curr4], 
+    [SelectCustomerAll].[Yr2Forcast] AS [Yr2Forcast], 
+    [SelectCustomerAll].[CreditLimits] AS [CreditLimits], 
+    [SelectCustomerAll].[CreditTerms] AS [CreditTerms], 
+    [SelectCustomerAll].[PUR_Name] AS [PUR_Name], 
+    [SelectCustomerAll].[PUR_Title] AS [PUR_Title], 
+    [SelectCustomerAll].[PUR_Phone] AS [PUR_Phone], 
+    [SelectCustomerAll].[PUR_Fax] AS [PUR_Fax], 
+    [SelectCustomerAll].[PUR_Mobile] AS [PUR_Mobile], 
+    [SelectCustomerAll].[PUR_Email] AS [PUR_Email], 
+    [SelectCustomerAll].[Inv2EMail] AS [Inv2EMail], 
+    [SelectCustomerAll].[Inv2Comp] AS [Inv2Comp], 
+    [SelectCustomerAll].[Inv2Addr] AS [Inv2Addr], 
+    [SelectCustomerAll].[Inv2City] AS [Inv2City], 
+    [SelectCustomerAll].[Inv2State] AS [Inv2State], 
+    [SelectCustomerAll].[Inv2Cnty] AS [Inv2Cnty], 
+    [SelectCustomerAll].[Ship2Comp] AS [Ship2Comp], 
+    [SelectCustomerAll].[Ship2Addr] AS [Ship2Addr], 
+    [SelectCustomerAll].[Ship2City] AS [Ship2City], 
+    [SelectCustomerAll].[Ship2State] AS [Ship2State], 
+    [SelectCustomerAll].[Ship2Post] AS [Ship2Post], 
+    [SelectCustomerAll].[Ship2Cnty] AS [Ship2Cnty], 
+    [SelectCustomerAll].[APName] AS [APName], 
+    [SelectCustomerAll].[APTitle] AS [APTitle], 
+    [SelectCustomerAll].[APPhone] AS [APPhone], 
+    [SelectCustomerAll].[APFax] AS [APFax], 
+    [SelectCustomerAll].[APMobile] AS [APMobile], 
+    [SelectCustomerAll].[APEmail] AS [APEmail], 
+    [SelectCustomerAll].[ARName] AS [ARName], 
+    [SelectCustomerAll].[ARTitle] AS [ARTitle], 
+    [SelectCustomerAll].[ARPhone] AS [ARPhone], 
+    [SelectCustomerAll].[ARFax] AS [ARFax], 
+    [SelectCustomerAll].[ARMobile] AS [ARMobile], 
+    [SelectCustomerAll].[AREmail] AS [AREmail], 
+    [SelectCustomerAll].[CompanyID] AS [CompanyID], 
+    [SelectCustomerAll].[FullName_CN] AS [FullName_CN], 
+    [SelectCustomerAll].[FullName_EN] AS [FullName_EN], 
+    [SelectCustomerAll].[Reg_Addr] AS [Reg_Addr], 
+    [SelectCustomerAll].[ShortName] AS [ShortName], 
+    [SelectCustomerAll].[Classify] AS [Classify], 
+    [SelectCustomerAll].[Biz_Type] AS [Biz_Type], 
+    [SelectCustomerAll].[Biz_Date] AS [Biz_Date], 
+    [SelectCustomerAll].[CityID] AS [CityID], 
+    [SelectCustomerAll].[GoodWill] AS [GoodWill], 
+    [SelectCustomerAll].[InBusiness] AS [InBusiness], 
+    [SelectCustomerAll].[CreateTime] AS [CreateTime], 
+    [SelectCustomerAll].[CreateBy] AS [CreateBy], 
+    [SelectCustomerAll].[CreateBy1] AS [CreateBy1], 
+    [SelectCustomerAll].[CreateDept] AS [CreateDept], 
+    [SelectCustomerAll].[CreateDept1] AS [CreateDept1], 
+    [SelectCustomerAll].[UpdateTime] AS [UpdateTime], 
+    [SelectCustomerAll].[UpdateBy] AS [UpdateBy], 
+    [SelectCustomerAll].[UpdateDept] AS [UpdateDept], 
+    [SelectCustomerAll].[Location] AS [Location], 
+    [SelectCustomerAll].[Expr1] AS [Expr1], 
+    [SelectCustomerAll].[ProvinceID] AS [ProvinceID], 
+    [SelectCustomerAll].[CountryID] AS [CountryID], 
+    [SelectCustomerAll].[Manager] AS [Manager], 
+    [SelectCustomerAll].[ComGoodWill] AS [ComGoodWill], 
+    [SelectCustomerAll].[Agreement] AS [Agreement], 
+    [SelectCustomerAll].[ComInBusiness] AS [ComInBusiness], 
+    [SelectCustomerAll].[UrgNotice] AS [UrgNotice], 
+    [SelectCustomerAll].[Info_CN] AS [Info_CN], 
+    [SelectCustomerAll].[Info_EN] AS [Info_EN], 
+    [SelectCustomerAll].[Remarks] AS [Remarks], 
+    [SelectCustomerAll].[Expr4] AS [Expr4], 
+    [SelectCustomerAll].[Expr5] AS [Expr5], 
+    [SelectCustomerAll].[Expr6] AS [Expr6], 
+    [SelectCustomerAll].[Expr7] AS [Expr7], 
+    [SelectCustomerAll].[Inv2Post] AS [Inv2Post], 
+    [SelectCustomerAll].[Expr8] AS [Expr8], 
+    [SelectCustomerAll].[Expr9] AS [Expr9], 
+    [SelectCustomerAll].[Expr10] AS [Expr10], 
+    [SelectCustomerAll].[Expr11] AS [Expr11], 
+    [SelectCustomerAll].[Expr12] AS [Expr12], 
+    [SelectCustomerAll].[Expr13] AS [Expr13], 
+    [SelectCustomerAll].[Expr14] AS [Expr14], 
+    [SelectCustomerAll].[Expr15] AS [Expr15], 
+    [SelectCustomerAll].[Expr16] AS [Expr16], 
+    [SelectCustomerAll].[Expr17] AS [Expr17], 
+    [SelectCustomerAll].[Expr18] AS [Expr18], 
+    [SelectCustomerAll].[Expr19] AS [Expr19], 
+    [SelectCustomerAll].[K3Code] AS [K3Code], 
+    [SelectCustomerAll].[Type] AS [Type], 
+    [SelectCustomerAll].[Expr20] AS [Expr20], 
+    [SelectCustomerAll].[Expr21] AS [Expr21], 
+    [SelectCustomerAll].[Expr22] AS [Expr22], 
+    [SelectCustomerAll].[Expr23] AS [Expr23], 
+    [SelectCustomerAll].[Expr24] AS [Expr24], 
+    [SelectCustomerAll].[Expr25] AS [Expr25], 
+    [SelectCustomerAll].[Expr26] AS [Expr26], 
+    [SelectCustomerAll].[Yr1Forcast] AS [Yr1Forcast], 
+    [SelectCustomerAll].[CueCode] AS [CueCode], 
+    [SelectCustomerAll].[Expr27] AS [Expr27], 
+    [SelectCustomerAll].[Expr28] AS [Expr28], 
+    [SelectCustomerAll].[AnnualRevenue] AS [AnnualRevenue], 
+    [SelectCustomerAll].[Status] AS [Status], 
+    [SelectCustomerAll].[BillShipID] AS [BillShipID], 
+    [SelectCustomerAll].[CreditPeriod] AS [CreditPeriod], 
+    [SelectCustomerAll].[CustomerID] AS [CustomerID], 
+    [SelectCustomerAll].[XGkhds] AS [XGkhds], 
+    [SelectCustomerAll].[XGClassify] AS [XGClassify], 
+    [SelectCustomerAll].[XGCityID] AS [XGCityID], 
+    [SelectCustomerAll].[XGCountryID] AS [XGCountryID], 
+    [SelectCustomerAll].[XQKhds] AS [XQKhds], 
+    [SelectCustomerAll].[XQType] AS [XQType], 
+    [SelectCustomerAll].[XQCountryID] AS [XQCountryID], 
+    [SelectCustomerAll].[XQCityID] AS [XQCityID], 
+    [SelectCustomerAll].[XQClassify] AS [XQClassify], 
+    [SelectCustomerAll].[XQInBusiness] AS [XQInBusiness], 
+    [SelectCustomerAll].[XQGoodWill] AS [XQGoodWill], 
+    [SelectCustomerAll].[XQclass] AS [XQclass], 
+    [SelectCustomerAll].[XQAgreement] AS [XQAgreement], 
+    [SelectCustomerAll].[XQInv2Cnty] AS [XQInv2Cnty], 
+    [SelectCustomerAll].[XQInv2State] AS [XQInv2State], 
+    [SelectCustomerAll].[XQInv2City] AS [XQInv2City], 
+    [SelectCustomerAll].[XQShip2Cnty] AS [XQShip2Cnty], 
+    [SelectCustomerAll].[XQShip2State] AS [XQShip2State], 
+    [SelectCustomerAll].[XQShip2City] AS [XQShip2City], 
+    [SelectCustomerAll].[XQOwner1Cnty] AS [XQOwner1Cnty], 
+    [SelectCustomerAll].[XQOwner1Type] AS [XQOwner1Type], 
+    [SelectCustomerAll].[XQOwner2Cnty] AS [XQOwner2Cnty], 
+    [SelectCustomerAll].[XQOwner2Type] AS [XQOwner2Type], 
+    [SelectCustomerAll].[XQCurr1] AS [XQCurr1], 
+    [SelectCustomerAll].[XQCurr2] AS [XQCurr2], 
+    [SelectCustomerAll].[XQCurr3] AS [XQCurr3], 
+    [SelectCustomerAll].[XQCurr4] AS [XQCurr4]
+    FROM [dbo].[SelectCustomerAll] AS [SelectCustomerAll]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="SelectDetail" EntityType="Self.SelectDetail" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [SelectDetail].[id] AS [id], 
+    [SelectDetail].[CustomerID] AS [CustomerID], 
+    [SelectDetail].[SysID] AS [SysID], 
+    [SelectDetail].[Class] AS [Class], 
+    [SelectDetail].[Belongs] AS [Belongs], 
+    [SelectDetail].[BankName] AS [BankName], 
+    [SelectDetail].[BankAddr] AS [BankAddr], 
+    [SelectDetail].[iBAN] AS [iBAN], 
+    [SelectDetail].[SWIFT] AS [SWIFT], 
+    [SelectDetail].[IsList] AS [IsList], 
+    [SelectDetail].[Owner1Name] AS [Owner1Name], 
+    [SelectDetail].[Owner1Addr] AS [Owner1Addr], 
+    [SelectDetail].[Owner1Web] AS [Owner1Web], 
+    [SelectDetail].[Owner1Cnty] AS [Owner1Cnty], 
+    [SelectDetail].[Owner1Date] AS [Owner1Date], 
+    [SelectDetail].[Owner1Type] AS [Owner1Type], 
+    [SelectDetail].[Owner1Ship] AS [Owner1Ship], 
+    [SelectDetail].[Owner2Name] AS [Owner2Name], 
+    [SelectDetail].[Owner2Addr] AS [Owner2Addr], 
+    [SelectDetail].[Owner2Web] AS [Owner2Web], 
+    [SelectDetail].[Owner2Cnty] AS [Owner2Cnty], 
+    [SelectDetail].[Owner2Date] AS [Owner2Date], 
+    [SelectDetail].[Owner2Type] AS [Owner2Type], 
+    [SelectDetail].[Owner2Ship] AS [Owner2Ship], 
+    [SelectDetail].[Ref1Name] AS [Ref1Name], 
+    [SelectDetail].[Ref1Addr] AS [Ref1Addr], 
+    [SelectDetail].[Ref1Contact] AS [Ref1Contact], 
+    [SelectDetail].[Ref1Title] AS [Ref1Title], 
+    [SelectDetail].[Ref1Phone] AS [Ref1Phone], 
+    [SelectDetail].[Ref2Name] AS [Ref2Name], 
+    [SelectDetail].[Ref2Addr] AS [Ref2Addr], 
+    [SelectDetail].[Ref2Contact] AS [Ref2Contact], 
+    [SelectDetail].[Ref2Title] AS [Ref2Title], 
+    [SelectDetail].[Ref2Phone] AS [Ref2Phone], 
+    [SelectDetail].[Curr1] AS [Curr1], 
+    [SelectDetail].[Curr2] AS [Curr2], 
+    [SelectDetail].[Curr3] AS [Curr3], 
+    [SelectDetail].[Curr4] AS [Curr4], 
+    [SelectDetail].[Yr1Forcast] AS [Yr1Forcast], 
+    [SelectDetail].[Yr2Forcast] AS [Yr2Forcast], 
+    [SelectDetail].[CreditLimits] AS [CreditLimits], 
+    [SelectDetail].[CreditTerms] AS [CreditTerms], 
+    [SelectDetail].[PUR_Name] AS [PUR_Name], 
+    [SelectDetail].[PUR_Title] AS [PUR_Title], 
+    [SelectDetail].[PUR_Phone] AS [PUR_Phone], 
+    [SelectDetail].[PUR_Fax] AS [PUR_Fax], 
+    [SelectDetail].[PUR_Mobile] AS [PUR_Mobile], 
+    [SelectDetail].[PUR_Email] AS [PUR_Email], 
+    [SelectDetail].[Inv2EMail] AS [Inv2EMail], 
+    [SelectDetail].[Inv2Comp] AS [Inv2Comp], 
+    [SelectDetail].[Inv2Addr] AS [Inv2Addr], 
+    [SelectDetail].[Inv2City] AS [Inv2City], 
+    [SelectDetail].[Inv2State] AS [Inv2State], 
+    [SelectDetail].[Inv2Post] AS [Inv2Post], 
+    [SelectDetail].[Inv2Cnty] AS [Inv2Cnty], 
+    [SelectDetail].[Ship2Comp] AS [Ship2Comp], 
+    [SelectDetail].[Ship2Addr] AS [Ship2Addr], 
+    [SelectDetail].[Ship2City] AS [Ship2City], 
+    [SelectDetail].[Ship2State] AS [Ship2State], 
+    [SelectDetail].[Ship2Post] AS [Ship2Post], 
+    [SelectDetail].[Ship2Cnty] AS [Ship2Cnty], 
+    [SelectDetail].[APName] AS [APName], 
+    [SelectDetail].[APTitle] AS [APTitle], 
+    [SelectDetail].[APPhone] AS [APPhone], 
+    [SelectDetail].[APFax] AS [APFax], 
+    [SelectDetail].[APMobile] AS [APMobile], 
+    [SelectDetail].[APEmail] AS [APEmail], 
+    [SelectDetail].[ARName] AS [ARName], 
+    [SelectDetail].[ARTitle] AS [ARTitle], 
+    [SelectDetail].[ARPhone] AS [ARPhone], 
+    [SelectDetail].[ARFax] AS [ARFax], 
+    [SelectDetail].[ARMobile] AS [ARMobile], 
+    [SelectDetail].[AREmail] AS [AREmail], 
+    [SelectDetail].[CompanyID] AS [CompanyID], 
+    [SelectDetail].[FullName_CN] AS [FullName_CN], 
+    [SelectDetail].[FullName_EN] AS [FullName_EN], 
+    [SelectDetail].[Reg_Addr] AS [Reg_Addr], 
+    [SelectDetail].[ShortName] AS [ShortName], 
+    [SelectDetail].[Classify] AS [Classify], 
+    [SelectDetail].[Biz_Type] AS [Biz_Type], 
+    [SelectDetail].[Biz_Date] AS [Biz_Date], 
+    [SelectDetail].[CityID] AS [CityID], 
+    [SelectDetail].[CountryID] AS [CountryID], 
+    [SelectDetail].[Location] AS [Location], 
+    [SelectDetail].[Info_CN] AS [Info_CN], 
+    [SelectDetail].[Info_EN] AS [Info_EN], 
+    [SelectDetail].[Status] AS [Status], 
+    [SelectDetail].[GoodWill] AS [GoodWill], 
+    [SelectDetail].[InBusiness] AS [InBusiness], 
+    [SelectDetail].[Phone] AS [Phone], 
+    [SelectDetail].[Fax] AS [Fax], 
+    [SelectDetail].[Web] AS [Web], 
+    [SelectDetail].[CreateTime] AS [CreateTime], 
+    [SelectDetail].[CreateBy] AS [CreateBy], 
+    [SelectDetail].[CreateBy1] AS [CreateBy1], 
+    [SelectDetail].[CreateDept] AS [CreateDept], 
+    [SelectDetail].[CreateDept1] AS [CreateDept1], 
+    [SelectDetail].[UpdateTime] AS [UpdateTime], 
+    [SelectDetail].[UpdateBy] AS [UpdateBy], 
+    [SelectDetail].[UpdateDept] AS [UpdateDept], 
+    [SelectDetail].[XQOwner2Cnty] AS [XQOwner2Cnty], 
+    [SelectDetail].[XQOwner2Type] AS [XQOwner2Type], 
+    [SelectDetail].[XQInv2City] AS [XQInv2City], 
+    [SelectDetail].[XQInv2State] AS [XQInv2State], 
+    [SelectDetail].[XQInv2Cnty] AS [XQInv2Cnty], 
+    [SelectDetail].[XQShip2City] AS [XQShip2City], 
+    [SelectDetail].[XQShip2State] AS [XQShip2State], 
+    [SelectDetail].[XQShip2Cnty] AS [XQShip2Cnty], 
+    [SelectDetail].[XQClassify] AS [XQClassify], 
+    [SelectDetail].[XQBizType] AS [XQBizType], 
+    [SelectDetail].[XQCityID] AS [XQCityID], 
+    [SelectDetail].[XQCountryID] AS [XQCountryID], 
+    [SelectDetail].[XQkhjb] AS [XQkhjb], 
+    [SelectDetail].[XQKhds] AS [XQKhds], 
+    [SelectDetail].[XQOwner1Cnty] AS [XQOwner1Cnty], 
+    [SelectDetail].[XQOwner1Type] AS [XQOwner1Type], 
+    [SelectDetail].[XQCurr1] AS [XQCurr1], 
+    [SelectDetail].[XQCurr2] AS [XQCurr2], 
+    [SelectDetail].[XQCurr3] AS [XQCurr3], 
+    [SelectDetail].[XQCurr4] AS [XQCurr4]
+    FROM [dbo].[SelectDetail] AS [SelectDetail]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="SelectIndexs" EntityType="Self.SelectIndexs" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [SelectIndexs].[CustomerIDs] AS [CustomerIDs], 
+    [SelectIndexs].[CustType] AS [CustType], 
+    [SelectIndexs].[SysID] AS [SysID], 
+    [SelectIndexs].[ShortName] AS [ShortName], 
+    [SelectIndexs].[CityName_s] AS [CityName_s], 
+    [SelectIndexs].[CityID] AS [CityID], 
+    [SelectIndexs].[Name_CN] AS [Name_CN], 
+    [SelectIndexs].[K3Code] AS [K3Code], 
+    [SelectIndexs].[Status] AS [Status], 
+    [SelectIndexs].[InBusiness] AS [InBusiness], 
+    [SelectIndexs].[DeptName_CN] AS [DeptName_CN], 
+    [SelectIndexs].[CueCode] AS [CueCode], 
+    [SelectIndexs].[CustomerID] AS [CustomerID], 
+    [SelectIndexs].[Expr1] AS [Expr1], 
+    [SelectIndexs].[Expr2] AS [Expr2], 
+    [SelectIndexs].[Expr3] AS [Expr3], 
+    [SelectIndexs].[Expr4] AS [Expr4], 
+    [SelectIndexs].[Class] AS [Class], 
+    [SelectIndexs].[Type] AS [Type], 
+    [SelectIndexs].[Belongs] AS [Belongs], 
+    [SelectIndexs].[PUR_Name] AS [PUR_Name], 
+    [SelectIndexs].[PUR_Title] AS [PUR_Title], 
+    [SelectIndexs].[PUR_Phone] AS [PUR_Phone], 
+    [SelectIndexs].[PUR_Fax] AS [PUR_Fax], 
+    [SelectIndexs].[PUR_Mobile] AS [PUR_Mobile], 
+    [SelectIndexs].[PUR_Email] AS [PUR_Email], 
+    [SelectIndexs].[BankName] AS [BankName], 
+    [SelectIndexs].[BankAddr] AS [BankAddr], 
+    [SelectIndexs].[iBAN] AS [iBAN], 
+    [SelectIndexs].[SWIFT] AS [SWIFT], 
+    [SelectIndexs].[IsList] AS [IsList], 
+    [SelectIndexs].[Owner1Name] AS [Owner1Name], 
+    [SelectIndexs].[Owner1Addr] AS [Owner1Addr], 
+    [SelectIndexs].[Owner1Web] AS [Owner1Web], 
+    [SelectIndexs].[Owner1Cnty] AS [Owner1Cnty], 
+    [SelectIndexs].[Owner1Date] AS [Owner1Date], 
+    [SelectIndexs].[Owner1Type] AS [Owner1Type], 
+    [SelectIndexs].[Owner1Ship] AS [Owner1Ship], 
+    [SelectIndexs].[Owner2Name] AS [Owner2Name], 
+    [SelectIndexs].[Owner2Addr] AS [Owner2Addr], 
+    [SelectIndexs].[Owner2Web] AS [Owner2Web], 
+    [SelectIndexs].[Owner2Cnty] AS [Owner2Cnty], 
+    [SelectIndexs].[Owner2Date] AS [Owner2Date], 
+    [SelectIndexs].[Owner2Type] AS [Owner2Type], 
+    [SelectIndexs].[Owner2Ship] AS [Owner2Ship], 
+    [SelectIndexs].[Ref1Name] AS [Ref1Name], 
+    [SelectIndexs].[Ref1Addr] AS [Ref1Addr], 
+    [SelectIndexs].[Ref1Contact] AS [Ref1Contact], 
+    [SelectIndexs].[Ref1Title] AS [Ref1Title], 
+    [SelectIndexs].[Ref1Phone] AS [Ref1Phone], 
+    [SelectIndexs].[Ref2Name] AS [Ref2Name], 
+    [SelectIndexs].[Ref2Addr] AS [Ref2Addr], 
+    [SelectIndexs].[Ref2Contact] AS [Ref2Contact], 
+    [SelectIndexs].[Ref2Title] AS [Ref2Title], 
+    [SelectIndexs].[Ref2Phone] AS [Ref2Phone], 
+    [SelectIndexs].[Curr1] AS [Curr1], 
+    [SelectIndexs].[Curr2] AS [Curr2], 
+    [SelectIndexs].[Curr3] AS [Curr3], 
+    [SelectIndexs].[Curr4] AS [Curr4], 
+    [SelectIndexs].[Yr1Forcast] AS [Yr1Forcast], 
+    [SelectIndexs].[Yr2Forcast] AS [Yr2Forcast], 
+    [SelectIndexs].[CreditLimits] AS [CreditLimits], 
+    [SelectIndexs].[CreditTerms] AS [CreditTerms], 
+    [SelectIndexs].[CreditPeriod] AS [CreditPeriod], 
+    [SelectIndexs].[Expr5] AS [Expr5], 
+    [SelectIndexs].[CreateBy] AS [CreateBy], 
+    [SelectIndexs].[CreateDept] AS [CreateDept], 
+    [SelectIndexs].[CreateTime] AS [CreateTime], 
+    [SelectIndexs].[UpdateBy] AS [UpdateBy], 
+    [SelectIndexs].[UpdateDept] AS [UpdateDept], 
+    [SelectIndexs].[UpdateTime] AS [UpdateTime], 
+    [SelectIndexs].[AnnualRevenue] AS [AnnualRevenue], 
+    [SelectIndexs].[FullName_EN] AS [FullName_EN], 
+    [SelectIndexs].[Classify] AS [Classify], 
+    [SelectIndexs].[FullName_CN] AS [FullName_CN]
+    FROM [dbo].[SelectIndexs] AS [SelectIndexs]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_CustBillShip_CustBillShip" Association="Self.FK_CustBillShip_CustBillShip">
+      <End Role="CustBillShip" EntitySet="CustBillShip" />
+      <End Role="CustBillShip1" EntitySet="CustBillShip" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Customer_AuditInfo_Customer" Association="Self.FK_Customer_AuditInfo_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Customer_AuditInfo" EntitySet="Customer_AuditInfo" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,759 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>系统技术知识库</title>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jQuery.print.js"></script>
+    @*<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>*@
+    <script src="~/Scripts/AngularJS.js"></script>
+    <style>
+        .input-clear {
+            display: none;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 111;
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+            cursor: pointer;
+        }
+
+        .wen {
+            height: 35px;
+        }
+
+        .hh {
+            margin-bottom: -14px;
+            margin-top:4px;
+        }
+
+        th {
+            text-align: center
+        }
+
+        .pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+            background-color: #e33e33;
+            border-color: #e33e33;
+        }
+
+        .pagination > li > a, .pagination > li > span {
+            color: #808080;
+        }
+
+        .caption h5 {
+            text-shadow: 3px 2px 2px grey;
+            color: #0094ff;
+            margin-top: -2px;
+        }
+
+        #fenye li a {
+            margin-left: 8px;
+        }
+
+        #yy a {
+            margin-left: 23px;
+        }
+
+        #GridView1 td {
+            vertical-align: middle;
+            word-wrap: break-word;
+            word-break: break-all; /*内容多自动换行 */
+        }
+
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            margin-right: 6px;
+            margin-top: -3px;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 24px;
+            position: relative;
+        }
+
+            input[type="checkbox"]::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                background: #fff;
+                width: 100%;
+                height: 100%;
+                border: 1px solid #CACDCF
+            }
+
+            input[type="checkbox"]:checked::before {
+                content: "\2716";
+                background-color: #2196F3;
+                color: #fff;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                border: 1px solid #2196F3;
+                font-size: 12px;
+                font-weight: bold;
+            }
+
+        #GridView1 tr {
+            height: 20px;
+        }
+    </style>
+    @*英文/语越南文状态下调整样式*@
+    <script>
+        $(function () {
+            var name = getCookie("Language")
+            if (name == "en-US") {
+                $("#language").attr('style', 'margin:28px  -188px;float:right');
+                $("#yy").find("a").attr('style', 'margin-left:6px');
+            }
+            if (name == "vi") {
+                $("#tupian").find("a").attr('style', 'margin-left:10px');
+                $("#language").attr('style', 'margin:28px  -228px;float:right');
+                $("#yy").find("a").attr('style', 'margin-left:3px');
+                $("#anniu").attr('style', 'width:15%;margin-left:-3%');
+            }
+        })
+        //取Cookie的某个参数
+        function getCookie(sName) { /*sName为要取的key名*/
+            var aCookie = document.cookie.split("; ");
+            for (var i = 0; i < aCookie.length; i++) {
+                var aCrumb = aCookie[i].split("=");
+                if (sName == aCrumb[0])
+                    return unescape(aCrumb[1]);
+            }
+            return null;
+        }
+    </script>
+    @*模糊查询文本框*@
+    <script>
+        // 输入框清除
+        $(function () {
+            // 监听输入框内容变动
+            $(".input-group-clear").bind("input propertychange", function () {
+                // 获取输入框的值
+                var inputValue = $(this).children('input').val();
+                // 判断输入框是否有值
+                if (inputValue >= 1) {
+                    // 显示清除
+                    $(this).children('.input-clear').show();
+                } else {
+                    // 隐藏清除
+                    $(this).children('.input-clear').hide();
+                }
+
+            });
+
+            // 输入框获取焦点事件，判断输入框是否有值，有值则显示清除
+            $(".input-group-clear").children('input').focus(function () {
+
+                var inputValue = this.value.length;
+
+                if (inputValue >= 1) {
+                    $(this).siblings('.input-clear').show();
+                }
+
+            });
+
+            // 点击清除事件
+            $('.input-clear').click(function () {
+                // 清空输入框值
+                $(this).siblings('input').val('');
+                // 隐藏清除
+                $(this).hide();
+
+            });
+
+            // 离开输入框div事件，隐藏清除,此处不能使用blur，因为blur只对输入框有效
+            $(".input-group-clear").focusout(function () {
+
+                var igc = $(this);
+                // 设置一个定时器，离开输入框div，200毫秒后隐藏清除，不设置定时器会出现点击清除无效的情况
+                setTimeout(function () {
+                    igc.children('.input-clear').hide();
+                }, 200)
+
+            });
+        })
+
+    </script>
+    @*分页插件*@
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);  //创建模块
+        function setPage(length, amount, num, first) {//创建保存页码数组的函数
+            //length数据总条数
+            //amount每页数据条数
+            //num保留的页码数
+            //first第一页的页码
+            var pages = []; //创建分页数组
+            var page = Math.ceil(length / amount);  //向上取整求总页数
+            if (page <= num) {
+                for (var i = 1; i <= page; i++) {
+                    pages.push(i);
+                }
+            }
+            if (page > num) {
+                for (var i = first; i < first + num; i++) {
+                    pages.push(i);
+                }
+            }
+            return pages;
+        }
+       //移除html代码
+        function RemoveHtml(htmlStr) {
+
+            if (htmlStr == null || htmlStr == "") {
+                return "";
+            }
+            else {
+                var reg1 = /<(?:.|\s)*?>/g;
+                var reg2 = /& [^;]/g;
+                var text = htmlStr.replace(reg1, ""); //去掉html标签函数
+                text = text.replace(reg1,""); //去掉html标签函数
+                text = text.replace(reg2,"");
+                if (text.length > 50) {
+                    text = text.substring(0, 48) + "...";
+                }
+                return text;
+            }
+    }
+       @* 页面跳转 *@
+        function TZ(parameter, num, type, createBy, createDept, cookie) { //type:0新增（复制）/1修改/2语言判断/3删除
+            //createBy - 创建人, createDept - 创建部门，num - 登录人id
+            var canshu = 1;  //参数控制
+            //新增权限查询
+            if (type == 0) {
+                 if ('@ViewBag.User'!= "True") {
+                     alert('抱歉,您没有新增权限！');
+                     canshu = 0;
+            }
+            }
+            //返回首页带参数
+            var KeyWord = $("#Gjz").val();
+            var TopicAreaStr = "";
+            var TopicArea = [];
+            var page = $("#pageIndex").val();
+            $("input[type='checkbox']:checked").each(function (i, e) {
+                TopicArea.push(e.value);
+            });
+            TopicAreaStr = TopicArea.join("','");  //逗号分开
+            //修改权限查询
+             if (type == 1) {
+                 if (Update(createBy, createDept)!=1) {
+                     alert('抱歉,您没有修改本条数据的权限！');
+                     canshu = 0;
+                 }
+                 else {
+                     localStorage.setItem("KeyWord", KeyWord);
+                     localStorage.setItem("TopicArea", TopicAreaStr);
+                     localStorage.setItem("page", page);
+                 }
+
+            }
+            //语言判断
+            if (type == 2) {
+                 canshu = 0;
+                 var userid = '@ViewBag.userid';
+                 document.cookie = "Language=" + cookie;
+                 window.location.href = "/KnowledgeBase/" + parameter + "?userid=" + userid + "";
+                 localStorage.setItem("KeyWord", KeyWord);
+                 localStorage.setItem("TopicArea", TopicAreaStr);
+                 localStorage.setItem("page", page);
+            }
+            //删除功能
+            if (type == 3) {
+                canshu = 0;
+                //判断权限
+                if (Update(createBy, createDept) != 1) {
+                    alert('抱歉,您没有删除本条数据的权限！');
+                }
+                else {
+                  //删除功能
+                    if (confirm("是否删除此条数据？")) {
+                        Del(num);
+                        location.reload();
+                        localStorage.setItem("KeyWord", KeyWord);
+                        localStorage.setItem("TopicArea", TopicAreaStr);
+                        localStorage.setItem("page", page);
+                    }
+
+                }
+            }
+            if (canshu == 1)
+            {
+                window.location.href = "/KnowledgeBase/" + parameter + "?QnAID=" + num + "";
+                localStorage.setItem("KeyWord", KeyWord);
+                localStorage.setItem("TopicArea", TopicAreaStr);
+                localStorage.setItem("page", page);
+            }
+    }
+        //时间日期格式化
+        Date.prototype.Format = function (fmt) { // author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, // 月份
+                "d+": this.getDate(), // 日
+                "h+": this.getHours(), // 小时
+                "m+": this.getMinutes(), // 分
+                "s+": this.getSeconds(), // 秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+                "S": this.getMilliseconds() // 毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+        //删除功能
+        function Del(QnAID) {
+            var QnAID = QnAID;
+            $.ajax({
+                type: "post",
+                dataType: 'json',
+                async: false,
+                url: "/KnowledgeBaseZSG/AddUpdateFunction?&num=4",
+                data: {"QnAID": QnAID},
+                success: function (result) {
+                    if (result.id>0) {
+                        alert("删除成功！");
+                    }
+                    else {
+                        alert("删除失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                }
+            })
+        }
+        app.controller('myController', function ($scope, $http) {
+            $scope.firstPage = @ViewBag.pageIndex;
+            $scope.count = 0;//数据总条数
+            $scope.page = 1;//页码
+            $scope.pageNum = 0;//总页数
+            @*var amount = @ViewBag.pageRow;//数据总条数
+            var each = @ViewBag.pageSize;//每页显示的条数*@
+            $scope.size = 20;//每页数据条数
+            $scope.sub = function (page, size, KeyWord, TopicArea) {
+                //$("#pageIndex").val(page);
+                var KeyWord = $("#Gjz").val();
+                //多选框板块筛选
+                var TopicAreaStr = "";
+                var TopicArea = [];
+                $("input[type='checkbox']:checked").each(function (i, e) {
+                    TopicArea.push(e.value);
+                });
+                TopicAreaStr = TopicArea.join("','");  //逗号分开
+                if (localStorage.KeyWord == null)
+                {
+                    //localStorage.setItem("KeyWord", KeyWord);    //跳转详细页面的时候才给localStroage缓存查询条件
+                } else {
+                    $("#Gjz").val(localStorage.KeyWord);   //文本框赋值，取localStroage值
+                    KeyWord = localStorage.KeyWord;
+                    localStorage.removeItem("KeyWord");
+                }
+                if (localStorage.TopicArea == null) {
+                } else {
+                    TopicAreaStr = localStorage.TopicArea;
+                }
+                if (localStorage.page == null) {   //页码
+
+                } else {
+                    page = localStorage.page;
+                    //$("#Indexpagelabel").val(page);
+                    localStorage.removeItem("page");
+                }
+                $http.get("/KnowledgeBase/QueryIndexData?pageIndex=" + page + "&pageSize=" + size+ "&KeyWord=" + KeyWord+ "&TopicArea=" + TopicAreaStr).success(
+                    function (res) {
+                        if (res.success = "0" && res.data != null) {
+                            $scope.count = res.count;
+                            var rowSortNumber = 0;
+                            angular.forEach(res.data, function (v, k) {  //v-表字段值
+                                rowSortNumber++;
+                                v.Question = RemoveHtml(v.Question).replace(/&nbsp;/g, '').trim();  //移除Html标签
+                                v.Answer = RemoveHtml(v.Answer).replace(/&nbsp;/g, '').trim();
+                                if (v.CreateTime != "") {
+                                    var date = new Date(v.CreateTime);
+                                    v.CreateTime = date.Format("yyyy-MM-dd");  //日期格式化
+                                }
+                                if (v.UpdateTime!="") {
+                                    var date = new Date(v.UpdateTime);
+                                    v.UpdateTime = date.Format("yyyy-MM-dd");  //日期格式化
+                                }
+                                v.SortNumber = (page-1)*size+rowSortNumber;
+                            });
+                            $scope.list = res.data;
+                            $scope.size = res.size;
+                            $scope.pageNum = Math.ceil($scope.count / $scope.size);   /*总条数/每页数据得总页面，向上取整*/
+                            $scope.Num = 5;
+                            $scope.lastPage = Math.ceil($scope.count / $scope.size);
+                            if (page >$scope.pageNum) {
+                                $scope.firstPage = page - Math.floor($scope.pageNum / 2);
+                            } else {
+
+                                $scope.firstPage = page - 1 <= 0 ? 1 : page - 1;
+                            }
+                            if ($scope.firstPage > $scope.lastPage - $scope.Num) {
+                                $scope.firstPage = $scope.lastPage - $scope.Num + 1;
+                            }
+                        }
+                        $scope.pages = setPage($scope.count, $scope.size, $scope.Num, $scope.firstPage);
+                    });
+                $scope.page = page;
+            }
+            $scope.sub($scope.firstPage, 10);
+            $scope.nextPage = function () {
+                $scope.sub($scope.page + $scope.firstPage, 10);
+            }
+            $scope.TiaoZ = function (parameter, num, type, createBy, createDept, cookie) {
+                TZ(parameter, num, type, createBy, createDept, cookie);
+            }
+            $scope.myKeyup = function (e) {
+                var pageIndex = $("#pageIndex").val();
+                var pageCounts = $scope.pageNum;   //最后一页
+                var keycode = window.event ? e.keyCode : e.which;   //keyCode-(鼠标按下触发事件)：Netscape/Firefox/Opera中不支持 window.event.keyCode,需要用event.which代替，IE用event.keCode方法获取当前被按下的键盘按键值，而NetScape/FireFox/Opera用的则是event.which
+                if (keycode == 13) {
+                    if (pageIndex == "") {
+                        alert("跳转页码不能为空！");
+                        return false;
+                    }
+                    if (pageIndex * 1 > pageCounts * 1) {
+                        alert("跳转页面大于最后一页，请重新输入！");
+                        $("#pageIndex").val("");
+                    }
+                    else {
+                        $scope.sub(pageIndex, 10);
+                    }
+                }
+            }
+        })
+    </script>
+    @*判断是否有修改权限*@
+    <script>
+        function Update(createBy, createDept) {
+            var num = 1;
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/KnowledgeBase/Authority",
+                data: {
+                    "createBy": createBy,
+                    "createDept": createDept
+                },
+                success: function (result) {
+                    if (result <= 2) {
+                        num = 0;
+                    }
+                }
+            });
+            return num;
+        }
+    </script>
+    @*多选框筛选*@
+    <script>
+        $(function () {
+            var TopicArea = "";
+            var name = getCookie("Language");
+            if (name == "zh-CN") {  //中文状态下
+                var Language = "Name_CN";
+            }
+            if (name == "en-US") {  //英文状态下
+                var Language = "Name_EN";
+            }
+            if (name == "vi") {   //越南文状态下
+                Language = "Name_VN";
+            }
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/KnowledgeBase/SelectBK",
+                data: {"Language": Language},
+                success: function (result) {
+                    @* 多选框 *@
+                    var i = 1;
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        TopicArea += '<input type="checkbox"  class = "bk" id="CheckBox' + i + '"  name="CheckBox' + i + '" value = "' + value.Value + '" /> ';
+                        TopicArea += '<label for="CheckBox' + i + '">' + value.Text + '</label > ';
+                        TopicArea += '&nbsp;&nbsp;&nbsp;&nbsp;';
+                        i++;
+                    })
+                    $("#TopicArea").append(TopicArea);
+                    return false;
+                }
+            });
+
+            //在下拉框初始化之后再给它赋值，并清空localstorage
+            if (localStorage.TopicArea != null) {
+                var topicAreaArr = localStorage.TopicArea.split("','");
+                $("#TopicArea .bk").each(function () {
+                    if (topicAreaArr.length > 0) {
+                        for (var x in topicAreaArr) {
+                            if (topicAreaArr[x] == $(this).val()) {
+                                $(this).attr("checked", "true");
+                            }
+                        }
+                    }
+                });
+                localStorage.removeItem("TopicArea");
+            }
+            //$(".bk").change(function () {
+            //    if ($(this).is(':checked')) {
+            //        $(this).addClass("glyphicon glyphicon-remove");
+            //    } else {
+            //        $(this).removeClass("glyphicon glyphicon-remove");
+            //    }
+            //});
+        })
+
+    </script>
+</head>
+<body ng-app="myApp" ng-controller="myController">
+    <div class="container-fluid">
+        <h1 style="text-align: center;">
+            <span id="Title">@Resources.CustomerRes.Xtjszsk</span>
+            <div id="tupian" style="float:right;margin-top:-1%;margin-right:4%">
+                <a href="#" onclick="TZ('Index','','2','','','zh-CN')"><img src="/Scripts/image/中文.jpg" alt="中文" title="中文" class="yuyan" /></a>
+                <a href="#" onclick="TZ('Index','','2','','','en-US')"><img src="/Scripts/image/英文.jpg" alt="英文" title="英文" class="yuyan" /></a>
+                <a href="#" onclick="TZ('Index','','2','','','vi')"><img src="/Scripts/image/越南.png" alt="越南文" title="越南文" class="yuyan" style="height:34px" /></a>
+            </div>
+            <div id="language" style="float:right;margin:28px  -182px">
+                <p id="yy" style="margin: 0px 10px;font-size:15px;">
+                    <a class="a-yuyan" href="#" onclick="TZ('Index','','2','','','zh-CN')">@Resources.CustomerRes.Zw</a>
+                    <a class="a-yuyan" href="#" onclick="TZ('Index','','2','','','en-US')">@Resources.CustomerRes.Yw</a>
+                    <a class="a-yuyan" href="#" onclick="TZ('Index','','2','','','vi')">@Resources.CustomerRes.Ynw</a>
+                </p>
+            </div>
+        </h1>
+        <br />
+        <form class="form-inline" role="form">
+            <div class="col-md-4">
+                <div class="input-group-clear" style="margin-left:10%">
+                    <label style="font-weight:bold">@Resources.CustomerRes.Gjz：</label>
+                    <input name="Gjz" type="text" id="Gjz" class="form-control" style="width:78%" required autofocus />
+                    <span class="input-clear isfocus">
+                        &times;
+                    </span>
+                </div>
+            </div>
+
+            <div id="TopicArea" class="col-md-6" style="margin-top:5px">
+                <label style="font-weight:bold">@Resources.CustomerRes.Bk：</label>
+            </div>
+
+            <div id="anniu" class="col-md-2" style="margin-left:-5%">
+                <input type="button" name="btnSearch" class="btn btn-primary btn-sm" value="@Resources.CustomerRes.Ss" id="btnSearch" ng-click="sub(1,10)" />
+                <input type="button" name="btnAdd" class="btn btn-primary btn-sm" value="@Resources.CustomerRes.Xz" id="btnAdd" onclick="TZ('AddKnowledgeBase','0','0')" />
+            </div>
+            <br />
+        </form>
+        @*表格*@
+        <table cellspacing="0" rules="all" border="1" id="GridView1" class="table table-condensed table-bordered" style="margin-top:2%;">
+            <tr>
+                <th scope="col" class="default-th" style="width:5%;">
+                    <a id="px" href="javascript:void(0)" onclick="" style="color:Black;">@Resources.CustomerRes.Xh</a>
+                </th>
+                <th scope="col" class="default-th" style="width:58%;">
+                    <a id="px" href="javascript:void(0)" onclick="" style="color:Black;">@Resources.CustomerRes.Zt_fa</a>
+                </th>
+                <th scope="col" class="default-th" style="width:7%;">
+                    <a id="px" href="javascript:void(0)" onclick="" style="color:Black;">@Resources.CustomerRes.Bk</a>
+                </th>
+                <th scope="col" class="default-th" style="width:10%;">
+                    <a id="px" href="javascript:void(0)" onclick="" style="color:Black;">@Resources.CustomerRes.Zz_tjrq</a>
+                </th>
+                <th scope="col" class="default-th" style="width:10%;">
+                    <a id="px" href="javascript:void(0)" onclick="" style="color:Black;">@Resources.CustomerRes.Ckcs_zhgxsj</a>
+                </th>
+                <th scope="col" class="default-th" style="width:10%;">
+                    <a id="px" href="javascript:void(0)" onclick="" style="color:Black;">@Resources.CustomerRes.Glgj</a>
+                </th>
+            </tr>
+            <tbody>
+                <tr ng-repeat="l in list" onmouseover="this.style.backgroundColor='#facfec'" onmouseout="this.style.backgroundColor='#FFFFFF'"
+                    title="双击显示详细内容" ng-dblclick="TiaoZ('DetailsKnowledgeBase',l.QnAID)" style="Cursor:pointer">
+                    <td align="center" style="font-size:15px;height:25px;"><input type="hidden" name="id" ng-click="select(l.QnAID,l.CreateBy,l.CreateDept)" />{{l.SortNumber}}</td>
+
+                    <td align="center" style="font-size:15px;">
+                        <div class="wen">
+                            <div class="caption hh" style="display:flex;">
+                                <h5>@Resources.CustomerRes.Wen：</h5>
+                                <p>{{l.Question}}</p>
+
+                            </div>
+                            <div class="caption" style="display:flex">
+                                <h5>@Resources.CustomerRes.Da：</h5>
+                                <p>{{l.Answer}}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td align="center" style="font-size:15px;">{{l.Name_CN}}</td>
+                    <td align="center" style="font-size:15px;">
+                        <div class="wen">
+                            <p class="hh"> {{l.Author}}</p>
+                            <p style="margin-top:7px">{{l.CreateTime}}</p>
+                        </div>
+                    </td>
+                    <td align="center" style="font-size:15px;display:grid;border-bottom:none">
+                        <dov class="wen">
+                            <p class="hh"> {{l.ClickTimes}}</p>
+                            <p style="margin-top:7px">{{l.UpdateTime}}</p>
+                        </dov>
+                    </td>
+                    <td align="center" style="font-size:15px;width:50%;vertical-align:middle">
+                        <a href="#" ng-click="TiaoZ('AddKnowledgeBase',l.QnAID,'0')">
+                            <img src="~/Scripts/image/复制.gif" alt="复制" title="复制">
+                        </a>
+                        <a href="#" ng-click="TiaoZ('UpdateKnowledgeBase',l.QnAID,'1',l.CreateBy,l.CreateDept)" style="margin-left:5%;">
+                            <img src='~/Scripts/image/修改.gif' alt='修改' title='修改' />
+                        </a>
+                        <a href="#" style="margin-left:5%;" ng-click="TiaoZ('Index',l.QnAID,'3',l.CreateBy,l.CreateDept)">
+                            <img src='~/Scripts/image/删除.gif' alt='删除' title='删除' />
+                        </a>
+                    </td>
+                </tr>
+                @*@foreach (var item in ViewBag.AllCustomer)
+                    {
+                        <tr onmouseover="this.style.backgroundColor='#facfec'" onmouseout="this.style.backgroundColor='#FFFFFF'"
+                            title="双击显示详细内容" ondblclick="TZ('DetailsKnowledgeBase','@item.QnAID')" style="Cursor:pointer">
+                            <td align="center" style="font-size:15px;height:25px;">@item.QnAID</td>
+                            <td align="left" style="font-size:15px;">
+                                <div class="caption" style="display:flex">
+                                    <h5>@Resources.CustomerRes.Wen：</h5>
+                                    @{ var Question = @item.Question;
+                                        var Answer = @item.Answer;
+                                        var Html1 = RemoveHtml(Question);
+                                        var Html2 = RemoveHtml(Answer);  //去掉html标签函数
+                                    }
+                                    @if (Question == null)
+                                    {<p>@item.Question</p>
+                                }
+                                else
+                                {
+                                    if (Html1.Length > 50)
+                                    {
+                                        @functions{ public static string RemoveHtml(String html)
+                                            {
+                                                if (html == null || html == "")
+                                                {
+                                                    return html;
+                                                }
+                                                else
+                                                {
+                                                    string text = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]+>", "");  //去掉html标签函数
+                                                    text = System.Text.RegularExpressions.Regex.Replace(text, "&[^;]+;", "").Trim();
+                                                    return text;
+                                                }
+
+                                            }
+                                        }//其他页面调用函数（helpers为函数的页面名字）@helpers.RemoveHtml(item.Content)};
+                                        var Text1 = Html1.Substring(0, 48) + "...";   //下拉框字符过长处理
+                                        <p>@Text1</p>
+                                    }
+                                    else
+                                    {
+                                        <p>@Html1</p>
+                                    }
+                                }
+                                </div>
+                                <div class="caption" style="display:flex">
+                                    <h5>@Resources.CustomerRes.Da：</h5>
+                                    @if (@Answer == null)
+                                    {
+                                        <p>@item.Answer</p>
+                                    }
+                                    else
+                                    {
+                                        if (Html2.Length > 50)
+                                        {
+                                            var Text2 = Html2.Substring(0, 48) + "...";   //下拉框字符过长处理
+                                            <p>@Text2</p>
+                                        }
+                                        else
+                                        {
+                                            <p>@Html2</p>
+                                        }
+                                    }
+                                </div>
+                            </td>
+                            <td align="center" style="font-size:15px;">&nbsp;@item.TopicArea</td>
+                            <td align="center" style="font-size:15px;">
+                                <p> @item.Author</p>
+                                <p>@item.CreateTime</p>
+                            </td>
+                            <td align="center" style="font-size:15px;">
+                                <p> @item.ClickTimes</p>
+                                <p>@item.UpdateTime</p>
+                            </td>
+                            <td align="center" style="font-size:15px;width:50%;vertical-align:middle">
+                                <a href="#" onclick="TZ('AddKnowledgeBase','@item.QnAID')">
+                                    <img src="~/Scripts/image/复制.gif" alt="复制" title="复制">
+                                </a>
+                                <a href="#" onclick="TZ('UpdateKnowledgeBase','@item.QnAID')" style="margin-left:5%;">
+                                    <img src='~/Scripts/image/修改.gif' alt='修改' title='修改' />
+                                </a>
+                                <a href="#" onclick="" style="margin-left:5%;">
+                                    <img src='~/Scripts/image/删除.gif' alt='删除' title='删除' />
+                                </a>
+                            </td>
+                        </tr>
+                    }*@
+            </tbody>
+        </table>
+        @*分页*@
+        <nav aria-label="Page navigation" class="clearfix" style="float:right;">
+            @*<label id="Indexpagelabel" style="display:none"></label>*@
+            <ul id="fenye" class="pagination pagination-sm pagination1 fr" style="margin: 0;color:#808080;">
+                <li ng-class="{disabled:page==1}">
+                    <a href="javascript:void(0)" aria-label="Previous" ng-click="sub(page-1<1?1:page-1,10)" ng-disabled="page==1">
+                        <span aria-hidden="true"><</span>
+                    </a>
+                </li>
+                <li ng-if="firstPage >1 && lastPage >= page" ng-click="sub(1,10)" ng-class="{active:item==1}">
+                    <a href="javascript:void(0)">1</a>
+                </li>
+                <li ng-if="page >= Num && lastPage >= page">
+                    <a href="javascript:void(0)">...</a>
+                </li>
+                <li ng-click="sub(item,10)" ng-class="{active:item==page}" ng-repeat="item in pages">
+                    <a href="javascript:void(0)">{{item}}</a>
+                </li>
+                @*Num是需要隐藏页面，默认5页*@
+                <li ng-if="lastPage > page && page <= lastPage - Num">
+                    <a href="javascript:void(0)">...</a>
+                </li>
+                <li ng-if="lastPage > page && firstPage <= lastPage - Num" ng-click="sub(lastPage,10)" ng-class="{active:item==page}">
+                    <a id="pageCounts" href="javascript:void(0)">{{lastPage}}</a>
+                </li>
+                <li ng-class="{disabled:page==lastPage}">
+                    <a href="javascript:void(0)" aria-label="Next" ng-click="sub(page+1>pageNum?pageNum:page+1,10)" ng-disabled="page==pageNum">
+                        <span aria-hidden="true">></span>
+                    </a>
+                </li>
+                <li style="margin-left:10px">
+                    @Resources.CustomerRes.Tzhi
+                    <input class="text-center" size="2" ng-keyup="myKeyup($event)" type="text" title="按回车跳转页面" value="{{page}}" id="pageIndex" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" />
+                    <input id="pageNum" style="display:none" value="{{pageNum}}" />
+                    @*粘贴后：将输入值为非数字的字符替换为空*@
+                    @Resources.CustomerRes.Ye
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

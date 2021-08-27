@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WebStationModelStoreContainer" CdmEntityContainer="WebStationEntities">
+    <EntitySetMapping Name="CustProductPriceRecords">
+      <EntityTypeMapping TypeName="WebStationModel.CustProductPriceRecords">
+        <MappingFragment StoreEntitySet="CustProductPriceRecords">
+          <ScalarProperty Name="CPSerial" ColumnName="CPSerial" />
+          <ScalarProperty Name="Ledger" ColumnName="Ledger" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="FNumber" ColumnName="FNumber" />
+          <ScalarProperty Name="CustProdCode" ColumnName="CustProdCode" />
+          <ScalarProperty Name="CustProdName" ColumnName="CustProdName" />
+          <ScalarProperty Name="PrvCurr" ColumnName="PrvCurr" />
+          <ScalarProperty Name="PrvUnit" ColumnName="PrvUnit" />
+          <ScalarProperty Name="UpdCurr" ColumnName="UpdCurr" />
+          <ScalarProperty Name="UpdUnit" ColumnName="UpdUnit" />
+          <ScalarProperty Name="EffType" ColumnName="EffType" />
+          <ScalarProperty Name="EffDetail" ColumnName="EffDetail" />
+          <ScalarProperty Name="Remarks_MD" ColumnName="Remarks_MD" />
+          <ScalarProperty Name="Remarks_FD" ColumnName="Remarks_FD" />
+          <ScalarProperty Name="Cancel" ColumnName="Cancel" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GetProductPriceList">
+      <EntityTypeMapping TypeName="WebStationModel.GetProductPriceList">
+        <MappingFragment StoreEntitySet="GetProductPriceList">
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="CustomerDisplayName" ColumnName="CustomerDisplayName" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="Ledger" ColumnName="Ledger" />
+          <ScalarProperty Name="CPSerial" ColumnName="CPSerial" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="CustProdCode" ColumnName="CustProdCode" />
+          <ScalarProperty Name="CustProdName" ColumnName="CustProdName" />
+          <ScalarProperty Name="PrvCurr" ColumnName="PrvCurr" />
+          <ScalarProperty Name="PrvUnit" ColumnName="PrvUnit" />
+          <ScalarProperty Name="NewPrvUnit" ColumnName="NewPrvUnit" />
+          <ScalarProperty Name="UpdCurr" ColumnName="UpdCurr" />
+          <ScalarProperty Name="UpdUnit" ColumnName="UpdUnit" />
+          <ScalarProperty Name="NewUpdUnit" ColumnName="NewUpdUnit" />
+          <ScalarProperty Name="EffType" ColumnName="EffType" />
+          <ScalarProperty Name="EffDetail" ColumnName="EffDetail" />
+          <ScalarProperty Name="Remarks_MD" ColumnName="Remarks_MD" />
+          <ScalarProperty Name="Remarks_FD" ColumnName="Remarks_FD" />
+          <ScalarProperty Name="FNumber" ColumnName="FNumber" />
+          <ScalarProperty Name="Name_EN" ColumnName="Name_EN" />
+          <ScalarProperty Name="Cancel" ColumnName="Cancel" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="UpperDept" ColumnName="UpperDept" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customer">
+      <EntityTypeMapping TypeName="WebStationModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="ServiceBy" ColumnName="ServiceBy" />
+          <ScalarProperty Name="AnnualRevenue" ColumnName="AnnualRevenue" />
+          <ScalarProperty Name="CueCode" ColumnName="CueCode" />
+          <ScalarProperty Name="CreditPeriod" ColumnName="CreditPeriod" />
+          <ScalarProperty Name="CreditTerms" ColumnName="CreditTerms" />
+          <ScalarProperty Name="CreditLimits" ColumnName="CreditLimits" />
+          <ScalarProperty Name="Yr2Forcast" ColumnName="Yr2Forcast" />
+          <ScalarProperty Name="Yr1Forcast" ColumnName="Yr1Forcast" />
+          <ScalarProperty Name="Curr4" ColumnName="Curr4" />
+          <ScalarProperty Name="Curr3" ColumnName="Curr3" />
+          <ScalarProperty Name="Curr2" ColumnName="Curr2" />
+          <ScalarProperty Name="Curr1" ColumnName="Curr1" />
+          <ScalarProperty Name="Ref2Phone" ColumnName="Ref2Phone" />
+          <ScalarProperty Name="Ref2Title" ColumnName="Ref2Title" />
+          <ScalarProperty Name="Ref2Contact" ColumnName="Ref2Contact" />
+          <ScalarProperty Name="Ref2Addr" ColumnName="Ref2Addr" />
+          <ScalarProperty Name="Ref2Name" ColumnName="Ref2Name" />
+          <ScalarProperty Name="Ref1Phone" ColumnName="Ref1Phone" />
+          <ScalarProperty Name="Ref1Title" ColumnName="Ref1Title" />
+          <ScalarProperty Name="Ref1Contact" ColumnName="Ref1Contact" />
+          <ScalarProperty Name="Ref1Addr" ColumnName="Ref1Addr" />
+          <ScalarProperty Name="Ref1Name" ColumnName="Ref1Name" />
+          <ScalarProperty Name="Owner2Ship" ColumnName="Owner2Ship" />
+          <ScalarProperty Name="Owner2Type" ColumnName="Owner2Type" />
+          <ScalarProperty Name="Owner2Date" ColumnName="Owner2Date" />
+          <ScalarProperty Name="Owner2Cnty" ColumnName="Owner2Cnty" />
+          <ScalarProperty Name="Owner2Web" ColumnName="Owner2Web" />
+          <ScalarProperty Name="Owner2Addr" ColumnName="Owner2Addr" />
+          <ScalarProperty Name="Owner2Name" ColumnName="Owner2Name" />
+          <ScalarProperty Name="Owner1Ship" ColumnName="Owner1Ship" />
+          <ScalarProperty Name="Owner1Type" ColumnName="Owner1Type" />
+          <ScalarProperty Name="Owner1Date" ColumnName="Owner1Date" />
+          <ScalarProperty Name="Owner1Cnty" ColumnName="Owner1Cnty" />
+          <ScalarProperty Name="Owner1Web" ColumnName="Owner1Web" />
+          <ScalarProperty Name="Owner1Addr" ColumnName="Owner1Addr" />
+          <ScalarProperty Name="Owner1Name" ColumnName="Owner1Name" />
+          <ScalarProperty Name="IsList" ColumnName="IsList" />
+          <ScalarProperty Name="SWIFT" ColumnName="SWIFT" />
+          <ScalarProperty Name="iBAN" ColumnName="iBAN" />
+          <ScalarProperty Name="BankAddr" ColumnName="BankAddr" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="PUR_Email" ColumnName="PUR_Email" />
+          <ScalarProperty Name="PUR_Mobile" ColumnName="PUR_Mobile" />
+          <ScalarProperty Name="PUR_Fax" ColumnName="PUR_Fax" />
+          <ScalarProperty Name="PUR_Phone" ColumnName="PUR_Phone" />
+          <ScalarProperty Name="PUR_Title" ColumnName="PUR_Title" />
+          <ScalarProperty Name="PUR_Name" ColumnName="PUR_Name" />
+          <ScalarProperty Name="Belongs" ColumnName="Belongs" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="K3Code" ColumnName="K3Code" />
+          <ScalarProperty Name="SysID" ColumnName="SysID" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CustType" ColumnName="CustType" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActionLog2021">
+      <EntityTypeMapping TypeName="WebStationModel.ActionLog2021">
+        <MappingFragment StoreEntitySet="ActionLog2021">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="TableKey" ColumnName="TableKey" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+          <ScalarProperty Name="ActionTime" ColumnName="ActionTime" />
+          <ScalarProperty Name="ActionType" ColumnName="ActionType" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

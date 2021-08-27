@@ -1,0 +1,666 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Default</title>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jQuery.print.js"></script>
+    <script src="~/Scripts/导出/demo.page.js"></script>
+    <script src="~/Scripts/导出/excel-gen.js"></script>
+    <script src="~/Scripts/导出/FileSaver.js"></script>
+    <script src="~/Scripts/导出/jszip.min.js"></script>
+    <script src="~/Scripts/导出/tableExport.min.js"></script>
+    <style>
+        .default-th {
+            color: Black;
+            background-color: #ACACAC;
+            height: 30px;
+            text-align: center;
+        }
+
+        img {
+            border: none;
+        }
+
+        #GridView1 tr th {
+            font-size: 15px;
+            text-decoration: underline;
+        }
+
+        .input-clear {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 111;
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+            cursor: pointer;
+        }
+
+        .form-control {
+            height: 26px;
+        }
+
+        .col-md-1, .col-md-2 {
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .yuyan {
+            width: 50px;
+            height: 40px;
+        }
+
+        .a-yuyan {
+        }
+    </style>
+    @*页面加载*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //设置Cookie
+            if (getCookie("Language") == "") {
+                document.cookie = "Language=zh-CN"
+            }
+            //禁用/解禁权限
+            if ('@ViewBag.JY' !="True") {
+                $(".jinyong").css("display", "none");
+            }
+            //行业下拉框加载
+            var Selecttrade = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/SelectTrade",
+                dataType:"JSON",
+                success: function (result) {
+                    Selecttrade += '<select name="Name_CNs" id="Name_CNs" style="height:26px;width: 100%;border:1px solid #ccc">';
+                    Selecttrade += '<option value=""></option >';
+                    $.each(result.Data.DropDownList,function (key, value) {
+                        Selecttrade += '<option value="' + value.Value + '"';
+                        Selecttrade += ">" + value.Text + '</option > ';
+                    })
+                    Selecttrade += ' </select>'
+                    $("#Selecttrade").append(Selecttrade);
+                }
+            });
+            if ('@ViewBag.dayin' == "1")
+            {
+                //过滤条件设为只读
+                $("#ShortNames").attr("disabled", "disabled");
+                $("#K3Codes").attr("disabled", "disabled");
+                $("select").each(function () {
+                    $("#" + this.id).attr("disabled", true);
+                });
+                var arr = getRequest();
+                $("#ShortNames").val("arr[ShortNames]");
+                $("#Name_CNs").val("arr[Name_CNs]");
+                $("#K3Codes").val("arr[K3Codes]");
+            }
+            (function ($) {
+                $.getUrlParam = function (name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    //var decodeurl = decodeURI()
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r != null) return unescape(r[2]);
+                    return null;
+                }
+            })(jQuery);
+            var arr = getRequest();
+            document.getElementById("ShortNames").value = arr['ShortName'] == undefined ? "" : arr['ShortName'];
+            var nameCn = arr['Name_CN'] == undefined ? "" : arr['Name_CN'];
+            $("#Name_CNs").find("option").each(function () {
+                if ($(this).val() == nameCn) {
+                    $(this).attr("selected", true);
+                }
+            });
+            $("#Name_CNs").val(nameCn);
+
+            document.getElementById("K3Codes").value = arr['K3Code'] == undefined ? "" : arr['K3Code'];
+            if (arr['sortedField'] == "CustomerIDs") {
+                ChangeSubTitle('px', '↑');
+            }
+            else if (arr['sortedField'] == "CustomerIDs   desc") {
+                ChangeSubTitle('px', '↓');
+            }
+            else if (arr['sortedField'] == "ShortName   desc") {   //简称（降）
+                ChangeSubTitle('jc', '↓');
+            }
+            else if (arr['sortedField'] == "ShortName") {   //简称（升）
+                ChangeSubTitle('jc', '↑');
+            }
+            else if (arr['sortedField'] == "Name_CN   desc") {   //行业（降）
+                    ChangeSubTitle('hy', '↓');
+            }
+            else if (arr['sortedField'] == "Name_CN") {   //行业（升）
+                ChangeSubTitle('hy', '↑');
+            }
+            else if (arr['sortedField'] == "K3Code   desc") {   //k3（降）
+                ChangeSubTitle('k3', '↓');
+            }
+            else if (arr['sortedField'] == "K3Code") {   //k3（升）
+                ChangeSubTitle('k3', '↑');
+            }
+            else if (arr['sortedField'] == "DeptName_CN   desc") {   //客户递属代码（降）
+                ChangeSubTitle('ds', '↓');
+            }
+            else if (arr['sortedField'] == "DeptName_CN") {   //客户递属代码（升）
+                ChangeSubTitle('ds', '↑');
+            }
+            else if (arr['sortedField'] == "CueCode   desc") {   //三字代码（降）
+                ChangeSubTitle('cuecode', '↓');
+            }
+            else if (arr['sortedField'] == "CueCode") {   //三字代码（升）
+                ChangeSubTitle('cuecode', '↑');
+            }
+            $("#Name_CNs").bind('change',function() {
+                $("#pageIndex").val(1);
+            })
+        })
+
+        function ChangeSubTitle(element, value) {
+            var temp = document.getElementById(element).innerText;
+            document.getElementById(element).innerText = temp.substring(0, temp.length - 2) + value;
+        }
+    </script>
+    @*方法*@
+    <script type="text/javascript">
+        //跳转页面
+        function TZ(CustomerID) {
+            if ("@ViewBag.User" == "True") {
+                window.location.href = "./Customer/ACustomer?CustomerID=" + CustomerID + "";
+            }
+            else {
+                alert('抱歉,您没有新增权限！');
+            }
+        }
+        function tiaozhuan(CustomerID, Status) {
+            if (Status == "有效" || Status == "停用") {
+                window.location.href = "/Customer/OnlyReadDetail?CustomerID=" + CustomerID + "&createBy=" + '@ViewBag.username' + "&createDept=" + '@ViewBag.DeptID'+ "&num=" + 1;
+            }
+            else {
+                window.location.href = "/Customer/Detail?CustomerID=" + CustomerID + "&createBy=" + '@ViewBag.username' + "&createDept=" + '@ViewBag.DeptID';
+            }
+
+        }
+        //修改判断权限
+        function Update(CustomerID) {
+            var userid = '@ViewBag.userid';
+            window.location.href = "/Customer/UpdateCustomer?CustomerID=" + CustomerID + "&num=" + 1;
+        }
+        function Chinese() {
+            document.cookie = "Language=zh-CN";
+             var userid = '@ViewBag.userid';
+             window.location.href = "/Customer/Default?userid="+userid;
+        }
+        function English() {
+            document.cookie = "Language=en-US";
+            var userid = '@ViewBag.userid';
+            window.location.href = "/Customer/Default?userid="+userid;
+        }
+        function Vietnam() {
+            document.cookie = "Language=vi";
+            var userid = '@ViewBag.userid';
+            window.location.href = "/Customer/Default?userid="+userid;
+        }
+        // 获取指定名称的cookie
+        function getCookie(name) {
+            var strcookie = document.cookie;//获取cookie字符串
+            var arrcookie = strcookie.split("; ");//分割
+            //遍历匹配
+            for (var i = 0; i < arrcookie.length; i++) {
+                var arr = arrcookie[i].split("=");
+                if (arr[0] == name) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        //禁用/解禁
+        function JinYong(CustomerID, Status,messge) {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/FunctionOperation/UpdateJY",
+                dataType: "JSON",
+                data: {
+                    "CustomerID": CustomerID,
+                    "Status": Status
+                },
+                success: function (result) {
+                    if (result > 0) {
+                        alert(messge + "成功！");
+                        location.reload();   //刷新页面不清空值
+                    }
+                }
+            });
+        }
+
+
+    </script>
+    @*模糊查询文本框*@
+    <script>
+        // 输入框清除
+        $(function () {
+
+            // 监听输入框内容变动
+            $(".input-group-clear").bind("input propertychange", function () {
+                // 获取输入框的值
+                var inputValue = $(this).children('input').val();
+                // 判断输入框是否有值
+                if (inputValue >= 1) {
+                    // 显示清除
+                    $(this).children('.input-clear').show();
+                } else {
+                    // 隐藏清除
+                    $(this).children('.input-clear').hide();
+                }
+
+            });
+
+            // 输入框获取焦点事件，判断输入框是否有值，有值则显示清除
+            $(".input-group-clear").children('input').focus(function () {
+
+                var inputValue = this.value.length;
+
+                if (inputValue >= 1) {
+                    $(this).siblings('.input-clear').show();
+                }
+
+            });
+
+            // 点击清除事件
+            $('.input-clear').click(function () {
+                // 清空输入框值
+                $(this).siblings('input').val('');
+                // 隐藏清除
+                $(this).hide();
+
+            });
+
+            // 离开输入框div事件，隐藏清除,此处不能使用blur，因为blur只对输入框有效
+            $(".input-group-clear").focusout(function () {
+
+                var igc = $(this);
+                // 设置一个定时器，离开输入框div，200毫秒后隐藏清除，不设置定时器会出现点击清除无效的情况
+                setTimeout(function () {
+                    igc.children('.input-clear').hide();
+                }, 200)
+
+            });
+        })
+
+    </script>
+    @*排序*@
+    <script>
+        //取地址栏参数值
+        function getRequest() {
+            var url = window.location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    //就是这句的问题
+                    theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+                    //之前用了unescape()
+                    //才会出现乱码
+                }
+            }
+            return theRequest;
+        }
+        //点击排序
+        function Descs(obj, value) {
+            var pageIndex = 1;
+            var pageSize = $("#pageSize").val();
+            var shortName = $("#ShortNames").val();
+            var Name_CN = $("#Name_CNs").val();
+            var K3Code = $("#K3Codes").val();
+            var userid = '@ViewBag.userid';
+            var src = "/Customer/Default?userid=" + userid + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&ShortName=" + shortName + "&Name_CN=" + Name_CN + "&K3Code=" + K3Code + "&sortedField=" + value;
+            if (obj.innerText.indexOf('↑') > 0) {
+                src = src + "   desc";
+            }
+            window.location.href = src;
+
+    }
+        //页码+排序
+        function fepx(pageIndex, sortedField) {
+            if (sortedField=='') {
+                sortedField = "CustomerIDs   desc";
+            }
+                var pageIndex = pageIndex;
+                var pageSize = $("#pageSize").val();
+                var shortName = $("#ShortNames").val();
+                var Name_CN = $("#Name_CNs").val();
+                var K3Code = $("#K3Codes").val();
+            var userid = '@ViewBag.userid';
+                window.location.href = "/Customer/Default?userid=" + userid + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&ShortName=" + shortName + "&Name_CN=" + Name_CN + "&K3Code=" + K3Code + "&sortedField="+sortedField;
+            }
+    </script>
+    @*打印导出*@
+    <script>
+        //打印
+        function btndy() {
+            if ('@ViewBag.dayin' == "1") {
+                //jQuery.print();
+                var arr = getRequest();
+                window.print();
+            }
+            else {
+                var userid = '@ViewBag.userid';
+                var pageIndex = $("#pageIndex").val();
+                var pageSize = $("#pageSize").val();
+                var shortName = $("#ShortNames").val();
+                var Name_CN = $("#Name_CNs").val();
+                var K3Code = $("#K3Codes").val();
+                var sortedField = '@ViewBag.sortedField';
+                window.open("/Customer/Default?userid=" + userid + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize + "&ShortName=" + shortName + "&Name_CN=" + Name_CN + "&K3Code=" + K3Code+"&sortedField="+sortedField+"&dayin=1");
+            }
+
+        }
+        //导出
+        function DaocChu() {
+            $('#GridView1').tableExport({
+                type: 'excel',
+                ignoreColumn: [8],//从1开始，忽略第5列
+                mso: {//若table表格中使用了以下指定的样式属性，则将该样式同步到Excel中(可以保留表格原有的样式到Excel中)
+                    styles: ['background-color',
+                        'border-top-color', 'border-left-color', 'border-right-color', 'border-bottom-color',
+                        'border-top-width', 'border-left-width', 'border-right-width', 'border-bottom-width',
+                        'border-top-style', 'border-left-style', 'border-right-style', 'border-bottom-style',
+                        'color']
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="ddd" class="container-fluid">
+        <div style="width: 100%;">
+            <div style="width: 100%;">
+                <h1 style="text-align: center;">
+                    @Resources.CustomerRes.Khwhlb
+                    @if (ViewBag.dayin != "1")
+                    {
+                        <div style="float:right;margin-top:-1%;margin-right:4%">
+                            <a href="#" onclick="Chinese()"><img src="/Scripts/image/中文.jpg" alt="中文" title="中文" class="yuyan" /></a>
+                            <a href="#" onclick="English()"><img src="/Scripts/image/英文.jpg" alt="英文" title="英文" class="yuyan" /></a>
+                            <a href="#" onclick="Vietnam()"><img src="/Scripts/image/越南.png" alt="越南文" title="越南文" class="yuyan" style="height:34px" /></a>
+                            <p style="margin: 0px 10px;font-size:15px;">
+                                <a class="a-yuyan" href="#" onclick="Chinese()">@Resources.CustomerRes.Zw</a>
+                                <a class="a-yuyan" href="#" onclick="English()">@Resources.CustomerRes.Yw</a>
+                                <a class="a-yuyan" href="#" onclick="Vietnam()">@Resources.CustomerRes.Ynw</a>
+                            </p>
+                        </div>
+                    }
+                </h1>
+            </div>
+            <div style="width:100%;margin: 0px auto;text-align:center;font-size:16px;clear:both">
+                <div class="row">
+                    <div class="col-md-1 text-right">
+                        <span>@Resources.CustomerRes.khmc：</span>
+                    </div>
+                    @if (ViewBag.dayin != "1")
+                    {
+                        <div class="col-md-2">
+                            <div class="input-group-clear">
+                                <input name="ShortNames" type="text" id="ShortNames" class="form-control" required autofocus>
+                                <span class="input-clear isfocus">
+                                    &times;
+                                </span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-2">
+                            <div class="input-group-clear">
+                                <input name="ShortNames" type="text" id="ShortNames" class="form-control" required autofocus>
+                                <span class="input-clear isfocus">
+                                    &times;
+                                </span>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-1 text-right"><span>@Resources.CustomerRes.Hy：</span></div>
+                    <div class="col-md-2">
+                        <div style="display:inline-block ;width:100%" id="Selecttrade">
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 text-right">
+                        <span>@Resources.CustomerRes.k3dm：</span>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group-clear">
+                            <input name="K3Codes" type="text" id="K3Codes" class="form-control" required>
+                            <span class="input-clear">
+                                &times;
+                            </span>
+                        </div>
+                    </div>
+                    @if (ViewBag.dayin != "1")
+                    {
+                        <div class="col-md-3 text-left">
+                            <input type="button" name="btnSearch" class="btn btn-primary btn-sm" value="@Resources.CustomerRes.Ss" id="btnSearch" onclick="Check()" />
+
+                            <input type="button" name="btnToExcel" class="btn btn-primary btn-sm" value="@Resources.CustomerRes.Dc" id="btnToExcel" onclick="DaocChu()" />
+
+                            <input type="button" name="btnAdd" class="btn btn-primary btn-sm" value="@Resources.CustomerRes.Xz" id="btnAdd" onclick="TZ('0')" />
+                            @if (ViewBag.dayin != "1")
+                            {
+                                <input type="button" name="btndy" value="@Resources.CustomerRes.Dyyl" id="btndy" style="height:27px;width:75px;cursor:pointer;display:none" onclick=" btndy()" />
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <input type="button" name="btndy" value="@Resources.CustomerRes.Dayin" id="btndy" style="height:27px;width:75px;cursor:pointer;" onclick=" btndy()" />
+                    }
+                </div>
+            </div>
+        </div><br />
+        <div>
+            <table cellspacing="0" rules="all" border="1" id="GridView1" class="table table-condensed table-bordered">
+                <tr>
+                    <th scope="col" class="default-th" style="width:8%;">
+                        <a id="px" href="javascript:void(0)" onclick="Descs(this,'CustomerIDs')" style="color:Black;">@Resources.CustomerRes.Khdm ↑↓</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:19%;">
+                        <a id="jc" href="javascript:void(0)" onclick="Descs(this,'ShortName')" style="color:Black;">@Resources.CustomerRes.Khjc↑↓</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:13%;">@Resources.CustomerRes.Szcs</th>
+                    <th scope="col" class="default-th" style="width:11%;">
+                        <a id="hy" href="javascript:void(0)" onclick="Descs(this,'Name_CN')" style="color:Black;">@Resources.CustomerRes.Hy↑↓</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:8%;">
+                        <a id="k3" href="javascript:void(0)" onclick="Descs(this,'K3Code')" style="color:Black;">@Resources.CustomerRes.k3dm↑↓</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:17%;">
+                        <a id="ds" href="javascript:void(0)" onclick="Descs(this,'DeptName_CN')" style="color:Black;">@Resources.CustomerRes.Khds↑↓</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:7%;">
+                        <a id="cuecode" href="javascript:void(0)" onclick="Descs(this,'CueCode')" style="color:Black;">@Resources.CustomerRes.Szdm↑↓</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:5%;">@Resources.CustomerRes.Zt</th>
+                    @if (ViewBag.dayin != "1")
+                    {
+                        <th scope="col" style="color:Black;background-color:#ACACAC;height:30px;width:12%;text-align:center">@Resources.CustomerRes.Glgj</th>
+                    }
+                </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr onmouseover="this.style.backgroundColor='#facfec'" onmouseout="this.style.backgroundColor='#FFFFFF'"
+                            title="双击显示详细内容" ondblclick="tiaozhuan('@item.list.CustomerIDs','@item.list.Status')" style="Cursor:pointer">
+                            <td align="center" style="font-size:15px;height:25px;">@item.list.CustomerIDs</td>
+                            <td align="left" style="font-size:15px;">@item.list.ShortName</td>
+                            <td align="left" style="font-size:15px;">&nbsp;@item.list.CityName_s</td>
+                            <td align="left" style="font-size:15px;">@item.list.Name_CN</td>
+                            <td align="right" style="font-size:15px;">@item.list.K3Code</td>
+                            <td align="left" style="font-size:15px;">@item.list.DeptName_CN</td>
+                            <td align="center" style="font-size:15px;">&nbsp;@item.list.CueCode</td>
+                            @if (@item.list.Status == "停用")
+                            {
+                                <td align="center" style="font-size:15px; color:#FF0000">&nbsp;@item.list.Status</td>
+                            }
+                            else if (@item.list.Status == "审核")
+                            {
+                                <td align="center" style="font-size:15px;color:#0000FF" ;>&nbsp;@item.list.Status</td>
+                            }
+                            else if (@item.list.Status == "有效")
+                            {
+                                <td align="center" style="font-size:15px;color:#40A040" ;>&nbsp;@item.list.Status</td>
+                            }
+                            else
+                            {
+                                <td align="center" style="font-size:15px;">&nbsp;@item.list.Status</td>
+                            }
+                            <td align="center" style="font-size:15px;width:50%;">
+                                <a href="#" onclick="TZ('@item.list.CustomerIDs')">
+                                    <img src="~/Scripts/image/复制.gif" alt="复制" title="复制">
+                                </a>
+                                @if (@item.dep > 2 && @item.list.Status != "审核")
+                                {
+                                    <a href="#" onclick="Update('@item.list.CustomerIDs')" style="margin-left:5%;">
+                                        <img src='~/Scripts/image/修改.gif' alt='修改' title='修改' />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a style="margin-left:5%;">
+                                        <img src='~/Scripts/image/修改.gif' alt='修改' title='修改' />
+                                        <img src="~/Scripts/图标/disable效果.png" style="width:10px;margin-left:-15px;margin-bottom:-2%" />
+                                    </a>
+                                }
+                                @if (@item.list.Status == "维护")
+                                {
+                                    <a href="#" onclick="tiaozhuan('@item.list.CustomerIDs','@item.list.Status')" style="margin-left:5%;width:20%">
+                                        <img src="~/Scripts/图标/提交.png" alt='提交' title='提交' />
+                                    </a>
+                                }
+                                @if (@item.list.Status == "审核")
+                                {
+                                    <a href="#" onclick="tiaozhuan('@item.list.CustomerIDs','@item.list.Status')" style="margin-left:5%;width:20%">
+                                        <img src="~/Scripts/图标/审核.png" alt='审核' title='审核' />
+                                    </a>
+                                }
+                                @if (@item.list.Status == "有效")
+                                {
+                                    <a class="jinyong" href="#" onclick="JinYong('@item.list.CustomerIDs','S','禁用')" style="margin-left:5%;width:20%">
+                                        <img src="~/Scripts/图标/禁用.png" alt='禁用' title='禁用' />
+                                    </a>
+                                }
+                                @if (@item.list.Status == "停用")
+                                {
+                                    <a class="jinyong" href="#" onclick="JinYong('@item.list.CustomerIDs','N','解禁')" style="margin-left:5%;width:20%">
+                                        <img src="~/Scripts/图标/解除.png" alt='解除' title='解除' />
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <table cellspacing="0" rules="all" id="GridView2" style="width:100%;border-collapse:collapse;word-break:break-all;word-wrap:break-word">
+                <tr>
+                    <td style="font-size:13px;margin-left:500px" colspan="9">
+                        <ul class="pagination">
+                            <li style="margin-left:10px">
+                                @Resources.CustomerRes.G_g <label id="pageCounts">@ViewBag.pageCount</label> @Resources.CustomerRes.Ye，
+                                <label> @ViewBag.pageRow</label>@Resources.CustomerRes.T_t，@Resources.CustomerRes.D_d
+                                <input class="text-center" size="2" type="text" value="@ViewBag.pageIndex" id="pageIndex" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" />
+                                @Resources.CustomerRes.Ye，
+                                @Resources.CustomerRes.Myxs <select id="pageSize" onchange="go(1);">
+                                    @{
+                                        var pageindexs = new List<int> { 5, 10, 15, 20, 50, 100 };
+                                        for (int i = 0; i < pageindexs.Count; i++)
+                                        {
+                                            if (ViewBag.pageSize == pageindexs[i])
+                                            {
+                                                <option value="@pageindexs[i]" selected="selected">@pageindexs[i]</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@pageindexs[i]">@pageindexs[i]</option>
+                                            }
+                                        }
+                                    }
+                                </select> @Resources.CustomerRes.T_t
+                            </li>
+                        </ul>
+                        <ul class="pagination">
+                            <li><input type="button" value="@Resources.CustomerRes.Sy" class="btn-group btn-group-sm" onclick="go(1);" /></li>
+                            @if (ViewBag.pageIndex > 1)
+                            {
+                                <li><input type="button" value="@Resources.CustomerRes.Syy" class="btn-group btn-group-sm" onclick="go(@(ViewBag.pageIndex - 1 ));" /></li>
+                            }
+                            else
+                            {
+                                <li><input type="button" disabled="disabled" value="@Resources.CustomerRes.Syy" class="btn-group btn-group-sm" onclick="go(@(ViewBag.pageIndex - 1 ));" /></li>
+                            }
+                            <li><input type="button" id="btn" value="@Resources.CustomerRes.Xy" class="btn-group btn-group-sm" onclick="go((@ViewBag.pageIndex + 1 ));" /></li>
+                            @if (ViewBag.pageIndex < ViewBag.pageCount)
+                            {
+                                <li><input type="button" value="@Resources.CustomerRes.My" class="btn-group btn-group-sm" onclick="go(@ViewBag.pageCount);" /></li>
+                            }
+                            else
+                            {
+                                <li><input type="button" value="@Resources.CustomerRes.My" class="btn-group btn-group-sm" onclick="go(@ViewBag.pageCount);" /></li>
+                            }
+                            <li><input type="button" value="@Resources.CustomerRes.Tz" class="btn-group btn-group-sm" onclick="Check(1);" /> </li>
+                        </ul>
+                        <script type="text/javascript">
+                            function go(pageIndex) {
+                                var pageCounts = $("#pageCounts").html();
+                                            var userid = '@ViewBag.userid';
+                                            if (pageIndex * 1 > pageCounts * 1) {
+                                                document.getElementById("btn").disabled = true;
+                                            }
+                                            else {
+                                                fepx(pageIndex,'@ViewBag.sortedField');
+                                            }
+
+
+
+                                        }
+                                       function Check(num) {
+                                           var pageIndex = $("#pageIndex").val();
+                                           var pageCounts = $("#pageCounts").html();
+                                            if (num == 1) {
+                                                if (pageIndex * 1 > pageCounts * 1) {
+                                                    document.getElementById("btn").disabled = true;
+                                                    alert("跳转页面大于最后一页，请重新输入！");
+                                                }
+                                                else {
+                                                    fepx(pageIndex,'@ViewBag.sortedField');
+                                                }
+                                            }
+                                            else {
+                                                fepx(pageIndex,'@ViewBag.sortedField');
+                                            }
+                                        }
+                        </script>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

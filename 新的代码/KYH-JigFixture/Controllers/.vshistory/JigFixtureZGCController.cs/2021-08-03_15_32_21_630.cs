@@ -1,0 +1,92 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Customer.Models.PublicSqlMethods;
+using KYH_JigFixture.Models;
+using KYH_JigFixture.Models.SqlMethods;
+
+namespace KYH_JigFixture.Controllers
+{
+    public class JigFixtureZGCController : Controller
+    {
+        WebStationEntities db = new WebStationEntities();
+        public ActionResult Index()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 新增/修改新表
+        /// </summary>
+        /// <param name="num">1-新增，2-修改</param>
+        /// <param name="TAT">Tools_Acquire_Trace新表</param>
+        /// <returns></returns>
+        [ValidateInput(false)]
+        public int AddFunction(int num, Tools_Acquire_Trace TAT, string userid)
+        {
+            JigFixtureController jigFixtureController = DependencyResolver.Current.GetService<JigFixtureController>();
+            int a = 0;
+            string name = jigFixtureController.GetUser(userid);
+            string DeptID = jigFixtureController.GetDepartment(name);
+            try
+            {
+                if (num == 0)
+                {
+                    TAT.UpdateNumber = 0;
+                    this.db.Tools_Acquire_Trace.Add(TAT);
+                }
+                if (num == 1)
+                {
+                    Tools_Acquire_Trace oldTAT = new Tools_Acquire_Trace();
+                    oldTAT = this.db.Set<Tools_Acquire_Trace>().AsNoTracking().FirstOrDefault((Tools_Acquire_Trace p) => p.FID == TAT.FID);
+                    TAT.UpdateNumber = oldTAT.UpdateNumber + 1;
+                    TAT.Remark = oldTAT.Remark;
+                    DbEntityEntry<Tools_Acquire_Trace> entry = this.db.Entry<Tools_Acquire_Trace>(TAT);
+                    entry.State = EntityState.Modified;
+                    string User = jigFixtureController.GetUser(userid);
+                    LogThread.ActionLog(User, DeptID, "修改了原采购单号(" + oldTAT.K3PO_Num + ")", "U", name);
+                }
+                a = this.db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.ToString());
+                return a;
+            }
+            return a;
+        }
+
+        /// <summary>
+        /// 修改备注字段
+        /// </summary>
+        /// <param name="id">唯一id</param>
+        /// <param name="Remark">备注内容</param>
+        /// <returns></returns>
+        public int UpdateFunction(int num, int id, string Remark)
+        {
+            int a = 0;
+            try
+            {
+                if (num == 1)
+                {
+                    //只修改备注
+                    Tools_Acquire_Trace found = db.Tools_Acquire_Trace.FirstOrDefault(e => e.FID == id);//查以前的数据
+                    found.Remark = Remark;
+                    DbEntityEntry<Tools_Acquire_Trace> entry = db.Entry(found);
+                    entry.Property(e => e.Remark).IsModified = true;
+                }
+                a = db.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return a;
+        }
+
+    }
+}

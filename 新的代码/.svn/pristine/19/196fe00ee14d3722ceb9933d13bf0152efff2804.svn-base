@@ -1,0 +1,408 @@
+﻿
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <link href="~/Scripts/WdatePicker/skin/WdatePicker.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/WdatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/页面/Index.js"></script>
+    <script src="~/Scripts/导出/demo.page.js"></script>
+    <script src="~/Scripts/导出/excel-gen.js"></script>
+    <script src="~/Scripts/导出/FileSaver.js"></script>
+    <script src="~/Scripts/导出/jszip.min.js"></script>
+    <script src="~/Scripts/导出/tableExport.min.js"></script>
+    <style>
+        .table, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: #ccc;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid black;
+        }
+
+        .form-group {
+            margin-right: 20px;
+        }
+
+        #GridView td {
+            vertical-align: middle;
+            word-wrap: break-word;
+            word-break: break-all; /*内容多自动换行 */
+        }
+
+        .input-clear-a {
+            color: white;
+        }
+
+        .input-content:hover + .input-clear-a {
+            color: #d4d4d4;
+        }
+
+        .qq {
+            display: contents;
+        }
+
+        .panel-default {
+            border-color: #ddd;
+        }
+
+        .panel-heading {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .checkbox_lable {
+            font-size: 17px;
+            position: relative;
+            top: -6px;
+        }
+
+        .my_table tr:nth-child(even) { /*颜色交替*/
+            background: #dff0d8;
+        }
+
+        .my_table tr:nth-child(odd) { /*颜色交替*/
+            background: White;
+        }
+
+        .my_table tr:hover {
+            background: #fcf8e3;
+        }
+
+        .table-hover > tbody > tr:hover {
+            background-color: #fcf8e3;
+        }
+
+        .my_table tr td {
+            font-size: 12px;
+        }
+
+            .my_table tr td:last-child span {
+                font-size: 7px;
+            }
+
+        .modal-backdrop {
+            opacity: 0 !important;
+            filter: alpha(opacity = 0) !important; /*模态框去掉遮罩层*/
+        }
+
+        #myModal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+    </style>
+    <script>
+        var QJCPSerial = null;
+        app.controller('ProductPriceController', function ($scope, $timeout) {
+            //加载首页列表
+            $scope.IndexList = function () {
+                var CreateBy = $("#CreateBy").html();
+                var CustProd = $("#CustProd").html();
+                var CustomerDisplayName = $("#CustomerDisplayName").html();
+                var Start_Date = $("#Start_Date").html();
+                var End_Date = $("#End_Date").html();
+                var Cancel = $("#Cancel").html();
+                var Remarks_MD = $("#Remarks_MD").html();
+                $.ajax({
+                    url: "/ProductPrice/ProductPrice/IndexData",
+                    data: {
+                        "CreateBy": CreateBy,
+                        "CustProd": CustProd,
+                        "CustomerDisplayName": CustomerDisplayName,
+                        "CreateTime": Start_Date,
+                        "EndTime": End_Date,
+                        "Cancel": Cancel,
+                        "Remarks_MD": Remarks_MD
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        var list = data.Data;
+                        if (list.length == 0) {
+                            $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
+                            //第一种;
+                            $("#OAContent").append("<tr id='notfindlist'><td colspan='20' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
+                            $scope.List = null;
+                            $scope.$apply();
+                        }
+                        else {
+                            $("#notfindlist").remove();
+                            $.each(list, function (key, value) {
+                                var CreateTime = new Date(value.CreateTime);
+                                list[key].CreateTime = $scope.getIndexDate(CreateTime);
+                                list[key].PrvUnit = $scope.getQianWei(list[key].PrvUnit);
+                                list[key].UpdUnit = $scope.getQianWei(list[key].UpdUnit); //千位加逗号
+                            });
+                            $scope.List = list;
+                            $scope.$apply();
+                            $.each(list, function (key, value) {
+                                if (!value.Cancel) {
+                                    $("#OAContent tr").eq(key).css({ "background-color": "#f2dede", "color": "red" });
+                                } else {
+                                    $("#OAContent tr").eq(key).css({ "background-color": "", "color": "" });
+                                }
+                            })
+                        }
+
+                    }
+                });
+            }
+            $scope.getIndexDate = function (date) {
+                var m = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Spt", "Oct", "Nov", "Dec");
+                let minutes = date.getMinutes() < 10 ? ('0' + date.getMinutes()) : date.getMinutes();
+                let seconds = date.getSeconds() < 10 ? ('0' + date.getSeconds()) : date.getSeconds();
+                var fmt = date.getDate() + "-" + m[date.getMonth()] + "-" + date.getFullYear() + "\n" + date.getHours() + ":" + minutes + ":" + seconds;
+                return fmt;
+            }
+            $scope.getQianWei = function (value) {
+                //处理千分位使用
+                if (value === 0) {
+                    return parseFloat(value).toFixed(4);
+                }
+                if (value != "") {
+                    var num = "";
+                    value += "";//转化成字符串
+                    value = parseFloat(value.replace(/,/g, '')).toFixed(4);//若需要其他小数精度，可将2改成变量
+                    if (value.indexOf(".") == -1) {
+                        num = value.replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+                            return s + ',';
+                        });
+                    } else {
+                        num = value.replace(/(\d)(?=(\d{3})+\.)/g, function (s) {
+                            return s + ',';
+                        });
+                    }
+                } else {
+                    num = ""
+                }
+                return num;
+            }
+            $scope.DayinList = function (CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD) {
+                $("#CreateBy").html(CreateBy);
+                $("#CustProd").html(CustProd);
+                $("#CustomerDisplayName").html(CustomerDisplayName);
+                $("#Start_Date").html(Start_Date);
+                $("#End_Date").html(End_Date);
+                $("#Cancel").html(Cancel);
+                $("#Remarks_MD").html(Remarks_MD);
+                $scope.IndexList();
+                $timeout(function () {
+                    //处理dom加载完成，或者repeat循环完成要做的事情
+                    window.print();
+                }, 100);
+            }
+        });
+        function Dayin(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD) {
+            var appElement = document.querySelector('[ng-controller=ProductPriceController]');
+            var scope = angular.element(appElement).scope();
+            scope.DayinList(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD)
+        }
+    </script>
+</head>
+<body style="max-width:96%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="ProductPriceController">
+    <div id="Mydiv">
+        <h1 style="text-align: center;">
+            <span id="Title">打印市场部提供客户产品价格信息记录</span>
+        </h1>
+        <h1 style="text-align: center;margin-top:-10px">
+            <span id="Title">MDs' Products' Prices Records</span>
+        </h1>
+
+        <div class="panel panel-default" style="height:auto">
+            <div class="container-fluid">
+                <div class="row panel-heading">
+                    <label id="Cancel" style="display:none"></label>
+                    业务员:<label id="CreateBy" style="min-width:5%"></label>
+                    产品:<label id="CustProd" style="min-width:15%"></label>
+                    客户:<label id="CustomerDisplayName" style="min-width:15%"></label>
+                    日期:&nbsp;&nbsp;&nbsp;从
+                    <label id="Start_Date" style="min-width:5%;text-align:center"></label>至
+                    <label id="End_Date" style="min-width:5%;text-align:center"></label>
+                    备注: <label id="Remarks_MD" style="min-width:15%"></label>
+                </div>
+
+            </div>
+        </div>
+        @*表格*@
+    <table id="GridView" class="table table-bordered table-hover my_table">
+        <thead>
+            @*<tr>
+                <th rowspan="2" style="width:5%;text-align:center">Date</th>
+                <th rowspan="2" scope="col" class="default-th" style="width:3%;text-align:center">Sales</th>
+                <th rowspan="2" scope="col" class="default-th" style="width:3%; text-align: center">Ledger</th>
+                <th rowspan="2" scope="col" class="default-th" style="width:8%;text-align:left">Customer</th>
+                <th rowspan="2" scope="col" class="default-th" style="width:6%;text-align:center">GIP<br />Product Code</th>
+                <th scope="col" colspan="2" class="default-th" style="width:22%;text-align:center">
+                    Customer's Product
+                </th>
+                <th scope="col" colspan="2" class="default-th" style="width:10%;text-align:center">
+                    Previous Price
+                </th>
+                <th scope="col" colspan="2" class="default-th" style="width:10%;text-align:center">
+                    Updated Price
+                </th>
+                <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:6%;text-align:left">
+                    Effective Type
+                </th>
+                <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                    Efffective Details
+                </th>
+                <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                    MD's Remarks
+                </th>
+                <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                    Finance's Notes
+                </th>
+                @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
+                {
+                    <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:5%;text-align:center">
+                        Ctrl
+                    </th>
+                }
+            </tr>
+            <tr>
+                <th scope="col" class="default-th" style="width:7%;text-align:left"> Code</th>
+                <th scope="col" class="default-th" style="width:15%;text-align:left"> Description</th>
+                <th scope="col" class="default-th" style="width:3%;text-align:right"> Curr.</th>
+                <th scope="col" class="default-th" style="width:7%;text-align:right"> Unit</th>
+                <th scope="col" class="default-th" style="width:3%;text-align:right"> Curr.</th>
+                <th scope="col" class="default-th" style="width:7%;text-align:right"> Unit</th>
+            </tr>
+            <tr>
+                <th rowspan="2" style="width:5%;text-align:center">日期</th>
+                <th rowspan="2" scope="col" class="default-th" style="width:4%;text-align:center">业务员</th>
+                <th rowspan="2" scope="col" class="default-th" style="width:3%; text-align: center">账套</th>
+                <th rowspan="2" scope="col" class="default-th" style="width:8%;text-align:left"> 客户</th>
+                <th rowspan="2" scope="col" class="default-th" style="width:6%;text-align:center">GIP<br />产品号</th>
+                <th scope="col" colspan="2" class="default-th" style="width:22%;text-align:center">
+                    客户产品
+                </th>
+                <th scope="col" colspan="2" class="default-th" style="width:10%;text-align:center">
+                    现价
+                </th>
+                <th scope="col" colspan="2" class="default-th" style="width:10%;text-align:center">
+                    更新价
+                </th>
+                <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:6%;text-align:left">
+                    生效类型
+                </th>
+                <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                    生效条件
+                </th>
+                <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                    销售备注
+                </th>
+                <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:7%;text-align:left">
+                    财务笔记
+                </th>
+                @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
+                {
+                    <th rowspan="2" scope="col" colspan="2" class="default-th" style="width:5%;text-align:center">
+                        管理
+                    </th>
+                }
+            </tr>
+            <tr>
+                <th scope="col" class="default-th" style="width:7%;text-align:left">  代码</th>
+                <th scope="col" class="default-th" style="width:15%;text-align:left"> 描述</th>
+                <th scope="col" class="default-th" style="width:3%;text-align:right"> 货币</th>
+                <th scope="col" class="default-th" style="width:7%;text-align:right"> 单价</th>
+                <th scope="col" class="default-th" style="width:3%;text-align:right"> 货币</th>
+                <th scope="col" class="default-th" style="width:7%;text-align:right"> 单价</th>
+            </tr>*@
+            <tr>
+                <th rowspan="2" style="width:5%;text-align:center">日期<br />Date</th>
+                <th rowspan="2" style="width:4%;text-align:center">业务员<br />Sales</th>
+                <th rowspan="2" style="width:4%;text-align:center">账套<br />Ledger</th>
+                <th rowspan="2" style="width:9%;text-align:left">客户<br />Customer</th>
+                <th rowspan="2" style="width:7%;text-align:center">GIP<br />产品号<br />Product Code</th>
+                <th colspan="2" style="width:22%;text-align:center">客户产品<br />Customer's Product</th>
+                <th colspan="2" style="width:10%;text-align:center">现价&nbsp;&nbsp;&nbsp;Previous Price</th>
+                <th colspan="2" style="width:10%;text-align:center">更新价&nbsp;&nbsp;&nbsp;Updated Price</th>
+                <th rowspan="2" style="width:6%;text-align:left">生效类型<br /> Effective Type</th>
+                <th rowspan="2" style="width:8%;text-align:left">生效条件<br />  Efffective Details</th>
+                <th rowspan="2" style="width:6%;text-align:left">销售备注<br />  MD's Remarks</th>
+                <th rowspan="2" style="width:5%;text-align:left">财务笔记<br />   Finance's Notes</th>
+                @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
+                {
+                    <th rowspan="2" style="width:4%;text-align:center">管理<br />   Ctrl</th>
+                }
+            </tr>
+            <tr>
+                <th style="width:6%;text-align:left">代码&nbsp;&nbsp;&nbsp;Code</th>
+                <th style="width:16%;text-align:left">描述&nbsp;&nbsp;&nbsp;Description</th>
+                <th style="width:3%;text-align:center">货币Curr.</th>
+                <th style="width:7%;text-align:right">单价&nbsp;&nbsp;&nbsp; Unit</th>
+                <th style="width:3%;text-align:center">货币Curr.</th>
+                <th style="width:7%;text-align:right">单价&nbsp;&nbsp;&nbsp; Unit</th>
+            </tr>
+        </thead>
+        <tbody id="OAContent">
+            <tr ng-repeat="i in List track by $index" repeat-finish="ngRepeatFinished"
+                style="cursor: pointer" ng-dblclick="tiaozhuan('DetailsProductPrice?CPSerial='+i.CPSerial)">
+                <td align="center">{{i.CreateTime}}</td>
+                <td align="center">{{i.CreateBy}}</td>
+                <td align="center">{{i.Ledger}}</td>
+                <td align="left">{{i.CustomerDisplayName}}</td>
+                <td align="center">{{i.FNumber}}</td>
+                <td align="left">{{i.CustProdCode}}</td>
+                <td align="left">{{i.CustProdName}}</td>
+                <td align="center">{{i.PrvCurr}}</td>
+                <td ng-if="!i.Cancel" align="right"><s>{{i.PrvUnit}}</s></td>
+                <td ng-if="i.Cancel" align="right">{{i.PrvUnit}}</td>
+                <td align="center">{{i.UpdCurr}}</td>
+                <td ng-if="!i.Cancel" align="right"><s>{{i.UpdUnit}}</s></td>
+                <td ng-if="i.Cancel" align="right">{{i.UpdUnit}}</td>
+                <td align="left">{{i.Name_EN}}</td>
+                <td align="left">{{i.EffDetail}}</td>
+                <td align="left">{{i.Remarks_MD}}</td>
+                <td align="left">{{i.Remarks_FD}}</td>
+                @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
+                {
+                    <td align="center">
+                        @if (@ViewBag.Add == 1)
+                        {
+
+                            <img title="更新价格" src="~/Scripts/图标/更新价格.png" ng-click="tiaozhuan('UpdateProductPrice?CPSerial='+i.CPSerial)" style="padding-right:12%" />
+                        }
+                        @if (@ViewBag.GuanLi == 1)
+                        {
+                            <img ng-if="i.Cancel" title="记录作废" src="~/Scripts/图标/记录作废.png" ng-click="ZuoFei(i.CreateTime,'@ViewBag.username',i.Ledger,i.FNumber,i.NewPrvUnit,i.CPSerial)" />
+                        }
+
+                    </td>
+                }
+
+            </tr>
+        </tbody>
+    </table>
+        <div style="width: 97%; overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+            <span style="float: left; margin-left: 3px;">
+                <b>打印人:</b>
+                <b>@ViewBag.username</b>
+            </span>
+            <span style="float: right; margin-right:15%">
+                <b>打印时间:</b>
+                @{
+                    var Time = DateTime.Now;
+
+                }
+                <b>@Time</b>
+            </span>
+        </div>
+    </div>
+</body>
+</html>

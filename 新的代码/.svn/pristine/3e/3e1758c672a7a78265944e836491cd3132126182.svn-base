@@ -1,0 +1,1323 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/Scripts/skin/WdatePicker.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/分页/jquery.sPage.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/WdatePicker.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jQuery.print.js"></script>
+    <script src="~/Scripts/分页/jquery.sPage.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/导出/tableExport.min.js"></script>
+    <script src="~/Scripts/导出/jquery.table2excel.js"></script>
+    @*模态框可移动插件*@
+    <link href="~/Scripts/模态框可移动插件/Jquery-ui-1.12.1.min.css" rel="stylesheet" />
+    <script src="~/Scripts/模态框可移动插件/Jquery-ui-1.12.1-min.js"></script>
+    <style>
+        .modal-backdrop {
+            opacity: 0 !important;
+            filter: alpha(opacity = 0) !important; /*模态框去掉遮罩层*/
+        }
+
+        .input-clear {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 111;
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+            cursor: pointer;
+        }
+
+        .modal-open .modal {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .p1 {
+            overflow: hidden; /*自动隐藏文字*/
+            text-overflow: ellipsis; /*文字隐藏后添加省略号*/
+            -webkit-line-clamp: 3; /*想要显示的行数*/
+            -webkit-box-orient: vertical;
+            white-space: nowrap;
+        }
+
+        #BZModal {
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #GridView1 td {
+            vertical-align: middle;
+            word-wrap: break-word;
+            word-break: break-all; /*内容多自动换行 */
+        }
+
+        .disable {
+            pointer-events: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            table-layout: fixed; /*不添加此样式，会全部显示 */
+        }
+    </style>
+    <script type="text/javascript">
+        //定义几个全局变量
+        QJApplyDate = null, QJOAFlow_Num = null, QJMat_Code = null, QJMat_Name = null, QJUnit = null, QJQty = null, QJArr_Date = null, QJApproval = null, QJFid = null, QjID = 0, ChangeBZ = 0, NewBZ = null, ChangeK3 = 0, NewK3 = null, ChangeJQ = 0, NewJQ = null, ChangeRK = 0, NewRK = null, IsClose = null; var flag = 0;
+        //QjID用来保存新表ID（唯一列），QJFid为1走修改方法,BZ(备注),NewBZ用来放新的备注
+        jQuery(function () {
+            //给列表结果赋值
+            var Start_Date = $("#Start_Date").val();
+            var End_Date = $("#End_Date").val();
+            var Status = $("#TopicArea").find("option:selected").val();  //取下拉框的值
+            document.getElementById('ListResult').innerHTML = '列表结果：申请日期从' + Start_Date + ' 至 ' + End_Date + "," + Status+"。";
+            /*$('.modal').draggable();*/   //模态框可移动
+            $("#myK3PO_NumModal").draggable();
+            $("#myProp_Arr_DateModal").draggable();
+            $("#myK3Recv_DateModal").draggable();
+            $('#BZModal').css("overflow-y", "scroll");
+            $('.Modal').modal({ backdrop: 'static', keyboard: false }); /*禁止点击空白处关闭模态框*/
+            //带清除功能的输入框
+            {
+                // 监听输入框内容变动
+                $(".input-group-clear").bind("input propertychange", function () {
+                    // 获取输入框的值
+                    var inputValue = $(this).children('input').val();
+                    // 判断输入框是否有值
+                    if (inputValue >= 1) {
+                        // 显示清除
+                        $(this).children('.input-clear').show();
+                    } else {
+                        // 隐藏清除
+                        $(this).children('.input-clear').hide();
+                    }
+
+                });
+
+                // 输入框获取焦点事件，判断输入框是否有值，有值则显示清除
+                $(".input-group-clear").children('input').focus(function () {
+
+                    var inputValue = this.value.length;
+
+                    if (inputValue >= 1) {
+                        $(this).siblings('.input-clear').show();
+                    }
+
+                });
+
+                // 点击清除事件
+                $('.input-clear').click(function () {
+                    // 清空输入框值
+                    $(this).siblings('input').val('');
+                    // 隐藏清除
+                    $(this).hide();
+
+                });
+
+                // 离开输入框div事件，隐藏清除,此处不能使用blur，因为blur只对输入框有效
+                $(".input-group-clear").focusout(function () {
+
+                    var igc = $(this);
+                    // 设置一个定时器，离开输入框div，200毫秒后隐藏清除，不设置定时器会出现点击清除无效的情况
+                    setTimeout(function () {
+                        igc.children('.input-clear').hide();
+                    }, 200)
+
+                });
+            }
+
+            //给下拉框赋值
+            var CGYTopicArea = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "./JigFixture/SelectCGY",
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        CGYTopicArea += '<option value="' + value.Text + '"';
+                        CGYTopicArea += ">" + value.Text + '</option > ';
+                    })
+                    $("#CGYTopicArea").find("select").append(CGYTopicArea);
+                    return false;
+                }
+            });
+        });
+        //改变背景颜色
+        function ChangebgColor() {
+            //this.css("background-color", "#FFFFFF");
+            this.attr("style", "background-color:#FFFFFF;font-size:12px;height:55px;");
+        }
+        //禁止输入分号
+        function YanZheng(em) {
+            var zz = /[^A-Za-z\u4e00-\u9fa5\d,.。，：:]+$/;
+            var yanzheng = $(em).val();
+            if (yanzheng != "") {
+                if (yanzheng.match(zz)) {
+                    $(em).val(yanzheng.replace(zz, ''));
+                    //alert("只能输入字母中文数字和分号！");
+                    $(em).focus();
+                }
+            }
+        }
+        //点击新增备注按钮
+        function AddBeiZhu() {
+                //显示div
+                //document.getElementById("RemarkTXT").style.display = "block";//显示
+                $("#RemarkTXT").attr("style", "display:block;");//显示div
+                //关闭加号
+                document.getElementById("BeiZhu").style.display = "none";
+            }
+        var app = angular.module('myApp', []);  //创建模块
+        //格式化时间
+        Date.prototype.Format = function (fmt) { // author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, // 月份
+                "d+": this.getDate(), // 日
+                "h+": this.getHours(), // 小时
+                "m+": this.getMinutes(), // 分
+                "s+": this.getSeconds(), // 秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+                "S": this.getMilliseconds() // 毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+        //计算当前日期-实收日期相差天数
+        function DateMinus(date1, date2) {
+            var sdate = new Date(date1); //date1:小日期 对比时间日期
+            var now = new Date(date2); //date2:大日期 当前日期
+            var days = now.getTime() - sdate.getTime();
+            var day = parseInt(days / (1000 * 60 * 60 * 24));
+            return parseInt(day);
+        }
+        //导出
+        function DaocChu() {
+            var appElement = document.querySelector('[ng-controller=JigFixtureController]');
+            var scope = angular.element(appElement).scope();
+            scope.DaoChuPageAjax();
+            @*$("#GridView2").tableExport({
+                type: 'excel',
+                fileName: 'JnFTrace' + '@ViewBag.User' + time,
+                //ignoreColumn: [8],//从1开始，忽略第5列
+                mso: {//若table表格中使用了以下指定的样式属性，则将该样式同步到Excel中(可以保留表格原有的样式到Excel中)
+                    styles: ['background-color',
+                        'border-top-color', 'border-left-color', 'border-right-color', 'border-bottom-color',
+                        'border-top-width', 'border-left-width', 'border-right-width', 'border-bottom-width',
+                        'border-top-style', 'border-left-style', 'border-right-style', 'border-bottom-style',
+                        'color']
+                }
+            });*@
+        }
+        app.controller('JigFixtureController', function ($scope, $http, $compile, $timeout) {
+            //导出专用
+            $scope.DaoChuPageAjax = function () {
+                $scope.TopicArea = $("#TopicArea").find("option:selected").val();  //取下拉框的值
+                var OAFlow_Num = $("#OAsqdh").val();
+                var K3PO_Num = $("#K3sqdh").val();
+                //var Buyer = $("#Buyer").val();
+                var Start_Date = $("#Start_Date").val();
+                var End_Date = $("#End_Date").val();
+                var Mat_Name = $("#Mat_Name").val();  //物料
+                var rowSortNumber = 0;
+                var Status = $("#TopicArea").find("option:selected").val();  //取状态下拉框的值
+                var Buyer = $("#CGYTopicArea").find("option:selected").val();  //取采购员下拉框的值，默认为空
+                $http.get("JigFixture/JigFixture/DaoChuIndexData?OAFlow_Num=" + OAFlow_Num + "&K3PO_Num=" + K3PO_Num + "&Buyer=" + Buyer + "&Start_Date=" + Start_Date + "&End_Date=" + End_Date + "&Mat_Name=" + Mat_Name + "&Status=" + Status).success(
+                    function (res) {
+                        if (res.Data.IndexList.length == 0) {
+                            $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
+                            //第一种;
+                            $("#OAContent").append("<tr id='notfindlist'><td colspan='19' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
+                        }
+                        else {
+                            $("#notfindlist").remove();
+                            angular.forEach(res.Data.IndexList, function (obj, k) {  //obj-表字段值
+                                rowSortNumber++;
+                                var applyDate = new Date(obj.ApplyDate);
+                                obj.ApplyDate = applyDate.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.ApplyDate == "1900-01-01") {
+                                    obj.ApplyDate = "";
+                                }
+                                var requireDate = new Date(obj.RequireDate);
+                                obj.RequireDate = requireDate.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.RequireDate == "1900-01-01") {
+                                    obj.RequireDate = "";
+                                }
+                                var K3PO_Date = new Date(obj.K3PO_Date);
+                                obj.K3PO_Date = K3PO_Date.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.K3PO_Date == "1900-01-01") {
+                                    obj.K3PO_Date = "";
+                                }
+                                var Prop_Arr_Date = new Date(obj.Prop_Arr_Date);
+                                obj.Prop_Arr_Date = Prop_Arr_Date.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.Prop_Arr_Date == "1900-01-01") {
+                                    obj.Prop_Arr_Date = "";
+                                }
+                                var K3Recv_Date = new Date(obj.K3Recv_Date);
+                                obj.K3Recv_Date = K3Recv_Date.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.K3Recv_Date == "1900-01-01") {
+                                    obj.K3Recv_Date = "";
+                                }
+                                //判断是不是结案，将结果放在一个字段里
+                                var myDate = new Date();
+                                var mydate = myDate.toLocaleDateString();     //获取当前日期
+                                var myk3recv_Date = K3Recv_Date.toLocaleDateString();
+                                var day = DateMinus(myk3recv_Date, mydate);  //计算当前日期-实收日期相差天数
+                                if (day >= 15 && obj.K3Recv_Date != '') {   //入库日期不为空 and 系统当前日期-实收日期大于或等于15天为结案状态
+                                    obj.ISjiean = 1;
+                                }
+                                else {
+                                    obj.ISjiean = 0;
+                                }
+                            })
+                        }
+                        $scope.DaoChulist = res.Data.IndexList;
+            var myDate = new Date();
+            var time = myDate.Format("yyyyMMddhhmmss");  //获得当前年月日时分秒
+                $timeout(function () {
+                //处理dom加载完成，或者repeat循环完成要做的事情
+                 $("#GridView2").table2excel({
+                // 不被导出的表格行的CSS class类
+                exclude: ".noExl",
+                // 导出的Excel文档的名称
+                name: "Excel Document Name",
+                // Excel文件的名称
+                filename: 'JnFTrace' + '@ViewBag.User' + time,
+            });
+            }, 100);
+                });
+            }
+            //分页
+            $scope.PageAjax = function (pageIndex, pageSize) {
+                //$("#OAContent").html("");
+                $scope.TopicArea = $("#TopicArea").find("option:selected").val();  //取下拉框的值
+                var OAFlow_Num = $("#OAsqdh").val();
+                var K3PO_Num = $("#K3sqdh").val();
+                //var Buyer = $("#Buyer").val();
+                var Start_Date = $("#Start_Date").val();
+                var End_Date = $("#End_Date").val();
+                var Mat_Name = $("#Mat_Name").val();  //物料
+                var rowSortNumber = 0;
+                var Status = $("#TopicArea").find("option:selected").val();  //取状态下拉框的值
+                var Buyer = $("#CGYTopicArea").find("option:selected").val();  //取采购员下拉框的值，默认为空
+                $http.get("/JigFixture/JigFixture/IndexData?OAFlow_Num=" + OAFlow_Num + "&K3PO_Num=" + K3PO_Num + "&Buyer=" + Buyer + "&Start_Date=" + Start_Date + "&End_Date=" + End_Date + "&Mat_Name=" + Mat_Name + "&Status=" + Status + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize).success(
+                    function (res) {
+                        if (res.Data.IndexList.length == 0) {
+                            $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
+                            //第一种;
+                            $("#OAContent").append( "<tr id='notfindlist'><td colspan='19' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
+                        }
+                        else {
+                            $("#notfindlist").remove();
+                            angular.forEach(res.Data.IndexList, function (obj, k) {  //obj-表字段值
+                                rowSortNumber++;
+                                var applyDate = new Date(obj.ApplyDate);
+                                obj.ApplyDate = applyDate.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.ApplyDate == "1900-01-01") {
+                                    obj.ApplyDate = "";
+                                }
+                                var requireDate = new Date(obj.RequireDate);
+                                obj.RequireDate = requireDate.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.RequireDate == "1900-01-01") {
+                                    obj.RequireDate = "";
+                                }
+                                var K3PO_Date = new Date(obj.K3PO_Date);
+                                obj.K3PO_Date = K3PO_Date.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.K3PO_Date == "1900-01-01") {
+                                    obj.K3PO_Date = "";
+                                }
+                                var Prop_Arr_Date = new Date(obj.Prop_Arr_Date);
+                                obj.Prop_Arr_Date = Prop_Arr_Date.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.Prop_Arr_Date == "1900-01-01") {
+                                    obj.Prop_Arr_Date = "";
+                                }
+                                var K3Recv_Date = new Date(obj.K3Recv_Date);
+                                obj.K3Recv_Date = K3Recv_Date.Format("yyyy-MM-dd");  //日期格式化
+                                if (obj.K3Recv_Date == "1900-01-01") {
+                                    obj.K3Recv_Date = "";
+                                }
+                                //判断是不是结案，将结果放在一个字段里
+                                var myDate = new Date();
+                                var mydate = myDate.toLocaleDateString();     //获取当前日期
+                                var myk3recv_Date = K3Recv_Date.toLocaleDateString();
+                                var day = DateMinus(myk3recv_Date, mydate);  //计算当前日期-实收日期相差天数
+                                if (day >= 15 && obj.K3Recv_Date != '') {   //入库日期不为空 and 系统当前日期-实收日期大于或等于15天为结案状态
+                                    obj.ISjiean = 1;
+                                }
+                                else {
+                                    obj.ISjiean = 0;
+                                }
+                                //if (obj.UpdateNumber % 2 != 0) {      //奇数变红
+                                //    $("#OAContent tr").eq(k).css({"color": "red" });
+                                //}
+                                //else {
+                                //    $("#OAContent tr").eq(k).css({ "color": "" });
+                                //}   //暂时不需要了
+
+                        })
+                        }
+
+                        $scope.list = res.Data.IndexList;
+                        //console.log(JSON.stringify(res.Data.IndexList));
+                        $("#myPage").sPage({
+                            page:pageIndex,//当前页码，必填
+                            total: res.count,//数据总条数，必填
+                            pageSize: 10,//每页显示多少条数据，默认10条
+                            totalTxt: "共" + res.count + "条",//数据总条数文字描述，{total}为占位符，默认"共{total}条"
+                            showTotal: true,//是否显示总条数，默认关闭：false
+                            showSkip: true,//是否显示跳页，默认关闭：false
+                            showPN: true,//是否显示上下翻页，默认开启：true
+                            prevPage: "上一页",//上翻页文字描述，默认“上一页”
+                            nextPage: "下一页",//下翻页文字描述，默认“下一页”
+                            backFun: function (page) {
+                                $scope.PageAjax(page, 10); //点击分页按钮回调函数，返回当前页码
+                            }
+
+
+                        });
+
+                        $timeout(function () {
+                            //$scope.$emit('ngRepeatFinished');
+                            //alert($(".ngRepeatFinished").length);
+                            //alert($('.example-popover').length);
+                            $('.example-popover').popover({ container: 'body', trigger: 'hover', html: 'true' });
+                        });
+
+                    });
+            }
+            $scope.PageAjax(1, 10);
+            //条件搜索
+            $scope.btnSearch = function () {
+                    $scope.PageAjax(1, 10);
+                    //lert($('.example-popover').length);
+                    //$('.example-popover').popover({ container: 'body', trigger: 'hover' });
+                    //给列表结果重新赋值
+                    var Start_Date = $("#Start_Date").val();
+                    var End_Date = $("#End_Date").val();
+                    var Status = $("#TopicArea").find("option:selected").val();  //取下拉框的值
+                    document.getElementById('ListResult').innerHTML = '列表结果：申请日期从' + Start_Date + ' 至 ' + End_Date + "," + Status + "。";
+            }
+
+            $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+                // 每次翻页pageList都会发生变化,监听该变量,并在这里写入需要的函数
+
+                //$scope.$watch($scope.pageList, function () {
+                //    // 每次翻页pageList都会发生变化,监听该变量,并在这里写入需要的函数
+                //    alert($('.example-popover').length);
+                //    $('.example-popover').popover({ container: 'body', trigger: 'hover' });
+                //})
+
+
+            });
+
+            //新增/修改K3，将K3订单号传到后台
+            $scope.K3btn = function () {
+                var K3PO_Num = $("#K3dd").val();
+                if (QJFid != null)  //修改需要传ID
+                {
+                    FID = QJFid;
+                }
+                else {
+                    FID = 0;
+                }
+                $.ajax({
+                    type: "post",
+                    dataType: 'JSON',
+                    url: "./JigFixture/SelectK3PO_Num",
+                    data: {
+                        FID: FID,
+                        ApplyDate: QJApplyDate,
+                        OAFlow_Num: QJOAFlow_Num,
+                        Mat_Code: QJMat_Code,
+                        Mat_Name: QJMat_Name,
+                        Unit: QJUnit,
+                        Qty: QJQty,
+                        Arr_Date: QJArr_Date,
+                        Approval: QJApproval,
+                        K3PO_Num: K3PO_Num
+                    },
+                    success: function (result) {
+                        if (result == "0") {
+                            alert("OA申请单号" + QJOAFlow_Num + "中的物料代码" + QJMat_Code + "未在K3系统中做采购订单！请确认K3采购订单号是否正确。");
+                        }
+                        else {
+                            alert("保存成功！");
+                            var K3PO_Num = result.Data.K3PO_Num;
+                            var K3PO_Date = new Date(result.Data.K3PO_Date);
+                            //alert(JSON.stringify(result.Data));
+                            var K3PO_Date = K3PO_Date.Format("yyyy-MM-dd");
+                            var Supplier = result.Data.Supplier;
+                            var Buyer = result.Data.Buyer;
+                            var K3Unit = result.Data.K3Unit;
+                            var K3Qty = result.Data.K3Qty;
+                            //var UpdateNumber = result.Data.UpdateNumber;
+                            var columns = $("table tr[myselect = 'selected']");
+                            var selectIndex = columns.index();
+                            $scope.list[selectIndex].K3PO_Date = K3PO_Date;
+                            $scope.list[selectIndex].K3PO_Num = K3PO_Num;
+                            $scope.list[selectIndex].Supplier = Supplier;
+                            $scope.list[selectIndex].Buyer = Buyer;
+                            $scope.list[selectIndex].K3Unit = K3Unit;
+                            $scope.list[selectIndex].K3Qty = K3Qty;
+                            $scope.$apply();//解决需要手动刷新
+                            //if (UpdateNumber % 2 != 0) {
+                            //    columns.css({ "background-color": "cornsilk", "font-size": "12px", "height": "38px", "color": "red" });
+                            //}
+                            //else {
+                            //    columns.css({ "background-color": "cornsilk", "font-size": "12px", "height": "38px", "color": "" });
+                            //}   //奇数变红，暂时不需要了
+                            columns.css({ "background-color": "cornsilk", "font-size": "12px", "height": "38px", "color": "" });
+
+                            columns.mouseout(function () {
+                                columns.css("background-color", "#FFFFFF");
+                            });
+                            columns.mousemove(function () {
+                                columns.css("background-color", "#ccc");
+                            });
+                            $("table tr[myselect = 'selected']").removeAttr("myselect");
+                            //关闭模态框
+                            $('#myK3PO_NumModal').modal('hide');
+                            //改变全局变量，给模态框赋新值
+                            ChangeK3 = 1;
+                            NewK3 = K3PO_Num;
+                        }
+                    }
+                });
+            }
+            //清空交期回复/入库日期
+            $scope.Del = function (MyEvent, xuhao,id) {
+                QjID = parseInt(xuhao);
+                document.oncontextmenu = () => false;
+                var flag = false;
+                $(MyEvent.target).keydown(function (event) {
+                //阻止keydow事件多次执行
+                    if (flag) {
+                        return;
+                    }
+                    flag = true;
+                    if (event.keyCode == 46) {
+                        var columns = $(MyEvent.target).parent("tr");
+                        var selectIndex = columns.index();
+                        //alert('你按下了Delete');
+                        $(MyEvent.target).blur();  //失去焦点
+                        //调后台方法
+                        if (id == 1) {
+                            $scope.list[selectIndex].Prop_Arr_Date = '';
+                            $('#MTProp_Arr_Date').val('');
+                            $scope.Jqhfbtn(1);
+                        }
+                        if (id == 2) {
+                            $scope.list[selectIndex].K3Recv_Date = '';
+                            $('#MTK3Recv_Date').val('');
+                            $scope.Rkrqbtn(1);
+                        }
+
+                    }
+                    else {
+                        $(MyEvent.target).blur();  //失去焦点
+                        window.event.returnValue = false;//阻止事务的默认执行
+                        return false;
+                    }
+                    $scope.$apply();//解决需要手动刷新
+                    $("table tr[myselect = 'selected']").removeAttr("myselect");
+                });
+            }
+            //修改交期回复
+            $scope.Jqhfbtn = function (ttid) {
+            //var Prop_Arr_Date = document.getElementById('MTProp_Arr_Date').val();
+            var Prop_Arr_Date = $('#MTProp_Arr_Date').val();
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "./JigFixtureZGC/UpdateFunction",//url
+                data: {
+                    "num":2,
+                    "id": QjID,
+                    "ZiDuan": Prop_Arr_Date,
+                    "userid":'@ViewBag.userid'
+                },
+                success: function (result) {
+                    if (result > 0) {
+                        if (ttid != 1) {
+                            alert("保存成功！");
+                        }
+                        ////更新备注框的值
+                        //var columns = $("table tr[myselect = 'selected']").children();
+                        //columns.eq(16).html(Prop_Arr_Date);
+                        //$("table tr[myselect = 'selected']").removeAttr("myselect");
+                        //关闭模态框
+                        $('#myProp_Arr_DateModal').modal('hide');
+                        //刷新数据
+                        //从文本框里获得当前页
+                        var page = $("#myPage").find(".active").text();
+                        $scope.PageAjax(page, 10);
+                        //改变全局变量，给模态框赋新值
+                        ChangeJQ = 1;
+                        NewJQ = Prop_Arr_Date;
+                    }
+                    else {
+                        alert("保存失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+                }
+            });
+            }
+            //修改入库日期
+            $scope.Rkrqbtn=function(ttid) {
+            var K3Recv_Date =$('#MTK3Recv_Date').val();
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "./JigFixtureZGC/UpdateFunction",//url
+                data: {
+                    "num": 3,
+                    "id": QjID,
+                    "ZiDuan": K3Recv_Date,
+                    "userid":'@ViewBag.userid'
+                },
+                success: function (result) {
+                    if (result > 0) {
+                        if (ttid!=1) {
+                            alert("保存成功！");
+                        }
+                        ////更新备注框的值
+                        //var columns = $("table tr[myselect = 'selected']").children();
+                        //columns.eq(17).html(K3Recv_Date);
+                       // $("table tr[myselect = 'selected']").removeAttr("myselect");
+                        //关闭模态框
+                        $('#myK3Recv_DateModal').modal('hide');
+                        //刷新数据
+                        //从文本框里获得当前页
+                        var page = $("#myPage").find(".active").text();
+                        $scope.PageAjax(page, 10);
+                        //行状态处于结案，禁用事件
+                        //var myDate = new Date();
+                        //var mydate = myDate.toLocaleDateString();     //获取当前日期
+                        //var MyK3Recv_Date = new Date(K3Recv_Date);
+                        //var myk3recv_date = MyK3Recv_Date.toLocaleDateString();
+                        //var day = DateMinus(myk3recv_date, mydate);  //计算当前日期-实收日期相差天数
+                        //if (day >15 || K3Recv_Date=='') {   //系统当前日期-实收日期大于15天为结案状态
+                        //    //禁用事件
+                        //    columns.eq(10).attr("style", "font-size:12px;pointer-events: none");//K3订单
+                        //    columns.eq(16).attr("style", "font-size:12px;pointer-events: none");//交期回复
+                        //    columns.eq(17).attr("style", "font-size:12px;pointer-events: none"); //入库日期
+                        //}
+                        //$("table tr[myselect = 'selected']").removeAttr("myselect");
+                        ////改变全局变量，给模态框赋新值
+                        //ChangeRK = 1;
+                        //NewRK = K3Recv_Date;
+                    }
+                    else {
+                        alert("保存失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                    }
+
+                }
+            });
+        }
+            //修改备注（离开备注填写文本框）
+            $scope.RemarkTXT=function(){
+                //将内容加起来保存
+                //document.getElementById('Remark').innerText ="旧的备注内容";   //测试用
+                var Remark = document.getElementById('Remark').innerText + '@ViewBag.User' + ":" + $("#RemarkTXT").val() + ";";
+                if ($("#RemarkTXT").val().trim()=="") {
+                    alert("备注不能为空！");
+                }
+                else {
+                if (confirm("是否保存此条备注？")) {
+                    //  alert(Remark);
+                    $('#BZModal').modal('hide');
+                    //确定后修改备注字段
+                    $.ajax({
+                        type: "post",
+                        dataType: 'JSON',
+                        url: "./JigFixtureZGC/UpdateFunction",//url
+                        data: {
+                            "num": 1,
+                            "id": QjID,
+                            "ZiDuan": Remark,
+                            "userid":'@ViewBag.userid'
+                        },
+                        success: function (result) {
+                            if (result > 0) {
+                                alert("保存成功！");
+                                //刷新数据
+                                //从文本框里获得当前页
+                                var page = $("#myPage").find(".active").text();
+                                $scope.PageAjax(page, 10);
+                                //清空备注文本框的值
+                                $("#RemarkTXT").val('');
+                                document.getElementById("RemarkTXT").style.display = "block";
+                                ////更新备注框的值
+                                //var columns = $("table tr[myselect = 'selected']").children();
+                                //columns.eq(18).html(Remark);
+                                //$("table tr[myselect = 'selected']").removeAttr("myselect");
+                                ////改变全局变量，给模态框赋新值
+                                //ChangeBZ = 1;
+                                //NewBZ = Remark;
+                            }
+                            else {
+                                alert("保存失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                            }
+
+                        }
+                    });
+                }
+                else {
+                   //关闭模态框
+                    $('#BZModal').modal('hide');
+                    //清空模态框的值
+                    $("#RemarkTXT").val('');
+                    document.getElementById("RemarkTXT").style.display = "none";
+                }
+                }
+            }
+            //K3订单号点击后弹出框
+            $scope.DJK3PO_Num = function (ZiDuan, fid, ApplyDate, OAFlow_Num, Mat_Code, Mat_Name, Unit, Qty, Arr_Date, Approval, K3PO_Num) {
+                $('#myK3PO_NumModal').modal({ backdrop: 'static', keyboard: false }); /*禁止点击空白处关闭模态框*/
+                $scope.getPoss("myK3PO_NumModal", ZiDuan); //模态框在鼠标位置
+                //给模态框复制
+                document.getElementById('OAFlow_NumMT').innerText = OAFlow_Num;
+                document.getElementById('Mat_CodeMT').innerText = Mat_Code;
+                document.getElementById('Mat_NameMT').innerText = Mat_Name;
+                document.getElementById('QtyMT').innerText = Qty;
+                //订单号不为空赋值到文本框
+                if (K3PO_Num != "") {
+                    if (ChangeK3 == 0) {
+                        $("#K3dd").val(K3PO_Num);
+                    }
+                    else {
+                        //新的值取全局变量
+                        $("#K3dd").val(NewK3);
+                        ChangeK3 = 0;
+                    }
+                    QJFid = fid;   //订单号不为空就是修改,将唯一ID保存在全局变量里
+                }
+                else {
+                    $("#K3dd").val('');
+                }
+                //将OA数据保存在变量里
+                QJApplyDate = ApplyDate;
+                QJOAFlow_Num = OAFlow_Num;
+                QJMat_Code = Mat_Code;
+                QJMat_Name = Mat_Name;
+                QJUnit = Unit;
+                QJQty = Qty;
+                QJArr_Date = Arr_Date;
+                QJApproval = Approval;
+                //获取当前行
+                $(ZiDuan.target).parent("tr").siblings().removeAttr("myselect");
+                $(ZiDuan.target).parent("tr").attr("myselect", "selected");
+            }
+            //交期回复点击后弹出框
+            $scope.DJProp_Arr_Date = function (ZiDuan, xuhao, K3PO_Num, Supplier, Mat_Name, k3Unit, K3FQty, Prop_Arr_Date) {
+                if (ChangeJQ == 0) {
+                    $("#MTProp_Arr_Date").val(Prop_Arr_Date);
+                }
+                else {
+                    //新的值取全局变量
+                    $("#MTProp_Arr_Date").val(NewJQ);
+                    ChangeJQ = 0;
+                }
+                $('#myProp_Arr_DateModal').modal({ backdrop: 'static', keyboard: false }); /*禁止点击空白处关闭模态框*/
+                $scope.getPoss("myProp_Arr_DateModal", ZiDuan); //模态框在鼠标位置
+                //给模态框复制
+                document.getElementById('K3PO_Num_jqhf_MT').innerText = K3PO_Num;
+                document.getElementById('Supplier_jqhf_MT').innerText = Supplier;
+                document.getElementById('Mat_Name_jqhf_MT').innerText = Mat_Name;
+                document.getElementById('k3Unit_jqhf_MT').innerText = k3Unit;
+                document.getElementById('K3FQty_jqhf_MT').innerText = K3FQty;
+                //获取当前行
+                $(ZiDuan.target).parent("tr").siblings().removeAttr("myselect");
+                $(ZiDuan.target).parent("tr").attr("myselect", "selected");
+                //把序号放在全局变量里
+                QjID = parseInt(xuhao);
+            }
+            //入库时间点击后弹出框
+            $scope.DJK3Recv_Date = function (ZiDuan, xuhao, OAFlow_Num, K3PO_Num, K3FQty, requireDate, Prop_Arr_Date, K3Recv_Date) {
+                if (ChangeRK == 0) {
+                    $("#MTK3Recv_Date").val(K3Recv_Date);
+                }
+                else {
+                    //新的值取全局变量
+                    $("#MTK3Recv_Date").val(NewRK);
+                    ChangeRK = 0;
+                }
+                $('#myK3Recv_DateModal').modal({ backdrop: 'static', keyboard: false }); /*禁止点击空白处关闭模态框*/
+                $scope.getPoss("myK3Recv_DateModal", ZiDuan); //模态框在鼠标位置
+                //给模态框复制
+                document.getElementById('OAFlow_Num_rksj_MT').innerText = OAFlow_Num;
+                document.getElementById('K3PO_Num_rksj_MT').innerText = K3PO_Num;
+                document.getElementById('K3FQty_rksj_MT').innerText = K3FQty;
+                document.getElementById('requireDate_rksj_MT').innerText = requireDate;
+                document.getElementById('Prop_Arr_Date_rksj_MT').innerText = Prop_Arr_Date;
+                //获取当前行
+                $(ZiDuan.target).parent("tr").siblings().removeAttr("myselect");
+                $(ZiDuan.target).parent("tr").attr("myselect", "selected");
+                //把序号放在全局变量里
+                QjID = parseInt(xuhao);
+            }
+            //鼠标点击出现(备注)
+            $scope.BZModalShow = function (ZiDuan, Remark, uid, K3PO_Num, ISjiean) {  //MainID传过来的是新表的ID
+                var reg = /[;；]/g;
+                if (Remark != '' && Remark != null) {
+                        Remark = Remark.replace(reg, "$&\r\n");  //分号替换换行
+                        document.getElementById('Remark').innerText = Remark;
+                    }
+                    else {
+                        document.getElementById('Remark').innerText = Remark;
+                }
+                    QjID = parseInt(uid);
+                    //if (K3PO_Num != '' && ISjiean == 0) {   //非结案
+                    //    document.getElementById("BeiZhu").style.display = "block";
+                    //}
+                    //else {
+                    //    document.getElementById("BeiZhu").style.display = "none";
+                    //}
+                    document.getElementById("BeiZhu").style.display = "block";
+                if (document.getElementById("RemarkTXT").style.display == "block") {
+                    document.getElementById("RemarkTXT").style.display = "none";
+                    }
+                    $(ZiDuan.target).parent("tr").siblings().removeAttr("myselect");
+                    $(ZiDuan.target).parent("tr").attr("myselect", "selected");
+                $('#BZModal').modal();
+            }
+
+            //鼠标点击出现(备注)
+            $scope.BZMouseOver = function (Remark) {
+                var reg = /[;；]/g;
+                $('.example-popover').popover({ container: 'body', trigger: 'hover', html: 'true',content: Remark.replace(reg, "$&\r\n") });
+            }
+            //模态框出现在鼠标位置
+            $scope.getPoss = function (id, e) {
+                $("#"+id).css({ display: "block" });   //改变display不然得不到div的宽高
+                $(".modal-dialog").css({ visibility: "hidden" });
+                var pageX = e.pageX, pageY = e.pageY;
+                let Xxinfo = document.getElementById(id);
+                if (pageX + Xxinfo.offsetWidth> window.outerWidth || pageY + Xxinfo.offsetHeight + 50> window.outerHeight) {
+                    $("#" + id).css({ top: pageY - Xxinfo.offsetHeight < 0 ? pageY : pageY - Xxinfo.offsetHeight, left: pageX - Xxinfo.offsetWidth < 0 ? pageX : pageX - Xxinfo.offsetWidth});
+                }
+                else {
+                    $("#" + id).css({ top: pageY, left: pageX});
+                }
+                $("#" + id).css({ display: "none" });
+                $(".modal-dialog").css({ visibility:"visible" });
+            }
+            //添加一行
+            $scope.Addtr = function (ZiDuan) {
+                //获取到当前行
+                var selectTr = $(ZiDuan.target).parents("tr");
+                //获取当前是第几行
+                var selectIndex = selectTr.index();
+                //复制选中的那一行
+                var newArr = $scope.Copytr($scope.list, selectIndex);
+                //重新给表格赋值
+                $scope.list = newArr;
+                //selectTr.attr("style", "background-color:cornsilk;font-size:12px;height:55px;");
+                //selectTr.mouseout(function () {
+                //    selectTr.css("background-color", "#FFFFFF");
+                //});
+                //selectTr.mousemove(function () {
+                //    selectTr.css("background-color", "#ccc");
+                //});
+                //获取当前元素的html代码（包括本身的）
+                //var template = selectTr.prop("outerHTML").replace("ng-repeat=\"i in list\"", "").replace("ng-if=\"i.Prop_Arr_Date == ''\"", "").replace("ng-if=\"i.K3Recv_Date == ''\"", "").replace("ng-if=\"i.Remark == ''\"","");
+                //因为动态添加的html不会注册事件，所以需要重新用argularjs的$compile服务重新编译一下，然后再加到网页上。
+                //var content = $compile(template)($scope);
+                //获取当前行的html
+                //selectTr.after(content);
+                //定位到新复制的那一行
+            }
+            //复制选中的一行
+            $scope.Copytr = function (sourceList,i) {
+                var newList = new Array();
+                angular.forEach(sourceList, function (obj, k) {  //obj-表字段值
+                    var myobj = sourceList[k];
+                    if (i == k) {
+                        newList.push(obj);
+                        //重新生成一个JSON对象，这样就不会影响原来的obj的值
+                        var newobj = JSON.parse(JSON.stringify(myobj));
+                        //newobj = myobj;
+                        //把K3那边的赋值为空
+                        newobj.rownum='',
+                        newobj.K3PO_Num = '';
+                        newobj.K3PO_Num = '';
+                        newobj.K3PO_Date = '';
+                        newobj.Supplier = '';
+                        newobj.K3Unit = '';
+                        newobj.K3Qty = '';
+                        newobj.Buyer = '';
+                        newobj.Prop_Arr_Date = '';
+                        newobj.K3Recv_Date = '';
+                        newobj.Remark = '';
+                        newList.push(newobj);
+                    } else {
+                        newList.push(myobj);
+                    }
+                })
+                return newList;
+            }
+            //解决事件冲突
+            {
+                $scope.clickTest = function (ZiDuan, Remark, uid, K3PO_Num, ISjiean) {
+                    if (!flag) {
+                        $timeout(function () {
+                            if (flag == 1) {
+                                $scope.BZModalShow(1, ZiDuan, Remark, uid, K3PO_Num, ISjiean);  //移出
+                            }
+                            else {
+                                $scope.BZModalShow(0, ZiDuan, Remark, uid, K3PO_Num, ISjiean);  //单击
+                            }
+                        }, 700);
+                    }
+                    flag++;
+                }
+                $scope.reset=function() {
+                    flag = 0;
+                }
+            }
+        })
+    </script>
+    <script type="text/javascript">
+        var flag = 0;
+    </script>
+</head>
+<body style="max-width:98%;min-width:1350px; margin:0px auto" ng-app="myApp" ng-controller="JigFixtureController">
+    <div id="myDiv">
+        <h1 style="text-align: center;">
+            <span id="Title">工装夹具采购信息流</span>
+        </h1>
+        <h1 style="text-align: center;margin-top:-10px">
+            <span id="Title">Jig & Fixture Procurement Tracing</span>
+        </h1>
+        <form id="myform" action="##" method="post" class="form-inline" role="form" style="margin-bottom:1%">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="input-group-clear">
+                        <label style="font-weight:bold">OA申请单号:</label>
+                        <input name="OAFlow_Num" type="text" id="OAsqdh" class="form-control" style="width:70%">
+                        <span class="input-clear isfocus">
+                            &times;
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group-clear">
+                        <label style="font-weight:bold">K3申请单号:</label>
+                        <input name="K3PO_Num" type="text" id="K3sqdh" class="form-control" style="width:50%">
+                        <span class="input-clear isfocus" style="right:15%">
+                            &times;
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group-clear">
+                        <label style="font-weight:bold">状态：</label>
+                        <select name="TopicArea" id="TopicArea" style="width:50%;height:34px" class="ChangeColors">
+                            <option value="All">All</option>
+                            <option selected="selected" value="非结案">非结案</option>
+                            <option value="结案">结案</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    @*<div class="input-group-clear" style="margin-left:-20%">
+                            <label style="font-weight:bold">采购员：</label>
+                            <input name="Buyer" type="text" id="Buyer" class="form-control" style="width:25%">
+                            <span class="input-clear isfocus">
+                                &times;
+                            </span>
+                        </div>*@
+                    <div class="input-group-clear" style="margin-left:-20%">
+                        <label style="font-weight:bold">采购员：</label>
+                        <div id="CGYTopicArea" style="display:initial">
+                            <select name="CGYTopicArea" id="CGYTopicArea" style="width:25%;height:34px">
+                                <option selected="selected" value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row" style="margin-top:1%">
+                <div class="col-sm-5">
+                    <div class="input-group-clear">
+                        <label style="font-weight:bold">申请日期   从:</label>
+                        <input id="Start_Date" name="Start_Date" type="text" class="Wdate form-control" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'End_Date\')}'});" value="@ViewBag.date" style="background-color: #e9ffff;cursor:pointer;height:34px;text-align:center;width:41%" readonly="readonly" />
+                        <label style="font-weight:bold;margin-left:3%;margin-right:3%">至</label>
+                        <input id="End_Date" name="End_Date" type="text" class="Wdate form-control"
+                               value="@ViewBag.today" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}',maxDate:'%y-%M-%d'}); " style="background-color: #e9ffff;cursor:pointer;height:34px;text-align:center;width:32%" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="input-group-clear">
+                        <label style="font-weight:bold">物料：</label>
+                        <input name="Mat_Name" type="text" id="Mat_Name" class="form-control" style="width:85%" placeholder="模糊查询物料代码及物料名称">
+                        <span class="input-clear isfocus">
+                            &times;
+                        </span>
+                    </div>
+                </div>
+                <div id="anniu" class="col-sm-2" style="margin-top:-20px">
+                    <input type='button' name="btnSearch" class="btn btn-primary" value="搜&nbsp;&nbsp;&nbsp;索" id="btnSearch" style="margin-right:5%;height:40px" ng-click="btnSearch()">
+                    @if (@ViewBag.Daochu == "T")
+                    {
+                        <input type="button" name="btnAdd" class="btn btn-primary" value="导&nbsp;&nbsp;&nbsp;出" id="btnAdd" style="height:40px" onclick="DaocChu()" />
+                    }
+
+                </div>
+            </div>
+        </form>
+        <lable id="ListResult" style="font-weight:bold"></lable>
+        @*表格*@
+        <table cellspacing="0" rules="all" border="1" id="GridView1" class="table table-condensed table-bordered" style="margin-top:1%; width:100%;">
+            <tr>
+                <th scope="col" class="default-th" style="width:2%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">序号</a>
+                </th>
+                <th scope="col" class="default-th" style="width:5%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">OA申请日期</a>
+                </th>
+                <th scope="col" class="default-th" style="width:5%; text-align: center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">OA申请人</a>
+                </th>
+                <th scope="col" class="default-th" style="width:12%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">OA申请单号</a>
+                </th>
+                <th scope="col" class="default-th" style="width:8%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">物料代码</a>
+                </th>
+                <th scope="col" class="default-th" style="width:20%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">物料名称</a>
+                </th>
+                <th scope="col" class="default-th" style="width:3%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">单位</a>
+                </th>
+                <th scope="col" class="default-th" style="width:3%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">数量</a>
+                </th>
+                <th scope="col" class="default-th" style="width:5%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">要求交货日期</a>
+                </th>
+                <th scope="col" class="default-th" style="width:6%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">当前审批节点</a>
+                </th>
+                <th scope="col" class="default-th" style="width:7%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">K3订单号</a>
+                </th>
+                <th scope="col" class="default-th" style="width:5%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">下单日期</a>
+                </th>
+                <th scope="col" class="default-th" style="width:12%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">供应商</a>
+                </th>
+                <th scope="col" class="default-th" style="width:3%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">采购员</a>
+                </th>
+                <th scope="col" class="default-th" style="width:3%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">K3单位</a>
+                </th>
+                <th scope="col" class="default-th" style="width:3%;text-align: center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">K3数量</a>
+                </th>
+                <th scope="col" class="default-th" style="width:5%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">交期回复</a>
+                </th>
+                <th scope="col" class="default-th" style="width:5%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">入库日期</a>
+                </th>
+                <th scope="col" class="default-th" style="width:12%;text-align:center">
+                    <a id="px" href="javascript:void(0)" style="color:Black;">备注</a>
+                </th>
+            </tr>
+            <tbody id="OAContent">
+                <tr ng-repeat="i in list track by $index" repeat-finish="ngRepeatFinished" onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+                    <td ng-if="i.K3PO_Num!='' &&i.K3Qty!='' &&i.K3Qty>0 && i.ISjiean==0 && '@ViewBag.K3ddQX'=='T'" align="center" style="font-size:12px;">{{i.rownum}}<a href="#" class="glyphicon glyphicon-plus" style="display:table" ng-click="Addtr($event)"></a></td>
+                    <td ng-if="i.K3PO_Num=='' || i.K3Qty=='' || i.K3Qty==0 || i.ISjiean==1 || '@ViewBag.K3ddQX'!='T'" align="center" style="font-size:12px;">{{i.rownum}}</td>
+                    <td align="center" style="font-size:12px;">{{i.ApplyDate}}</td>
+                    <td align="center" style="font-size:12px;">{{i.Applicant_CN}}</td>
+                    <td align="center" style="font-size:12px;">{{i.Serial_Num}}</td>
+                    <td align="center" style="font-size:12px;">{{i.Mat_Code}}</td>
+                    <td align="left" style="font-size:12px;">{{i.Mat_Name}}</td>
+                    <td align="center" style="font-size:12px;">{{i.Unit}}</td>
+                    <td align="left" style="font-size:12px;">{{i.Qty}}</td>
+                    <td align="center" style="font-size:12px;">{{i.RequireDate}}</td>
+                    <td align="center" style="font-size:12px;">{{i.AppD_Name}}</td>
+
+                    @*K3订单号*@
+                    @*<td ng-if="'@ViewBag.K3ddQX'=='T' && i.Prop_Arr_Date=='' && i.AppD_Name=='HKFD接收' &&i.K3Recv_Date=='' &&i.ISjiean==0 &&TopicArea!='结案'" id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
+                    <td ng-if="'@ViewBag.K3ddQX'!='T' || i.Prop_Arr_Date!='' || i.AppD_Name!='HKFD接收' ||i.K3Recv_Date!='' ||i.ISjiean==1 || TopicArea=='结案'" id="K3PO_Num" align="center" style="font-size:12px;">{{i.K3PO_Num}}</td>*@
+
+                    @*测试*@
+                    <td id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
+
+                    <td align="center" style="font-size:12px;">{{i.K3PO_Date}}</td>
+                    <td align="left" style="font-size:12px;">{{i.Supplier}}</td>
+                    <td align="center" style="font-size:12px;">{{i.Buyer}}</td>
+                    <td align="center" style="font-size:12px;">{{i.K3Unit}}</td>
+                    <td align="left" style="font-size:12px;">{{i.K3Qty}}</td>
+
+                    @*交期回复*@
+                    @*<td ng-if="i.K3PO_Num!=''&& i.K3Recv_Date=='' && '@ViewBag.Username'==i.Buyer && i.ISjiean==0 &&TopicArea!='结案'" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
+                    <td ng-if="i.K3PO_Num==''|| i.K3Recv_Date!='' || '@ViewBag.Username'!=i.Buyer || i.ISjiean==1 || TopicArea=='结案'" id="Prop_Arr_Date" align="center" style="font-size:12px">{{i.Prop_Arr_Date}}</td>*@
+
+                    @*交期回复测试*@
+                    <td id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
+
+                    @*入库日期*@
+                    @*<td ng-if="i.K3PO_Num !=''&& i.Prop_Arr_Date !='' && '@ViewBag.RkrqQX'=='T' && i.ISjiean==0 && TopicArea!='结案'" id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
+                    <td ng-if="i.K3PO_Num==''|| i.Prop_Arr_Date =='' ||  '@ViewBag.RkrqQX'!='T' || i.ISjiean==1 || TopicArea=='结案'" id="K3Recv_Date" align="center" style="font-size:12px">{{i.K3Recv_Date}}</td>*@
+
+                    @*入库日期测试*@
+                    <td id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
+
+                    @*备注*@
+                    <td ng-if="i.K3PO_Num!=''&& TopicArea!='结案'" class="p1 example-popover" align="left" style="font-size: 12px;height:38px;cursor: pointer" data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left" ng-click="BZModalShow($event,i.Remark,i.MainID,i.K3PO_Num,i.ISjiean)">{{i.Remark}} </td>
+                    <td ng-if="i.K3PO_Num=='' || TopicArea=='结案'" class="p1 example-popover" align="left" style="font-size:12px;height:38px" data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left">{{i.Remark}}</td>
+                </tr>
+            </tbody>
+        </table>
+        @*导出专用表格*@
+        <div style="display:none">
+            <table cellspacing="0" rules="all" border="1" id="GridView2" class="table table-condensed table-bordered" style="margin-top:1%; width:100%;">
+                <tr>
+                    <th scope="col" class="default-th" style="width:2%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">序号</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:5%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">OA申请日期</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:5%; text-align: center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">OA申请人</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:12%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">OA申请单号</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:8%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">物料代码</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:20%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">物料名称</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:3%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">单位</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:3%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">数量</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:5%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">要求交货日期</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:6%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">当前审批节点</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:7%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">K3订单号</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:5%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">下单日期</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:12%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">供应商</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:3%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">采购员</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:3%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">K3单位</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:3%;text-align: center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">K3数量</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:5%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">交期回复</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:5%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">入库日期</a>
+                    </th>
+                    <th scope="col" class="default-th" style="width:12%;text-align:center">
+                        <a id="px" href="javascript:void(0)" style="color:Black;">备注</a>
+                    </th>
+                </tr>
+                <tbody id="OAContent">
+                    <tr ng-repeat="i in DaoChulist track by $index" repeat-finish="ngRepeatFinished" onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+                        <td ng-if="i.K3PO_Num!='' &&i.K3Qty!='' &&i.K3Qty>0 && i.ISjiean==0 && '@ViewBag.K3ddQX'=='T'" align="center" style="font-size:12px;">{{i.rownum}}<a href="#" class="glyphicon glyphicon-plus" style="display:table" ng-click="Addtr($event)"></a></td>
+                        <td ng-if="i.K3PO_Num=='' || i.K3Qty=='' || i.K3Qty==0 || i.ISjiean==1 || '@ViewBag.K3ddQX'!='T'" align="center" style="font-size:12px;">{{i.rownum}}</td>
+                        <td align="center" style="font-size:12px;">{{i.ApplyDate}}</td>
+                        <td align="center" style="font-size:12px;">{{i.Applicant_CN}}</td>
+                        <td align="center" style="font-size:12px;">{{i.Serial_Num}}</td>
+                        <td align="center" style="font-size:12px;">{{i.Mat_Code}}</td>
+                        <td align="left" style="font-size:12px;">{{i.Mat_Name}}</td>
+                        <td align="center" style="font-size:12px;">{{i.Unit}}</td>
+                        <td align="left" style="font-size:12px;">{{i.Qty}}</td>
+                        <td align="center" style="font-size:12px;">{{i.RequireDate}}</td>
+                        <td align="center" style="font-size:12px;">{{i.AppD_Name}}</td>
+
+                        @*K3订单号*@
+                        <td ng-if="'@ViewBag.K3ddQX'=='T' && i.Prop_Arr_Date=='' && i.AppD_Name=='HKFD接收' &&i.K3Recv_Date=='' &&i.ISjiean==0 &&TopicArea!='结案'" id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
+                        <td ng-if="'@ViewBag.K3ddQX'!='T' || i.Prop_Arr_Date!='' || i.AppD_Name!='HKFD接收' ||i.K3Recv_Date!='' ||i.ISjiean==1 || TopicArea=='结案'" id="K3PO_Num" align="center" style="font-size:12px;">{{i.K3PO_Num}}</td>
+
+                        @*测试*@
+                        @*<td id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>*@
+
+                        <td align="center" style="font-size:12px;">{{i.K3PO_Date}}</td>
+                        <td align="left" style="font-size:12px;">{{i.Supplier}}</td>
+                        <td align="center" style="font-size:12px;">{{i.Buyer}}</td>
+                        <td align="center" style="font-size:12px;">{{i.K3Unit}}</td>
+                        <td align="left" style="font-size:12px;">{{i.K3Qty}}</td>
+
+                        @*交期回复*@
+                        @*<td ng-if="i.K3PO_Num!=''&& i.K3Recv_Date=='' && '@ViewBag.Username'==i.Buyer && i.ISjiean==0 &&TopicArea!='结案'" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
+                            <td ng-if="i.K3PO_Num==''|| i.K3Recv_Date!='' || '@ViewBag.Username'!=i.Buyer || i.ISjiean==1 || TopicArea=='结案'" id="Prop_Arr_Date" align="center" style="font-size:12px">{{i.Prop_Arr_Date}}</td>*@
+
+                        @*交期回复测试*@
+                        <td id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
+
+                        @*入库日期*@
+                        @*<td ng-if="i.K3PO_Num !=''&& i.Prop_Arr_Date !='' && '@ViewBag.RkrqQX'=='T' && i.ISjiean==0 && TopicArea!='结案'" id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
+                            <td ng-if="i.K3PO_Num==''|| i.Prop_Arr_Date =='' ||  '@ViewBag.RkrqQX'!='T' || i.ISjiean==1 || TopicArea=='结案'" id="K3Recv_Date" align="center" style="font-size:12px">{{i.K3Recv_Date}}</td>*@
+
+                        @*入库日期测试*@
+                        <td id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
+
+                        @*备注*@
+                        <td ng-if="i.K3PO_Num!=''&& TopicArea!='结案'" class="p1 example-popover" align="left" style="font-size: 12px;height:38px;cursor: pointer" data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left" ng-click="BZModalShow($event,i.Remark,i.MainID,i.K3PO_Num,i.ISjiean)">{{i.Remark}} </td>
+                        <td ng-if="i.K3PO_Num=='' || TopicArea=='结案'" class="p1 example-popover" align="left" style="font-size:12px;height:38px" data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left">{{i.Remark}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @*分页*@
+        <div style="float:right" id="myPage"></div>
+        <!-- K3订单模态框（Modal） -->
+        <div class="modal fade" id="myK3PO_NumModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position:absolute;width:600px;height:370px;">
+            <div class="modal-dialog" style="position:absolute;overflow-y:hidden;">
+                <div class="modal-content" style="width:80%">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            K3订单号编辑
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>OA申请单号：<label id="OAFlow_NumMT"></label></p>
+                        <p>OA物料代码：<label id="Mat_CodeMT"></label></p>
+                        <p>OA物料名称：<label id="Mat_NameMT"></label></p>
+                        <p>数量：<label id="QtyMT"></label></p>
+                        <p>
+                            K3订单号： <input name="K3PO_Num" type="text" id="K3dd" class="form-control" style="width:70%;display:initial" required autofocus>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            返回
+                        </button>
+                        <button id="K3btn" type="button" class="btn btn-primary" ng-click="K3btn()">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 交期回复模态框（Modal） -->
+        <div class="modal fade" id="myProp_Arr_DateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position:absolute;width:600px;height:400px">
+            <div class="modal-dialog" style="position:absolute;overflow-y:hidden">
+                <div class="modal-content" style="width:80%">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            交期回复编辑
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>K3订单号：<label id="K3PO_Num_jqhf_MT"></label></p>
+                        <p>供应商：<label id="Supplier_jqhf_MT"></label></p>
+                        <p>物料名称：<label id="Mat_Name_jqhf_MT"></label></p>
+                        <p>采购单位：<label id="k3Unit_jqhf_MT"></label></p>
+                        <p>采购数量：<label id="K3FQty_jqhf_MT"></label></p>
+                        交期回复： <input id="MTProp_Arr_Date" name="MTProp_Arr_Date" type="text" class="Wdate" onfocus="WdatePicker()" value="@ViewBag.date" onclick="WdatePicker()" style="background-color: #e9ffff;cursor:pointer;height:34px;text-align:center;width:41%" />
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            返回
+                        </button>
+                        <button id="K3btn" type="button" class="btn btn-primary" ng-click="Jqhfbtn()">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 入库时间模态框（Modal） -->
+        <div class="modal fade" id="myK3Recv_DateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position:absolute;width:600px;height:400px;">
+            <div class="modal-dialog" style="position:absolute;overflow-y:hidden;">
+                <div class="modal-content" style="width:80%">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            入库时间编辑
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>OA申请单号：<label id="OAFlow_Num_rksj_MT"></label></p>
+                        <p>K3订单号：<label id="K3PO_Num_rksj_MT"></label></p>
+                        <p>K3数量：<label id="K3FQty_rksj_MT"></label></p>
+                        <p>OA要交货日期：<label id="requireDate_rksj_MT"></label></p>
+                        <p>K3交期回复：<label id="Prop_Arr_Date_rksj_MT"></label></p>
+                        入库日期： <input id="MTK3Recv_Date" name="MTK3Recv_Date" type="text" class="Wdate" onfocus="WdatePicker()" value="@ViewBag.date" onclick="WdatePicker()" style="background-color: #e9ffff;cursor:pointer;height:34px;text-align:center;width:41%" />
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            返回
+                        </button>
+                        <button id="K3btn" type="button" class="btn btn-primary" ng-click="Rkrqbtn()">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*备注放大*@
+        <div class="modal fade" id="BZModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="width:80%">
+                    <div class="modal-body">
+                        <label style="font-size:16px;white-space:pre-line" id="Remark"></label>
+                        <input id="RemarkTXT" class="form-control" style="display:none" ng-blur="RemarkTXT()"
+                               onkeyup="YanZheng('#RemarkTXT')">
+                        <a id="BeiZhu" title="添加备注" style="float:right;top:-5px;font-size:18px;cursor:pointer;display:none" class="glyphicon glyphicon-plus-sign" onclick="AddBeiZhu()"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

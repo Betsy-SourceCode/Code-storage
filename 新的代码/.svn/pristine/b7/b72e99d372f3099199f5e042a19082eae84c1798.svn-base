@@ -1,0 +1,1402 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ACustomer</title>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Scripts/WdatePicker.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style type="text/css">
+        .bak {
+            background-color: #e9ffff;
+            height: 25px;
+        }
+
+        td {
+            height: 25px;
+        }
+
+        a:hover {
+            cursor: pointer;
+        }
+    </style>
+    @*方法*@
+    <script type="text/javascript">
+        //跳转页面
+        function history() {
+            var userid = '@ViewBag.id';
+            window.location.href = "/Customer/Default?userid="+userid;
+        }
+        //所属省份
+        function SelectProvinceID(cityID) {
+            var cityID = $("#City").val();
+            var provinceId = "1";
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/SelectProvinceId",
+                data: { "cityID": cityID },
+                success: function (result) {
+                    if (result != null) {
+                        provinceId = result;
+                    }
+                    else {
+                        provinceId = "";
+                    }
+                }
+
+
+            })
+            return provinceId;
+        }
+        //查询员工所属部门
+        function SelectDeptID(EmpID) {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/SelectDeptID",
+                data: { "EmpID": EmpID },
+                success: function (result) {
+                    if (result != null) {
+                        EmpID = result;
+                    }
+                    else {
+                        EmpID = "";
+                    }
+
+                }
+            })
+            return EmpID;
+        }
+        //查询所在城市
+        function SelectCityID() {
+            var Cityid = $("#SelectCity").find("option:selected").val();
+            var City = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/SelectCityID",
+                data: { "Cityid": Cityid },
+                success: function (result) {
+                    if (result != null) {
+                        City = result;
+                    }
+                    else {
+                        City = "";
+                    }
+
+                }
+            })
+            return City;
+        }
+        //获得当前用户的部门
+        function GetDept(EmpID) {
+            var DeptID;
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "/Customer/GetUser",
+                data:
+                    { "EmpID": EmpID},
+                success: function (result) {
+                    if (result != null) {
+
+                        DeptID = result;
+                    }
+                    else {
+                        DeptID = "";
+                    }
+                }
+            })
+            return DeptID;
+        }
+        //新增方法（最新）
+        function SaveCustomers() {
+                var contactsArray = new Array();
+                //Company表
+                var ProvinceID = SelectProvinceID(); //所属省份
+                //Customer表
+                var Belongs = SelectDeptID('@ViewBag.username');  //所属部门
+                var IsList = "";
+                if ($("#chk_IsList").is(":checked")) {
+                    var IsList = "true";
+                }
+                else {
+                    IsList = "false";
+                }
+                //Contacts表
+                var contactsArray = new Array();
+                var City = SelectCityID();
+                var ContactType = "P4";
+                var Contact = $("#phone").val().trim();
+                var ContactType2 = "F1";
+                var Contact2 = $("#Fax").val().trim();
+                var ContactType3 = "W1";
+                var Contact3 = $("#web").val().trim();
+                contactsArray.push({"City": City, "Contact": Contact, "ContactType": ContactType});
+                contactsArray.push({"City": City,"Contact": Contact2, "ContactType": ContactType2});
+                contactsArray.push({"City": City,"Contact": Contact3, "ContactType": ContactType3});
+                if (FeiKong()) {
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        dataType: 'json',
+                        url: "/FunctionOperation/customerAdds",
+                        data: $.param({ 'ProvinceID': ProvinceID }) + '&'
+                            + $.param({ 'Belongs': Belongs }) + '&'
+                            + $.param({ 'IsList': IsList }) + '&'
+                            + $.param({ 'contacts': JSON.stringify(contactsArray) }) + '&'   //将Array转换为JSON字符串传入后台
+                            + $('#Addform').serialize(),
+                            success: function (result) {
+                                if (result.id>0) {
+                                alert("添加成功！");   //跳转到详情页（维护状态）
+                                window.location.href = "/Customer/Detail?CustomerID=" + result.Success + "&createBy=" + '@ViewBag.username' + "&createDept=" + '@ViewBag.DeptID';
+                            }
+                            else {
+                                alert("添加失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                            }
+                        }
+
+                    })
+                }
+            }
+        //时间
+        Date.prototype.Format = function (fmt) { // author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, // 月份
+                "d+": this.getDate(), // 日
+                "h+": this.getHours(), // 小时
+                "m+": this.getMinutes(), // 分
+                "s+": this.getSeconds(), // 秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+                "S": this.getMilliseconds() // 毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+                //验证电邮
+        function checkemail(em) {
+            var s3 = /^[\w\-]+[\.]?[\w\-]+@{@Html.Raw("@");}[a-zA-Z0-9_\-]{2,20}(?:\.[a-z]{2,20}){1,3}$/;  //解决@符号冲突
+            var email = $(em).val();
+            if (email != "") {
+                if (!email.match(s3)) {
+                   result = "false";
+                    alert('电邮格式错误！');
+                    $(em).val("");
+                }
+            }
+        }
+        //验证勾选框
+        function checkboxOnclick(checkbox) {
+            if (checkbox.checked == true) {
+                $("#Inv2eMail").css('background-color','');
+                $("#Inv2eMail").removeAttr("readonly");
+            } else {
+                $("#Inv2eMail").attr("readonly", "readonly");
+                $("#Inv2eMail").css('background-color', '#d8d8d8');
+            }
+        }
+        //非空验证
+        function FeiKong() {
+            var ShortName = $("#ShortName").val().trim();
+            if (ShortName == "") {
+                alert("请输入简称!");
+                document.getElementById("ShortName").focus();
+                return false;
+            }
+            var FullName_CN = $("#FullName_CN").val().trim();
+            var FullName_EN = $("#FullName_EN").val().trim();
+            if ((FullName_CN.length + FullName_EN.length)<3) {
+                document.getElementById("FullName_CN").focus();
+                alert("请填完整客户中文或英文名称");
+                return false;
+            }
+                 var Contact = $("#phone").val().trim();
+                 var Contact2 = $("#Fax").val().trim();
+                 var Contact3 = $("#web").val().trim();
+                 if (Contact == "" && Contact2 == "" && Contact3 == "")
+                    { alert("主用电话、主用传真和资讯网站至少填一项！");
+                      document.getElementById("phone").focus();
+                return false;
+            }
+            var Inv2eMail = $("#Inv2eMail").val();
+            if ($("#CheckBox1").is(":checked")) {   //勾选后一定要填电邮地址
+                if (Inv2eMail=="") {
+                    alert("选择以邮寄为接收账单方式必须填写电邮地址");
+                    document.getElementById("Inv2eMail").focus();
+                    return false;
+                }
+            }
+                var Inv2Comp = $("#Inv2Comp").val().trim();
+                var Inv2Addr = $("#Inv2Addr").val().trim();
+                var Ship2Comp = $("#Ship2Comp").val().trim();
+                var Ship2Addr = $("#Ship2Addr").val().trim();
+                if (Inv2Comp == "" || Inv2Addr == "" || Ship2Comp == "" || Ship2Addr == "") {
+                    if (Inv2Comp == "" || Inv2Addr == "")
+                    {
+                        alert("账单信息请填写完整！");
+                        document.getElementById("Inv2Comp").focus();
+                        return false;
+                    }
+                    if ($("#CheckBox3").is(":checked")) {
+                        return true;
+                    }
+                    else {
+                        if (Ship2Comp == "" || Ship2Addr == "") {
+                            document.getElementById("Ship2Comp").focus();
+                            alert("装运信息请填写完整！");
+                            return false;
+                        }
+                    }
+
+            }
+            return true;
+                }
+        //禁用Enter键表单自动提交
+        document.onkeydown = function (event) {
+            var target, code, tag;
+            if (!event) {
+                event = window.event; //针对ie浏览器
+                target = event.srcElement;
+                code = event.keyCode;
+                if (code == 13) {
+                    tag = target.tagName;
+                    if (tag == "TEXTAREA") { return true; }
+                    else { return false; }
+                }
+            }
+            else {
+                target = event.target; //针对遵循w3c标准的浏览器，如Firefox
+                code = event.keyCode;
+                if (code == 13) {
+                    tag = target.tagName;
+                    if (tag == "INPUT") { return false; }
+                    else { return true; }
+                }
+            }
+    };
+    //勾上如果是与账单信息相同
+    function doPostBack() {
+        var Inv2Comp = $("#Inv2Comp").val().trim();
+        var Inv2Addr = $("#Inv2Addr").val().trim();
+        var Inv2Post = $("#Inv2Post").val().trim();
+        var Ship2City = "LDcitys2";
+        var Ship2State = "SelectProvince2";
+        var Inv2Cnty = $("#country1").find("option:selected").val();
+        if ($("#CheckBox3").is(":checked")) {
+            $("#Ship2Comp").val(Inv2Comp);
+            $("#Ship2Addr").val(Inv2Addr);
+            $("#Ship2Post").val(Inv2Post);
+            $("#country2").find("option[value='" + Inv2Cnty + "']").attr("selected", true);
+            $("#country2").find("option[value='" + Inv2Cnty + "']").siblings().attr("selected", false);
+            Province("country1", Ship2State, Ship2City, 1);
+        }
+    }
+    </script>
+    @*页面加载*@
+    <script>
+        $(function () {
+            $("#OperationChi").css("display", "");
+            $("#OperationEng").css("display", "none");
+             //上市公司勾选框赋值
+            var IsList = '@ViewBag.AllCustomer.IsList';
+            if (IsList=="True") {
+                $("#chk_IsList").prop("checked", true);
+            }
+            //行业下拉框绑定
+            var Selecttrade = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectTBWord?WordCode=CR",
+                success: function (result) {
+                        Selecttrade += '<select name="Classify" id="Classify" class="bak" style="width:99%">'
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        Selecttrade += '<option value="' + value.Value + '"';
+                        if ('@ViewBag.AllCustomer.Classify'==value.Value) {   //设置默认值
+                            Selecttrade += "selected='selected'";
+                        }
+                        else if ('F' == value.Value){
+                            Selecttrade += "selected='selected'";
+                        }
+                        Selecttrade += ">" + value.Text + '</option > ';
+                    })
+                    Selecttrade += ' </select>'
+                    $("#Selecttrade").append(Selecttrade);
+                    return false;
+                }
+            });
+            //公司下拉框
+            var SelectCompany = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectTBWord?WordCode=BT",
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        SelectCompany += '<option value="' + value.Value + '"';
+                        SelectCompany += ">" + value.Text + '</option > ';
+                    })
+                    $(".type").find("select").append(SelectCompany);
+                    var company = "@ViewBag.AllCustomer.Biz_Type";
+                    if (company !="") {
+                        $("#SelectCompany").find("option[value='" + company + "']").attr("selected", true);
+                    }
+                    //默认注册类型
+                    var ZDcompany1 = "@ViewBag.AllCustomer.Owner1Type";
+                    if (ZDcompany1 !="") {
+                        $("#type1").find("option[value='" + ZDcompany1 + "']").attr("selected", true);
+                    }
+                    var ZDcompany2 = "@ViewBag.AllCustomer.Owner2Type"
+                    if (ZDcompany2 !="") {
+                        $("#type2").find("option[value='" + ZDcompany2 + "']").attr("selected", true);
+                    }
+                    return false;
+                }
+            });
+            //货币下拉框
+            var SelectCurr = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectCurr",
+                success: function (result) {
+                    SelectCurr += '<option value=""></option >'
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        SelectCurr += '<option value="' + value.Value + '"';
+                        SelectCurr += ">" + value.Text + '</option > ';
+                    })
+                    $(".SelectCurr").find("select").append(SelectCurr);
+                    var factory1 = "@ViewBag.AllCustomer.Curr1";
+                    if (factory1 !="") {
+                        $("#huobi1").find("option[value='" + factory1 + "']").attr("selected", true);
+                    }
+                    else {
+                        factory1 = "CNY";
+                        $("#huobi1").find("option[value='" + factory1 + "']").attr("selected", true);
+                    }
+                    var factory2 = "@ViewBag.AllCustomer.Curr2";
+                    if (factory2 !="") {
+                        $("#huobi2").find("option[value='" + factory2 + "']").attr("selected", true);
+                    }
+                    var factory3 = "@ViewBag.AllCustomer.Curr3";
+                    if (factory3 !="") {
+                        $("#huobi3").find("option[value='" + factory3 + "']").attr("selected", true);
+                    }
+                    var factory4 ="@ViewBag.AllCustomer.Curr4";
+                    if (factory4 !="") {
+                        $("#huobi4").find("option[value='" + factory4 + "']").attr("selected", true);
+                    }
+                    $("#huobi1").find("option[value='']").remove();  //移除空白项
+                    return false;
+                }
+            });
+        })
+    </script>
+    @*二三级下拉框*@
+    <script>
+        //国家+州省+城市(三级)
+        function LDcity(ProviceID,CityId,num) {
+            var c = $("#" + ProviceID).find("select")[0].value;
+            var LDcity = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectLDCity",
+                data: { "Province": c },
+                success: function (result) {
+                    $("#" + CityId).find("select").empty();
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        LDcity += '<option value="' + value.Value + '"';
+                        LDcity += ">" + value.Text + '</option > ';
+                    })
+                    LDcity += '<option value=""></option>';
+                    $("#" + CityId).find("select").append(LDcity);
+                    if (num == "1") {
+                        var Inv2City = $("#LDcitys1").find("option:selected").val();
+                        $("#LDcitys2").find("option[value='" + Inv2City + "']").attr("selected", true);
+                    }
+                    else {
+                         //默认城市
+                    var city1 = "@ViewBag.AllCustomer.Inv2City";
+                    if (city1!="") {
+                        $("#LDcitys1").find("option[value='" + city1 + "']").attr("selected", true);
+                    }
+                    var city2 = "@ViewBag.AllCustomer.Ship2City";
+                    if (city2 !="") {
+                        $("#LDcitys2").find("option[value='" + city2 + "']").attr("selected", true);
+                    }
+                    }
+
+                    return false;
+
+                }
+            })
+
+        }
+        function set_Province(CountryId, ProvinceId, CityId, num) {
+            var c = $("#" + CountryId).find("select")[0].value;
+            if (num == "1") {
+                var c = $("#country1").find("option:selected").val();
+            }
+            var SelectProvince1 = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectProvince",
+                data: { "Country": c },
+                success: function (result) {
+                    $("#" + ProvinceId).find("select").empty();
+                    if (@ViewBag.AllCustomer.CustomerID!= '') {
+                        SelectProvince1 += '<option value=""></option>';
+                        $.each(result.Data.DropDownList, function (key, value) {
+                            SelectProvince1 += '<option value="' + value.Value + '"';
+                            SelectProvince1 += ">" + value.Text.replace('\r\n', '') + '</option > ';
+                        })
+                    }
+                    else {
+                        $.each(result.Data.DropDownList, function (key, value) {
+                            SelectProvince1 += '<option value="' + value.Value + '"';
+                            SelectProvince1 += ">" + value.Text.replace('\r\n', '') + '</option > ';
+                        })
+                        SelectProvince1 += '<option value=""></option>';
+                    }
+
+                    $("#" + ProvinceId).find("select").append(SelectProvince1);
+                    if (num == "1") {
+                        var Inv2State = $("#SelectProvince1").find("option:selected").val();
+                        $("#SelectProvince2").find("option[value='" + Inv2State + "']").attr("selected", true);
+                    }
+                    else {
+                          //默认州省
+                        var Province1 = "@ViewBag.AllCustomer.Inv2State";
+                        if (Province1 !="") {
+                            $("#SelectProvince1").find("option[value='" + Province1 + "']").attr("selected", true);
+                        }
+                    var Province2 = "@ViewBag.AllCustomer.Ship2State";
+                        if (Province2 !="") {
+                            $("#SelectProvince2").find("option[value='" + Province2 + "']").attr("selected", true);
+                        }
+                    }
+                    LDcity(ProvinceId,CityId, num);
+                    return false;
+                }
+            })
+        }
+        function Province(CountryId, ProviceId, CityID,num) {
+            set_Province(CountryId, ProviceId, CityID,num);
+        }
+        //国家+城市(二级)
+        function set_city(CountryId, CityId) {
+            var c = $("#" + CountryId).find("select")[0].value;
+            var SelectCity = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectCity",
+                data: { "Country": c },
+                success: function (result) {
+                    $("#" + CityId).find("select").empty();
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        SelectCity += '<option value="' + value.Value + '"';
+                        SelectCity += ">" + value.Text + '</option > ';
+                    })
+                    SelectCity += '<option value=""></option>';
+                    $("#SelectCity").find("select").append(SelectCity);
+                    var factory = "@ViewBag.AllCustomer.CityID"
+                    if (factory !="") {
+                        $("#SelectCity").find("option[value='" + factory + "']").attr("selected", true);
+                    }
+                    return false;
+
+                }
+            })
+        }
+        $( function() {
+            //国家+城市下拉框（二级联动）
+            var SelectCountry = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectCountry",
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        SelectCountry += '<option value="' + value.Value + '"';
+                        SelectCountry += ">" + value.Text + '</option > ';
+                    })
+                    $(".LD").find("select").append(SelectCountry);
+                     //默认国家
+                    var CN = "CN";
+                    var Country = "@ViewBag.AllCustomer.CountryID";
+                    if (Country!="") {
+                      $("#SelectCountry").find("option[value='" + Country + "']").attr("selected", true);
+                    }
+                    else {
+
+                        $("#SelectCountry").find("option[value='" + CN + "']").attr("selected", true);
+                    }
+                    //默认注册国家
+                    var ZDCountry1 = "@ViewBag.AllCustomer.Owner1Cnty";
+                    if (ZDCountry1 !="") {
+                        $("#ZDCountry1").find("option[value='" + ZDCountry1 + "']").attr("selected", true);
+                    }
+                    else {
+                        $("#ZDCountry1").find("option[value='" + CN + "']").attr("selected", true);
+                    }
+                    var ZDCountry2 = "@ViewBag.AllCustomer.Owner2Cnty";
+                    if (ZDCountry2 !="") {
+                        $("#ZDCountry2").find("option[value='" + ZDCountry2 + "']").attr("selected", true);
+                    }
+                    else {
+                        $("#ZDCountry2").find("option[value='" + CN + "']").attr("selected", true);
+                    }
+                    set_city('SelectCountry', 'SelectCity')
+                    return false;
+                }
+            });
+            //联动国家+省州+城市（三级联动）
+            var countrys1 = "";
+            var countrys2 = "";
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/Customer/SelectCountry",
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        countrys1 += '<option value="' + value.Value + '"';
+                        countrys1 += ">" + value.Text + '</option > ';
+                        countrys2 += '<option value="' + value.Value + '"';
+                        countrys2 += ">" + value.Text + '</option > ';
+                    })
+                    $(".LDC1").find("select").append(countrys1);
+                    $(".LDC2").find("select").append(countrys2);
+                     //默认国家
+                    var CN = "CN"
+                    var country1 = "@ViewBag.AllCustomer.Inv2Cnty";
+                    if (country1 !="") {
+                        $("#country1").find("option[value='" + country1 + "']").attr("selected", true);
+                    }
+                    else {
+                        $("#country1").find("option[value='" + CN + "']").attr("selected", true);
+                    }
+                    var country2 = "@ViewBag.AllCustomer.Ship2Cnty";
+                    if (country2 !="") {
+                        $("#country2").find("option[value='" + country2 + "']").attr("selected", true);
+                    }
+                    else {
+                        $("#country2").find("option[value='" + CN + "']").attr("selected", true);
+                    }
+                    Province('country2', 'SelectProvince2', 'LDcitys2');
+                    Province('country1', 'SelectProvince1', 'LDcitys1');
+                    return false;
+                }
+            });
+        })
+    </script>
+</head>
+<body>
+    <div>
+        <form id="Addform" action="##" onsubmit="return false" method="post">
+            <div style="border: 2px solid #0000ff; width: 97%; margin: 0 auto;">
+                <div style="float: left; margin-left: 20px; margin-top: 20px;">
+                    <img src="/Scripts/image/logo.jpg" />
+                </div>
+                <div style="float: right; margin-right: 20px;">
+                    <a style="margin-left: 25px;" href="#" onclick="history()"><img src="/Scripts/image/关闭.jpg" title="@Resources.CustomerRes.Gb" /></a>
+                </div>
+                <h1 style="text-align: center; margin-top: 50px;">
+                    <span id="Label1">@Resources.CustomerRes.Xkhxysqb</span>
+
+                </h1>
+                <div style="display: inline-block;float:right;margin-right:3%;">
+                    <span id="*" style="font-size:15px;color:red">
+                        * @Resources.CustomerRes.Btx
+                    </span>
+                </div>
+                <table style="width: 95%; margin: 0 auto; border: 1px solid #bfbfbf;clear:both" rules="rows">
+                    <tr>
+                        <td colspan="8" style="text-align: center; background-color: #d8d8d8;">
+                            <span id="Label2" style="font-weight:bold">@Resources.CustomerRes.Lxfs</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;" rowspan="2">
+                            <span id="Label3">@Resources.CustomerRes.Fdgsmc：</span>
+                        </td>
+                        <td style="text-align: right; border-bottom-color: #ffffff;">
+                            <span id="Label255">@Resources.CustomerRes.Z_Z</span>
+                        </td>
+                        <td colspan="6" style="border-bottom-color: #ffffff;">
+                            <input name="FullName_CN" type="text" maxlength="50" id="FullName_CN" value="@ViewBag.AllCustomer.FullName_CN" style="background-color: #fff4f4; width: 98%" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label259">@Resources.CustomerRes.Y_Y</span>
+                        </td>
+                        <td colspan="6">
+                            <input name="FullName_EN" type="text" value="@ViewBag.AllCustomer.FullName_EN" maxlength="100" id="FullName_EN" style="background-color: #fff4f4; width: 98%" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label4">@Resources.CustomerRes.Zcdz：</span>
+                        </td>
+                        <td colspan="7">
+                            <input name="Reg_Addr" type="text" value="@ViewBag.AllCustomer.Reg_Addr" maxlength="100" id="Reg_Addr" style="width: 98.5%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label257">@Resources.CustomerRes.Jc：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="ShortName" type="text" value="@ViewBag.AllCustomer.ShortName" maxlength="25" id="ShortName" style="width:99%; background-color: #fff4f4;" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;" required>*</label>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Trade">@Resources.CustomerRes.Hy：</span>
+                        </td>
+                        <td colspan="3">
+                            <div style="display:inline-block;width:98%" id="Selecttrade"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 15%">
+                            <span id="Company">@Resources.CustomerRes.Gslx：</span>
+                        </td>
+                        <td style="width: 15%;">
+                            <div style="display:inline-block;width:100%" id="SelectCompany" class="type">
+                                <select name="Biz_Type" id="CompanyType" class="bak" style="width:98%">
+                                </select>
+                            </div>
+                        </td>
+                        <td style="text-align: right; width: 8%">
+                            <span id="Label6">@Resources.CustomerRes.Clrq：</span>
+                        </td>
+                        <td style="width: 13%;">
+                            <input id="in_Biz_Date" name="Biz_Date" type="text" class="Wdate" value="@ViewBag.AllCustomer.Biz_Date" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" onclick="WdatePicker()" style="width: 98%; background-color: #e9ffff;cursor:pointer;" />
+                        </td>
+                        <td style="text-align: right; width: 9%">
+                            <span id="Label7">@Resources.CustomerRes.Szcs：</span>
+                        </td>
+                        <td style="width: 13%;">
+                            <div style="display:inline-block;width:100%" id="SelectCity">
+                                <select name="CityID" id="City" class="bak" style="width:110%">
+                                </select>
+                            </div>
+                        </td>
+                        <td style="text-align: right; width:10%">
+                            <span id="Label263">@Resources.CustomerRes.Gj：</span>
+                        </td>
+                        <td style="width: 22%;">
+                            <div style="display:inline-block;width:93%" class="LD" id="SelectCountry">
+                                <select name="CountryID" id="Country" class="bak" style="width:100%;" onChange="set_city('SelectCountry','SelectCity');">
+                                </select>
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label8">@Resources.CustomerRes.Zydh：</span>
+                        </td>
+                        <td>
+                            <input name="phone" type="text" id="phone" value="@ViewBag.AllCustomer.Phone" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label9">@Resources.CustomerRes.Zycz：</span>
+                        </td>
+                        <td>
+                            <input name="Fax" type="text" id="Fax" value="@ViewBag.AllCustomer.Fax" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label10">@Resources.CustomerRes.Zxwz：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="web" type="text" maxlength="100" id="web" value="@ViewBag.AllCustomer.Web" style="width: 97%" />
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf" rules="rows">
+                    <tr>
+                        <td colspan="8" style="background-color: #d8d8d8; text-align:center">
+                            <span id="Label11" style="font-weight:bold">@Resources.CustomerRes.Cgzglx</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label12">@Resources.CustomerRes.Xm：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="PUR_Name" type="text" maxlength="50" id="PUR_Name" value="@ViewBag.AllCustomer.PUR_Name" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label20">@Resources.CustomerRes.Zc：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="PUR_Title" type="text" maxlength="50" id="PUR_Title" value="@ViewBag.AllCustomer.PUR_Title" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label13">@Resources.CustomerRes.Bgdh：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="PUR_Phone" type="text" maxlength="20" id="PUR_Phone" value="@ViewBag.AllCustomer.PUR_Phone" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label21">@Resources.CustomerRes.Cz：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="PUR_Fax" type="text" maxlength="20" id="PUR_Fax" value="@ViewBag.AllCustomer.PUR_Fax" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label14">@Resources.CustomerRes.Sj：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="PUR_Mobile" type="text" maxlength="20" id="PUR_Mobile" value="@ViewBag.AllCustomer.PUR_Mobile" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label15">@Resources.CustomerRes.Dy：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="PUR_Email" type="text" maxlength="50" id="PUR_Email" value="@ViewBag.AllCustomer.PUR_Email" onblur="checkemail('#PUR_Email');" style="width: 98%" />
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <div style="border: 2px solid #0000ff; width: 97%; margin: 10px auto;">
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf" rules="rows">
+                    <tr>
+                        <td colspan="8" style="text-align: center; background-color: #d8d8d8;">
+                            <span id="Label16" style="font-weight:bold">@Resources.CustomerRes.Zdxx</span>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom-color: #ffffff;">
+                        <td colspan="4" style="font-size: 12px;">
+                            <p style="height: 25px; background-color: #ffffcc; margin: 0px;width:164%">
+                                <input id="CheckBox1" type="checkbox" name="CheckBox1" onclick="checkboxOnclick(this)" />
+                                <label for="CheckBox1" id="Label123">@Resources.CustomerRes.Qgsrgxzyyjwjszdfs *</label>
+                            </p>
+                        </td>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label18">@Resources.CustomerRes.Jszdddydz：</span>
+                        </td>
+                        <td colspan="2">
+                            <input name="Inv2eMail" type="email" maxlength="50" id="Inv2eMail" onblur="checkemail('#Inv2eMail');" style="width: 96%;background-color:#d8d8d8" value="@ViewBag.AllCustomer.Inv2EMail" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            <span id="Label17">* @Resources.CustomerRes.JyydywjszdfsQtgnddzyxdz。</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 11%">
+                            <span id="Label19">@Resources.CustomerRes.Gsmc：</span>
+                        </td>
+                        <td colspan="7">
+                            <input name="Inv2Comp" type="text" maxlength="50" id="Inv2Comp" value="@ViewBag.AllCustomer.Inv2Comp" style="width: 99%; background-color: #fff4f4;" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;">*</label>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label22">@Resources.CustomerRes.Dz：</span>
+                        </td>
+                        <td colspan="7">
+                            <input name="Inv2Addr" type="text" maxlength="150" id="Inv2Addr" value="@ViewBag.AllCustomer.Inv2Addr" style="width: 99%; background-color: #fff4f4;" /><label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;">*</label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label23">@Resources.CustomerRes.Cs：</span>
+                        </td>
+                        <td style="width: 13%">
+                            <div style="display:inline-block;width:100%" class="LDcityy2" id="LDcitys1">
+                                <select name="Inv2City" id="Inv2City" class="bak" style="width:100%;margin-right:20px;">
+                                </select>
+                            </div>
+                        </td>
+                        <td style="text-align: right; width: 8%">
+                            <span id="Label24">@Resources.CustomerRes.Zs：</span>
+                        </td>
+                        <td style="width: 13%">
+                            <div style="display:inline-block;width:100%" class="Province2" id="SelectProvince1">
+                                <select name="Inv2State" id="Inv2State" class="bak" style="width:124%;" onChange="LDcity('SelectProvince1','LDcitys1');">
+                                </select>
+                            </div>
+                        </td>
+                        <td style="text-align: right; width: 16%">
+                            <span id="Label25">@Resources.CustomerRes.Yb：</span>
+                        </td>
+                        <td style="width: 13%">
+                            <input name="Inv2Post" type="text" maxlength="50" id="Inv2Post" value="@ViewBag.AllCustomer.Inv2Post" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right; width: 10%">
+                            <span id="Label26">@Resources.CustomerRes.Gj：</span>
+                        </td>
+                        <td style="width: 20%">
+                            <div style="display:inline-block;width:94%" class="LDC2" id="country1">
+                                <select name='Inv2Cnty' id='LDCountrys2' class='bak' style='width:100%;' onChange="Province('country1','SelectProvince1','LDcitys1');">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf" rules="rows">
+                    <tr>
+                        <td colspan="8" style="text-align: center; background-color: #d8d8d8;">
+                            <span id="Label27" style="font-weight:bold">@Resources.CustomerRes.Zyxx</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 11%">
+                            <span id="Label30">@Resources.CustomerRes.Gsmc：</span>
+                        </td>
+                        <td colspan="5">
+                            <input name="Ship2Comp" type="text" maxlength="50" id="Ship2Comp" value="@ViewBag.AllCustomer.Ship2Comp" style="width: 99%; background-color: #fff4f4;" />
+                            <label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;">*</label>
+                        </td>
+                        <td colspan="2" style="font-size:12px;">
+                            <p style="height: 25px; background-color: #ffffcc; margin: 0px; width: 98%;margin-left:10px;">
+                                <input id="CheckBox3" type="checkbox" name="CheckBox3" onclick="doPostBack()" />
+                                <label for="CheckBox3" id="Label124">@Resources.CustomerRes.Gsrgsyzdxxxt</label>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label31">@Resources.CustomerRes.Dz：</span>
+                        </td>
+                        <td colspan="7">
+                            <input name="Ship2Addr" type="text" maxlength="150" id="Ship2Addr" value="@ViewBag.AllCustomer.Ship2Addr" style="width: 99%; background-color: #fff4f4;" />
+                            <label style="color:red;margin-left:5px; font-size:20px;position:absolute;left:0px auto;top:0px auto;">*</label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label32">@Resources.CustomerRes.Cs：</span>
+                        </td>
+                        <td style="width: 13%">
+                            <div style="display:inline-block;width:100%" class="LDcityy1" id="LDcitys2">
+                                <select name="Ship2City" id="ldCity" class="bak" style="width:100%;margin-right:20px;"></select>
+                            </div>
+                        </td>
+                        <td style="text-align: right; width: 8%">
+                            <span id="Label33">@Resources.CustomerRes.Zs：</span>
+                        </td>
+                        <td style="width: 13%">
+                            <div style="display:inline-block;width:100%" class="Province1" id="SelectProvince2">
+                                <select name="Ship2State" id="Ship2State" class="bak" style="width:124%;" onChange="LDcity('SelectProvince2','LDcitys2');">
+                                </select>
+                            </div>
+                        </td>
+                        <td style="text-align: right; width: 16%">
+                            <span id="Label34">@Resources.CustomerRes.Yb：</span>
+                        </td>
+                        <td style="width: 13%">
+                            <input name="Ship2Post" type="text" maxlength="50" id="Ship2Post" value="@ViewBag.AllCustomer.Ship2Post" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right; width: 10%">
+                            <span id="Label35">@Resources.CustomerRes.Gj：</span>
+                        </td>
+                        <td style="width: 20%">
+                            <div style="display:inline-block;width:94%" class="LDC1" id="country2">
+                                <select name='Ship2Cnty' id='LDCountrys1' class='bak' style='width:100%;' onChange="Province('country2','SelectProvince2','LDcitys2');">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf" rules="rows">
+                    <tr>
+                        <td colspan="8" style="text-align: center; background-color: #d8d8d8;">
+                            <span id="Label28" style="font-weight:bold">@Resources.CustomerRes.Yfzklxxx</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label29">@Resources.CustomerRes.Xm：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="APName" type="text" maxlength="50" id="APName" value="@ViewBag.AllCustomer.APName" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label36">@Resources.CustomerRes.Zc：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="APTitle" type="text" maxlength="50" id="APTitle" value="@ViewBag.AllCustomer.APTitle" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label37">@Resources.CustomerRes.Bgdh：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="APPhone" type="text" maxlength="50" id="APPhone" value="@ViewBag.AllCustomer.APPhone" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label38">@Resources.CustomerRes.Cz：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="APFax" type="text" maxlength="50" id="APFax" value="@ViewBag.AllCustomer.APFax" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label39">@Resources.CustomerRes.Sj：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="APMobile" type="text" maxlength="50" id="APMobile" value="@ViewBag.AllCustomer.APMobile" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label39">@Resources.CustomerRes.Dy：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="APEmail" type="text" maxlength="50" id="APEmail" value="@ViewBag.AllCustomer.APEmail" onblur="checkemail('#APEmail');" style="width: 98%" />
+                        </td>
+
+                    </tr>
+                </table>
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf" rules="rows">
+                    <tr>
+                        <td colspan="8" style="text-align: center; background-color: #d8d8d8;">
+                            <span id="Label41" style="font-weight:bold">@Resources.CustomerRes.Yszklxxx</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label42">@Resources.CustomerRes.Xm：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="ARName" type="text" maxlength="50" id="ARName" value="@ViewBag.AllCustomer.ARName" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label43">@Resources.CustomerRes.Zc：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="ARTitle" type="text" maxlength="50" id="ARTitle" value="@ViewBag.AllCustomer.ARTitle" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label44">@Resources.CustomerRes.Bgdh：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="ARPhone" type="text" maxlength="50" id="ARPhone" value="@ViewBag.AllCustomer.ARPhone" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label45">@Resources.CustomerRes.Cz：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="ARFax" type="text" maxlength="50" id="ARFax" value="@ViewBag.AllCustomer.ARFax" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label46">@Resources.CustomerRes.Sj：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="ARMobile" type="text" maxlength="50" id="ARMobile" value="@ViewBag.AllCustomer.ARMobile" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label47">@Resources.CustomerRes.Dy：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="AREmail" type="text" maxlength="50" id="AREmail" value="@ViewBag.AllCustomer.AREmail" onblur="checkemail('#AREmail');" style="width: 98%" />
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <div style="border: 2px solid #0000ff; width: 97%; margin: 10px auto;">
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf" rules="rows">
+                    <tr>
+                        <td colspan="8" style="text-align: center; background-color: #d8d8d8;">
+                            <span id="Label48" style="font-weight:bold">@Resources.CustomerRes.Zyyh</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%">
+                            <span id="Label49">@Resources.CustomerRes.Qqmc：</span>
+                        </td>
+                        <td colspan="7">
+                            <input name="BankName" type="text" maxlength="50" id="BankName" value="@ViewBag.AllCustomer.BankName" style="width: 99%" />
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label51">@Resources.CustomerRes.Dz：</span>
+                        </td>
+                        <td colspan="7">
+                            <input name="BankAddr" type="text" maxlength="50" id="BankAddr" value="@ViewBag.AllCustomer.BankAddr" style="width: 99%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <span id="Label53">@Resources.CustomerRes.Gjzhhm：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="iBAN" type="text" maxlength="25" id="iBAN" value="@ViewBag.AllCustomer.iBAN" style="width: 98%" />
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="Label54">@Resources.CustomerRes.Yhgjdm：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="SWIFT" type="text" maxlength="25" id="SWIFT" value="@ViewBag.AllCustomer.SWIFT" style="width: 97%" />
+                        </td>
+
+                    </tr>
+                </table>
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf; margin-bottom: 0px;" rules="rows">
+                    <tr>
+                        <td colspan="8" style="text-align: center; background-color: #d8d8d8;">
+                            <span id="Label50" style="font-weight:bold">@Resources.CustomerRes.Syxysq</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" style="font-size: 12px;">
+                            <p style="height: 25px; background-color: #ffffcc; margin: 0px;">
+                                <input id="chk_IsList" type="checkbox" name="IsList" />
+                                <label for="chk_IsList" id="Label125">@Resources.CustomerRes.QgsrgkhwssstBxytgyyzxx。</label>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="background-color: #d8d8d8; border-right: 1px solid #bfbfbf; width: 50%">
+                            <span id="Label52">@Resources.CustomerRes.Dywyyzxx</span>
+                        </td>
+
+                        <td colspan="4" style="background-color: #d8d8d8; width: 50%">
+                            <span id="Label58">@Resources.CustomerRes.Dewyyzxx</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label55">@Resources.CustomerRes.Yyzmc：</span>
+                        </td>
+                        <td colspan="2" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Owner1Name" type="text" maxlength="50" id="Owner1Name" value="@ViewBag.AllCustomer.Owner1Name" style="width: 98%;" />
+                        </td>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label55">@Resources.CustomerRes.Yyzmc：</span>
+                        </td>
+                        <td colspan="2">
+                            <input name="Owner2Name" type="text" maxlength="50" id="Owner2Name" value="@ViewBag.AllCustomer.Owner2Name" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label56">@Resources.CustomerRes.Zcdz：</span>
+                        </td>
+                        <td colspan="2" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Owner1Addr" type="text" maxlength="50" id="Owner1Addr" value="@ViewBag.AllCustomer.Owner1Addr" style="width: 98%;" />
+                        </td>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label56">@Resources.CustomerRes.Zcdz：</span>
+                        </td>
+                        <td colspan="2">
+                            <input name="Owner2Addr" type="text" maxlength="50" id="Owner2Addr" value="@ViewBag.AllCustomer.Owner2Addr" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label60">@Resources.CustomerRes.Zxwz：</span>
+                        </td>
+                        <td colspan="2" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Owner1Web" type="text" maxlength="50" id="Owner1Web" value="@ViewBag.AllCustomer.Owner1Web" style="width: 98%;" />
+                        </td>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label60">@Resources.CustomerRes.Zxwz：</span>
+                        </td>
+                        <td colspan="2">
+                            <input name="Owner2Web" type="text" maxlength="50" id="Owner2Web" value="@ViewBag.AllCustomer.Owner2Web" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label62">@Resources.CustomerRes.Zcgj：</span>
+                        </td>
+                        <td colspan="2" style="border-right: 1px solid #bfbfbf;">
+                            <div style="display:inline-block;width:100%" class="LD" id="ZDCountry1">
+                                <select name="Owner1Cnty" id="Country" class="bak" style="width:98%;" onChange="set_city();">
+                                </select>
+                            </div>
+                        </td>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label62">@Resources.CustomerRes.Zcgj：</span>
+                        </td>
+                        <td colspan="2">
+                            <div style="display:inline-block;width:100%" class="LD" id="ZDCountry2">
+                                <select name="Owner2Cnty" id="Country" class="bak" style="width:98%;" onChange="set_city();">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label64">@Resources.CustomerRes.Zcrq：</span>
+                        </td>
+                        <td colspan="2" style="border-right: 1px solid #bfbfbf;">
+
+                            <input name="Owner1Date" type="text" id="in_Owner1Date" class="Wdate" value="@ViewBag.AllCustomer.Owner1Date" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" onclick="WdatePicker()" style="width: 98%; background-color: #e9ffff;cursor:pointer;" />
+                        </td>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label64">@Resources.CustomerRes.Zcrq：</span>
+                        </td>
+                        <td colspan="2">
+
+                            <input name="Owner2Date" type="text" id="in_Owner2Date" class="Wdate" value="@ViewBag.AllCustomer.Owner2Date" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" onclick="WdatePicker()" style="width: 98%; background-color: #e9ffff;cursor:pointer;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label66">@Resources.CustomerRes.Zclx：</span>
+                        </td>
+                        <td colspan="2" style="border-right: 1px solid #bfbfbf;">
+                            <div style="display:inline-block;width:100%" id="type1" class="type">
+                                <select name="Owner1Type" id="CompanyType" class="bak" style="width:98%">
+                                </select>
+                            </div>
+                        </td>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label66">@Resources.CustomerRes.Zclx：</span>
+                        </td>
+                        <td colspan="2">
+                            <div style="display:inline-block;width:100%" id="type2" class="type">
+                                <select name="Owner2Type" id="CompanyType" class="bak" style="width:98%">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label68">@Resources.CustomerRes.Qyyyqf：</span>
+                        </td>
+                        <td colspan="2" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Owner1Ship" type="text" id="Owner1Ship" value="@ViewBag.AllCustomer.Owner1Ship" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]" style="width: 98%;" maxlength="5" />
+                        </td>
+                        <td colspan="2" style="text-align: right;">
+                            <span id="Label68">@Resources.CustomerRes.Qyyyqf：</span>
+                        </td>
+                        <td colspan="2">
+                            <input name="Owner2Ship" type="text" id="Owner2Ship" value="@ViewBag.AllCustomer.Owner2Ship" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]" style="width: 98%" maxlength="5" />
+                        </td>
+                    </tr>
+                </table>
+                <p style="width: 95%; margin: 0 auto; font-style: italic">
+                    <span id="Label126">@Resources.CustomerRes.Qtgbdylgzyyyzxx。</span>
+                </p>
+            </div>
+            <div style="border: 2px solid #0000ff; width: 97%; margin: 10px auto;">
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf; margin-bottom: 0px;" rules="rows">
+                    <tr>
+                        <td colspan="4" style="background-color: #d8d8d8; border-right: 1px solid #bfbfbf;">
+                            <span id="Label71">@Resources.CustomerRes.Dywmyhb</span>
+                        </td>
+
+                        <td colspan="4" style="background-color: #d8d8d8;">
+                            <span id="Label72">@Resources.CustomerRes.Dewmyhb</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label73">@Resources.CustomerRes.Gsmc：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Ref1Name" type="text" maxlength="50" id="Ref1Name" value="@ViewBag.AllCustomer.Ref1Name" style="width: 98%;" />
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label73">@Resources.CustomerRes.Gsmc：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="Ref2Name" type="text" maxlength="50" id="Ref2Name" value="@ViewBag.AllCustomer.Ref2Name" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label75">@Resources.CustomerRes.Yydz：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Ref1Addr" type="text" maxlength="50" id="Ref1Addr" value="@ViewBag.AllCustomer.Ref1Addr" style="width: 98%;" />
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label75">@Resources.CustomerRes.Yydz：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="Ref2Addr" type="text" maxlength="25" id="Ref2Addr" value="@ViewBag.AllCustomer.Ref2Addr" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label77">@Resources.CustomerRes.Lxr：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Ref1Contact" type="text" maxlength="25" id="Ref1Contact" value="@ViewBag.AllCustomer.Ref1Contact" style="width: 98%;" />
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label77">@Resources.CustomerRes.Lxr：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="Ref2Contact" type="text" maxlength="25" id="Ref2Contact" value="@ViewBag.AllCustomer.Ref2Contact" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label79">@Resources.CustomerRes.Zc：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Ref1Title" type="text" maxlength="25" id="Ref1Title" value="@ViewBag.AllCustomer.Ref1Title" style="width: 98%;" />
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label79">@Resources.CustomerRes.Zc：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="Ref2Title" type="text" maxlength="25" id="Ref2Title" value="@ViewBag.AllCustomer.Ref2Title" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label81">@Resources.CustomerRes.Bgdh：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Ref1Phone" type="text" maxlength="25" id="Ref1Phone" value="@ViewBag.AllCustomer.Ref1Phone" style="width: 98%;" />
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label81">@Resources.CustomerRes.Bgdh：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="Ref2Phone" type="text" maxlength="25" id="Ref2Phone" value="@ViewBag.AllCustomer.Ref2Phone" style="width: 98%" />
+                        </td>
+                    </tr>
+                </table>
+                <p style="width: 95%; margin: 0 auto; font-style: italic">
+                    <span id="Label127">@Resources.CustomerRes.Qtgljcwspywfyqxrdgyszwmyck。</span>
+                </p>
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf; margin-top: 0px;" rules="rows">
+                    <tr>
+                        <td colspan="8" style="background-color: #d8d8d8;">
+                            <span id="Label70">@Resources.CustomerRes.Jyhb</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label84">@Resources.CustomerRes.Hb 1：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <div id="huobi1" style="display:inline-block;width:100%" class="SelectCurr">
+                                <select name="Curr1" id="Curr" class="bak" style="width:98%">
+                                </select>
+                            </div>
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label84">@Resources.CustomerRes.Hb 2：</span>
+                        </td>
+                        <td colspan="3">
+                            <div id="huobi2" style="display:inline-block;width:100%" class="SelectCurr">
+                                <select name="Curr2" id="Curr" class="bak" style="width:98%">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label84">@Resources.CustomerRes.Hb 3：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <div id="huobi3" style="display:inline-block;width:100%" class="SelectCurr">
+                                <select name="Curr3" id="Curr" class="bak" style="width:98%">
+                                </select>
+                            </div>
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label84">@Resources.CustomerRes.Hb 4：</span>
+                        </td>
+                        <td colspan="3">
+                            <div id="huobi4" style="display:inline-block;width:100%" class="SelectCurr">
+                                <select name="Curr4" id="Curr" class="bak" style="width:98%">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 95%; margin: 15px auto; border: 1px solid #bfbfbf;" rules="rows">
+                    <tr>
+                        <td colspan="4" style="background-color: #d8d8d8; border-right: 1px solid #bfbfbf;">
+                            <span id="Label83">@Resources.CustomerRes.Ycxsl</span>
+                        </td>
+
+                        <td colspan="4" style="background-color: #d8d8d8;">
+                            <span id="Label88">@Resources.CustomerRes.Yqxytk</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label89">@Resources.CustomerRes.Snxse：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Yr1Forcast" type="text" maxlength="25" id="Yr1Forcast" value="@ViewBag.AllCustomer.Yr1Forcast" style="width: 98%;" />
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label90">@Resources.CustomerRes.Xye：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="CreditLimits" type="text" maxlength="20" id="CreditLimit" value="@ViewBag.AllCustomer.CreditLimits" style="width: 98%" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label91">@Resources.CustomerRes.Cnxse：</span>
+                        </td>
+                        <td colspan="3" style="border-right: 1px solid #bfbfbf;">
+                            <input name="Yr2Forcast" type="text" maxlength="25" id="Yr2Forcast" value="@ViewBag.AllCustomer.Yr2Forcast" style="width: 98%;" />
+                        </td>
+                        <td style="text-align: right; width: 12%;">
+                            <span id="Label92">@Resources.CustomerRes.Fktk：</span>
+                        </td>
+                        <td colspan="3">
+                            <input name="CreditTerms" type="text" maxlength="200" id="CreditTerms" value="@ViewBag.AllCustomer.CreditTerms" style="width: 98%" />
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </form>
+
+        <div id="OperationChi" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+            <input type="button" value="@Resources.CustomerRes.Qx" onclick="history()" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" />
+            <input type="submit" name="Button1" value="@Resources.CustomerRes.Bc" id="SaveBtn" class="btn btn-primary" style="width: 80px; height: 35px; font-size: 18px;" onclick="SaveCustomers()" />
+        </div>
+    </div>
+</body>
+</html>

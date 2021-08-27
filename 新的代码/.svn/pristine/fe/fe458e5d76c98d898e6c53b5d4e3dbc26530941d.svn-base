@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\项目发布\GetK3POInformation</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>09/10/2013 16:29:20</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.pdb">
+      <publishTime>09/10/2013 16:29:20</publishTime>
+    </File>
+    <File Include="bin/BouncyCastle.Crypto.dll">
+      <publishTime>02/24/2020 15:29:24</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>10/23/2017 13:15:18</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>10/23/2017 13:15:20</publishTime>
+    </File>
+    <File Include="bin/ICSharpCode.SharpZipLib.dll">
+      <publishTime>11/21/2020 15:52:52</publishTime>
+    </File>
+    <File Include="bin/ICSharpCode.SharpZipLib.pdb">
+      <publishTime>11/21/2020 15:52:52</publishTime>
+    </File>
+    <File Include="bin/KYH-GetK3POInformation.dll">
+      <publishTime>08/05/2021 11:15:08</publishTime>
+    </File>
+    <File Include="bin/KYH-GetK3POInformation.pdb">
+      <publishTime>08/05/2021 11:15:08</publishTime>
+    </File>
+    <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
+      <publishTime>09/05/2018 16:10:50</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>07/25/2012 11:48:56</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>04/22/2019 01:06:16</publishTime>
+    </File>
+    <File Include="bin/NPOI.dll">
+      <publishTime>07/29/2021 22:13:42</publishTime>
+    </File>
+    <File Include="bin/NPOI.OOXML.dll">
+      <publishTime>07/29/2021 22:13:42</publishTime>
+    </File>
+    <File Include="bin/NPOI.OpenXml4Net.dll">
+      <publishTime>07/29/2021 22:13:42</publishTime>
+    </File>
+    <File Include="bin/NPOI.OpenXmlFormats.dll">
+      <publishTime>07/29/2021 22:13:42</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe.config">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.rsp">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.exe">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.rsp">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.Scripting.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.Scripting.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.amd64.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.x86.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.AppContext.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Collections.Immutable.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Diagnostics.StackTrace.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.FileSystem.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.FileSystem.Primitives.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Reflection.Metadata.dll">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe.config">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.rsp">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe.config">
+      <publishTime>06/27/2016 21:50:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>11/28/2018 13:04:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>11/28/2018 12:59:46</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>02/11/2014 15:26:04</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>11/28/2018 13:00:12</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>11/28/2018 13:04:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>11/28/2018 13:04:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>11/28/2018 13:04:24</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>01/23/2014 13:57:34</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/EntityFramework.resources.dll">
+      <publishTime>10/23/2017 13:15:34</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Helpers.resources.dll">
+      <publishTime>11/29/2018 13:29:50</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Mvc.resources.dll">
+      <publishTime>11/29/2018 13:25:14</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Optimization.resources.dll">
+      <publishTime>02/11/2014 15:28:40</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Razor.resources.dll">
+      <publishTime>11/29/2018 13:25:38</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.Deployment.resources.dll">
+      <publishTime>11/29/2018 13:29:50</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.Razor.resources.dll">
+      <publishTime>11/29/2018 13:29:50</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.resources.dll">
+      <publishTime>11/29/2018 13:29:50</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.css">
+      <publishTime>07/30/2021 17:50:41</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.css.map">
+      <publishTime>07/30/2021 17:50:41</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.min.css">
+      <publishTime>07/30/2021 17:50:41</publishTime>
+    </File>
+    <File Include="Content/bootstrap-theme.min.css.map">
+      <publishTime>07/30/2021 17:50:41</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>07/30/2021 17:50:41</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css.map">
+      <publishTime>07/30/2021 17:50:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>07/30/2021 17:50:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css.map">
+      <publishTime>07/30/2021 17:50:40</publishTime>
+    </File>
+    <File Include="Content/Site.css">
+      <publishTime>07/30/2021 17:50:24</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.eot">
+      <publishTime>08/03/2021 15:16:50</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.svg">
+      <publishTime>08/03/2021 15:16:50</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.ttf">
+      <publishTime>08/03/2021 15:16:50</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.woff">
+      <publishTime>08/03/2021 15:16:50</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.woff2">
+      <publishTime>08/03/2021 15:16:50</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>07/30/2021 17:50:25</publishTime>
+    </File>
+    <File Include="Models/GetK3POInformation.edmx.diagram">
+      <publishTime>08/03/2021 14:48:25</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_33_08_813.cs.8735.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_47_18_124.cs.8896.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_47_51_408.cs.8942.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_47_57_522.cs.8979.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_48_08_642.cs.8982.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_48_20_418.cs.9009.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_48_24_481.cs.9003.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_48_48_545.cs.9091.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_49_04_130.cs.9103.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_49_20_544.cs.9167.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_49_58_900.cs.9237.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_50_01_137.cs.9240.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_50_16_919.cs.9295.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_50_41_394.cs.9391.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_50_57_377.cs.9487.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Models/SqlMethods/.vshistory/GetIndex.cs/2021-08-03_10_51_14_209.cs.9548.gz">
+      <publishTime>08/03/2021 10:51:55</publishTime>
+    </File>
+    <File Include="Scripts/.vshistory/bootstrap.min.js/2021-05-24_17_29_12_516.js.44733.gz">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/AngularJS.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap-theme.min.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/colResizable-1.6.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Index.css">
+      <publishTime>08/04/2021 17:13:58</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.min.map">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.4.1.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.4.1.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.4.1.min.map">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.4.1.slim.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.4.1.slim.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.4.1.slim.min.map">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.bootstrap-pureClearButton.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.cookie.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.form.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.jqprint-0.3.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jQuery.print.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery1.10.2.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery1.4.4.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/lang/en.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/lang/zh-cn.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/lang/zh-tw.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/modernizr-2.8.3.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/.vshistory/bootstrap.min.js/2021-05-24_17_29_12_516.js.44733.gz">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/AngularJS.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/bootstrap-theme.min.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/bootstrap.min.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/bootstrap.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-1.9.1.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-1.9.1.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-1.9.1.min.map">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-3.4.1.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-3.4.1.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-3.4.1.min.map">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-3.4.1.slim.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-3.4.1.slim.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery-3.4.1.slim.min.map">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery.bootstrap-pureClearButton.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery.cookie.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery.form.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery.jqprint-0.3.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jQuery.print.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery.validate.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery.validate.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery.validate.unobtrusive.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery.validate.unobtrusive.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery1.10.2.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/jquery1.4.4.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/lang/en.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/lang/zh-cn.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/lang/zh-tw.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/modernizr-2.8.3.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/skin/datePicker.gif">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/skin/default/datepicker.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/skin/default/img.gif">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/skin/WdatePicker.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/skin/whyGreen/bg.jpg">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/skin/whyGreen/datepicker.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/skin/whyGreen/img.gif">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/WdatePicker.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/导出/jquery.table2excel.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Scripts/导出/tableExport.min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/skin/datePicker.gif">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/skin/default/datepicker.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/skin/default/img.gif">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/skin/WdatePicker.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/skin/whyGreen/bg.jpg">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/skin/whyGreen/datepicker.css">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/skin/whyGreen/img.gif">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/WdatePicker.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/列表可拖动/ztable-min.js">
+      <publishTime>08/03/2021 10:31:40</publishTime>
+    </File>
+    <File Include="Scripts/图标/Exit-Hover.png">
+      <publishTime>08/04/2021 11:06:49</publishTime>
+    </File>
+    <File Include="Scripts/图标/Exit.png">
+      <publishTime>08/04/2021 11:06:53</publishTime>
+    </File>
+    <File Include="Scripts/图标/ExportMSExcelDoc-Hover.png">
+      <publishTime>08/04/2021 11:06:42</publishTime>
+    </File>
+    <File Include="Scripts/图标/ExportMSExcelDoc.png">
+      <publishTime>08/04/2021 11:06:46</publishTime>
+    </File>
+    <File Include="Scripts/图标/ImportLoadingList-Hover.png">
+      <publishTime>08/04/2021 11:06:33</publishTime>
+    </File>
+    <File Include="Scripts/图标/ImportLoadingList.png">
+      <publishTime>08/04/2021 11:06:38</publishTime>
+    </File>
+    <File Include="Scripts/图标/StartK3sPOData-Hover.png">
+      <publishTime>08/04/2021 11:06:26</publishTime>
+    </File>
+    <File Include="Scripts/图标/StartK3sPOData.png">
+      <publishTime>08/04/2021 11:06:30</publishTime>
+    </File>
+    <File Include="Scripts/导入/xlsx.core.min.js">
+      <publishTime>08/03/2021 10:31:41</publishTime>
+    </File>
+    <File Include="Scripts/导出/excel-gen.js">
+      <publishTime>08/03/2021 10:31:41</publishTime>
+    </File>
+    <File Include="Scripts/导出/excellentexport.js">
+      <publishTime>08/03/2021 10:31:41</publishTime>
+    </File>
+    <File Include="Scripts/导出/FileSaver.js">
+      <publishTime>08/03/2021 10:31:41</publishTime>
+    </File>
+    <File Include="Scripts/导出/jquery.table2excel.js">
+      <publishTime>08/03/2021 10:31:41</publishTime>
+    </File>
+    <File Include="Scripts/导出/jszip.min.js">
+      <publishTime>08/03/2021 10:31:41</publishTime>
+    </File>
+    <File Include="Scripts/导出/tableExport.min.js">
+      <publishTime>08/03/2021 10:31:41</publishTime>
+    </File>
+    <File Include="Scripts/页面/Index.js">
+      <publishTime>08/05/2021 11:10:56</publishTime>
+    </File>
+    <File Include="Views/GetK3POInformation/Index.cshtml">
+      <publishTime>08/04/2021 17:28:07</publishTime>
+    </File>
+    <File Include="Views/Web.config">
+      <publishTime>08/03/2021 10:31:59</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>08/05/2021 11:15:08</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

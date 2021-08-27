@@ -1,0 +1,437 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>打印系统技术知识记录详细</title>
+    @*<script src="http://www.jq22.com/jquery/1.4.4/jquery.min.js"></script>*@  @*控制灯箱不可缺少*@
+    <script src="~/Scripts/jquery1.4.4.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/富文本/themes/default/default.css" rel="stylesheet" />
+    <link href="~/Scripts/上传文件和下载文件/fileinput.min.css" rel="stylesheet" />
+    <link href="~/Scripts/灯箱/picbox.css" rel="stylesheet" />
+    <script src="~/Scripts/上传文件和下载文件/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/上传文件和下载文件/fileinput.min.js"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/jQuery.print.js"></script>
+    @*<script src="~/Scripts/富文本/kindeditor-all-min.js"></script>*@
+    <script src="~/Scripts/富文本/kindeditor-all.js"></script>
+    <script src="~/Scripts/富文本/zh-CN.js"></script>
+    <script src="~/Scripts/灯箱/picbox.js"></script>
+    <script src="~/Scripts/上传文件和下载文件/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/canvas.js"></script>
+    <style>
+        .input-clear {
+            display: none;
+            float: right;
+            margin-top: -17px;
+            margin-right: 10px;
+            transform: translateY(-50%);
+            z-index: 111;
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+            cursor: pointer;
+        }
+
+        .text .caption h5 {
+            text-shadow: 3px 2px 2px grey;
+            color: #0094ff;
+            margin-top: 2%;
+        }
+
+        .btn-file {
+            background: url('../../Scripts/图标/上传.png') no-repeat;
+            background-size: 30px;
+            background-position: 98%;
+        }
+
+        /*.file-preview {
+            display: none;
+        }*/
+        .col-md-1 {
+            width: 6%;
+        }
+
+        hr.new2 {
+            border-top: 2px dashed #ccc;
+        }
+
+        .ChangeColors {
+            background-color: #ffffde;
+        }
+
+        .ke-container-default {
+            margin-left: 105px;
+        }
+
+        .ke-edit-iframe {
+            background-color: #ffffde;
+        }
+
+        .ke-toolbar {
+            display: flex;
+        }
+
+        .ke-container-default {
+            margin-left: 0px;
+        }
+
+        .file-drop-zone {
+            border: none;
+        }
+
+        .file-preview {
+            border: none;
+        }
+
+        .krajee-default.file-preview-frame .file-thumbnail-footer {
+            height: auto;
+        }
+
+        .krajee-default.file-preview-frame {
+            margin: auto;
+        }
+
+        .file-thumbnail-footer {
+            margin-top: 3%;
+        }
+    </style>
+    @*打印*@
+    <script>
+        function DayinGN() {
+            checkhHtml5();   //判断浏览器是否支持h5
+
+        }
+        function checkhHtml5() {
+            window.print();
+             var Author ='@ViewBag.AllCustomer.Author';
+              $.ajax({
+                  url: "/KnowledgeBaseZSG/DaPrinting?Author="+Author,
+                type: 'POST',
+                dataType: 'json'
+            })
+            //if (typeof (Worker) !== "undefined")  //如果支持就将网页转换成图片
+            //{
+
+            //    window.print();
+            //}
+            //else { window.print(); } //不支持HTML5就直接调用打印
+        }
+    </script>
+    @*创建画布/板块*@
+    <script>
+        $(function () {
+            ////创建一个新的canvas（画布）
+            //var canvas2 = document.createElement("canvas");
+            //let _canvas = document.querySelector('#dadiv');
+            //var w = parseInt(window.getComputedStyle(_canvas).width);
+            //var h = parseInt(window.getComputedStyle(_canvas).height);
+            ////将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+            //canvas2.width = w * 2;
+            //canvas2.height = h * 2;
+            //canvas2.style.width = w + "px";
+            //canvas2.style.height = h + "px";
+            //板块
+            var name = getCookie("Language");
+            if (name == "zh-CN") {  //中文状态下
+                var Language = "Name_CN";
+            }
+            if (name == "en-US") {  //英文状态下
+                var Language = "Name_EN";
+            }
+            if (name == "vi") {   //越南文状态下
+                Language = "Name_VN";
+            }
+            var TopicArea = "";
+            var id = '@ViewBag.AllCustomer.QnAID';
+            $.ajax({
+                type: "post",
+                async: false,
+                dataType: 'JSON',
+                url: "/KnowledgeBase/SelectBK?id=" + id,
+                data: { "Language": Language },
+                success: function (result) {
+                    $.each(result.Data.DropDownList, function (key, value) {
+                        TopicArea += '<label id="TopicArea">'+value.Text+'</label > ';
+                        $("#TopicArea").append(TopicArea);
+                        return false;
+                    })
+                }
+            });
+        })
+        //取Cookie的某个参数
+        function getCookie(sName) { /*sName为要取的key名*/
+            var aCookie = document.cookie.split("; ");
+            for (var i = 0; i < aCookie.length; i++) {
+                var aCrumb = aCookie[i].split("=");
+                if (sName == aCrumb[0])
+                    return unescape(aCrumb[1]);
+            }
+            return null;
+        }
+    </script>
+
+</head>
+<body>
+    <div class="container-fluid" style="width:98%" id="dadiv">
+        <div style="float: left; margin-left: 20px; margin-top: 20px;">
+            <img src="/Scripts/image/logo.jpg" />
+        </div>
+        <div style="float: right; margin-right: 20px;">
+        </div>
+        <div>
+            <h1 style="text-align: center; margin-top: 50px;">
+                <span id="Title"> @Resources.CustomerRes.Xtjszsjlxx </span>
+            </h1>
+        </div>
+        <form id="Addform" action="##" onsubmit="return false" method="post">
+            <div style="border:#000000 1px solid;width:100%;margin: 0px auto;font-size:16px;clear:both;padding:5px">
+                <div style="width:100%;margin-left:2%;margin-top:1%;">
+                    <div class="col-md-14">
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Ssbk：</span>
+                        <div style="display:initial;width:100%" id="TopicArea">
+                        </div>
+                    </div>
+                    <div class="col-md-14">
+                        <label>@Resources.CustomerRes.Zzhe (@Resources.CustomerRes.Tcz)：</label>
+                        <div class="input-group-clear" style="display:inline-block;width:69%">
+                            <label name="Author" id="tcz" required autofocus">@ViewBag.AllCustomer.Author</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;clear:both;margin-left:2%">
+                    <div class="col-md-14">
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Zti：</span>
+                        @*<input type="text" name="Zti" id="Zti" defaultvalue="不超过500字!" value="不超过500字!" style="resize: none; width:92%;height:100px;padding-bottom:75px" maxlength="500" class="form-control ChangeColors" />*@
+                        <div name="Question" rows="20" cols="100" style="width:80%;height:auto;">
+                            @Html.Raw(@ViewBag.AllCustomer.Question)
+                        </div>
+                    </div>
+                    <div class="col-md-14">
+                        <span style="font-weight:bold;float:left">@Resources.CustomerRes.Gjz：</span>
+                        <div name="KeyWord" rows="20" cols="100" style="width:80%;height:auto;">
+                            @if (@ViewBag.QnAID != 0)
+                            {
+                                @Html.Raw(@ViewBag.AllCustomer.KeyWord)
+                            }
+                        </div>
+                    </div>
+                    <div style="width:100%;margin-top:10px;overflow:hidden;margin-bottom:-4%">
+                        <div class="col-md-14">
+                            <div class="text" style="width:3%;float:left">
+                                <div class="caption">
+                                    <h5</h5>
+                                </div>
+                            </div>
+                            <span style="font-weight:bold;float:left">@Resources.CustomerRes.Cl：</span>
+                            <div name="Answer" rows="20" cols="100" style="width:92%;height:auto;margin-left:105px">
+                                @Html.Raw(@ViewBag.AllCustomer.Answer)
+                            </div>
+                        </div>
+                        @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic01).Length != 0)
+                        {
+                            <div id="one">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-11">
+                                    <label>@Resources.CustomerRes.Wt 001：</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                <div class="fileinput-new thumbnail">
+                                                    <img id="QPic01" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic01)' class="file-preview-image" style="width: 100%; height: 310px" rel="lightbox-group" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic02).Length != 0)
+                        {
+                            <div id="two">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-11">
+                                    <label>@Resources.CustomerRes.Wt 002：</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                <div class="fileinput-new thumbnail">
+                                                    <img id="QPic02" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic02)' class="file-preview-image" style="width: 100%; height: 310px" rel="lightbox-group" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic03).Length != 0)
+                        {
+                            <div id="three">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-11">
+                                    <label>@Resources.CustomerRes.Wt 003：</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                <div class="fileinput-new thumbnail">
+                                                    <img id="QPic03" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic03)' class="file-preview-image" style="width: 100%; height: 310px" rel="lightbox-group" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (@Convert.ToBase64String(ViewBag.AllCustomer.QPic04).Length != 0)
+                        {
+                            <div id="four">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-11">
+                                    <label>@Resources.CustomerRes.Wt 004：</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                <div class="fileinput-new thumbnail">
+                                                    <img id="QPic04" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.QPic04)' class="file-preview-image" style="width: 100%; height: 310px" rel="lightbox-group" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div style="width:100%;clear:both;">
+                            @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic01).Length != 0)
+                            {
+                                <div id="five">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-11">
+                                        <label>@Resources.CustomerRes.Dt 001：</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                    <div class="fileinput-new thumbnail">
+                                                        <img id="APic01" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic01)' class="file-preview-image" style="width: 100%; height: 310px" rel="lightbox-group" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic02).Length != 0)
+                            {
+                                <div id="six">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-11">
+                                        <label>@Resources.CustomerRes.Dt 002：</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                    <div class="fileinput-new thumbnail">
+                                                        <img id="APic02" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic02)' class="file-preview-image" style="width: 100%; height: 310px" rel="lightbox-group" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic03).Length != 0)
+                            {
+                                <div id="seven">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-11">
+                                        <label>@Resources.CustomerRes.Dt 003：</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                    <div class="fileinput-new thumbnail">
+                                                        <img id="APic03" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic03)' class="file-preview-image" style="width: 100%; height: 310px" rel="lightbox-group" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (@Convert.ToBase64String(ViewBag.AllCustomer.APic04).Length != 0)
+                            {
+                                <div id="eight ">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-11">
+                                        <label>@Resources.CustomerRes.Dt 004：</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="file-preview-frame" data-fileindex="0" style="width:97%">
+                                                <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                                                    <div class="fileinput-new thumbnail">
+                                                        <img id="APic04" src='data:image/gif;base64,@Convert.ToBase64String(ViewBag.AllCustomer.APic04)' class="file-preview-image" style="width: 100%; height: 310px" rel="lightbox-group" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+        </form>
+        <div style="width: 97%; overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+            <span style="float: left; margin-left: 3px;">
+                <span id="Label107">@Resources.CustomerRes.Cjxx</span>
+                <span id="lbl_CreateTime">@ViewBag.AllCustomer.CreateTime</span>
+                (<span id="lbl_CreateBy">@ViewBag.CreateBy</span>)
+                <span id="lbl_CreateDept">@ViewBag.CreateDept</span>
+            </span>
+            <span style="float: right; margin-right: 3px;">
+                <span id="Label109">@Resources.CustomerRes.Zhgx</span>
+                <span id="lbl_UpdateTime">@ViewBag.AllCustomer.UpdateTime</span>
+                (<span id="lbl_UpdateBy">@ViewBag.UpdateBy</span>)
+                <span id="lbl_UpdateDept">@ViewBag.UpdateDept</span>
+            </span>
+        </div>
+        <div style="width: 97%; overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+            <span style="float: left; margin-left: 3px;">
+                <span id="Label107">@Resources.CustomerRes.dyr:</span>
+                <span id="lbl_CreateTime">@ViewBag.username</span>
+            </span>
+            <span style="float: right; margin-right: 3px;">
+                <span id="Label109">@Resources.CustomerRes.dysj:</span>
+                @{
+                    var Time = DateTime.Now;
+
+                }
+                <span id="lbl_UpdateTime">@Time</span>
+            </span>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

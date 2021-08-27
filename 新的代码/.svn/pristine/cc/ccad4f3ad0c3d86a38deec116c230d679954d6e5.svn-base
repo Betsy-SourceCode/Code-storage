@@ -1,0 +1,126 @@
+﻿
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/页面/SetupCustomer.js"></script>
+    <style>
+        .input-clear-a {
+            color: #eee;
+        }
+
+        .input-content:hover + .input-clear-a {
+            color: #d4d4d4;
+        }
+
+        .qq {
+            display: contents;
+        }
+
+        .panel-default {
+            border-color: #ddd;
+        }
+
+        .panel-heading {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .pre-scrollable {
+            max-height: 60%;
+        }
+
+        .engine-separator {
+            margin: 0px 7px;
+            width: 1px;
+            height: 17px;
+            background: #ccc;
+        }
+
+        .Change {
+            background-color: #fff5a6;
+        }
+
+        .noDirectList li:hover, .DirectList li:hover {
+            background-color: #ccc !important;
+        }
+
+        .clickColor {
+            background-color: cornsilk;
+        }
+
+        .normalColor {
+            background-color: white;
+        }
+    </style>
+</head>
+<body style="max-width:96%;min-width:1250px; margin:0px auto;background-color:#ddd" ng-app="myApp" ng-controller="ProductPriceController">
+    <div id="Mydiv">
+        <h1 style="text-align: center;">
+            <span id="Title">设 定 客 户 之 业 务 员</span>
+        </h1>
+        <h1 style="text-align: center;margin-top:-10px">
+            <span id="Title">Setup Customer's Representative</span>
+        </h1>
+        <div class="panel panel-default" style="height:auto;">
+            <div class="panel-heading" style="height:70px">
+                <div class="has-feedback col-sm-5">
+                    业务员:<input name="CreateBy" type="text" id="CreateBy" class="form-control input-content" style="width:70%;display:inline" />
+                    <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                       style="pointer-events: auto;"
+                       onclick="$('#CreateBy').val('')"></a>
+                    <input type="submit" name="btn_select" value="过&nbsp;&nbsp;滤" id="btn_select" class="btn btn-primary" ng-click="GetSetupCustomer()" />
+                </div>
+            </div>
+            <div class="row">
+                <span style="text-align:center;width:30%;float:left" class="panel-heading">选择   GIP员工列表</span>
+                <span style="text-align:center;width:30%;float:left" class="panel-heading" id="Unassigned"></span>
+                <span style="float:right;margin-right:4%" class="panel-heading" id="Assign"></span>
+            </div>
+            @*GIP员工列表*@
+            <div class="pre-scrollable" style="float:left;width:30%;height:55%">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="i in SetupCustomerList track by $index" repeat-finish="ngRepeatFinished" style="min-height:42px;cursor: pointer" onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'" ng-click="RadioCheck($index);GetUnassignedList(i.Value);GetAssignList(i.Value,i.EmpName)">
+                        <input ng-if="i.EmpName!=''" type="radio" name="EmpName" id="CustomerList{{$index}}" />
+                        <div ng-if="i.EmpName!=''" class="engine-separator" style="display:inline-block;"></div>
+                        <label>{{i.EmpName}}</label>
+                    </li>
+                </ul>
+            </div>
+            @*未指派列表*@
+            <div class="pre-scrollable" style="float:left;width:30%;height:55%">
+                <ul class="list-group noDirectList">
+                    <li ng-if="i.Text!=''" id="UnassignedList{{$index}}" class="list-group-item" ng-repeat="i in UnassignedList track by $index" repeat-finish="ngRepeatFinished" style="min-height:42px;cursor: pointer" @*onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'"*@ ng-click="ChangeBg('#UnassignedList',$index)"><label>{{i.Text}}</label></li>
+                    <li ng-if="i.Text==''" id="Assign{{$index}}" class="list-group-item" ng-repeat="i in UnassignedList track by $index" repeat-finish="ngRepeatFinished" style="min-height:42px;cursor: pointer" @*onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'"*@><label>{{i.Text}}</label></li>
+                </ul>
+            </div>
+            <div style="background-color:white;float:left;width:10%;height:55%">
+                <button type="button" class="btn-lg btn-primary" style="display:block;margin:70% auto;width:80%" ng-click="ChangeServiceBy(0,'指派')">
+                    指派<br />
+                    <p class="glyphicon glyphicon-arrow-right"></p>
+                </button>
+                <button type="button" class="btn-lg btn-primary" style="display:block;margin:70% auto;width:80%" ng-click="ChangeServiceBy(1,'取消指派')">
+                    取消指派<br />
+                    <p class="glyphicon glyphicon-arrow-left"></p>
+                </button>
+            </div>
+            @*已指派列表*@
+            <div class="pre-scrollable" style="float:left;width:30%;height:55%">
+                <ul class="list-group DirectList">
+                    <li ng-if="i.Text!=''" id="AssignList{{$index}}" class="list-group-item" ng-repeat="i in AssignList track by $index" repeat-finish="ngRepeatFinished" style="min-height:42px;cursor:pointer" ng-click="ChangeBg('#AssignList',$index)" @*onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'"*@><label>{{i.Text}}</label></li>
+                    <li ng-if="i.Text==''" id="AssignList{{$index}}" class="list-group-item" ng-repeat="i in AssignList track by $index" repeat-finish="ngRepeatFinished" style="min-height:42px;cursor:pointer" @*onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'"*@><label>{{i.Text}}</label></li>
+                </ul>
+            </div>
+        </div>
+        <div style="width:100%;text-align:center;clear:both;padding-top:2%">
+            <input type="button" name="btn_select" value="关&nbsp;&nbsp;闭" id="btn_select" class="btn-lg btn-primary" onclick="window.location.href = '/ProductPrice/ProductPrice/Index?userid=@ViewBag.userid'" />
+        </div>
+    </div>
+</body>
+</html>

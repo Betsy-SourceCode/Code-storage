@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActionLog2021">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="FunctionID" Type="smallint" Nullable="false" />
+    <Property Name="ActionType" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ActionTime" Type="datetime" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="TableKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LoadingListAddPOdata_Temp">
+    <Key>
+      <PropertyRef Name="LPSerial" />
+    </Key>
+    <Property Name="LPSerial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PONum" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Fnumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="LoadQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+    <Property Name="LoadUnit" Type="nvarchar" MaxLength="8" Nullable="false" />
+    <Property Name="Supplier" Type="nvarchar" MaxLength="100" />
+    <Property Name="Material" Type="nvarchar" MaxLength="300" />
+    <Property Name="POQty" Type="decimal" Precision="10" Scale="3" />
+    <Property Name="POUnit" Type="nvarchar" MaxLength="8" />
+    <Property Name="POCurr" Type="nchar" MaxLength="3" />
+    <Property Name="UnitPrice" Type="decimal" Precision="14" Scale="6" />
+    <Property Name="NeedDate" Type="datetime" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="80" />
+    <Property Name="USDRate" Type="decimal" Precision="12" Scale="6" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“WebStation.dbo.LoadingListAddPOdata_Temp_Select”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="LoadingListAddPOdata_Temp_Select">
+    <Key>
+      <PropertyRef Name="PONum" />
+      <PropertyRef Name="Fnumber" />
+      <PropertyRef Name="LoadUnit" />
+      <PropertyRef Name="LPSerial" />
+    </Key>
+    <Property Name="Ledger" Type="nvarchar" MaxLength="2" />
+    <Property Name="OriCurr_tt_Amt" Type="varchar" MaxLength="50" />
+    <Property Name="USDRate" Type="varchar" MaxLength="50" />
+    <Property Name="USD_Unit_Price" Type="varchar" MaxLength="50" />
+    <Property Name="USD_tt_Amt" Type="varchar" MaxLength="50" />
+    <Property Name="POQty" Type="varchar" MaxLength="50" />
+    <Property Name="LoadQty" Type="varchar" MaxLength="50" />
+    <Property Name="UnitPrice" Type="varchar" MaxLength="50" />
+    <Property Name="PONum" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Fnumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="80" />
+    <Property Name="POCurr" Type="nchar" MaxLength="3" />
+    <Property Name="POUnit" Type="nvarchar" MaxLength="8" />
+    <Property Name="Material" Type="nvarchar" MaxLength="300" />
+    <Property Name="Supplier" Type="nvarchar" MaxLength="100" />
+    <Property Name="LoadUnit" Type="nvarchar" MaxLength="8" Nullable="false" />
+    <Property Name="LPSerial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NeedDate" Type="datetime" />
+  </EntityType>
+  <EntityContainer Name="WebStationModelStoreContainer">
+    <EntitySet Name="ActionLog2021" EntityType="Self.ActionLog2021" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoadingListAddPOdata_Temp" EntityType="Self.LoadingListAddPOdata_Temp" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoadingListAddPOdata_Temp_Select" EntityType="Self.LoadingListAddPOdata_Temp_Select" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [LoadingListAddPOdata_Temp_Select].[Ledger] AS [Ledger], 
+    [LoadingListAddPOdata_Temp_Select].[OriCurr_tt_Amt] AS [OriCurr_tt_Amt], 
+    [LoadingListAddPOdata_Temp_Select].[USDRate] AS [USDRate], 
+    [LoadingListAddPOdata_Temp_Select].[USD_Unit_Price] AS [USD_Unit_Price], 
+    [LoadingListAddPOdata_Temp_Select].[USD_tt_Amt] AS [USD_tt_Amt], 
+    [LoadingListAddPOdata_Temp_Select].[POQty] AS [POQty], 
+    [LoadingListAddPOdata_Temp_Select].[LoadQty] AS [LoadQty], 
+    [LoadingListAddPOdata_Temp_Select].[UnitPrice] AS [UnitPrice], 
+    [LoadingListAddPOdata_Temp_Select].[PONum] AS [PONum], 
+    [LoadingListAddPOdata_Temp_Select].[Fnumber] AS [Fnumber], 
+    [LoadingListAddPOdata_Temp_Select].[Remarks] AS [Remarks], 
+    [LoadingListAddPOdata_Temp_Select].[POCurr] AS [POCurr], 
+    [LoadingListAddPOdata_Temp_Select].[POUnit] AS [POUnit], 
+    [LoadingListAddPOdata_Temp_Select].[Material] AS [Material], 
+    [LoadingListAddPOdata_Temp_Select].[Supplier] AS [Supplier], 
+    [LoadingListAddPOdata_Temp_Select].[LoadUnit] AS [LoadUnit], 
+    [LoadingListAddPOdata_Temp_Select].[LPSerial] AS [LPSerial], 
+    [LoadingListAddPOdata_Temp_Select].[NeedDate] AS [NeedDate]
+    FROM [dbo].[LoadingListAddPOdata_Temp_Select] AS [LoadingListAddPOdata_Temp_Select]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

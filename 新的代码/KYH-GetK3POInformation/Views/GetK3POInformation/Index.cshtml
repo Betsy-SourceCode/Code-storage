@@ -1,0 +1,168 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/导入/xlsx.core.min.js"></script>
+    <script src="~/Scripts/导出/excellentexport.js"></script>
+    <script src="~/Scripts/页面/Index.js"></script>
+</head>
+<body style="min-width:1250px; max-width:96%;margin:0px auto;overflow:scroll" ng-app="myApp" ng-controller="GetK3POInformationController" id="mybody">
+    <div id="top">
+        <h1 style="text-align: center;">
+            <span id="Title">装箱表采集PO信息汇出</span>
+        </h1>
+        <h1 style="text-align: center;margin-top:-10px">
+            <span id="Title">Loading List extract PO data & export</span>
+        </h1>
+    </div>
+    <div class="col-sm-2" style="margin-bottom:1% ">
+        <div id="excel-file">
+            <div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle;">
+                @*<a class="btn btn-lg btn-primary fileinput-button" href="#">Import&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading List<br />导入&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;装箱表</a>*@
+                <button class="one" style="height:70px; width: 210px;border:0;">
+                    <input type="file" id="jobData" style="position:absolute;top:0;left:0; opacity:0;height:70px;width:100%;cursor:pointer;" />
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        @*<a class="btn btn-lg btn-primary" ng-click="Startbtn()">Start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;K3's PO Data<br />开始采集&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据</a>*@
+        <a class="btn btn-lg btn-primary" id="two" style="height:70px; width: 210px;border:0;" ng-click="Startbtn()"></a>
+    </div>
+    <div class="col-sm-1">
+        @*<form action="/GetK3POInformation/GetK3POInformation/DownLoad" method="post" enctype="multipart/form-data">
+                <button class="btn btn-lg btn-primary" type="submit" method="post" action="/GetK3POInformation/GetK3POInformation/DownLoad" enctype="multipart/form-data" style="float:right">Export&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MS-Excel Table<br />导出&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据</button>
+            </form>*@
+        @*<a class="btn btn-lg btn-primary" href="#" id="anchorNewApi-xls-array" style="color:white;float:right" onclick="newApiArray('xls','@ViewBag.username');"> Export&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MS-Excel Table<br />导出&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据</a>*@
+        <a class="btn btn-lg btn-primary" href="#" id="anchorNewApi-xls-array" style="height: 70px; width: 210px; border: 0; float: right" onclick="newApiArray('xls','@ViewBag.username');"></a>
+
+    </div>
+    <div class="col-sm-1">
+        <a id="four" class="btn btn-lg btn-primary" style="float:right;height:70px; width:65%;border:0;" onclick="window.location.href = 'http://192.166.7.241/Admin/ProjectList.aspx?userid=@ViewBag.userid'"></a>
+    </div>
+    <table id="GridView" class="table table-bordered table-hover my_table">
+        <thead>
+            <tr>
+                <th class="redTitle" rowspan="3" style="width:2%;text-align:center;vertical-align: middle;">Item<br />行数</th>
+                <th class="redTitle" colspan="4" style="width:22%;text-align:center">Loading List 装箱表</th>
+                <th class="violetTitle" colspan="9" style="width:56%;text-align:center">K3 PO Extracts 采购订单信息</th>
+                <th class="greyTitle" colspan="4" style="width:20%;text-align:center">装箱数量总金额</th>
+            </tr>
+            <tr>
+                <th class="redTitle" style="width:7%;text-align:center">GIP-PO</th>
+                <th class="redTitle" style="width:7%;text-align:center">Part-No</th>
+                <th class="redTitle" style="width:5%;text-align:right">Packed Qty</th>
+                <th class="redTitle" style="width:3%;text-align:center">Unit</th>
+                <th class="violetTitle" style="width:3%;text-align:center">Ledger</th>
+                <th class="violetTitle" style="width:11%;text-align:left">Supplier</th>
+                <th class="violetTitle" style="width:15%;text-align:left">Material detail</th>
+                <th class="violetTitle" style="width:4%;text-align:right">Qty.</th>
+                <th class="violetTitle" style="width:3%;text-align:center">Unit</th>
+                <th class="violetTitle" style="width:3%;text-align:center">Curr.</th>
+                <th class="violetTitle" style="width:5%;text-align:right">Unit Price</th>
+                <th class="violetTitle" style="width:5%;text-align:center">Delivery</th>
+                <th class="violetTitle" style="width:7%;text-align:left">Remark</th>
+                <th class="greyTitle" style="width:5%;text-align:right">Ori-Curr. tt.Amt</th>
+                <th class="greyTitle" style="width:5%;text-align:right">USD rate</th>
+                <th class="greyTitle" style="width:5%;text-align:right">USD Unit Price</th>
+                <th class="greyTitle" style="width:5%;text-align:right">USD tt.Amt</th>
+            </tr>
+            <tr>
+                <th class="redTitle" style="width:7%;text-align:center">订单号</th>
+                <th class="redTitle" style="width:7%;text-align:center">物料长代码</th>
+                <th class="redTitle" style="width:5%;text-align:right">装箱数量</th>
+                <th class="redTitle" style="width:3%;text-align:center">单位</th>
+                <th class="violetTitle" style="width:3%;text-align:center">账套</th>
+                <th class="violetTitle" style="width:11%;text-align:left">供货商</th>
+                <th class="violetTitle" style="width:15%;text-align:left">物料名称/规格/制造商</th>
+                <th class="violetTitle" style="width:4%;text-align:right">数量</th>
+                <th class="violetTitle" style="width:3%;text-align:center">单位</th>
+                <th class="violetTitle" style="width:3%;text-align:center">货币</th>
+                <th class="violetTitle" style="width:5%;text-align:right">PO 单价</th>
+                <th class="violetTitle" style="width:5%;text-align:center">交货日期</th>
+                <th class="violetTitle" style="width:7%;text-align:left">备注</th>
+                <th class="greyTitle" style="width:5%;text-align:right">原币总金额</th>
+                <th class="greyTitle" style="width:5%;text-align:right">美金汇率</th>
+                <th class="greyTitle" style="width:5%;text-align:right">美金单价</th>
+                <th class="greyTitle" style="width:5%;text-align:right">美金总金额</th>
+            </tr>
+        </thead>
+        <tbody class="tablebody">
+        </tbody>
+    </table>
+    @*导出专用*@
+    <table id="DaoChuGridView" class="table table-bordered table-hover my_table" style="width:auto;display:none">
+        <thead>
+            <tr>
+                <th class="red" style="min-width:9%;text-align:center">Item</th>
+                <th class="red" style="min-width:9%;text-align:center">GIP-PO</th>
+                <th class="red" style="min-width:10%;text-align:center">Part-No</th>
+                <th class="red" style="min-width:5%;text-align:right">Packed Qty</th>
+                <th class="red" style="min-width:5%;text-align:center">Unit</th>
+                <th class="violet" style="min-width:2%;text-align:center">Ledger</th>
+                <th class="violet" style="min-width:9%;text-align:left">Supplier</th>
+                <th class="violet" style="min-width:9%;text-align:left">Material detail</th>
+                <th class="violet" style="min-width:5%;text-align:right">Qty.</th>
+                <th class="violet" style="min-width:5%;text-align:center">Unit</th>
+                <th class="violet" style="min-width:5%;text-align:center">Curr.</th>
+                <th class="violet" style="min-width:5%;text-align:right">Unit Price</th>
+                <th class="violet" style="min-width:5%;text-align:center">Delivery</th>
+                <th class="violet" style="min-width:5%;text-align:left">Remark</th>
+                <th class="grey" style="min-width:6%;text-align:right">Ori-Curr. tt.Amt</th>
+                <th class="grey" style="min-width:4%;text-align:right">USD rate</th>
+                <th class="grey" style="min-width:4%;text-align:right">USD Unit Price</th>
+                <th class="grey" style="min-width:6%;text-align:right">USD tt.Amt</th>
+            </tr>
+            <tr>
+                <th class="red" style="min-width:9%;text-align:center">行数</th>
+                <th class="red" style="min-width:9%;text-align:center">订单号</th>
+                <th class="red" style="min-width:10%;text-align:center">物料长代码</th>
+                <th class="red" style="min-width:5%;text-align:right">装箱数量</th>
+                <th class="red" style="min-width:5%;text-align:center">单位</th>
+                <th class="violet" style="min-width:2%;text-align:center">账套</th>
+                <th class="violet" style="min-width:9%;text-align:left">供货商</th>
+                <th class="violet" style="min-width:9%;text-align:left">物料名称/规格/制造商</th>
+                <th class="violet" style="min-width:5%;text-align:right">数量</th>
+                <th class="violet" style="min-width:5%;text-align:center">单位</th>
+                <th class="violet" style="min-width:5%;text-align:center">货币</th>
+                <th class="violet" style="min-width:5%;text-align:right">PO 单价</th>
+                <th class="violet" style="min-width:5%;text-align:center">交货日期</th>
+                <th class="violet" style="min-width:5%;text-align:left">备注</th>
+                <th class="grey" style="min-width:6%;text-align:right">原币总金额</th>
+                <th class="grey" style="min-width:4%;text-align:right">美金汇率</th>
+                <th class="grey" style="min-width:4%;text-align:right">美金单价</th>
+                <th class="grey" style="min-width:6%;text-align:right">美金总金额</th>
+            </tr>
+        </thead>
+        <tbody class="DaoChuTablebody">
+        </tbody>
+    </table>
+    @*遮罩层*@
+    <div class="modal" id="myModal" style="display:none">
+        @*加载进度条*@
+        <div id="jdt" style="height:500px">
+            <form name="haorooms" style="margin:100px;display:none;">
+                <input type="text" name="haoroomsinput0" value="0" size=4>
+            </form>
+            <div style="width:400px;margin:10% auto;">
+                <h3 style="color:white">当前进度:</h3>
+                <div class="progress progress-striped active">
+                    <div id="tt0" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

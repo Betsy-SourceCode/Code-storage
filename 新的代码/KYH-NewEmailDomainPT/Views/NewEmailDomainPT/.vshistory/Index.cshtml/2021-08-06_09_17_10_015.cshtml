@@ -1,0 +1,55 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/导出/excellentexport.js"></script>
+    <script src="~/Scripts/Index.js"></script>
+    <style>
+        .input-clear-a {
+            color: white;
+        }
+
+        .input-content:hover + .input-clear-a { /*文本框的清除小图标改变颜色*/
+            color: #d4d4d4;
+        }
+    </style>
+</head>
+<body style="max-width:96%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="NewEmailDomainPTController">
+    <div id="mydiv">
+        <div id="Title">
+            <h1 style="text-align: center;">
+                <span>新到的电邮域名管理</span>
+            </h1>
+        </div>
+        <div id="top">
+            <div class="has-feedback col-sm-5">
+                新域名:<input name="DomainName" type="text" id="DomainName" class="form-control input-content" style="width:70%" />
+                <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                   style="pointer-events: auto;"
+                   onclick="$('#DomainName').val('')"></a>
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-5">
+
+            </div>
+            <div class="col-sm-1">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

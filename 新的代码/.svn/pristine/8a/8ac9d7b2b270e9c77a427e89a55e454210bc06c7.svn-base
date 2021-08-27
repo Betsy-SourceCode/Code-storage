@@ -1,0 +1,726 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Bc" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Bgdh" xml:space="preserve">
+    <value>Phone (office)</value>
+  </data>
+  <data name="Bj" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Bk" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="Btx" xml:space="preserve">
+    <value>Is required</value>
+  </data>
+  <data name="Bz" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="Cgzglx" xml:space="preserve">
+    <value>Purchasing Executive Contact</value>
+  </data>
+  <data name="Cjxx" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Ckcs/zhgxsj" xml:space="preserve">
+    <value>View times / last update date</value>
+  </data>
+  <data name="Cl" xml:space="preserve">
+    <value>Handle</value>
+  </data>
+  <data name="Clrq" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Cnxse" xml:space="preserve">
+    <value>2nd Yr. Sales</value>
+  </data>
+  <data name="Cs" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Cwbbcxx" xml:space="preserve">
+    <value>Supplementary information of Finance Department</value>
+  </data>
+  <data name="Cwbyj" xml:space="preserve">
+    <value>COMMENTS FROM THE SALES &amp; MARKETING</value>
+  </data>
+  <data name="Cygx" xml:space="preserve">
+    <value>Family Tree</value>
+  </data>
+  <data name="Cz" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="Da" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="Dangwj" xml:space="preserve">
+    <value>Single file</value>
+  </data>
+  <data name="Dayin" xml:space="preserve">
+    <value>Printing</value>
+  </data>
+  <data name="DbhRy" xml:space="preserve">
+    <value>Guarantee letter, if any</value>
+  </data>
+  <data name="Dc" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Dewmyhb" xml:space="preserve">
+    <value>Trade Reference 2</value>
+  </data>
+  <data name="Dewyyzxx" xml:space="preserve">
+    <value>Owner 2 Information</value>
+  </data>
+  <data name="Dggjzyfhgk" xml:space="preserve">
+    <value>Multiple keywords are separated by semicolons</value>
+  </data>
+  <data name="Dghydzkjyxgs" xml:space="preserve">
+    <value>Dongguan Yu Hua Electronics Technology Limited</value>
+  </data>
+  <data name="Dlwz" xml:space="preserve">
+    <value>District</value>
+  </data>
+  <data name="Dt" xml:space="preserve">
+    <value>Answer Picture</value>
+  </data>
+  <data name="Duogwj" xml:space="preserve">
+    <value>Multiple files</value>
+  </data>
+  <data name="Dy" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="dyr" xml:space="preserve">
+    <value>Printer</value>
+  </data>
+  <data name="dysj" xml:space="preserve">
+    <value>Printing time</value>
+  </data>
+  <data name="Dywmyhb" xml:space="preserve">
+    <value>Trade Reference 1</value>
+  </data>
+  <data name="Dywyyzxx" xml:space="preserve">
+    <value>Owner 1 Information</value>
+  </data>
+  <data name="Dyyl" xml:space="preserve">
+    <value>Print preview</value>
+  </data>
+  <data name="Dz" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="D_d" xml:space="preserve">
+    <value>The</value>
+  </data>
+  <data name="Fdgsmc" xml:space="preserve">
+    <value>Company Legal Name</value>
+  </data>
+  <data name="Fktk" xml:space="preserve">
+    <value>Payment Term</value>
+  </data>
+  <data name="Fuzhi" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Fzr" xml:space="preserve">
+    <value>Manager</value>
+  </data>
+  <data name="Gb" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Ghtp" xml:space="preserve">
+    <value>Change picture</value>
+  </data>
+  <data name="Gj" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Gjz" xml:space="preserve">
+    <value>Keyword</value>
+  </data>
+  <data name="Gjzhhm" xml:space="preserve">
+    <value>Acct# / IBAN</value>
+  </data>
+  <data name="Glgj" xml:space="preserve">
+    <value>Management Tool</value>
+  </data>
+  <data name="Gngl" xml:space="preserve">
+    <value>Function management</value>
+  </data>
+  <data name="Gsdz" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Gsjsy" xml:space="preserve">
+    <value>Intro (Eng)</value>
+  </data>
+  <data name="Gsjsz" xml:space="preserve">
+    <value>Intro (Chi)</value>
+  </data>
+  <data name="Gslx" xml:space="preserve">
+    <value>Incorporation -Type</value>
+  </data>
+  <data name="Gsmc" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="Gsrgsyzdxxxt" xml:space="preserve">
+    <value>Check if same as Billing Information</value>
+  </data>
+  <data name="G_g" xml:space="preserve">
+    <value>In total</value>
+  </data>
+  <data name="Hb" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="HuanY" xml:space="preserve">
+    <value>Reduction</value>
+  </data>
+  <data name="Hy" xml:space="preserve">
+    <value>Industry</value>
+  </data>
+  <data name="Hyfl" xml:space="preserve">
+    <value>Industry</value>
+  </data>
+  <data name="Hynyxgs" xml:space="preserve">
+    <value>Hossack ( Vietnam) Co., Limited</value>
+  </data>
+  <data name="Hzgx" xml:space="preserve">
+    <value>Business relationship</value>
+  </data>
+  <data name="Jc" xml:space="preserve">
+    <value>Short Name</value>
+  </data>
+  <data name="Jcxx" xml:space="preserve">
+    <value>Basic Information</value>
+  </data>
+  <data name="Jjtg" xml:space="preserve">
+    <value>Emergency notice</value>
+  </data>
+  <data name="Jszdddydz" xml:space="preserve">
+    <value>Send Invoice to E-mail</value>
+  </data>
+  <data name="jwjtfdcc" xml:space="preserve">
+    <value>Drag &amp; drop files here </value>
+  </data>
+  <data name="Jyhb" xml:space="preserve">
+    <value>Transaction Currency(ies)</value>
+  </data>
+  <data name="JyydywjszdfsQtgnddzyxdz" xml:space="preserve">
+    <value>Preferred method of invoicing is via e-mail.  Please provide an e-mail address that you would like to receive your invoices</value>
+  </data>
+  <data name="k3dm" xml:space="preserve">
+    <value>K3 Code</value>
+  </data>
+  <data name="Kh" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="Khdm" xml:space="preserve">
+    <value>Customer Code</value>
+  </data>
+  <data name="Khds" xml:space="preserve">
+    <value>Belongs</value>
+  </data>
+  <data name="Khjb" xml:space="preserve">
+    <value>Ranking</value>
+  </data>
+  <data name="Khjc" xml:space="preserve">
+    <value>Customer Short Name</value>
+  </data>
+  <data name="Khlb" xml:space="preserve">
+    <value>Customer Type</value>
+  </data>
+  <data name="khmc" xml:space="preserve">
+    <value>Customer name</value>
+  </data>
+  <data name="Khqc_cn" xml:space="preserve">
+    <value>Full name of customer(Chi)</value>
+  </data>
+  <data name="Khqc_en" xml:space="preserve">
+    <value>Full name of customer(Eng)</value>
+  </data>
+  <data name="Khsfwssgs" xml:space="preserve">
+    <value>Is the customer a listed company</value>
+  </data>
+  <data name="Khwhlb" xml:space="preserve">
+    <value>Customer maintenance list</value>
+  </data>
+  <data name="Khxh" xml:space="preserve">
+    <value>Customer No.</value>
+  </data>
+  <data name="Khxyxxy" xml:space="preserve">
+    <value>CUSTOMER CREDIT DETAILS PAGE</value>
+  </data>
+  <data name="Khxz" xml:space="preserve">
+    <value>Customer nature</value>
+  </data>
+  <data name="Lxfs" xml:space="preserve">
+    <value>CONTACT INFORMATION</value>
+  </data>
+  <data name="Lxlx" xml:space="preserve">
+    <value>Contact Type</value>
+  </data>
+  <data name="Lxr" xml:space="preserve">
+    <value>Contact Person</value>
+  </data>
+  <data name="Lxxx" xml:space="preserve">
+    <value>Contact Information</value>
+  </data>
+  <data name="Ms" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="My" xml:space="preserve">
+    <value>Last page</value>
+  </data>
+  <data name="Myxs" xml:space="preserve">
+    <value>Display per page</value>
+  </data>
+  <data name="Ndsr" xml:space="preserve">
+    <value>Annual revenue</value>
+  </data>
+  <data name="Qb" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="QgsrgkhwssstBxytgyyzxx" xml:space="preserve">
+    <value>Check if the customer is a listing entity, and no owner information is required</value>
+  </data>
+  <data name="Qgsrgxzyyjwjszdfs" xml:space="preserve">
+    <value>Check if preferred method of invoicing is via mail</value>
+  </data>
+  <data name="Qqmc" xml:space="preserve">
+    <value>Legal Name</value>
+  </data>
+  <data name="Qt" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Qtgbdylgzyyyzxx" xml:space="preserve">
+    <value>Remark: Please provide, at maximum, the 2 major owners' information</value>
+  </data>
+  <data name="Qtgljcwspywfyqxrdgyszwmyck" xml:space="preserve">
+    <value>Remark: Please provide trade references with 2 suppliers who are transacting at the same financial levels as the anticipated annual financial level with us</value>
+  </data>
+  <data name="Qx" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Qyyyqf" xml:space="preserve">
+    <value>% of Business Ownership</value>
+  </data>
+  <data name="Qzdzkjdgyxgs" xml:space="preserve">
+    <value>Group Intellect Electronics Technology (Dongguan) Limited</value>
+  </data>
+  <data name="Qznykjynyxgs" xml:space="preserve">
+    <value>Group Intellect Power Technology Vietnam Co., Limited</value>
+  </data>
+  <data name="Qznykjyxgs" xml:space="preserve">
+    <value>Group Intellect Power Technology Limited</value>
+  </data>
+  <data name="RsxykhzhyzzshcbzzsQlcqcygx" xml:space="preserve">
+    <value>Name the family tree if the customer is a Contract Manufacturer or Sub-contract Manufacturer of any existing customer</value>
+  </data>
+  <data name="Sc" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="Scbbcxx" xml:space="preserve">
+    <value>Additional Information Of Marketing Department</value>
+  </data>
+  <data name="Schuwj" xml:space="preserve">
+    <value>Delete file</value>
+  </data>
+  <data name="Scsy" xml:space="preserve">
+    <value>GoodWill</value>
+  </data>
+  <data name="Sctp" xml:space="preserve">
+    <value>Upload pictures</value>
+  </data>
+  <data name="Scwj" xml:space="preserve">
+    <value>Upload files</value>
+  </data>
+  <data name="Scxdwj" xml:space="preserve">
+    <value>Delete selected file</value>
+  </data>
+  <data name="Scxsbyj" xml:space="preserve">
+    <value>COMMENTS FROM THE SALES &amp; MARKETING</value>
+  </data>
+  <data name="Sfgx" xml:space="preserve">
+    <value>Is Share</value>
+  </data>
+  <data name="Shangcxdwj" xml:space="preserve">
+    <value>Upload selected files</value>
+  </data>
+  <data name="SHIjian" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Sj" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="Snxse" xml:space="preserve">
+    <value>1st Yr. Sales</value>
+  </data>
+  <data name="Ss" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Ssbk" xml:space="preserve">
+    <value>Plate</value>
+  </data>
+  <data name="Sscs" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Ssgj" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Swtsm" xml:space="preserve">
+    <value>Cue Code</value>
+  </data>
+  <data name="Sy" xml:space="preserve">
+    <value>home page</value>
+  </data>
+  <data name="Syczndhdzxglzm" xml:space="preserve">
+    <value>Latest management accounts after last financial year</value>
+  </data>
+  <data name="Sydjz" xml:space="preserve">
+    <value>Business registration certificate</value>
+  </data>
+  <data name="Syxysq" xml:space="preserve">
+    <value>BUSINESS CREDIT APPLICATION</value>
+  </data>
+  <data name="Syy" xml:space="preserve">
+    <value>Previous page</value>
+  </data>
+  <data name="Szcs" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Szdm" xml:space="preserve">
+    <value>CueCode</value>
+  </data>
+  <data name="Tcz" xml:space="preserve">
+    <value>Proposer</value>
+  </data>
+  <data name="Tg" xml:space="preserve">
+    <value>Pass</value>
+  </data>
+  <data name="Th" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="Tjsp" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Tz" xml:space="preserve">
+    <value>Jump</value>
+  </data>
+  <data name="Tzhi" xml:space="preserve">
+    <value>Jump to</value>
+  </data>
+  <data name="T_t" xml:space="preserve">
+    <value>Strip</value>
+  </data>
+  <data name="Wen" xml:space="preserve">
+    <value>Ask</value>
+  </data>
+  <data name="Wjhdqd" xml:space="preserve">
+    <value>Document Checklist</value>
+  </data>
+  <data name="Wl" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="Wt" xml:space="preserve">
+    <value>Question Picture</value>
+  </data>
+  <data name="Xg" xml:space="preserve">
+    <value>Revise</value>
+  </data>
+  <data name="Xgkhlxxx" xml:space="preserve">
+    <value>Modify customer contact information</value>
+  </data>
+  <data name="Xgkhxx" xml:space="preserve">
+    <value>UPDATE CUSTOMER CREDIT APPLICATION FORM</value>
+  </data>
+  <data name="Xgxtjszsjl" xml:space="preserve">
+    <value>Modify system technical knowledge record</value>
+  </data>
+  <data name="Xh" xml:space="preserve">
+    <value>Serial No</value>
+  </data>
+  <data name="Xjkhlxxx" xml:space="preserve">
+    <value>New customer contact information</value>
+  </data>
+  <data name="Xkhxysqb" xml:space="preserve">
+    <value>NEW CUSTOMER CREDIT APPLICATION FORM</value>
+  </data>
+  <data name="Xm" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Xqsc" xml:space="preserve">
+    <value>Cancel upload</value>
+  </data>
+  <data name="Xsddjsst" xml:space="preserve">
+    <value>Sales Order Receiving Entity</value>
+  </data>
+  <data name="Xtjszsjlxx" xml:space="preserve">
+    <value>Detailed record of system technical knowledge</value>
+  </data>
+  <data name="Xtjszsk" xml:space="preserve">
+    <value>System Technical Knowledge Base</value>
+  </data>
+  <data name="Xxnr" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Xy" xml:space="preserve">
+    <value>Next page</value>
+  </data>
+  <data name="XybgRdbssyzlgs" xml:space="preserve">
+    <value>Credit report (i.e. Dun &amp; Bradstreet)</value>
+  </data>
+  <data name="Xydj" xml:space="preserve">
+    <value>Credit rating</value>
+  </data>
+  <data name="Xye" xml:space="preserve">
+    <value>Credit Limit</value>
+  </data>
+  <data name="Xyhy" xml:space="preserve">
+    <value>Agreement and contract</value>
+  </data>
+  <data name="Xyqx" xml:space="preserve">
+    <value>Credit term</value>
+  </data>
+  <data name="Xyxx" xml:space="preserve">
+    <value>Credit Information</value>
+  </data>
+  <data name="Xz" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="Xztp" xml:space="preserve">
+    <value>Download pictures</value>
+  </data>
+  <data name="Xzxtjszsjl" xml:space="preserve">
+    <value>New system technical knowledge record</value>
+  </data>
+  <data name="Yb" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="Ycxsl" xml:space="preserve">
+    <value>Estimated Sales Transaction</value>
+  </data>
+  <data name="Ye" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="Yfzklxxx" xml:space="preserve">
+    <value>ACCOUNTS PAYABLE CONTACT</value>
+  </data>
+  <data name="Yhgjdm" xml:space="preserve">
+    <value>SWIFT Code</value>
+  </data>
+  <data name="YhzxzmRy" xml:space="preserve">
+    <value>Bank reference, if any</value>
+  </data>
+  <data name="Ynw" xml:space="preserve">
+    <value>Vietnam</value>
+  </data>
+  <data name="Yqxytk" xml:space="preserve">
+    <value>Expected Credit Terms</value>
+  </data>
+  <data name="Yszklxxx" xml:space="preserve">
+    <value>ACCOUNT RECEIVING CONTACT</value>
+  </data>
+  <data name="Yw" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Ywmc" xml:space="preserve">
+    <value>English Name</value>
+  </data>
+  <data name="Yydz" xml:space="preserve">
+    <value>Business Address</value>
+  </data>
+  <data name="Yyzmc" xml:space="preserve">
+    <value>Name of Owner</value>
+  </data>
+  <data name="Y_Y" xml:space="preserve">
+    <value>( Eng. )</value>
+  </data>
+  <data name="Zc" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Zcdz" xml:space="preserve">
+    <value>Registered Address</value>
+  </data>
+  <data name="Zcgj" xml:space="preserve">
+    <value>Country of Incorporation</value>
+  </data>
+  <data name="Zclx" xml:space="preserve">
+    <value>Type of Incorporation</value>
+  </data>
+  <data name="Zcrq" xml:space="preserve">
+    <value>Date of Incorporation</value>
+  </data>
+  <data name="Zdxx" xml:space="preserve">
+    <value>BILLING INFORMATION</value>
+  </data>
+  <data name="Zdx_x" xml:space="preserve">
+    <value>Billing Information</value>
+  </data>
+  <data name="Zhgx" xml:space="preserve">
+    <value>Last Update</value>
+  </data>
+  <data name="Zj2gczndjsjdcwbb" xml:space="preserve">
+    <value>Audited financial statements in last 2 financial years</value>
+  </data>
+  <data name="Zs" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Zsxzyx" xml:space="preserve">
+    <value>Choose at least one</value>
+  </data>
+  <data name="Zt" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Zt/fa" xml:space="preserve">
+    <value>Theme / Programme</value>
+  </data>
+  <data name="Zti" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Zw" xml:space="preserve">
+    <value>chinese</value>
+  </data>
+  <data name="Zwmc" xml:space="preserve">
+    <value>Chinese Name</value>
+  </data>
+  <data name="Zxwz" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="Zycz" xml:space="preserve">
+    <value>Main Fax</value>
+  </data>
+  <data name="Zydh" xml:space="preserve">
+    <value>Main Phone</value>
+  </data>
+  <data name="Zyxx" xml:space="preserve">
+    <value>SHIPPING INFORMATION</value>
+  </data>
+  <data name="Zyyh" xml:space="preserve">
+    <value>PRINCIPAL BANKER</value>
+  </data>
+  <data name="Zz/tjrq" xml:space="preserve">
+    <value>Author / submission date</value>
+  </data>
+  <data name="Zzhe" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="Zzscst" xml:space="preserve">
+    <value>Manufacturing Process Entity</value>
+  </data>
+  <data name="Z_Z" xml:space="preserve">
+    <value>( Chi. )</value>
+  </data>
+</root>

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Tools_Acquire_Trace">
+    <Key>
+      <PropertyRef Name="FID" />
+    </Key>
+    <Property Name="FID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ApplyDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="OAFlow_Num" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Mat_Code" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Mat_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Unit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Qty" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="Arr_Date" Type="DateTime" Precision="3" />
+    <Property Name="Approval" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="K3PO_Num" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="K3PO_Date" Type="DateTime" Precision="3" />
+    <Property Name="Supplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="K3Qty" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Buyer" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Prop_Arr_Date" Type="DateTime" Precision="3" />
+    <Property Name="K3Recv_Date" Type="DateTime" Precision="3" />
+    <Property Name="Remark" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="K3Unit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="UpdateNumber" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Tools_Acquire_Trace" EntityType="Self.Tools_Acquire_Trace" />
+    <EntitySet Name="ActionLog2021" EntityType="WebStationModel.ActionLog2021" />
+    <EntitySet Name="Employee" EntityType="WebStationModel.Employee" />
+  </EntityContainer>
+  <EntityType Name="ActionLog2021">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="DeptID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="FunctionID" Type="Int16" Nullable="false" />
+    <Property Name="ActionType" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ActionTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TableName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="TableKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpID" />
+    </Key>
+    <Property Name="EmpID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="PersonID" Type="Int32" />
+    <Property Name="GIPCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="DeptID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="ActDeptID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="ActPosition" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="Deputy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Position" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="SurName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="GivenName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="AliasName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="BirthDate" Type="DateTime" Precision="0" />
+    <Property Name="Manager" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="Substitute" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="JoinDate" Type="DateTime" Precision="3" />
+    <Property Name="LeftDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreateBy" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="CreateDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdateBy" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="UpdateDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>
