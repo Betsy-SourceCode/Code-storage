@@ -105,7 +105,6 @@
         }
     </style>
 </head>
-@*测试*@
 <body style="max-width:96%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="ProductPriceController">
     @*打印页面嵌套过来调用打印页面的方法实现打印*@
     <iframe src="~/ProductPrice/IndexPrinting" height="500" name="iframName" id="iframeId" style=" display:none;width:100%">
@@ -161,7 +160,7 @@
                         <div class="col-sm-4">
                             <div class="input-group-clear">
                                 <label style="font-weight:bold">日期:&nbsp;&nbsp;&nbsp;从&nbsp;&nbsp;</label>
-                                <input id="Start_Date" name="CreateTime" type="text" class="Wdate form-control" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'End_Date\')}'});" value="@ViewBag.date" style="cursor:pointer;height:34px;text-align:center;width:32%;background-color:white" readonly="readonly"/>
+                                <input id="Start_Date" name="CreateTime" type="text" class="Wdate form-control" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'End_Date\')}'});" value="@ViewBag.date" style="cursor:pointer;height:34px;text-align:center;width:32%;background-color:white" readonly="readonly" />
                                 <label style="font-weight:bold;margin-left:3%;margin-right:3%">至</label>
                                 <input id="End_Date" name="EndTime" type="text" class="Wdate form-control"
                                        value="@ViewBag.today" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}'}); " style="cursor:pointer;height:34px;text-align:center;width:32%;background-color:white" readonly="readonly" title="默认结束日期为当天！" />
