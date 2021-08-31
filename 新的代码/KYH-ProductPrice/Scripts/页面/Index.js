@@ -165,12 +165,14 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
             }
         })
     }
+    //页面存值
     $scope.sessionStorage = function () {
         var CreateBy = $("#CreateBy").val();
         var CustProd = $("#CustProd").val();
         var CustomerDisplayName = $("#CustomerDisplayName").val();
         var Start_Date = $("#Start_Date").val();
         var End_Date = $("#End_Date").val();
+        var Rank = PaiXu;
         if ($("#Cancel").is(":checked")) {
             var Cancel = true;
         }
@@ -178,7 +180,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
             var Cancel = false;
         }
         var Remarks_MD = $("#Remarks_MD").val();
-        var Array = [CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD];
+        var Array = [CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, Rank];
         sessionStorage.setItem('Array', JSON.stringify(Array));
     }
     //排序
@@ -194,7 +196,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         if (src == "Esc") {
             $(".pximg").attr('src', "/ProductPrice/Scripts/图标/Default.png");
             document.getElementById(id).src = "/ProductPrice/Scripts/图标/Desc.png";
-            PaiXu = id + " Desc";
+            PaiXu = id + " DESC";
         }
         if (PaiXu.indexOf("CustomerDisplayNames") != -1) {  //是否包含
             PaiXu = PaiXu.replace("CustomerDisplayNames", "CustomerDisplayName"); //去掉一个s
@@ -230,6 +232,27 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
     $("#End_Date").val(JSON.parse(sessionStorage.getItem('Array'))[4]);
     $("input[type='checkbox']").prop("checked", JSON.parse(sessionStorage.getItem('Array'))[5]);
     $("#Remarks_MD").val(JSON.parse(sessionStorage.getItem('Array'))[6]);
+    PaiXu = JSON.parse(sessionStorage.getItem('Array'))[7]; //排序
+    if (PaiXu.indexOf("CustomerDisplayName") != -1) {  //是否包含
+        PaiXu = PaiXu.replace("CustomerDisplayName", "CustomerDisplayNames"); //加上一个s
+    }
+    if (PaiXu.indexOf("DESC") != -1 && PaiXu != "CreateTime DESC") {  //如果是倒序
+        //截取掉Desc
+        PaiXu = PaiXu.replace("DESC", "").trim();
+        $(".pximg").attr('src', "/ProductPrice/Scripts/图标/Default.png");
+        document.getElementById(PaiXu).src = "/ProductPrice/Scripts/图标/Desc.png";
+        //倒序用完之后要加DESC
+        PaiXu = PaiXu + " DESC";
+    }
+    else {
+        if (PaiXu != "CreateTime DESC") {
+            $(".pximg").attr('src', "/ProductPrice/Scripts/图标/Default.png");
+            document.getElementById(PaiXu).src = "/ProductPrice/Scripts/图标/Esc.png";
+        }
+    }
+    if (PaiXu.indexOf("CustomerDisplayNames") != -1) {  //是否包含
+        PaiXu = PaiXu.replace("CustomerDisplayNames", "CustomerDisplayName"); //去掉一个s
+    }
     $scope.IndexList();
 })
 //格式化时间
