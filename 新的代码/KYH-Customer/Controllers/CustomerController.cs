@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace Customer.Controllers
 {
     [Localization]
-    [IsSessionExpire(IsCheck = true)]
+    //[IsSessionExpire(IsCheck = true)]
     public class CustomerController : Controller
     {
         WebStationEntities db = new WebStationEntities();
@@ -25,7 +25,7 @@ namespace Customer.Controllers
         {
             try
             {
-                userid = "23"; //测试
+                userid = "444"; //测试
                 var Rank = "";
                 string username = this.GetUsername(userid);
                 string DeptIDs = this.GetUser(username);

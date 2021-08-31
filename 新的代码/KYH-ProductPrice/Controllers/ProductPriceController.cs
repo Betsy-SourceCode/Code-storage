@@ -185,12 +185,12 @@ namespace KYH_ProductPrice.Controllers
         /// <param name="EndTime"></param>
         /// <param name="CustProd"></param>
         /// <returns></returns>
-        public string IndexData(GetProductPriceList list, string EndTime, string CustProd)
+        public string IndexData(GetProductPriceList list, string EndTime, string CustProd, string Rank)
         {
             List<GetProductPriceList> ProductPriceList = new List<GetProductPriceList>();
             if (new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1) == "ARV" || new Authority().GetDesignatedPersonSql(base.Session["username"].ToString()) > 0)
             {
-                ProductPriceList = new PublicSqlMethodsSql().GetDetailsListSql(list.CreateBy, CustProd, list.CustomerDisplayName, list.CreateTime, EndTime, list.Remarks_MD, list.Cancel, null, null);
+                ProductPriceList = new PublicSqlMethodsSql().GetDetailsListSql(list.CreateBy, CustProd, list.CustomerDisplayName, list.CreateTime, EndTime, list.Remarks_MD, list.Cancel, null, null, Rank);
             }
             else
             {
@@ -199,7 +199,7 @@ namespace KYH_ProductPrice.Controllers
                 {
                     login_Dept = null;
                 }
-                ProductPriceList = new PublicSqlMethodsSql().GetDetailsListSql(list.CreateBy, CustProd, list.CustomerDisplayName, list.CreateTime, EndTime, list.Remarks_MD, list.Cancel, base.Session["username"].ToString(), login_Dept);
+                ProductPriceList = new PublicSqlMethodsSql().GetDetailsListSql(list.CreateBy, CustProd, list.CustomerDisplayName, list.CreateTime, EndTime, list.Remarks_MD, list.Cancel, base.Session["username"].ToString(), login_Dept, Rank);
             }
             ResponseJson json = new ResponseJson
             {

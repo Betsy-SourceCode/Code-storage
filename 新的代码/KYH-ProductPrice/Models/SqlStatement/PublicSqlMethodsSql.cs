@@ -21,7 +21,7 @@ namespace KYH_ProductPrice.Models.SqlStatement
         /// <param name="username"></param>
         /// <param name="login_Dept"></param>
         /// <returns></returns>
-        public List<GetProductPriceList> GetDetailsListSql(string CreateBy, string CustProd, string Customer, DateTime CreateTime, string EndTime, string Remarks_MD, bool Cancel, string username, string login_Dept)
+        public List<GetProductPriceList> GetDetailsListSql(string CreateBy, string CustProd, string Customer, DateTime CreateTime, string EndTime, string Remarks_MD, bool Cancel, string username, string login_Dept, string Rank)
         {
             List<GetProductPriceList> result;
             try
@@ -47,7 +47,7 @@ namespace KYH_ProductPrice.Models.SqlStatement
                 {
                     sql += "  AND Cancel=1";
                 }
-                string Ordersql = "  Order by CreateTime DESC";
+                string Ordersql = "  Order by  " + Rank; //排序
                 sql = string.Format(sql + Ordersql, new object[]
                 {
                     CreateBy,

@@ -219,6 +219,9 @@
     <Content Include="Scripts\WdatePicker\skin\whyGreen\datepicker.css" />
     <Content Include="Scripts\WdatePicker\skin\whyGreen\img.gif" />
     <Content Include="Scripts\WdatePicker\WdatePicker.js" />
+    <Content Include="Scripts\图标\Default.png" />
+    <Content Include="Scripts\图标\Desc.png" />
+    <Content Include="Scripts\图标\Esc.png" />
     <Content Include="Scripts\图标\更新价格.png" />
     <Content Include="Scripts\图标\记录作废.png" />
     <Content Include="Scripts\导出\demo.page.js" />

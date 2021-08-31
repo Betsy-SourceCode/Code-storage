@@ -1,5 +1,6 @@
 ﻿var app = angular.module('myApp', []);  //创建模块
 var QJCPSerial = null;
+var PaiXu = "CreateTime DESC";
 app.controller('ProductPriceController', function ($scope, $http, $compile, $timeout) {
     //加载首页列表
     $scope.IndexList = function () {
@@ -23,7 +24,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         }
         $.ajax({
             url: "/ProductPrice/ProductPrice/IndexData",
-            data: $.param({ 'Cancel': Cancel }) + '&' + from,
+            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu }) + '&' + from,
             type: "POST",
             dataType: "json",
             success: function (data) {
@@ -58,6 +59,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         });
     }
     $scope.SelectCancelGetIndexList = function () {
+        var from = $('#Myform').serialize();
         if ($("#Cancel").is(":checked")) {
             var Cancel = true;
         }
@@ -66,12 +68,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         }
         $.ajax({
             url: "/ProductPrice/ProductPrice/IndexData",
-            data: $.param({
-                'Cancel': Cancel,
-                'CreateTime': $("#Start_Date").val(),
-                'EndTime': $("#End_Date").val(),
-                'CustProd': ''
-            }),
+            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu }) + '&' + from,
             type: "POST",
             dataType: "json",
             success: function (data) {
@@ -184,6 +181,27 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         var Array = [CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD];
         sessionStorage.setItem('Array', JSON.stringify(Array));
     }
+    //排序
+    $scope.CheckImg = function (id) {
+        //获取src图片名字
+        var src = document.getElementById(id).src;
+        src = src.substring(src.lastIndexOf("/") + 1, src.lastIndexOf("."));
+        if (src == "Default" || src == "Desc") {
+            $(".pximg").attr('src', "/ProductPrice/Scripts/图标/Default.png");
+            document.getElementById(id).src = "/ProductPrice/Scripts/图标/Esc.png";
+            PaiXu = id;
+        }
+        if (src == "Esc") {
+            $(".pximg").attr('src', "/ProductPrice/Scripts/图标/Default.png");
+            document.getElementById(id).src = "/ProductPrice/Scripts/图标/Desc.png";
+            PaiXu = id + " Desc";
+        }
+        if (PaiXu.indexOf("CustomerDisplayNames") != -1) {  //是否包含
+            PaiXu = PaiXu.replace("CustomerDisplayNames", "CustomerDisplayName"); //去掉一个s
+        }
+        $scope.IndexList();
+        //其他图片恢复成默认图
+    }
     //打印
     $scope.Dayin = function () {
         //传值到打印页面
@@ -199,7 +217,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
             var Cancel = false;
         }
         var Remarks_MD = $("#Remarks_MD").val();
-        document.getElementById("iframeId").contentWindow.Dayin(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD);  //contentWindow-指定的iframe或者iframe所在的Window对象
+        document.getElementById("iframeId").contentWindow.Dayin(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, PaiXu);  //contentWindow-指定的iframe或者iframe所在的Window对象
     }
     //从sessionStorage里取值
     if (sessionStorage.getItem('Array') == null) {
@@ -248,6 +266,7 @@ function DaoChu(User) {
         }
     });
 }
+//是否显示作废信息勾选框
 function OnChange() {
     var appElement = document.querySelector('[ng-controller=ProductPriceController]');
     var scope = angular.element(appElement).scope();
