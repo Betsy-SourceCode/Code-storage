@@ -58,6 +58,10 @@
       <HintPath>..\packages\SharpZipLib.1.3.1\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\新的代码\KYH-GetK3POInformation\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI, Version=2.5.4.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.5.4\lib\net45\NPOI.dll</HintPath>
     </Reference>
@@ -124,9 +128,6 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -212,64 +213,11 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\colResizable-1.6.min.js" />
     <Content Include="Scripts\Index.css" />
-    <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
-    <Content Include="Scripts\jquery.bootstrap-pureClearButton.js" />
-    <Content Include="Scripts\jquery.cookie.js" />
-    <Content Include="Scripts\jquery.form.js" />
-    <Content Include="Scripts\jquery.jqprint-0.3.js" />
-    <Content Include="Scripts\jQuery.print.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\jquery1.10.2.js" />
-    <Content Include="Scripts\jquery1.4.4.js" />
     <Content Include="Scripts\lang\en.js" />
     <Content Include="Scripts\lang\zh-cn.js" />
     <Content Include="Scripts\lang\zh-tw.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\Scripts\AngularJS.js" />
-    <Content Include="Scripts\Scripts\bootstrap-theme.min.css" />
-    <Content Include="Scripts\Scripts\bootstrap.min.css" />
-    <Content Include="Scripts\Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\Scripts\jquery-1.9.1.js" />
-    <Content Include="Scripts\Scripts\jquery-1.9.1.min.js" />
-    <Content Include="Scripts\Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Scripts\Scripts\jquery-3.4.1.slim.min.js" />
-    <Content Include="Scripts\Scripts\jquery.bootstrap-pureClearButton.js" />
-    <Content Include="Scripts\Scripts\jquery.cookie.js" />
-    <Content Include="Scripts\Scripts\jquery.form.js" />
-    <Content Include="Scripts\Scripts\jquery.jqprint-0.3.js" />
-    <Content Include="Scripts\Scripts\jQuery.print.js" />
-    <Content Include="Scripts\Scripts\jquery.validate.js" />
-    <Content Include="Scripts\Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\Scripts\jquery1.10.2.js" />
-    <Content Include="Scripts\Scripts\jquery1.4.4.js" />
-    <Content Include="Scripts\Scripts\lang\en.js" />
-    <Content Include="Scripts\Scripts\lang\zh-cn.js" />
-    <Content Include="Scripts\Scripts\lang\zh-tw.js" />
-    <Content Include="Scripts\Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\Scripts\skin\datePicker.gif" />
-    <Content Include="Scripts\Scripts\skin\default\datepicker.css" />
-    <Content Include="Scripts\Scripts\skin\default\img.gif" />
-    <Content Include="Scripts\Scripts\skin\WdatePicker.css" />
-    <Content Include="Scripts\Scripts\skin\whyGreen\bg.jpg" />
-    <Content Include="Scripts\Scripts\skin\whyGreen\datepicker.css" />
-    <Content Include="Scripts\Scripts\skin\whyGreen\img.gif" />
-    <Content Include="Scripts\Scripts\WdatePicker.js" />
-    <Content Include="Scripts\Scripts\导出\jquery.table2excel.js" />
-    <Content Include="Scripts\Scripts\导出\tableExport.min.js" />
     <Content Include="Scripts\skin\datePicker.gif" />
     <Content Include="Scripts\skin\default\datepicker.css" />
     <Content Include="Scripts\skin\default\img.gif" />
@@ -277,7 +225,6 @@
     <Content Include="Scripts\skin\whyGreen\bg.jpg" />
     <Content Include="Scripts\skin\whyGreen\datepicker.css" />
     <Content Include="Scripts\skin\whyGreen\img.gif" />
-    <Content Include="Scripts\WdatePicker.js" />
     <Content Include="Scripts\列表可拖动\ztable-min.js" />
     <Content Include="Scripts\图标\Exit-Hover.png" />
     <Content Include="Scripts\图标\Exit.png" />
@@ -294,7 +241,7 @@
     <Content Include="Scripts\导出\jquery.table2excel.js" />
     <Content Include="Scripts\导出\jszip.min.js" />
     <Content Include="Scripts\导出\tableExport.min.js" />
-    <Content Include="Scripts\页面\Index.js" />
+    <Content Include="Scripts\Index.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -332,14 +279,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="packages.config" />
-    <Content Include="Scripts\.vshistory\bootstrap.min.js\2021-05-24_17_29_12_516.js.44733.gz" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
-    <Content Include="Scripts\jquery-3.4.1.min.map" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
-    <Content Include="Scripts\Scripts\.vshistory\bootstrap.min.js\2021-05-24_17_29_12_516.js.44733.gz" />
-    <Content Include="Scripts\Scripts\jquery-1.9.1.min.map" />
-    <Content Include="Scripts\Scripts\jquery-3.4.1.min.map" />
-    <Content Include="Scripts\Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Views\GetK3POInformation\Index.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -374,12 +314,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

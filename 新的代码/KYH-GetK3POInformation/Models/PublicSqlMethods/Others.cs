@@ -10,6 +10,13 @@ namespace KYH_GetK3POInformation.Models.PublicSqlMethods
 		// (set) Token: 0x0600006C RID: 108 RVA: 0x00002CF0 File Offset: 0x00000EF0
 		public int ID { get; set; }
 
+		// Token: 0x17000027 RID: 39
+		// (get) Token: 0x0600006B RID: 107 RVA: 0x00002CE8 File Offset: 0x00000EE8
+		// (set) Token: 0x0600006C RID: 108 RVA: 0x00002CF0 File Offset: 0x00000EF0
+		public int Serial_No { get; set; }
+
+
+
 		// Token: 0x17000028 RID: 40
 		// (get) Token: 0x0600006D RID: 109 RVA: 0x00002CF9 File Offset: 0x00000EF9
 		// (set) Token: 0x0600006E RID: 110 RVA: 0x00002D01 File Offset: 0x00000F01

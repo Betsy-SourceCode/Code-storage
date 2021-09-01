@@ -23,7 +23,21 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             LoadingListAddPOdata_Temp result;
             try
             {
-                string queryIndexSql = "SELECT Top(1) 0 as LPSerial,0.00 as LoadQty,'' as LoadUnit,B.FBillNo PONum, C.FNumber, F.FName Supplier, left(C.FName + ' ' + C.FModel + ' ' + C.{3},300) Material, CAST(A.FAuxQty AS DECIMAL(10,3)) POQty , D.FName POUnit, E.FName POCurr, CAST(A.FAuxPrice AS DECIMAL(14,6)) UnitPrice, A.FDate AS NeedDate, A.FNote Remarks, CAST ((SELECT FExchangeRate FROM mis.{0}.dbo.t_ExchangeRateEntry WHERE (FCyTo = '1000') AND FExChangeRateType = 1 AND (DATEDIFF(d, FBegDate, GETDATE()) >= 0) AND (DATEDIFF(d, GETDATE(), FEndDate) >= 0)) / (SELECT FExchangeRate FROM mis.{0}.dbo.t_ExchangeRateEntry WHERE (FCyTo = B.FCurrencyID) AND FExChangeRateType = 1 AND (DATEDIFF(d, FBegDate, GETDATE()) >= 0) AND (DATEDIFF(d, GETDATE(), FEndDate) >= 0)) AS DECIMAL(12,6)) USDRate FROM   mis.{0}.dbo.POOrderEntry A LEFT OUTER JOIN mis.{0}.dbo.POOrder B ON A.FInterID = B.FInterID AND B.FCancellation = 'False' \r\n                                       LEFT OUTER JOIN mis.{0}.dbo.t_ICItem C ON C.FItemID = A.FItemID \r\n                                       LEFT OUTER JOIN mis.{0}.dbo.t_MeasureUnit D ON D.FMeasureUnitID = A.FUnitID \r\n                                       LEFT OUTER JOIN mis.{0}.dbo.t_Currency E ON E.FCurrencyID = B.FCurrencyID \r\n                                       LEFT OUTER JOIN mis.{0}.dbo.t_Supplier F ON F.FItemID = B.FSupplyID\r\n                WHERE  (B.FBillNo = '{1}') AND C.FNumber = '{2}'\r\n                ORDER by FAuxQty DESC";
+                string queryIndexSql = @"SELECT Top(1) 0 as LPSerial,0.00 as LoadQty,'' as LoadUnit, B.FBillNo PONum, C.FNumber, F.FName Supplier, 
+                                        left(C.FName + ' ' + C.FModel + ' ' + C.{3},300) Material, CAST(A.FAuxQty AS DECIMAL(10,3)) POQty ,
+	                                        D.FName POUnit, E.FName POCurr, CAST(A.FAuxPrice AS DECIMAL(14,6)) UnitPrice, A.FDate AS NeedDate, A.FNote Remarks, 
+                                        CAST ((SELECT FExchangeRate FROM mis.{0}.dbo.t_ExchangeRateEntry WHERE (FCyTo = '1000')
+                                        AND FExChangeRateType = 1 AND (DATEDIFF(d, FBegDate, GETDATE()) >= 0) 
+                                        AND (DATEDIFF(d, GETDATE(), FEndDate) >= 0)) / (SELECT FExchangeRate FROM mis.{0}.dbo.t_ExchangeRateEntry 
+                                        WHERE (FCyTo = B.FCurrencyID) AND FExChangeRateType = 1 AND (DATEDIFF(d, FBegDate, GETDATE()) >= 0)  
+                                        AND (DATEDIFF(d, GETDATE(), FEndDate) >= 0)) AS DECIMAL(12,6)) USDRate
+                                        FROM mis.{0}.dbo.POOrderEntry A LEFT OUTER JOIN mis.{0}.dbo.POOrder B  ON A.FInterID = B.FInterID AND B.FCancellation = 'False'                                     
+                                        LEFT OUTER JOIN mis.{0}.dbo.t_ICItem C ON C.FItemID = A.FItemID                                    
+                                        LEFT OUTER JOIN mis.{0}.dbo.t_MeasureUnit D ON D.FMeasureUnitID = A.FUnitID                        
+	                                        LEFT OUTER JOIN mis.{0}.dbo.t_Currency E ON E.FCurrencyID = B.FCurrencyID                            
+ 	                                        LEFT OUTER JOIN mis.{0}.dbo.t_Supplier F ON F.FItemID = B.FSupplyID          
+                                        WHERE  (B.FBillNo = '{1}') AND C.FNumber = '{2}'
+                                        ORDER by FAuxQty DESC";
                 queryIndexSql = string.Format(queryIndexSql, new object[]
                 {
                     Bname,
@@ -53,7 +67,7 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             List<LoadingListAddPOdata_Temp_Select> result;
             try
             {
-                string sql = "SELECT   TOP (100) PERCENT LEFT(PONum, 2) AS Ledger, CONVERT(varchar(50), CONVERT(decimal(20, 2), LoadQty * UnitPrice)) AS OriCurr_tt_Amt, CONVERT(varchar(50), CONVERT(decimal(12, 6), USDRate)) AS USDRate, CONVERT(varchar(50), \r\n                CONVERT(decimal(20, 6), UnitPrice / USDRate)) AS USD_Unit_Price, CONVERT(varchar(50), CONVERT(decimal(20, 2), \r\n                LoadQty * (UnitPrice / USDRate))) AS USD_tt_Amt, CONVERT(varchar(50), CONVERT(decimal(10, 2), POQty)) AS POQty, \r\n                CONVERT(varchar(50), CONVERT(decimal(10, 3), LoadQty)) AS LoadQty, CONVERT(varchar(50), UnitPrice) AS UnitPrice, \r\n                PONum, Fnumber, Remarks, POCurr, POUnit, Material, Supplier, LoadUnit, LPSerial, NeedDate FROM  dbo.LoadingListAddPOdata_Temp_" + username + "     ORDER BY PONum, Fnumber,LoadQty";
+                string sql = "SELECT   LEFT(PONum, 2) AS Ledger, CONVERT(varchar(50), CONVERT(decimal(20, 2), LoadQty * UnitPrice)) AS OriCurr_tt_Amt, CONVERT(varchar(50), CONVERT(decimal(12, 6), USDRate)) AS USDRate, CONVERT(varchar(50), \r\n                CONVERT(decimal(20, 6), UnitPrice / USDRate)) AS USD_Unit_Price, CONVERT(varchar(50), CONVERT(decimal(20, 2), \r\n                LoadQty * (UnitPrice / USDRate))) AS USD_tt_Amt, CONVERT(varchar(50), CONVERT(decimal(10, 2), POQty)) AS POQty, \r\n                CONVERT(varchar(50), CONVERT(decimal(10, 3), LoadQty)) AS LoadQty, CONVERT(varchar(50), UnitPrice) AS UnitPrice, \r\n                PONum, Fnumber, Remarks, POCurr, POUnit, Material, Supplier, LoadUnit, LPSerial, NeedDate FROM  dbo.LoadingListAddPOdata_Temp_" + username + "  ORDER BY LPSerial";
                 List<LoadingListAddPOdata_Temp_Select> list = this.db.Database.SqlQuery<LoadingListAddPOdata_Temp_Select>(sql, new object[0]).ToList<LoadingListAddPOdata_Temp_Select>();
                 result = list;
             }
@@ -127,7 +141,7 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             bool result;
             try
             {
-                DBNull sql = this.db.Database.SqlQuery<DBNull>("CREATE TABLE dbo.LoadingListAddPOdata_Temp_" + username + "([LPSerial] [int] IDENTITY(1,1) NOT NULL,[PONum] [nvarchar](20) NOT NULL,[Fnumber] [nvarchar](20) NOT NULL,[LoadQty] [decimal](10, 3) NOT NULL,[LoadUnit] [nvarchar](8) NOT NULL,[Supplier] [nvarchar](100) NULL,[Material] [nvarchar](300) NULL,[POQty] [decimal](10, 3) NULL,[POUnit] [nvarchar](8) NULL,[POCurr] [nchar](3) NULL,[UnitPrice] [decimal](14, 6) NULL,[NeedDate] [datetime] NULL,[Remarks] [nvarchar](80) NULL,[USDRate] [decimal](12, 6) NULL,PRIMARY KEY( LPSerial ))", new object[]
+                DBNull sql = this.db.Database.SqlQuery<DBNull>("CREATE TABLE dbo.LoadingListAddPOdata_Temp_" + username + "([LPSerial] [int] NOT NULL, [PONum] [nvarchar](20) NOT NULL,[Fnumber][nvarchar](20) NOT NULL,[LoadQty][decimal](10, 3) NOT NULL,[LoadUnit][nvarchar](8) NOT NULL,[Supplier][nvarchar](100) NULL,[Material][nvarchar](300) NULL,[POQty][decimal](10, 3) NULL,[POUnit][nvarchar](8) NULL,[POCurr][nchar](3) NULL,[UnitPrice][decimal](14, 6) NULL,[NeedDate][datetime] NULL,[Remarks][nvarchar](80) NULL,[USDRate][decimal](12, 6) NULL)", new object[]
                 {
                     new SqlParameter("@username", username)
                 }).SingleOrDefault<DBNull>();
@@ -151,13 +165,15 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             bool result;
             try
             {
-                string sql = "INSERT INTO dbo.LoadingListAddPOdata_Temp_" + username + "(PONum, Fnumber, LoadQty, LoadUnit) VALUES('{0}','{1}','{2}','{3}')";
+                string sql = "INSERT INTO dbo.LoadingListAddPOdata_Temp_" + username + "(LPSerial,PONum, Fnumber, LoadQty, LoadUnit) VALUES('{0}','{1}','{2}','{3}','{4}')";
                 sql = string.Format(sql, new object[]
                 {
+                     List.Serial_No,
                     List.GIP_PO,
                     List.Part_No,
                     List.Qty,
                     List.Unit
+                   
                 });
                 DBNull totalCount = this.db.Database.SqlQuery<DBNull>(sql, new object[0]).SingleOrDefault<DBNull>();
                 result = true;

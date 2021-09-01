@@ -41,6 +41,7 @@ namespace KYH_GetK3POInformation.Controllers
                 }
                 ArrayList = ArrayList.Replace("GIP-PO", "GIP_PO");
                 ArrayList = ArrayList.Replace("Part-No", "Part_No");
+                ArrayList = ArrayList.Replace("Serial-No", "Serial_No");
                 List<Others> List = JsonConvert.DeserializeObject<List<Others>>(ArrayList);
                 foreach (Others Con in List)
                 {
