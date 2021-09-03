@@ -3,62 +3,21 @@ var QJCPSerial = null;
 var PaiXu = "CreateTime DESC";
 app.controller('ProductPriceController', function ($scope, $http, $compile, $timeout) {
     //加载首页列表
-    $scope.IndexList = function () {
-        $scope.sessionStorage();
-        if ($("#Start_Date").val() == '') {
-            alert("开始时间不能为空！");
-            $("#Start_Date").focus();
-            return false;
-        }
-        if ($("#End_Date").val() == '') {
-            alert("结束时间不能为空！");
-            $("#End_Date").focus();
-            return false;
-        }
-        var from = $('#Myform').serialize();
-        if ($("#Cancel").is(":checked")) {
-            var Cancel = true;
-        }
-        else {
-            var Cancel = false;
-        }
-        $.ajax({
-            url: "/ProductPrice/ProductPrice/IndexData",
-            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu }) + '&' + from,
-            type: "POST",
-            dataType: "json",
-            success: function (data) {
-                var list = data.Data;
-                if (list.length == 0) {
-                    $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
-                    //第一种;
-                    $("#OAContent").append("<tr id='notfindlist'><td colspan='20' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
-                    $scope.List = null;
-                    $scope.$apply();
-                }
-                else {
-                    $("#notfindlist").remove();
-                    $.each(list, function (key, value) {
-                        var CreateTime = new Date(value.CreateTime);
-                        list[key].CreateTime = $scope.getIndexDate(CreateTime);
-                        list[key].PrvUnit = $scope.getQianWei(list[key].PrvUnit);
-                        list[key].UpdUnit = $scope.getQianWei(list[key].UpdUnit); //千位加逗号
-                    });
-                    $scope.List = list;
-                    $scope.$apply();
-                    $.each(list, function (key, value) {
-                        if (!value.Cancel) {
-                            $("#OAContent tr").eq(key).css({ "background-color": "#f2dede", "color": "red" });
-                        } else {
-                            $("#OAContent tr").eq(key).css({ "background-color": "", "color": "" });
-                        }
-                    })
-                }
-
+    $scope.IndexList = function (aa) {
+        if (aa=1) {
+            $scope.sessionStorage();
+            if ($("#Start_Date").val() == '') {
+                alert("开始时间不能为空！");
+                $("#Start_Date").focus();
+                return false;
             }
-        });
-    }
-    $scope.SelectCancelGetIndexList = function () {
+            if ($("#End_Date").val() == '') {
+                alert("结束时间不能为空！");
+                $("#End_Date").focus();
+                return false;
+            }
+        }
+        
         var from = $('#Myform').serialize();
         if ($("#Cancel").is(":checked")) {
             var Cancel = true;
@@ -66,9 +25,11 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         else {
             var Cancel = false;
         }
+        var Status = $("#ZT").find("option:selected").val();  //取账套下拉框的值
+
         $.ajax({
             url: "/ProductPrice/ProductPrice/IndexData",
-            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu }) + '&' + from,
+            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu, "ZT": Status}) + '&' + from,
             type: "POST",
             dataType: "json",
             success: function (data) {
@@ -156,7 +117,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
             success: function (data) {
                 if (data.Success > 0) {
                     alert("作废成功！");
-                    $scope.IndexList();
+                    $scope.IndexList(1);
                     $scope.$apply();
                 }
                 else {
@@ -173,6 +134,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         var Start_Date = $("#Start_Date").val();
         var End_Date = $("#End_Date").val();
         var Rank = PaiXu;
+        var Status = $("#ZT").find("option:selected").val();  //取账套下拉框的值
         if ($("#Cancel").is(":checked")) {
             var Cancel = true;
         }
@@ -180,7 +142,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
             var Cancel = false;
         }
         var Remarks_MD = $("#Remarks_MD").val();
-        var Array = [CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, Rank];
+        var Array = [CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, Rank, Status];
         sessionStorage.setItem('Array', JSON.stringify(Array));
     }
     //排序
@@ -201,7 +163,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         if (PaiXu.indexOf("CustomerDisplayNames") != -1) {  //是否包含
             PaiXu = PaiXu.replace("CustomerDisplayNames", "CustomerDisplayName"); //去掉一个s
         }
-        $scope.IndexList();
+        $scope.IndexList(1);
         //其他图片恢复成默认图
     }
     //打印
@@ -212,6 +174,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
         var CustomerDisplayName = $("#CustomerDisplayName").val();
         var Start_Date = $("#Start_Date").val();
         var End_Date = $("#End_Date").val();
+        var Status = $("#ZT").find("option:selected").val();  //取账套下拉框的值
         if ($("#Cancel").is(":checked")) {
             var Cancel = true;
         }
@@ -219,7 +182,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
             var Cancel = false;
         }
         var Remarks_MD = $("#Remarks_MD").val();
-        document.getElementById("iframeId").contentWindow.Dayin(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, PaiXu);  //contentWindow-指定的iframe或者iframe所在的Window对象
+        document.getElementById("iframeId").contentWindow.Dayin(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, PaiXu, Status);  //contentWindow-指定的iframe或者iframe所在的Window对象
     }
     //从sessionStorage里取值
     if (sessionStorage.getItem('Array') == null) {
@@ -233,6 +196,12 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
     $("input[type='checkbox']").prop("checked", JSON.parse(sessionStorage.getItem('Array'))[5]);
     $("#Remarks_MD").val(JSON.parse(sessionStorage.getItem('Array'))[6]);
     PaiXu = JSON.parse(sessionStorage.getItem('Array'))[7]; //排序
+
+    //设置默认值
+    $("#ZT").find("option[value=" + JSON.parse(sessionStorage.getItem('Array'))[8]+"]").attr("selected", true);
+
+
+    //$("#ZT").find("option:selected").val(JSON.parse(sessionStorage.getItem('Array'))[8]); //排序
     if (PaiXu.indexOf("CustomerDisplayName") != -1) {  //是否包含
         PaiXu = PaiXu.replace("CustomerDisplayName", "CustomerDisplayNames"); //加上一个s
     }
@@ -253,7 +222,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
     if (PaiXu.indexOf("CustomerDisplayNames") != -1) {  //是否包含
         PaiXu = PaiXu.replace("CustomerDisplayNames", "CustomerDisplayName"); //去掉一个s
     }
-    $scope.IndexList();
+    $scope.IndexList(1);
 })
 //格式化时间
 Date.prototype.Format = function (fmt) { // author: meizz
@@ -279,7 +248,7 @@ function DaoChu(User) {
     $('#GridView').tableExport({
         type: 'excel',
         fileName: '/ProductPrice/ProductPrice' + User + time,
-        ignoreColumn: [8],//从1开始，忽略第5列
+        //ignoreColumn: [8],//从1开始，忽略第5列
         mso: {//若table表格中使用了以下指定的样式属性，则将该样式同步到Excel中(可以保留表格原有的样式到Excel中)
             styles: ['background-color',
                 'border-top-color', 'border-left-color', 'border-right-color', 'border-bottom-color',
@@ -293,7 +262,7 @@ function DaoChu(User) {
 function OnChange() {
     var appElement = document.querySelector('[ng-controller=ProductPriceController]');
     var scope = angular.element(appElement).scope();
-    scope.SelectCancelGetIndexList();  //调用AngularJS的方法
+    scope.IndexList(0);  //调用AngularJS的方法
 }
 
 

@@ -117,6 +117,7 @@
                 var End_Date = $("#End_Date").html();
                 var Cancel = $("#Cancel").html();
                 var Remarks_MD = $("#Remarks_MD").html();
+                var ZT = $("#ZT").html();
                 $.ajax({
                     url: "/ProductPrice/ProductPrice/IndexData",
                     data: {
@@ -127,7 +128,8 @@
                         "EndTime": End_Date,
                         "Cancel": Cancel,
                         "Remarks_MD": Remarks_MD,
-                        "Rank": PaiXu
+                        "Rank": PaiXu,
+                        "ZT": ZT
                     },
                     type: "POST",
                     dataType: "json",
@@ -192,7 +194,7 @@
                 }
                 return num;
             }
-            $scope.DayinList = function (CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD) {
+            $scope.DayinList = function (CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, ZT) {
                 $("#CreateBy").html(CreateBy);
                 $("#CustProd").html(CustProd);
                 $("#CustomerDisplayName").html(CustomerDisplayName);
@@ -200,6 +202,7 @@
                 $("#End_Date").html(End_Date);
                 $("#Cancel").html(Cancel);
                 $("#Remarks_MD").html(Remarks_MD);
+                $("#ZT").html(ZT)
                 $scope.IndexList();
                 $timeout(function () {
                     //处理dom加载完成，或者repeat循环完成要做的事情
@@ -207,11 +210,12 @@
                 }, 100);
             }
         });
-        function Dayin(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, rank) {
+        function Dayin(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD, rank,ZT) {
             PaiXu = rank;  //赋值给全局变量
+
             var appElement = document.querySelector('[ng-controller=ProductPriceController]');
             var scope = angular.element(appElement).scope();
-            scope.DayinList(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD)
+            scope.DayinList(CreateBy, CustProd, CustomerDisplayName, Start_Date, End_Date, Cancel, Remarks_MD,ZT)
         }
     </script>
 </head>
@@ -229,12 +233,13 @@
                 <div class="row panel-heading">
                     <label id="Cancel" style="display:none"></label>
                     业务员:<label id="CreateBy" style="min-width:5%"></label>
+                    账套:<label id="ZT" style="min-width:5%"></label>
                     产品:<label id="CustProd" style="min-width:15%"></label>
                     客户:<label id="CustomerDisplayName" style="min-width:15%"></label>
                     日期:&nbsp;&nbsp;&nbsp;从
                     <label id="Start_Date" style="min-width:5%;text-align:center"></label>至
                     <label id="End_Date" style="min-width:5%;text-align:center"></label>
-                    备注: <label id="Remarks_MD" style="min-width:15%"></label>
+                    关键字: <label id="Remarks_MD" style="min-width:15%"></label>
                 </div>
 
             </div>

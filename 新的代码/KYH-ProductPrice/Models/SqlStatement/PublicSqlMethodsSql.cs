@@ -21,12 +21,12 @@ namespace KYH_ProductPrice.Models.SqlStatement
         /// <param name="username"></param>
         /// <param name="login_Dept"></param>
         /// <returns></returns>
-        public List<GetProductPriceList> GetDetailsListSql(string CreateBy, string CustProd, string Customer, DateTime CreateTime, string EndTime, string Remarks_MD, bool Cancel, string username, string login_Dept, string Rank)
+        public List<GetProductPriceList> GetDetailsListSql(string CreateBy, string CustProd, string Customer, DateTime CreateTime, string EndTime, string Remarks_MD, bool Cancel, string username, string login_Dept, string Rank,string ZT)
         {
             List<GetProductPriceList> result;
             try
             {
-                string sql = "SELECT * FROM GetProductPriceList WHERE CreateBy LIKE '%{0}%'\r\n                    AND(FNumber LIKE '%{1}%' OR CustProdCode LIKE '%{1}%' OR CustProdName LIKE '%{1}%') AND CustomerDisplayName  LIKE '%{2}%' AND (CreateTime >= '{3}' AND CONVERT(NVARCHAR(10),CreateTime,23) <= '{4}') AND  ISNULL(Remarks_MD,'')  LIKE '%{5}%'";
+                string sql = "SELECT * FROM GetProductPriceList WHERE CreateBy LIKE '%{0}%'\r\n                    AND(FNumber LIKE '%{1}%' OR CustProdCode LIKE '%{1}%' OR CustProdName LIKE '%{1}%') AND CustomerDisplayName  LIKE '%{2}%' AND (CreateTime >= '{3}' AND CONVERT(NVARCHAR(10),CreateTime,23) <= '{4}') AND (EffDetail like  '%{5}%' or Remarks_MD like  '%{5}%' or  Remarks_FD like  '%{5}%')  AND  Ledger like '%{6}%'";
                 if (login_Dept != null)
                 {
                     sql = string.Concat(new string[]
@@ -48,6 +48,9 @@ namespace KYH_ProductPrice.Models.SqlStatement
                     sql += "  AND Cancel=1";
                 }
                 string Ordersql = "  Order by  " + Rank; //排序
+
+
+
                 sql = string.Format(sql + Ordersql, new object[]
                 {
                     CreateBy,
@@ -55,7 +58,8 @@ namespace KYH_ProductPrice.Models.SqlStatement
                     Customer,
                     CreateTime,
                     EndTime,
-                    Remarks_MD
+                    Remarks_MD,
+                    ZT
                 });
                 List<GetProductPriceList> list = this.db.Database.SqlQuery<GetProductPriceList>(sql, new object[0]).ToList<GetProductPriceList>();
                 result = list;

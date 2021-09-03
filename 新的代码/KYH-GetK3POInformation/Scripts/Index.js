@@ -13,10 +13,10 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
         var seat = fileName.lastIndexOf(".") + 1;
         //返回位于String对象中指定位置的子字符串并转换为小写.
         var extension = fileName.substring(seat).toLowerCase();
-        if ("csv" != extension) {
-            alert("只能上传后缀名为csv的文件！");
-            return false;
-        }
+        //if ("csv" != extension) {
+        //    alert("只能上传后缀名为csv的文件！");
+        //    return false;
+        //}
         yy = 0;
         fileReader.onload = function (ev) {
             try {

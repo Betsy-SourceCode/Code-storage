@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-ProductPrice", "KYH-ProductPrice\KYH-ProductPrice.csproj", "{AABD0967-0448-4932-846B-E2F8BEB654AB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-NewEmailDomainXCX", "KYH-NewEmailDomain\KYH-NewEmailDomainXCX.csproj", "{0DF32FEF-C2FC-4CCE-9D60-D6FB1A1BF5EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-NewEmailDomainPT", "KYH-NewEmailDomainPT\KYH-NewEmailDomainPT.csproj", "{37DE13A6-03CD-4B5E-8B4E-FCD95F5495CB}"
@@ -17,16 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-Customer", "KYH-Custome
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-GetK3POInformation", "KYH-GetK3POInformation\KYH-GetK3POInformation.csproj", "{356D00B0-70BC-44FD-ADA1-DB7631A82CAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-ProductPrice", "KYH-ProductPrice\KYH-ProductPrice.csproj", "{AABD0967-0448-4932-846B-E2F8BEB654AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0DF32FEF-C2FC-4CCE-9D60-D6FB1A1BF5EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0DF32FEF-C2FC-4CCE-9D60-D6FB1A1BF5EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DF32FEF-C2FC-4CCE-9D60-D6FB1A1BF5EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,12 +47,16 @@ Global
 		{356D00B0-70BC-44FD-ADA1-DB7631A82CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{356D00B0-70BC-44FD-ADA1-DB7631A82CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{356D00B0-70BC-44FD-ADA1-DB7631A82CAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7C7328EB-075D-401C-B40D-038A1456432F}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {7C7328EB-075D-401C-B40D-038A1456432F}
 	EndGlobalSection
 EndGlobal

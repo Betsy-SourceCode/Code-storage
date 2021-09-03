@@ -121,19 +121,22 @@
             <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false">
                 <div class="container-fluid">
                     <div class="row panel-heading">
-                        <div class="has-feedback col-sm-3">
-                            业务员:<input name="CreateBy" type="text" id="CreateBy" class="form-control input-content" style="width:70%" />
+                        <div class="has-feedback col-sm-2">
+                            业务员:<input name="CreateBy" type="text" id="CreateBy" class="form-control input-content" style="width:60%" />
                             <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
                                style="pointer-events: auto;"
                                onclick="$('#CreateBy').val('')"></a>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="input-group-clear">
-                                <label style="font-weight:bold">产品:</label>
-                                <input name="CustProd" type="text" id="CustProd" class="form-control input-content" style="width:70%;display:inline">
-                                <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
-                                   style="pointer-events: auto;"
-                                   onclick="$('#CustProd').val('')"></a>
+                                <label style="font-weight:bold">帐套:</label>
+                                <select id="ZT" style=" width: 60%; display: inline; " class="form-control">
+                                    <option value="ALL" selected="selected">ALL</option>
+                                    <option>HL</option>
+                                    <option>YH</option>
+                                    <option>HS</option>
+                                    <option>LK</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -145,6 +148,17 @@
                                    onclick="$('#CustomerDisplayName').val('')"></a>
                             </div>
                         </div>
+
+                        <div class="col-sm-3">
+                            <div class="input-group-clear">
+                                <label style="font-weight:bold">产&nbsp;&nbsp;&nbsp;品:</label>
+                                <input name="CustProd" type="text" id="CustProd" class="form-control input-content" placeholder="模糊查询{GIP产品号、客户产品代码、客户产品描述}" style="width:70%;display:inline">
+                                <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                                   style="pointer-events: auto;"
+                                   onclick="$('#CustProd').val('')"></a>
+                            </div>
+                        </div>
+
                         <input type="submit" name="btn_select" value="搜&nbsp;&nbsp;索" id="btn_select" class="btn btn-primary" ng-click="IndexList()" />
                         @if (@ViewBag.PrintExport == 1)
                         {
@@ -166,7 +180,7 @@
                                        value="@ViewBag.today" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}'}); " style="cursor:pointer;height:34px;text-align:center;width:32%;background-color:white" readonly="readonly" title="默认结束日期为当天！" />
                             </div>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <div class="checkbox">
                                 <input type="checkbox" name="Cancel" id="Cancel" style="zoom:180%" checked onchange="OnChange()">
                                 <label style=" font-weight: bold;" class="checkbox_lable" for="Cancel">不显示作废记录</label>
@@ -174,8 +188,8 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="input-group-clear">
-                                <label style="font-weight:bold">备注:</label>
-                                <input name="Remarks_MD" type="text" id="Remarks_MD" class="form-control  input-content" style="width:70%">
+                                <label style="font-weight:bold">关键字:</label>
+                                <input name="Remarks_MD" type="text" id="Remarks_MD" class="form-control  input-content" placeholder="模糊查询{生效条件、销售备注、财务笔记}" style="width:70%">
                                 <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
                                    style="pointer-events: auto;"
                                    onclick="$('#Remarks_MD').val('')"></a>

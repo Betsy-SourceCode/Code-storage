@@ -48,7 +48,7 @@ namespace KYH_NewEmailDomainPT.Controllers
                 List<NewEmailDomain2GIP_Select> data = new GetIndex().GetIndexListSql(NewEmailDomain, EndTime, TopicArea, orderby);
                 var rowCount = data.Count; //总条数
                 data = data.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList<NewEmailDomain2GIP_Select>();//分页
-                ResponseJson json = new ResponseJson
+                ResponseJson json = new ResponseJson    
                 {
                     Data = data,
                     count = rowCount
