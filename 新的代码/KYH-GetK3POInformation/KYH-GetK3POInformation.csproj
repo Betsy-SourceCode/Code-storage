@@ -60,7 +60,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\新的代码\KYH-GetK3POInformation\bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>F:\项目\KYH-ProductPrice\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NPOI, Version=2.5.4.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.5.4\lib\net45\NPOI.dll</HintPath>
@@ -234,6 +234,7 @@
     <Content Include="Scripts\图标\ImportLoadingList.png" />
     <Content Include="Scripts\图标\StartK3sPOData-Hover.png" />
     <Content Include="Scripts\图标\StartK3sPOData.png" />
+    <Content Include="Scripts\图标\UserGuide.gif" />
     <Content Include="Scripts\导入\xlsx.core.min.js" />
     <Content Include="Scripts\导出\excel-gen.js" />
     <Content Include="Scripts\导出\excellentexport.js" />
@@ -278,6 +279,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="146-UG-20210903.pdf" />
+    <Content Include="146-UG-20210903.rtf" />
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\GetK3POInformation\Index.cshtml" />

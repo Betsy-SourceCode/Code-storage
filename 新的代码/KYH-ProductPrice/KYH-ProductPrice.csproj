@@ -54,7 +54,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\新的代码\KYH-GetK3POInformation\bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>F:\项目\KYH-ProductPrice\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -162,6 +162,7 @@
       <DependentUpon>ProductPrice.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\PublicSqlMethods\Authority.cs" />
+    <Compile Include="Models\PublicSqlMethods\GetProductPriceList.cs" />
     <Compile Include="Models\PublicSqlMethods\LogHelper.cs" />
     <Compile Include="Models\PublicSqlMethods\LogThread.cs" />
     <Compile Include="Models\PublicSqlMethods\Others.cs" />

@@ -1,4 +1,4 @@
-﻿// 为模型“E:\项目源码\KYH-Source code\KYH-ProductPrice\Models\ProductPrice.edmx”启用了 T4 代码生成。
+﻿// 为模型“D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2021-09\KYH-ProductPrice\KYH-ProductPrice\Models\ProductPrice.edmx”启用了 T4 代码生成。
 // 要启用旧代码生成功能，请将“代码生成策略”设计器属性的值
 // 更改为“旧的 ObjectContext”。当在设计器中打开该模型时，此属性会出现在
 // “属性”窗口中。

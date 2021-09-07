@@ -26,8 +26,8 @@ namespace KYH_ProductPrice.Models
         }
     
         public virtual DbSet<CustProductPriceRecords> CustProductPriceRecords { get; set; }
-        public virtual DbSet<GetProductPriceList> GetProductPriceList { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<ActionLog2021> ActionLog2021 { get; set; }
+        public virtual DbSet<GetProductPriceList> GetProductPriceList { get; set; }
     }
 }

@@ -16,6 +16,11 @@ namespace KYH_GetK3POInformation.Controllers
     // Token: 0x02000010 RID: 16
     public class GetK3POInformationController : Controller
     {
+        //public ActionResult GetPdf()
+        //{
+
+        //    return new FilePathResult("~/146-UG-20210903.pdf", "application/pdf");
+        //}
         /// <summary>
         /// 首页加载
         /// </summary>
