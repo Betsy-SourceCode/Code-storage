@@ -166,7 +166,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
         fileReader.readAsBinaryString(files[0]);
     });
     $scope.Startbtn = function (urlcanshu) {
-        $("#myModal").modal({ backdrop: 'static', keyboard: false });
+        $("#myModal").modal();
         yy = 0;
         dstime = setInterval(function () {
             if (yy < 99) {
@@ -330,10 +330,10 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
     }
     //首页加载
     $scope.List = function (canshu, SuccessMsg, Msg) {
-        if (canshu == 0) {    //首页加载进度条
-            $("#myModal").modal({ backdrop: 'static', keyboard: false });
-            yy = 0;
-        }
+        //if (canshu == 0) {    //首页加载进度条
+        //    $("#myModal").modal({ backdrop: 'static', keyboard: false });
+        //    yy = 0;
+        //}
         $.ajax({
             type: "post",
             async: true,
@@ -350,7 +350,6 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                 //= result.Data.length;
                 var j = 0;
                 var ww = 0;
-                var rowSortNumber = 0;
                 if (tempLength != 0) {
                     var loop = function () {
                         if (j >= tempLength) {
@@ -369,8 +368,11 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                                 if (canshu == 2 && SuccessMsg == 0) {  //采集数据没成功，成功则不用提示
                                     alert(Msg);
                                 }
-                                jdt(0);
-                                yy = 0;
+                                if (canshu!=0) {
+                                    jdt(0);
+                                    yy = 0;
+                                }
+                              
                             }, 1000);
                             return;
                         }
@@ -404,9 +406,9 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                                 $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(6).find("a").prop("title", result.Data[j].Supplier);
                                 result.Data[j].Supplier = result.Data[j].Supplier.substring(0, 50) + "...";
                             }
-                            if (result.Data[j].Material != null && result.Data[j].Material.length >= 70 && result.Data[j].Material != '') {
+                            if (result.Data[j].Material != null && result.Data[j].Material.length >= 60 && result.Data[j].Material != '') {
                                 $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(7).find("a").prop("title", result.Data[j].Material);
-                                result.Data[j].Material = result.Data[j].Material.substring(0, 70) + "...";
+                                result.Data[j].Material = result.Data[j].Material.substring(0, 60) + "...";
                             }
                             if (result.Data[j].Remarks != null && result.Data[j].Remarks.length >= 40 && result.Data[j].Remarks != '') {
                                 $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(13).find("a").prop("title", result.Data[j].Remarks);
@@ -442,13 +444,16 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                             $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(13).css({ "text-align": "left" });
                             $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(15).html(result.Data[j].USDRate);
                         }
-                        var processCount = Math.floor(yy + ((j + 1) * (100 - yy) / tempLength));
-                        if (processCount >= 100) {
-                            jdt(100);
+                        if (canshu!=0) {
+                            var processCount = Math.floor(yy + ((j + 1) * (100 - yy) / tempLength));
+                            if (processCount >= 100) {
+                                jdt(100);
+                            }
+                            else {
+                                jdt(processCount);
+                            }
                         }
-                        else {
-                            jdt(processCount);
-                        }
+                        
                         j++;
                         //下一步循环  
                         this.window.setTimeout(loop, 0); //递归

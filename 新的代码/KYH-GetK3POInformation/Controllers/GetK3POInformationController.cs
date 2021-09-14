@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Web.Mvc;
 using KYH_GetK3POInformation.Models;
 using KYH_GetK3POInformation.Models.PublicSqlMethods;
 using KYH_GetK3POInformation.Models.SqlMethods;
-using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
@@ -55,9 +53,9 @@ namespace KYH_GetK3POInformation.Controllers
                 for (int a = 1; a <= List; a++)
                 {
                     LoadingListAddPOdata_Temp LoadingList = new GetIndex().GetIndexListFirst(base.Session["username"].ToString(), a);
-                    string num = LoadingList.PONum.Substring(0, 2);
+                    string num = LoadingList.PONum;
                     LoadingListAddPOdata_Temp K3 = new LoadingListAddPOdata_Temp();
-                    if (num == "HS")
+                    if (num.Contains("HSYHPOORD"))
                     {
                         K3 = new GetIndex().ByK3PO_NumSelect("HSYH_New", LoadingList.PONum, LoadingList.Fnumber, "F_105");
                         if (K3 == null)
@@ -75,8 +73,9 @@ namespace KYH_GetK3POInformation.Controllers
                         K3.LoadUnit = LoadingList.LoadUnit;
                         K3.LPSerial = a;
                         result = otherController.UpdFunction(base.Session["username"].ToString(), K3);
+
                     }
-                    else if (num == "YH")
+                    else if (num.Contains("KSYHPOORD"))
                     {
                         K3 = new GetIndex().ByK3PO_NumSelect("AIS20170316112450", LoadingList.PONum, LoadingList.Fnumber, "F_109");
                         if (K3 == null)
@@ -95,7 +94,7 @@ namespace KYH_GetK3POInformation.Controllers
                         K3.LPSerial = a;
                         result = otherController.UpdFunction(base.Session["username"].ToString(), K3);
                     }
-                    else if (num == "LK")
+                    else if (num.Contains("LKPO"))
                     {
                         K3 = new GetIndex().ByK3PO_NumSelect("AIS20181011094554", LoadingList.PONum, LoadingList.Fnumber, "F_102");
                         if (K3 == null)
@@ -118,7 +117,7 @@ namespace KYH_GetK3POInformation.Controllers
                             return "";
                         }
                     }
-                    else if (num == "HL")
+                    else if (num.Contains("HLPO"))
                     {
                         K3 = new GetIndex().ByK3PO_NumSelect("AIS20151013110946", LoadingList.PONum, LoadingList.Fnumber, "F_102");
                         if (K3 == null)

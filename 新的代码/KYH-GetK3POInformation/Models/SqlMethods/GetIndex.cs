@@ -195,13 +195,19 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
         public bool UpdateData(string username, LoadingListAddPOdata_Temp List)
         {
             bool result;
+            string Remarks=List.Remarks;
             try
             {
+                if (List.Remarks.Length >= 80 &&List.Remarks!=null)
+                {
+                    Remarks = List.Remarks.Substring(0, 80);
+                }
                 string sql = "update  dbo.LoadingListAddPOdata_Temp_" + username + "    SET Supplier ='{0}',Material='{1}',POQty ={2},POUnit ='{3}',POCurr ='{4}',UnitPrice ={5},NeedDate ='{6}',Remarks = '{7}',USDRate={8} WHERE LPSerial=" + List.LPSerial.ToString();
                 if (List.POQty == null && List.UnitPrice == null && List.USDRate == null)
                 {
                     sql = "update  dbo.LoadingListAddPOdata_Temp_" + username + "    SET Supplier ='{0}',Material='{1}',POQty =null,POUnit ='{3}',POCurr ='{4}',UnitPrice =null,NeedDate ='{6}',Remarks = '{7}',USDRate=null  WHERE LPSerial=" + List.LPSerial.ToString();
                 }
+                
                 sql = string.Format(sql, new object[]
                 {
                     List.Supplier,
@@ -211,7 +217,7 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
                     List.POCurr,
                     List.UnitPrice,
                     List.NeedDate,
-                    List.Remarks,
+                    Remarks,
                     List.USDRate
                 });
                 DBNull totalCount = this.db.Database.SqlQuery<DBNull>(sql, new object[0]).SingleOrDefault<DBNull>();
