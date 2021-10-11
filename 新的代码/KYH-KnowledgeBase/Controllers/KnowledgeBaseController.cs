@@ -37,7 +37,7 @@ namespace KYH_KnowledgeBase.Controllers
             ActionResult result;
             try
             {
-                userid = "444";
+                //userid = "444";
                 string username = this.GetUsername(userid);
                 string DeptIDs = this.GetUser(username);
                 this.GetPosition(username);
@@ -81,7 +81,7 @@ namespace KYH_KnowledgeBase.Controllers
                     string ip = LogThread.GetLocalIP();
                     if (KnowledgeBaseController.Logon == 1)
                     {
-                        LogThread.ActionLog(UserID, DeptID, "从电脑" + ip + "登入 WebStation 系统", "S", name);
+                        LogThread.ActionLog(UserID, DeptID, "从电脑" + ip + "登入 WebStation 系统", "S", name, "1");
                         KnowledgeBaseController.Logon = 0;
                     }
                 }

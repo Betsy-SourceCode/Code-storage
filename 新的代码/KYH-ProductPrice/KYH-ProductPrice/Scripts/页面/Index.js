@@ -4,7 +4,7 @@ var PaiXu = "CreateTime DESC";
 app.controller('ProductPriceController', function ($scope, $http, $compile, $timeout) {
     //加载首页列表
     $scope.IndexList = function (aa) {
-        if (aa == 1) {
+        if (aa==1) {
             $scope.sessionStorage();
             if ($("#Start_Date").val() == '') {
                 alert("开始时间不能为空！");
@@ -17,7 +17,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
                 return false;
             }
         }
-
+        
         var from = $('#Myform').serialize();
         if ($("#Cancel").is(":checked")) {
             var Cancel = true;
@@ -29,12 +29,12 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
 
         $.ajax({
             url: "/ProductPrice/ProductPrice/IndexData",
-            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu, "ZT": Status }) + '&' + from,
+            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu, "ZT": Status}) + '&' + from,
             type: "POST",
             dataType: "json",
             success: function (data) {
                 var list = data.Data;
-                /*  alert(data.Msg);*/
+                //alert(data.Msg)
                 if (list.length == 0) {
                     $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
                     //第一种;
@@ -199,7 +199,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
     PaiXu = JSON.parse(sessionStorage.getItem('Array'))[7]; //排序
 
     //设置默认值
-    $("#ZT").find("option[value=" + JSON.parse(sessionStorage.getItem('Array'))[8] + "]").attr("selected", true);
+    $("#ZT").find("option[value=" + JSON.parse(sessionStorage.getItem('Array'))[8]+"]").attr("selected", true);
 
 
     //$("#ZT").find("option:selected").val(JSON.parse(sessionStorage.getItem('Array'))[8]); //排序

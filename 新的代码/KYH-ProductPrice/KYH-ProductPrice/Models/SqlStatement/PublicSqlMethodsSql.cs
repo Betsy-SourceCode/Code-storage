@@ -24,62 +24,61 @@ namespace KYH_ProductPrice.Models.SqlStatement
         /// <param name="username"></param>
         /// <param name="login_Dept"></param>
         /// <returns></returns>
-        public List<GetProductPriceListss> GetDetailsListSql(string CreateBy, string CustProd, string Customer, DateTime CreateTime, string EndTime, string Remarks_MD, bool Cancel, string username, string login_Dept, string Rank, string ZT)
+        public List<GetProductPriceListss> GetDetailsListSql(string CreateBy, string CustProd, string Customer, DateTime CreateTime, string EndTime, string Remarks_MD, bool Cancel, string username, string login_Dept, string Rank,string ZT)
         {
             try
             {
                 sql = "Set Language US_English";
-                sql = sql + " SELECT A.CreateDept+D.UpperDept AS upDepartment, A.CPSerial , REPLACE(CONVERT(VARCHAR(11),A.CreateTime,113),' ','-') + ' ' + RIGHT(CONVERT(varchar(20),A.CreateTime, 113), 8) CreateTime, C.AliasName + ' ' + C.LastName + ' (' + D.DeptCode + ')' CreateBy, A.Ledger, ISNULL(F.FullName_CN, F.FullName_EN) + ' (' + F.CountryID + '-' + G.CityName_CN + ')' CustomerDisplayName,A.FNumber, A.CustProdCode, A.CustProdName, A.PrvCurr, A.PrvUnit, A.UpdCurr, A.UpdUnit, E.Name_EN EffType, A.EffDetail, A.Remarks_MD, A.Remarks_FD, A.Cancel";
-                sql = sql + " FROM CustProductPriceRecords A LEFT OUTER JOIN Customer B ON A.CustomerID = B.CustomerID LEFT OUTER JOIN Employee C ON A.CreateBy = C.EmpID LEFT OUTER JOIN Department D ON C.DeptID = D.DeptID LEFT OUTER JOIN TBWords E ON A.EffType = E.Value AND E.WordCode = 'EF' LEFT OUTER JOIN Company F ON B.SysID = F.CompanyID LEFT OUTER JOIN City AS G ON F.CityID = G.CityID";
-                sql = sql + " WHERE 1=1 ";
-                if (CreateBy != null) //业务员文本框的值
+                sql = sql+ " SELECT A.CreateDept+D.UpperDept AS upDepartment, A.CPSerial , REPLACE(CONVERT(VARCHAR(11),A.CreateTime,113),' ','-') + ' ' + RIGHT(CONVERT(varchar(20),A.CreateTime, 113), 8) CreateTime, C.AliasName + ' ' + C.LastName + ' (' + D.DeptCode + ')' CreateBy, A.Ledger, ISNULL(F.FullName_CN, F.FullName_EN) + ' (' + F.CountryID + '-' + G.CityName_CN + ')' CustomerDisplayName,A.FNumber, A.CustProdCode, A.CustProdName, A.PrvCurr, A.PrvUnit, A.UpdCurr, A.UpdUnit, E.Name_EN EffType, A.EffDetail, A.Remarks_MD, A.Remarks_FD, A.Cancel";
+                sql = sql+ " FROM CustProductPriceRecords A LEFT OUTER JOIN Customer B ON A.CustomerID = B.CustomerID LEFT OUTER JOIN Employee C ON A.CreateBy = C.EmpID LEFT OUTER JOIN Department D ON C.DeptID = D.DeptID LEFT OUTER JOIN TBWords E ON A.EffType = E.Value AND E.WordCode = 'EF' LEFT OUTER JOIN Company F ON B.SysID = F.CompanyID LEFT OUTER JOIN City AS G ON F.CityID = G.CityID";
+                sql = sql+ " WHERE 1=1 ";
+                if (CreateBy!=null) //业务员文本框的值
                 {
-                    sql = sql + " AND (C.AliasName + ' ' + C.LastName) LIKE '%" + CreateBy + "%' ";
+                    sql =sql+ " AND (C.AliasName + ' ' + C.LastName) LIKE '%" + CreateBy + "%' ";
                 }
-                if (ZT != "ALL") //账套文本框的值
+                if (ZT!="ALL")
                 {
-                    sql = sql + " AND A.Ledger ='" + ZT + "'";
+                    sql = sql+ " AND A.Ledger ='"+ZT+"'";
                 }
-                if (Customer != null) //客户文本框的值
-                {
-                    sql = sql + " AND ISNULL(F.FullName_CN,'') + '|' + ISNULL(F.FullName_EN,'') + '|' + F.ShortName like '%" + Customer + "%'";
+                if (Customer!=null)
+                { 
+                    sql =sql+ " AND ISNULL(F.FullName_CN,'') + '|' + ISNULL(F.FullName_EN,'') + '|' + F.ShortName like '%" + Customer + "%'";
                 }
-                if (CustProd != "") //产品文本框的值 
+                if (CustProd!="")
                 {
-                    sql = sql + " AND A.FNumber + '|' + A.CustProdCode + '|' + A.CustProdName LIKE '%" + CustProd + "%' ";
+                    sql =sql+ " AND A.FNumber + '|' + A.CustProdCode + '|' + A.CustProdName LIKE '%" + CustProd + "%' ";
                 }
-                if (CreateTime.ToString() != null) //开始时间 
+                if (CreateTime.ToString()!=null)
                 {
-                    sql = sql + " AND (DATEDIFF(d,'" + CreateTime + "',A.CreateTime) >= 0) ";
+                    sql =sql+ " AND (DATEDIFF(d,'" + CreateTime +"',A.CreateTime) >= 0) ";
                 }
-                if (EndTime.ToString() != null) //结束时间 
+                if (EndTime.ToString()!=null)
                 {
-                    sql = sql + " AND (DATEDIFF(d,'" + EndTime + "',A.CreateTime) <= 0)";
+                    sql =sql+" AND (DATEDIFF(d,'" +EndTime +"',A.CreateTime) <= 0)";
                 }
-                if (Cancel == true) //是否作废记录勾选框
+                if (Cancel==true)
                 {
-                    sql = sql + " AND A.Cancel = 1";
+                    sql =sql+ " AND A.Cancel = 1";
                 }
-                if (Remarks_MD != null) //关键字文本框的值 
+                if (Remarks_MD!=null)
                 {
-                    sql = sql + " AND  (ISNULL(A.Remarks_MD, N'') + '|' + ISNULL(A.Remarks_FD, N'') + '|' + A.EffDetail LIKE '%" + Remarks_MD + "%')";
+                    sql = sql+ " AND  (ISNULL(A.Remarks_MD, N'') + '|' + ISNULL(A.Remarks_FD, N'') + '|' + A.EffDetail LIKE '%" + Remarks_MD+ "%')";
                 }
                 string department = new Authority().GetDepartmentSql(username, 0);
-                if (login_Dept != "ACC") //权限（是否为管理层+财务部）
+                if (login_Dept != "ACC")
                 {
-                    sql = sql + " AND (A.CreateDept+D.UpperDept LIKE'" + department + "%')";
-
-                    //if (IsUpDepartment(department) > 0) //权限（是否为上级（同级）部门）
+                    sql = sql + " AND (A.CreateDept+D.UpperDept LIKE '" + department + "%')";
+                    //if (IsUpDepartment(department) > 0)
                     //{
-                    //sql = sql + " AND ( (A.CreateDept+D.UpperDept) LIKE '%" + department + "%')";
+                    //    sql = sql + " AND ( (A.CreateDept+D.UpperDept) LIKE '%" + department + "%')";
                     //}
-                    //else  //普通员工只能看自己的数据
+                    //else
                     //{
                     //    sql = sql + " AND  (B.ServiceBy LIKE '%|" + username + "|%')";
                     //}
                 }
-
-                sql = sql + " order by " + Rank; //排序
+               
+                sql = sql+ " order by " + Rank;
                 // sql = @"SELECT * FROM GetProductPriceList WHERE  
                 //        (FNumber LIKE '%{1}%' OR CustProdCode LIKE '%{1}%' OR CustProdName LIKE '%{1}%') 
                 //        AND CustomerDisplayName  LIKE '%{2}%' AND (CreateTime >= '{3}' AND CONVERT(NVARCHAR(10),CreateTime,23) <= '{4}') 
@@ -126,21 +125,21 @@ namespace KYH_ProductPrice.Models.SqlStatement
             }
             catch (Exception ex)
             {
-                string aa = ex.Message;
+                string aa= ex.Message;
                 throw;
             }
-
+           
         }/// <summary>
-         /// 查询是否存在上级部门
-         /// </summary>
-         /// <param name="login_Dept">登陆部门</param>
-         /// <returns></returns>
+        /// 查询是否存在上级部门
+        /// </summary>
+        /// <param name="login_Dept">登陆部门</param>
+        /// <returns></returns>
         public int IsUpDepartment(string department)
         {
-
+            
             int sql = db.Database.SqlQuery<int>(@"select Count(*) FROM CustProductPriceRecords A LEFT OUTER JOIN Customer B ON 
                             A.CustomerID = B.CustomerID LEFT OUTER JOIN Employee C ON A.CreateBy = C.EmpID LEFT OUTER JOIN Department D 
-                            ON C.DeptID = D.DeptID where A.CreateDept+D.UpperDept like '%" + department + "%' ").FirstOrDefault();
+                            ON C.DeptID = D.DeptID where A.CreateDept+D.UpperDept like '%"+ department + "%' ").FirstOrDefault();
             return sql;
         }
         /// <summary>

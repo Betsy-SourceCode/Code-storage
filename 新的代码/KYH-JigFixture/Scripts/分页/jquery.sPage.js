@@ -9,7 +9,7 @@
     'use strict';
     var defaults = {
         page: 1,//当前页
-        pageSize: 10,//每页显示多少条
+        pageSize: 15,//每页显示多少条
         total: 0,//数据总条数
         showTotal: false,//是否显示总条数
         totalTxt: "共{total}条",//数据总条数文字描述

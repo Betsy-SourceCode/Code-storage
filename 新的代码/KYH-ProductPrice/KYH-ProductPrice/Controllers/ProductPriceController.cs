@@ -22,7 +22,6 @@ namespace KYH_ProductPrice.Controllers
         public ActionResult Index(string userid)
         {
             userid = "444";
-            /*userid = "298";*/ //财务部测试
             if (userid == null)
             {
                 userid = "";
@@ -49,14 +48,14 @@ namespace KYH_ProductPrice.Controllers
             {
                 ViewBag.Assign = 1; //设定业务员权限
             }
-            if (new Authority().GetDepartmentSql(username, 1) != "ARV")
+            if (new Authority().GetDepartmentSql(username, 1) != "ACC")
             {
                 ViewBag.GuanLi = 1; //作废权限
             }
-            if (new Authority().GetDepartmentSql(username, 1) == "ARV")
+            if (new Authority().GetDepartmentSql(username, 1) == "ACC")
             {
 
-                ViewBag.ISARV = 1; //财务部权限
+                ViewBag.ISACC = 1; //财务部权限
             }
             return base.View();
         }
@@ -108,13 +107,13 @@ namespace KYH_ProductPrice.Controllers
             {
                 ViewBag.Add = 1;  //新增权限
             }
-            if (new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1) != "ARV")
+            if (new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1) != "ACC")
             {
                 ViewBag.GuanLi = 1; //作废权限
             }
-            if (new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1) == "ARV")
+            if (new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1) == "ACC")
             {
-                ViewBag.ISARV = 1; //财务部权限
+                ViewBag.ISACC = 1; //财务部权限
             }
             return base.View();
         }

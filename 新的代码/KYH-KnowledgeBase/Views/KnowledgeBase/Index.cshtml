@@ -15,7 +15,6 @@
     <script src="~/Scripts/jquery.cookie.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jQuery.print.js"></script>
-    @*<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>*@
     <script src="~/Scripts/AngularJS.js"></script>
     <style>
         .input-clear {
@@ -41,7 +40,7 @@
 
         .hh {
             margin-bottom: -14px;
-            margin-top:4px;
+            margin-top: 4px;
         }
 
         th {
@@ -288,8 +287,9 @@
                 else {
                   //删除功能
                     if (confirm("是否删除此条数据？")) {
-                        Del(num);
-                        location.reload();
+                        var appElement = document.querySelector('[ng-controller=myController]');　　//对应前端ng-
+                        var $scope = angular.element(appElement).scope();
+                        $scope.Del(num);
                         localStorage.setItem("KeyWord", KeyWord);
                         localStorage.setItem("TopicArea", TopicAreaStr);
                         localStorage.setItem("page", page);
@@ -321,25 +321,6 @@
             for (var k in o)
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }
-        //删除功能
-        function Del(QnAID) {
-            var QnAID = QnAID;
-            $.ajax({
-                type: "post",
-                dataType: 'json',
-                async: false,
-                url: "/KnowledgeBaseZSG/AddUpdateFunction?&num=4",
-                data: {"QnAID": QnAID},
-                success: function (result) {
-                    if (result.id>0) {
-                        alert("删除成功！");
-                    }
-                    else {
-                        alert("删除失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
-                    }
-                }
-            })
         }
         app.controller('myController', function ($scope, $http) {
             $scope.firstPage = @ViewBag.pageIndex;
@@ -441,6 +422,28 @@
                     }
                 }
             }
+            //删除功能
+            $scope.Del = function (QnAID) {
+                var QnAID = QnAID;
+                $.ajax({
+                    type: "post",
+                    dataType: 'json',
+                    async: false,
+                    url: "/KnowledgeBaseZSG/AddUpdateFunction?&num=4",
+                    data: { "QnAID": QnAID },
+                    success: function (result) {
+                        if (result.id > 0) {
+                            alert("删除成功！");
+                            var pageNum = $("#pageNum").val();
+                            $scope.sub(pageNum, 10);
+                        }
+                        else {
+                            alert("删除失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
+                        }
+                    }
+                })
+            }
+
         })
     </script>
     @*判断是否有修改权限*@

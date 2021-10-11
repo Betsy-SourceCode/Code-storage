@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using KYH_KnowledgeBase.Models;
 using KYH_KnowledgeBase.Models.PublicSqlMethods;
+using KYH_KnowledgeBase.Models.SqlMethods;
 using Newtonsoft.Json;
 
 namespace KYH_KnowledgeBase.Controllers
@@ -89,7 +90,6 @@ namespace KYH_KnowledgeBase.Controllers
                     qnA.CreateTime = new DateTime?(DateTime.Now);
                     qnA.ClickTimes = new short?(0);
                     this.db.QnA.Add(qnA);
-                    LogThread.ActionLog(UserID, DeptID, "新增了一条系统技术知识记录(作者名为" + qnA.Author + ")", "N", name);
                 }
                 if (num == 2)
                 {
@@ -103,7 +103,6 @@ namespace KYH_KnowledgeBase.Controllers
                         found.KeyWord = null;
                     }
                     this.db.Entry<QnA>(found).State = EntityState.Modified;
-                    LogThread.ActionLog(UserID, DeptID, "修改了一条系统技术知识记录(作者名为" + qnA.Author + ")", "U", name);
                 }
                 if (num == 3)
                 {
@@ -117,12 +116,25 @@ namespace KYH_KnowledgeBase.Controllers
                 if (num == 4 && found != null)
                 {
                     this.db.QnA.Remove(found);
-                    LogThread.ActionLog(UserID, DeptID, "删除了一条系统技术知识记录(作者名为" + found.Author + ")", "D", name);
                 }
                 a = this.db.SaveChanges();
                 if (a < 0)
                 {
                     return a.ToString();
+                }
+                if (num == 1) //新增
+                {
+                    //查最新的一条
+                    int NewQnAID = new GetIndex().GetLastQnAID();
+                    LogThread.ActionLog(UserID, DeptID, "新增了一条系统技术知识记录(作者名为" + qnA.Author + ")", "N", name, NewQnAID.ToString());
+                }
+                if (num == 2) //修改
+                {
+                    LogThread.ActionLog(UserID, DeptID, "修改了一条系统技术知识记录(作者名为" + qnA.Author + ")", "U", name, qnA.QnAID.ToString());
+                }
+                if (num == 4)//删除
+                {
+                    LogThread.ActionLog(UserID, DeptID, "删除了一条系统技术知识记录(作者名为" + found.Author + ")", "D", name, qnA.QnAID.ToString());
                 }
             }
             catch (Exception ex)
@@ -141,14 +153,14 @@ namespace KYH_KnowledgeBase.Controllers
         /// 打印
         /// </summary>
         /// <param name="Author"></param>
-        public void DaPrinting(string Author)
+        public void DaPrinting(string Author, string QnAID)
         {
             string UserID = base.Session["username"].ToString();
             if (UserID != null && UserID != "")
             {
                 string name = this.authority.SelectEName(UserID);
                 string DeptID = this.authority.SelectDeptID(UserID);
-                LogThread.ActionLog(UserID, DeptID, "打印了一条系统技术知识记录(作者名为" + Author + ")", "P", name);
+                LogThread.ActionLog(UserID, DeptID, "打印了一条系统技术知识记录(作者名为" + Author + ")", "P", name, QnAID);
             }
         }
 

@@ -21,7 +21,7 @@ namespace KYH_ProductPrice.Controllers
         }
 
         /// <summary>
-        /// 新增/整体修改
+        /// 新增/调价页面的新增
         /// </summary>
         /// <param name="CPP"></param>
         /// <param name="num"></param>
@@ -42,7 +42,7 @@ namespace KYH_ProductPrice.Controllers
                     CPP.EffType = "NW";
                     CPP.EffDetail = "新增信息记录";
                 }
-                if (num == 1)  //整体修改
+                if (num == 1)  //调价页面的新增
                 {
                     CustProductPriceRecords oldcpp = this.db.CustProductPriceRecords.FirstOrDefault((CustProductPriceRecords e) => e.CPSerial == CPP.CPSerial);
                     CPP.Ledger = oldcpp.Ledger;

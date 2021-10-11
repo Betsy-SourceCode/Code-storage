@@ -24,18 +24,20 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             try
             {
                 string queryIndexSql = @"SELECT Top(1) 0 as LPSerial,0.00 as LoadQty,'' as LoadUnit, B.FBillNo PONum, C.FNumber, F.FName Supplier, 
-                                        left(C.FName + ' ' + C.FModel + ' ' + C.{3},300) Material, CAST(A.FAuxQty AS DECIMAL(10,3)) POQty ,
-	                                        D.FName POUnit, E.FName POCurr, CAST(A.FAuxPrice AS DECIMAL(14,6)) UnitPrice, A.FDate AS NeedDate, A.FNote Remarks, 
-                                        CAST ((SELECT FExchangeRate FROM mis.{0}.dbo.t_ExchangeRateEntry WHERE (FCyTo = '1000')
-                                        AND FExChangeRateType = 1 AND (DATEDIFF(d, FBegDate, GETDATE()) >= 0) 
-                                        AND (DATEDIFF(d, GETDATE(), FEndDate) >= 0)) / (SELECT FExchangeRate FROM mis.{0}.dbo.t_ExchangeRateEntry 
-                                        WHERE (FCyTo = B.FCurrencyID) AND FExChangeRateType = 1 AND (DATEDIFF(d, FBegDate, GETDATE()) >= 0)  
-                                        AND (DATEDIFF(d, GETDATE(), FEndDate) >= 0)) AS DECIMAL(12,6)) USDRate
+                                        left(C.FName + ' ' + C.FModel + ' ' + isnull(C.{3},''),300) Material, CAST(A.FAuxQty AS DECIMAL(10,3)) POQty ,
+                                         D.FName POUnit, E.FName POCurr, CAST(A.FAuxPrice AS DECIMAL(14,6)) UnitPrice, A.FDate AS NeedDate, A.FNote Remarks, 
+                                        CAST ((SELECT (Select FExchangeRate from mis.AIS20181011094554.dbo.t_ExchangeRateEntry
+                                        where FCyTo = '1000' and FExchangeRateType =1 and datediff( D,FbegDate,getDate())>=0 
+                                        and (DateDiff( d,getdate(),FEndDate)>=0) ) / G.FExchangeRate  AS ExRate
+                                        FROM mis.AIS20181011094554.dbo.t_ExchangeRateEntry G
+                                        Where (select FNumber from mis.AIS20181011094554.dbo.t_Currency H
+                                        where H.FCurrencyID = G.FCyTo )= E.FNumber and  FExchangeRateType =1 
+                                        and DateDiff(D,FBegDate,GETDATE()) >= 0 and DateDiff(d,getdate(),FEndDate) >= 0 ) AS DECIMAL(12,6)) USDRate
                                         FROM mis.{0}.dbo.POOrderEntry A LEFT OUTER JOIN mis.{0}.dbo.POOrder B  ON A.FInterID = B.FInterID AND B.FCancellation = 'False'                                     
                                         LEFT OUTER JOIN mis.{0}.dbo.t_ICItem C ON C.FItemID = A.FItemID                                    
                                         LEFT OUTER JOIN mis.{0}.dbo.t_MeasureUnit D ON D.FMeasureUnitID = A.FUnitID                        
-	                                        LEFT OUTER JOIN mis.{0}.dbo.t_Currency E ON E.FCurrencyID = B.FCurrencyID                            
- 	                                        LEFT OUTER JOIN mis.{0}.dbo.t_Supplier F ON F.FItemID = B.FSupplyID          
+                                         LEFT OUTER JOIN mis.{0}.dbo.t_Currency E ON E.FCurrencyID = B.FCurrencyID                            
+                                          LEFT OUTER JOIN mis.{0}.dbo.t_Supplier F ON F.FItemID = B.FSupplyID          
                                         WHERE  (B.FBillNo = '{1}') AND C.FNumber = '{2}'
                                         ORDER by FAuxQty DESC";
                 queryIndexSql = string.Format(queryIndexSql, new object[]
@@ -195,13 +197,18 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
         public bool UpdateData(string username, LoadingListAddPOdata_Temp List)
         {
             bool result;
-            string Remarks=List.Remarks;
+            string Remarks = List.Remarks;
+            if (Remarks==null)
+            {
+                Remarks = "";
+            }
             try
             {
-                if (List.Remarks.Length >= 80 &&List.Remarks!=null)
+                if (Remarks.Length >= 80 && Remarks!="")
                 {
                     Remarks = List.Remarks.Substring(0, 80);
                 }
+                
                 string sql = "update  dbo.LoadingListAddPOdata_Temp_" + username + "    SET Supplier ='{0}',Material='{1}',POQty ={2},POUnit ='{3}',POCurr ='{4}',UnitPrice ={5},NeedDate ='{6}',Remarks = '{7}',USDRate={8} WHERE LPSerial=" + List.LPSerial.ToString();
                 if (List.POQty == null && List.UnitPrice == null && List.USDRate == null)
                 {

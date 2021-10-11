@@ -66,7 +66,7 @@
         }
         //修改备注
         function Remarks() {
-            if ('@ViewBag.ISARV' == 1) {
+            if ('@ViewBag.ISACC' == 1) {
                 $("#RemarksFD_label").css("display", "none");
                 $("#Remarks_FD").css("display", "block");
                 QJRemarks = 1;            //财务部
@@ -205,7 +205,7 @@
                     作&nbsp;&nbsp;废
                 </button>
             }
-            @if (@ViewBag.Cancel == true && (@ViewBag.ISARV == 1 || @ViewBag.GuanLi == 1))
+            @if (@ViewBag.Cancel == true && (@ViewBag.ISACC == 1 || @ViewBag.GuanLi == 1))
             {
                 <button id="ChangeRemarks_button" type="button" class="btn-lg btn-primary form-group" onclick="Remarks()">
                     修&nbsp;&nbsp;改&nbsp;&nbsp;备&nbsp;&nbsp;注

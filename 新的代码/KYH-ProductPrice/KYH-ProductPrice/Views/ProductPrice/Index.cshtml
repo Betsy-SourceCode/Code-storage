@@ -296,42 +296,42 @@
                         <th scope="col" class="default-th" style="width:7%;text-align:right"> 单价</th>
                     </tr>*@
                 <tr>
-                    <th rowspan="2" style="width:5%;text-align:center">日期<br />Date</th>
-                    <th rowspan="2" style="width:4%;text-align:center">业务员<br />Sales</th>
-                    <th rowspan="2" style="width:4%;text-align:center">
+                    <th rowspan="2" style="width:7%;text-align:center">日期<br />Date</th>
+                    <th rowspan="2" style="width:6%;text-align:center">业务员<br />Sales</th>
+                    <th rowspan="2" style="width:3%;text-align:center">
                         <img class="pximg" id="Ledger" src="/ProductPrice/Scripts/图标/Default.png" style="float:right;width:18px;cursor: pointer" ng-click="CheckImg('Ledger')" />
                         账套<br />Ledger
                     </th>
-                    <th rowspan="2" style="width:9%;text-align:left">
+                    <th rowspan="2" style="width:10%;text-align:left">
                         <img class="pximg" id="CustomerDisplayNames" src="/ProductPrice/Scripts/图标/Default.png" style="float:right;width:18px;cursor: pointer" ng-click="CheckImg('CustomerDisplayNames')" />
                         客户<br />Customer
                     </th>
-                    <th rowspan="2" style="width:7%;text-align:center">
+                    <th rowspan="2" style="width:8%;text-align:center">
                         <img class="pximg" id="FNumber" src="/ProductPrice/Scripts/图标/Default.png" style="float:right;width:18px;cursor: pointer" ng-click="CheckImg('FNumber')" />
                         GIP<br />产品号<br />Product Code
                     </th>
-                    <th colspan="2" style="width:22%;text-align:center">客户产品<br />Customer's Product</th>
-                    <th colspan="2" style="width:10%;text-align:center">现价&nbsp;&nbsp;&nbsp;Previous Price</th>
-                    <th colspan="2" style="width:10%;text-align:center">更新价&nbsp;&nbsp;&nbsp;Updated Price</th>
+                    <th colspan="2" style="width:19%;text-align:center">客户产品<br />Customer's Product</th>
+                    <th colspan="2" style="width:8%;text-align:center">现价&nbsp;&nbsp;&nbsp;Previous Price</th>
+                    <th colspan="2" style="width:8%;text-align:center">更新价&nbsp;&nbsp;&nbsp;Updated Price</th>
                     <th rowspan="2" style="width:6%;text-align:left">生效类型<br /> Effective Type</th>
                     <th rowspan="2" style="width:8%;text-align:left">
                         <img class="pximg" id="EffDetail" src="/ProductPrice/Scripts/图标/Default.png" style="float:right;width:18px;cursor: pointer" ng-click="CheckImg('EffDetail')" />
                         生效条件<br />  Efffective Details
                     </th>
                     <th rowspan="2" style="width:6%;text-align:left">销售备注<br />  MD's Remarks</th>
-                    <th rowspan="2" style="width:5%;text-align:left">财务笔记<br />   Finance's Notes</th>
+                    <th rowspan="2" style="width:6%;text-align:left">财务笔记<br />   Finance's Notes</th>
                     @if (@ViewBag.Add == 1 || @ViewBag.GuanLi == 1)
                     {
-                        <th rowspan="2" style="width:4%;text-align:center">管理<br />   Ctrl</th>
+                        <th rowspan="2" style="width:5%;text-align:center">管理<br />   Ctrl</th>
                     }
                 </tr>
                 <tr>
                     <th style="width:6%;text-align:left">代码&nbsp;&nbsp;&nbsp;Code</th>
-                    <th style="width:16%;text-align:left">描述&nbsp;&nbsp;&nbsp;Description</th>
+                    <th style="width:13%;text-align:left">描述&nbsp;&nbsp;&nbsp;Description</th>
                     <th style="width:3%;text-align:center">货币Curr.</th>
-                    <th style="width:7%;text-align:right">单价&nbsp;&nbsp;&nbsp; Unit</th>
+                    <th style="width:5%;text-align:right">单价&nbsp;&nbsp;&nbsp; Unit</th>
                     <th style="width:3%;text-align:center">货币Curr.</th>
-                    <th style="width:7%;text-align:right">单价&nbsp;&nbsp;&nbsp; Unit</th>
+                    <th style="width:5%;text-align:right">单价&nbsp;&nbsp;&nbsp; Unit</th>
                 </tr>
             </thead>
             <tbody id="OAContent">
@@ -350,7 +350,7 @@
                     <td align="center">{{i.UpdCurr}}</td>
                     <td ng-if="!i.Cancel" align="right"><s>{{i.UpdUnit}}</s></td>
                     <td ng-if="i.Cancel" align="right">{{i.UpdUnit}}</td>
-                    <td align="left">{{i.Name_EN}}</td>
+                    <td align="left">{{i.EffType}}</td>
                     <td align="left">{{i.EffDetail}}</td>
                     <td align="left">{{i.Remarks_MD}}</td>
                     <td align="left">{{i.Remarks_FD}}</td>

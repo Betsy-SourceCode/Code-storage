@@ -23,11 +23,12 @@ namespace KYH_JigFixture.Controllers
         /// <param name="pageSize">显示的行数</param>
         /// <param name="pageRow">总行数</param>
         /// <returns></returns>
-        public ActionResult Index(string userid, string OAFlow_Num, string K3PO_Num, string Buyer, string Start_Date, string End_Date, string Mat_Code, string Mat_Name, string Status, int pageIndex = 1, int pageSize = 10, int pageRow = 0)
+        public ActionResult Index(string userid, string OAFlow_Num, string K3PO_Num, string Buyer, string Start_Date, string End_Date, string Mat_Code, string Mat_Name, string Status, int pageIndex = 1, int pageSize = 15, int pageRow = 0)
         {
             try
             {
                 userid = "444";
+                Session["userid"] = userid;
                 ViewBag.userid = userid;
                 if (userid == null)
                 {

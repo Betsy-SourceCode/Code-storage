@@ -166,7 +166,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
         fileReader.readAsBinaryString(files[0]);
     });
     $scope.Startbtn = function (urlcanshu) {
-        $("#myModal").modal();
+        $("#myModal").modal({ backdrop: 'static', keyboard: false });
         yy = 0;
         dstime = setInterval(function () {
             if (yy < 99) {

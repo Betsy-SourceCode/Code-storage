@@ -45,7 +45,7 @@ namespace KYH_JigFixture.Controllers
                     DbEntityEntry<Tools_Acquire_Trace> entry = this.db.Entry<Tools_Acquire_Trace>(TAT);
                     entry.State = EntityState.Modified;
                     string User = jigFixtureController.GetUser(userid);
-                    LogThread.ActionLog(User, DeptID, "修改了原采购单号(" + oldTAT.K3PO_Num + ")", "U", name);
+                    LogThread.ActionLog(User, DeptID, "修改了原采购单号(" + oldTAT.K3PO_Num + ")", "U", name,TAT.FID);
                 }
                 a = this.db.SaveChanges();
             }
@@ -94,7 +94,7 @@ namespace KYH_JigFixture.Controllers
 					entry2.Property<DateTime?>((Tools_Acquire_Trace e) => e.Prop_Arr_Date).IsModified = true;
 					entry2.Property<int>((Tools_Acquire_Trace e) => e.UpdateNumber).IsModified = true;
 					string User = jigFixtureController.GetUser(userid);
-					LogThread.ActionLog(User, DeptID, "修改了原交期(" + found.Prop_Arr_Date.ToString() + ")", "U", name);
+					LogThread.ActionLog(User, DeptID, "修改了原交期(" + found.Prop_Arr_Date.ToString() + ")", "U", name, found.FID);
 				}
 				if (num == 3)
 				{
@@ -110,7 +110,7 @@ namespace KYH_JigFixture.Controllers
 					entry3.Property<DateTime?>((Tools_Acquire_Trace e) => e.K3Recv_Date).IsModified = true;
 					entry3.Property<int>((Tools_Acquire_Trace e) => e.UpdateNumber).IsModified = true;
 					string User2 = jigFixtureController.GetUser(userid);
-					LogThread.ActionLog(User2, DeptID, "修改了原入库日期(" + found.K3Recv_Date.ToString() + ")", "U", name);
+					LogThread.ActionLog(User2, DeptID, "修改了原入库日期(" + found.K3Recv_Date.ToString() + ")", "U", name,found.FID);
 				}
 				a = this.db.SaveChanges();
 			}

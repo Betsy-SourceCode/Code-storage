@@ -107,16 +107,17 @@
         }
     </style>
     @*打印*@
-    <script>
+<script>
         function DayinGN() {
             checkhHtml5();   //判断浏览器是否支持h5
 
         }
         function checkhHtml5() {
             window.print();
-             var Author ='@ViewBag.AllCustomer.Author';
+            var Author = '@ViewBag.AllCustomer.Author';
+            var QnAID='@ViewBag.AllCustomer.QnAID';
               $.ajax({
-                  url: "/KnowledgeBaseZSG/DaPrinting?Author="+Author,
+                  url: "/KnowledgeBaseZSG/DaPrinting?Author=" + Author + "&QnAID"+ QnAID,
                 type: 'POST',
                 dataType: 'json'
             })
@@ -127,7 +128,7 @@
             //}
             //else { window.print(); } //不支持HTML5就直接调用打印
         }
-    </script>
+</script>
     @*创建画布/板块*@
     <script>
         $(function () {

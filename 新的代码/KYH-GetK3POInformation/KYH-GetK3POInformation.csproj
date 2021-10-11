@@ -234,7 +234,7 @@
     <Content Include="Scripts\图标\ImportLoadingList.png" />
     <Content Include="Scripts\图标\StartK3sPOData-Hover.png" />
     <Content Include="Scripts\图标\StartK3sPOData.png" />
-    <Content Include="Scripts\图标\UserGuide.gif" />
+    <Content Include="Scripts\图标\UserGuideRTF.gif" />
     <Content Include="Scripts\导入\xlsx.core.min.js" />
     <Content Include="Scripts\导出\excel-gen.js" />
     <Content Include="Scripts\导出\excellentexport.js" />
@@ -243,6 +243,7 @@
     <Content Include="Scripts\导出\jszip.min.js" />
     <Content Include="Scripts\导出\tableExport.min.js" />
     <Content Include="Scripts\Index.js" />
+    <Content Include="Scripts\图标\UserGuidePDF.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

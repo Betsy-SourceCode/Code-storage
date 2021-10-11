@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Web.Mvc;
 using KYH_GetK3POInformation.Models;
 using KYH_GetK3POInformation.Models.PublicSqlMethods;
 using KYH_GetK3POInformation.Models.SqlMethods;
+using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;

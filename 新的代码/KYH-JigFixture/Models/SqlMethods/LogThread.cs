@@ -81,7 +81,7 @@ namespace Customer.Models.PublicSqlMethods
         /// </summary>
         /// <param name="canshu"></param>
         /// <param name="ActionType"></param>
-        public static void ActionLog(string UserID, string DeptID, string canshu, string ActionType, string name)
+        public static void ActionLog(string UserID, string DeptID, string canshu, string ActionType, string name,int TableKey)
         {
             Thread th = new Thread(new ThreadStart(new LogThread
             {
@@ -92,7 +92,7 @@ namespace Customer.Models.PublicSqlMethods
                     FunctionID = 144,
                     ActionType = ActionType,
                     TableName = "Tools_Acquire_Trace",
-                    TableKey = "FID",
+                    TableKey = TableKey.ToString(),
                     Description = name + canshu
                 }
             }.GetActionLogAdd));

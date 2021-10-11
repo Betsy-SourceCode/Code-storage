@@ -33,7 +33,8 @@ namespace KYH_ProductPrice.Models.PublicSqlMethods
         /// <returns></returns>
         public string GetDepartmentSql(string EmpID, int num)
         {
-            Others list = this.db.Database.SqlQuery<Others>(@"select UpperDept + D.DeptID AS Text,d.DeptCode AS Value from Department d,Employee e where d.deptid=e.deptid and EmpID=@EmpID", new object[]
+            Others list = this.db.Database.SqlQuery<Others>(@"select UpperDept + D.DeptID AS Text,d.DeptCode AS Value from Department d,
+                                Employee e where d.deptid=e.deptid and EmpID=@EmpID", new object[]
             {
                 new SqlParameter("@EmpID", EmpID)
             }).FirstOrDefault<Others>();

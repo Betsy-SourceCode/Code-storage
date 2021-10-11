@@ -66,7 +66,7 @@ namespace KYH_KnowledgeBase.Models.PublicSqlMethods
             return result;
         }
 
-        public static void ActionLog(string UserID, string DeptID, string canshu, string ActionType, string name)
+        public static void ActionLog(string UserID, string DeptID, string canshu, string ActionType, string name,string TableKey)
         {
             new Thread(new ThreadStart(new LogThread
             {
@@ -77,7 +77,7 @@ namespace KYH_KnowledgeBase.Models.PublicSqlMethods
                     FunctionID = 136,
                     ActionType = ActionType,
                     TableName = "QnA",
-                    TableKey = "QnAID",
+                    TableKey = TableKey,
                     Description = name + canshu
                 }
             }.GetActionLogAdd)).Start();
