@@ -15,7 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-JigFixture", "KYH-JigFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-GetK3POInformation", "KYH-GetK3POInformation\KYH-GetK3POInformation.csproj", "{356D00B0-70BC-44FD-ADA1-DB7631A82CAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-ProductPrice", "KYH-ProductPrice\KYH-ProductPrice\KYH-ProductPrice.csproj", "{AABD0967-0448-4932-846B-E2F8BEB654AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS-FreightArrangement", "MIS-FreightArrangement\MIS-FreightArrangement.csproj", "{BF938859-527E-4281-BE65-6554AAEADCBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-ProductPrice", "KYH-ProductPrice\KYH-ProductPrice\KYH-ProductPrice\KYH-ProductPrice.csproj", "{AABD0967-0448-4932-846B-E2F8BEB654AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{356D00B0-70BC-44FD-ADA1-DB7631A82CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{356D00B0-70BC-44FD-ADA1-DB7631A82CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{356D00B0-70BC-44FD-ADA1-DB7631A82CAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF938859-527E-4281-BE65-6554AAEADCBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF938859-527E-4281-BE65-6554AAEADCBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF938859-527E-4281-BE65-6554AAEADCBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF938859-527E-4281-BE65-6554AAEADCBF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AABD0967-0448-4932-846B-E2F8BEB654AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,7 +62,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7C7328EB-075D-401C-B40D-038A1456432F}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {7C7328EB-075D-401C-B40D-038A1456432F}
 	EndGlobalSection
 EndGlobal
