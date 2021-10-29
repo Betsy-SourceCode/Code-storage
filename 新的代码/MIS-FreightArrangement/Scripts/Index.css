@@ -6,6 +6,40 @@
     }
 
 table {
+    border-collapse: collapse;
+    color: #708090;
+}
+
+
+table td, th {
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-left: 1px solid rgba(112,128,144,0.5);
+}
+
+#GridView > thead > tr > th {
+    background-color: rgba(128,128,128,0.5);
+    height: 40px;
+}
+
+a, a:hover {
+    color: #708090;
+    text-decoration: none;
+}
+
+a:hover {
+    overflow: hidden;
+    white-space: initial;
+}
+
+#OAContent td {
+    padding: 6px 6px 6px 10px;
+}
+
+
+
+
+table {
     font-size: 13px;
 }
 th {
@@ -33,7 +67,7 @@ body {
 }
 
 .panel-heading {
-    padding:5px 15px;
+    padding:5px 0px;
     font-size: 17px;
     font-weight: bold;
 }

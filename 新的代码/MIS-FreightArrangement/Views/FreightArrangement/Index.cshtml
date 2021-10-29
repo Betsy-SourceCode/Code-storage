@@ -11,13 +11,16 @@
     <title>货运安排列表</title>
     <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="~/Scripts/分页/jquery.sPage.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/AngularJS.js"></script>
     <script src="~/Scripts/WdatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/分页/jquery.sPage.js"></script>
     <script src="~/Scripts/Index.js"></script>
+    <script src="~/Scripts/导出/jquery.table2excel.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.5.1/layer.js"></script>
 </head>
 <body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
     <div id="mydiv">
@@ -25,65 +28,117 @@
             <span id="Title">货 运 安 排 列 表</span>
         </h1>
         <!--搜索条件栏-->
-        <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 85%;margin:0px auto">
-            <div class="panel-heading col-sm-3">
-                <label style="font-weight:bold">走货日期：</label>
-                <input id="Start_Date" name="FindDate" type="text" class="Wdate form-control" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'End_Date\')}'});" value="" style="cursor:pointer;height:34px;text-align:center;background-color:white;width:50%" readonly="readonly" />
-                <label style="font-weight: bold;">--</label>
-            </div>
-            <div class="panel-heading col-sm-2">
-                <input id="End_Date" name="EndTime" type="text" class="Wdate form-control"
-                       value="" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}'}); " style="cursor:pointer;height:34px;text-align:center;background-color:white;width:80%" readonly="readonly" title="默认结束日期为当天！" />
+        <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 80%;margin:0px auto">
+            <div>
+                <div class="panel-heading col-sm-5">
+                    走货日期：
+                    <input id="Start_Date" name="FindDate" type="text" class="Wdate  form-control" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'End_Date\')}'});" value="@ViewBag.date" style=" cursor: pointer; height: 34px; text-align: center; background-color: white; width: 32%" readonly="readonly" />
+                    --
+                    <input id="End_Date" name="EndTime" type="text" class="Wdate form-control"
+                           value="@ViewBag.today" onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}'}); " style="cursor:pointer;height:34px;text-align:center;background-color:white;width:32%" readonly="readonly" />
+                </div>
             </div>
             <div class="panel-heading col-sm-3">
                 <div id="zhfs" style="display:initial">
-                    走货方式：<select name="zhfs" class="form-control" style="width:50%;height:34px">
+                    走货方式：<select id="fs" name="zhfs" class="form-control" style="width:56%;height:34px">
+                        <option selected="selected" value="" style="text-align:center">--不限--</option>
                     </select>
                 </div>
             </div>
             <div class="panel-heading col-sm-3">
                 <div id="zhdd" style="display:initial">
-                    走货地点：<select name="zhdd" class="form-control" style="width:50%;height:34px">
+                    走货地点：<select id="dd" name="zhdd" class="form-control" style="width:65%;height:34px">
+                        <option selected="selected" value="" style="text-align:center">--不限--</option>
                     </select>
                 </div>
+
             </div>
             <div class="panel-heading col-sm-5">
-                关键字：<input name="gjz" type="text" id="gjz" class="form-control input-content" style="width:82%" placeholder="模糊查找客户名称及标题及发票号" />
+                关键字：<input name="gjz" type="text" id="gjz" class="form-control input-content" style="width:71%" placeholder='模糊查找"客户名称"及"标题"及"发票号"' />
                 <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
                    style="pointer-events: auto;"
                    onclick="$('#gjz').val('')"></a>
             </div>
             <div class="panel-heading col-sm-3">
-                收货地点：<input name="shdd" type="text" id="shdd" class="form-control input-content" style="width:50%" />
+                收货地点：<input name="shdd" type="text" id="shdd" class="form-control input-content" style="width:56%" placeholder='模糊查找"收货地点"' />
                 <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
                    style="pointer-events: auto;"
                    onclick="$('#shdd').val('')"></a>
             </div>
-            <div class="panel-heading col-sm-3">
-                状态：<select name="zhfs" id="zhdd" class="form-control" style="width:60%;height:34px">
+            <div class="panel-heading col-sm-4">
+                状态：<select name="zt" id="zt" class="form-control" style="width:56%;height:34px">
+                    <option selected="selected" value="" style="text-align:center">--不限--</option>
                     <option value="C">结案</option>
                     <option value="N">维护</option>
                     <option value="S">作废</option>
                 </select>
+                <div style="position:relative;float:right;top:-30px;right:20px">
+                    <input type="button" name="btnSearch" style="position:absolute;left:-60px" class="form-control btn-primary" value="搜索" ng-click="Search(0,'','')" />
+                    <a name="btnDaoChu" href="#" class="form-control btn-primary" id="anchorNewApi-xls-array" style="position: absolute;width:105px" ng-click="DaoChu(1,'xls', '@ViewBag.username' )">导出为Excel</a>
+                </div>
+
             </div>
         </form>
         <!-- 表格 -->
-        <table id="GridView" class="table table-bordered table-hover my_table" style="width:85%;margin:0px auto;margin-top:4%;margin-bottom:1%">
+        <table id="GridView" class="table-striped tab-content table-hover" style="width: 95%; margin: 0px auto; margin-top: 4%; margin-bottom: 1%;">
             <thead>
                 <tr>
-                    <th style="width:5%;text-align:center">Status<br />状态</th>
-                    <th style="width:15%;text-align:left">Customer Name<br />客户简称</th>
-                    <th style="width:30%; text-align:left">Project Title<br />标题</th>
-                    <th style="width:7%;text-align:center">DeliveryDate<br />走货日期</th>
-                    <th style="width:6%;text-align:center">LoadingPort<br />走货地点</th>
-                    <th style="width:5%;text-align:center">DeliverMode<br />走货方式</th>
-                    <th style="width:10%;text-align:left">Forwarder<br />运输公司</th>
-                    <th style="width:12%;text-align:left">Destination<br />收据地点</th>
-                    <th style="width:10%;text-align:left">Invoice<br />发票号</th>
+                    <th style="width:3%;">Status<br />状态</th>
+                    <th style="width:15%;">Customer Name<br />客户简称</th>
+                    <th style="width:26%;">Project Title<br />标题</th>
+                    <th style="width:5%;">DeliveryDate<br />走货日期</th>
+                    <th style="width:4%;">LoadingPort<br />走货地点</th>
+                    <th style="width:4%;">DeliverMode<br />走货方式</th>
+                    <th style="width:13%;">Forwarder<br />运输公司</th>
+                    <th style="width:19%;">Destination<br />收据地点</th>
+                    <th style="width:11%;">Invoice<br />发票号</th>
                 </tr>
             </thead>
             <tbody id="OAContent">
-                <tr ng-repeat="i in List track by $index">
+                <tr ng-repeat="i in List track by $index" ng-dblclick="TOWlgj(i.LAId,i.tableName)" style="box-decoration-break: slice; z-index: 100; cursor: pointer">
+                    @*<td style="width: 5%; text-align: left;display:none">{{i.tableName}}</td>*@
+                    <td style="text-align:center">{{i.Status}}</td>
+                    <td ng-if="i.Customer!= null && i.Customer.length >=28" style="text-align: left">
+                        <a title="{{i.Customer}}">{{i.Customer.substring(0,28) + "..."}}</ a>
+                    </td>
+                    <td ng-if="i.Customer== null || i.Customer.length<28" style=" text-align: left">{{i.Customer}} </td>
+                    <td style="text-align: left">{{i.Project}}</td>
+                    <td style="text-align:center">{{i.DeliverDate}}</td>
+                    <td style="text-align:left">{{i.LoadingPort}}</td>
+                    <td style=" text-align: left">{{i.TransWay}}</td>
+                    <td style=" text-align: left">{{i.TransCo}}</td>
+                    <td ng-if="i.Destination!= null && i.Destination.length >=20" style="text-align: left">
+                        <a title="{{i.Destination}}">{{i.Destination.substring(0,20) + "..."}}</ a>
+                    </td>
+                    <td ng-if="i.Destination== null || i.Destination.length<20" style=" text-align: left">{{i.Destination}} </td>
+                    <td ng-if="i.Invoice!= null && i.Invoice.length >=20" style=" text-align: left">
+                        <a title="{{i.Invoice}}">{{i.Invoice.substring(0,20) + "..."}}</ a>
+                    </td>
+                    <td ng-if="i.Invoice== null || i.Invoice.length<20" style="text-align: left">{{i.Invoice}} </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 分页 -->
+        <div style="width:85%;text-align: right;margin-left: 7%;" id="myPage"></div>
+        @*导出专用*@
+        <table id="DaoChuGridView" class="tablebody table-striped tab-content table-hover" style="display:none;width: 95%; margin: 0px auto; margin-top: 4%; margin-bottom: 1%; vertical-align: middle">
+            <thead>
+                <tr>
+                    <th style="width:5%;">Status<br />状态</th>
+                    <th style="width:15%;">Customer Name<br />客户简称</th>
+                    <th style="width:30%;">Project Title<br />标题</th>
+                    <th style="width:7%;">DeliveryDate<br />走货日期</th>
+                    <th style="width:6%;">LoadingPort<br />走货地点</th>
+                    <th style="width:5%;">DeliverMode<br />走货方式</th>
+                    <th style="width:10%;">Forwarder<br />运输公司</th>
+                    <th style="width:12%;">Destination<br />收据地点</th>
+                    <th style="width:10%;">Invoice<br />发票号</th>
+                </tr>
+            </thead>
+            <tbody id="OAContent1">
+                <tr ng-repeat="i in DaoChuList track by $index" style="box-decoration-break:slice;z-index:100">
+
                     <td style="width:5%;text-align:center">{{i.Status}}</td>
                     <td style="width: 15%; text-align: left">{{i.Customer}}</td>
                     <td style="width: 30%; text-align: left">{{i.Project}}</td>
@@ -91,13 +146,20 @@
                     <td style="width:6%;text-align:left">{{i.LoadingPort}}</td>
                     <td style="width: 5%; text-align: left">{{i.TransWay}}</td>
                     <td style="width: 10%; text-align: left">{{i.TransCo}}</td>
-                    <td style="width: 12%; text-align: left">{{i.Destination}}</td>
+                    <td style="width: 12%; text-align: left">{{i.Destination}} </td>
                     <td style="width:10%;text-align:center">{{i.Invoice}}</td>
                 </tr>
             </tbody>
         </table>
-        <!-- 分页 -->
-        <div style="width:85%;text-align: right;margin-left: 7%;" id="myPage"></div>
+        @*遮罩层*@
+        <div class="modal" id="myModal" style="display:none" data-backdrop="static">
+            @*加载进度条*@
+            <div id="jdt" style="height:100px">
+                <div style="width:200px;margin:18% auto;border-radius:10px;background-color:white">
+                    <img src="~/Scripts/Images/加载.gif" style="margin:0px 25%;width: 100px; height: 100px;" />
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

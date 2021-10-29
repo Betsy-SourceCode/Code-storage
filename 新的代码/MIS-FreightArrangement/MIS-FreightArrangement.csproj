@@ -52,6 +52,10 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\项目\KYH-ProductPrice\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -107,9 +111,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -132,23 +133,23 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\FreightArrangement.Context.cs">
+    <Compile Include="Models\FreightArrangementIndex.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FreightArrangement.Context.tt</DependentUpon>
+      <DependentUpon>FreightArrangementIndex.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\FreightArrangement.cs">
+    <Compile Include="Models\FreightArrangementIndex.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FreightArrangement.tt</DependentUpon>
+      <DependentUpon>FreightArrangementIndex.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\FreightArrangement.Designer.cs">
+    <Compile Include="Models\FreightArrangementIndex.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FreightArrangement.edmx</DependentUpon>
+      <DependentUpon>FreightArrangementIndex.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\FreightArrangementIndex_Result.cs">
-      <DependentUpon>FreightArrangement.tt</DependentUpon>
+      <DependentUpon>FreightArrangementIndex.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GetIndex.cs" />
     <Compile Include="Models\PublicSqlMethods\Authority.cs" />
@@ -166,21 +167,22 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\FreightArrangement.Context.tt">
+    <Content Include="Models\FreightArrangementIndex.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FreightArrangement.edmx</DependentUpon>
-      <LastGenOutput>FreightArrangement.Context.cs</LastGenOutput>
+      <DependentUpon>FreightArrangementIndex.edmx</DependentUpon>
+      <LastGenOutput>FreightArrangementIndex.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\FreightArrangement.tt">
+    <Content Include="Models\FreightArrangementIndex.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FreightArrangement.edmx</DependentUpon>
-      <LastGenOutput>FreightArrangement.cs</LastGenOutput>
+      <DependentUpon>FreightArrangementIndex.edmx</DependentUpon>
+      <LastGenOutput>FreightArrangementIndex.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\AngularJS.js" />
     <Content Include="Scripts\bootstrap-theme.min.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Images\加载.gif" />
     <Content Include="Scripts\Index.css" />
     <Content Include="Scripts\Index.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
@@ -201,8 +203,10 @@
     <Content Include="Scripts\分页\jquery.sPage.js" />
     <Content Include="Scripts\导出\demo.page.js" />
     <Content Include="Scripts\导出\excel-gen.js" />
+    <Content Include="Scripts\导出\excellentexport.js" />
     <Content Include="Scripts\导出\FileSaver.js" />
     <Content Include="Scripts\导出\FileSaver.min.js" />
+    <Content Include="Scripts\导出\jquery.table2excel.js" />
     <Content Include="Scripts\导出\jszip.min.js" />
     <Content Include="Scripts\导出\tableExport.min.js" />
     <Content Include="Web.config" />
@@ -226,12 +230,12 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <EntityDeploy Include="Models\FreightArrangement.edmx">
+    <EntityDeploy Include="Models\FreightArrangementIndex.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>FreightArrangement.Designer.cs</LastGenOutput>
+      <LastGenOutput>FreightArrangementIndex.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\FreightArrangement.edmx.diagram">
-      <DependentUpon>FreightArrangement.edmx</DependentUpon>
+    <Content Include="Models\FreightArrangementIndex.edmx.diagram">
+      <DependentUpon>FreightArrangementIndex.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
     <Content Include="Views\FreightArrangement\Index.cshtml" />
@@ -267,12 +271,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

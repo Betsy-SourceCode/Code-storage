@@ -8,16 +8,16 @@ namespace MIS_FreightArrangement.Models
 {
     public class GetIndex
     {
-        WebStationEntitiess db = new WebStationEntitiess();
+        WebStationEntities db = new WebStationEntities();
         /// <summary>
         /// 查询首页列表SQL
         /// </summary>
         /// <returns></returns>
-        public List<FreightArrangementIndex_Result> GetIndexListSql()
+        public List<FreightArrangementIndex_Result> GetIndexListSql(string Start_Date, string End_Date, string zhfs, string zhdd, string gjz, string shdd, string zt)
         {
             try
             {
-                string sql = @"exec [FreightArrangementIndex] '2000-01-01','2022-07-26','s','EG','','','s'";
+                string sql = @"exec [FreightArrangementIndex] '"+ Start_Date + "','"+ End_Date + "','" + gjz+"','"+shdd+"','"+zhdd+"','"+zhfs+"','"+zt+"'";
                 List<FreightArrangementIndex_Result> FreightArrangementList = db.Database.SqlQuery<FreightArrangementIndex_Result>(sql).ToList();
                 return FreightArrangementList;
             }

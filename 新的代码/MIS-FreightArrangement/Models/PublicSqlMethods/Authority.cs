@@ -7,7 +7,7 @@ namespace MIS_FreightArrangement.Models.PublicSqlMethods
 	// Token: 0x0200000B RID: 11
 	public class Authority
 	{
-		private WebStationEntitiess db = new WebStationEntitiess();
+		private WebStationEntities db = new WebStationEntities();
 		/// <summary>
 		/// 根据员工号获得三字代码SQL
 		/// </summary>

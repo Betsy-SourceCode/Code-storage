@@ -22,5 +22,7 @@ namespace MIS_FreightArrangement.Models
         public string LoadingPort { get; set; }
         public string Destination { get; set; }
         public string Invoice { get; set; }
+        public int LAId { get; set; }
+        public string tableName { get; set; }
     }
 }
