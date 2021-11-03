@@ -2,7 +2,7 @@
 
 app.controller('mycontroller', function ($scope, $timeout) {
 
-
+    
     $scope.IndexList = function (pageIndex) {
 
         var Start_Date = $("#Start_Date").val(); /*走货日期*/
@@ -12,65 +12,65 @@ app.controller('mycontroller', function ($scope, $timeout) {
         var gjz = $("#gjz").val();/*关键字*/
         var shdd = $("#shdd").val();/*收货地点*/
         var zt = $("#zt").val();/*状态*/
-        //分页
+            //分页
 
-        $.ajax({
-            url: "/FreightArrangement/FreightArrangement/IndexData",
-            data: {
-                "pageIndex": pageIndex,
-                "Start_Date": Start_Date,
-                "End_Date": End_Date,
-                "zhfs": zhfs,
-                "zhdd": zhdd,
-                "gjz": gjz,
-                "shdd": shdd,
-                "zt": zt
-            },
-            type: "POST",
-            dataType: "json",
-            success: function (data) {
+            $.ajax({
+                url: "/NEWFreightArrangement//FreightArrangement/IndexData",
+                data: {
+                    "pageIndex": pageIndex,
+                    "Start_Date": Start_Date,
+                    "End_Date": End_Date,
+                    "zhfs": zhfs,
+                    "zhdd": zhdd,
+                    "gjz": gjz,
+                    "shdd": shdd,
+                    "zt": zt
+                },
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
 
 
-                var list = data.Data;
-                $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
-                if (list.length == 0) {
-                    //第一种;
-                    $("#OAContent").append("<tr id='notfindlist'><td colspan='9' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
-                    $scope.List = null;
-                    $scope.$apply();
-                    $("#myPage").css({ "display": "none" }); //隐藏分页
+                    var list = data.Data;
+                    $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
+                    if (list.length == 0) {
+                        //第一种;
+                        $("#OAContent").append("<tr id='notfindlist'><td colspan='9' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
+                        $scope.List = null;
+                        $scope.$apply();
+                        $("#myPage").css({ "display": "none" }); //隐藏分页
+                    }
+                    else {
+                        $("#myPage").css({ "display": "block" });
+                        //$.each(list, function (key, value) {
+                        //    var date = new Date(value.DeliverDate);
+                        //    value.DeliverDate = date.Format("yyyy-MM-dd");  //日期格式化
+                        //})
+                        $scope.List = list;
+
+                        $scope.$apply();
+                        //console.log(JSON.stringify(res.Data.IndexList));
+                        $("#myPage").sPage({
+                            page: pageIndex,//当前页码，必填
+                            total: data.count,//数据总条数，必填
+                            pageSize: 15,//每页显示多少条数据，默认10条
+                            totalTxt: "每页15条，共" + data.count + "笔记录",//数据总条数文字描述，{total}为占位符，默认"共{total}条"
+                            showTotal: true,//是否显示总条数，默认关闭：false
+                            showSkip: true,//是否显示跳页，默认关闭：false
+                            showPN: true,//是否显示上下翻页，默认开启：true
+                            prevPage: "上一页",//上翻页文字描述，默认“上一页”
+                            nextPage: "下一页",//下翻页文字描述，默认“下一页”
+                            backFun: function (page) {
+                                $scope.IndexList(page); //点击分页按钮回调函数，返回当前页码
+                            }
+
+
+                        });
+                    }
                 }
-                else {
-                    $("#myPage").css({ "display": "block" });
-                    //$.each(list, function (key, value) {
-                    //    var date = new Date(value.DeliverDate);
-                    //    value.DeliverDate = date.Format("yyyy-MM-dd");  //日期格式化
-                    //})
-                    $scope.List = list;
+            });
 
-                    $scope.$apply();
-                    //console.log(JSON.stringify(res.Data.IndexList));
-                    $("#myPage").sPage({
-                        page: pageIndex,//当前页码，必填
-                        total: data.count,//数据总条数，必填
-                        pageSize: 15,//每页显示多少条数据，默认10条
-                        totalTxt: "每页15条，共" + data.count + "笔记录",//数据总条数文字描述，{total}为占位符，默认"共{total}条"
-                        showTotal: true,//是否显示总条数，默认关闭：false
-                        showSkip: true,//是否显示跳页，默认关闭：false
-                        showPN: true,//是否显示上下翻页，默认开启：true
-                        prevPage: "上一页",//上翻页文字描述，默认“上一页”
-                        nextPage: "下一页",//下翻页文字描述，默认“下一页”
-                        backFun: function (page) {
-                            $scope.IndexList(page); //点击分页按钮回调函数，返回当前页码
-                        }
-
-
-                    });
-                }
-            }
-        });
-
-
+       
     }
     //双击跳转
     $scope.TOWlgj = function (Laid, tableName) {
@@ -82,7 +82,7 @@ app.controller('mycontroller', function ($scope, $timeout) {
                 title: '物流跟进表',//弹出层标题
                 btn: ['关闭'], //按钮组
                 //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                content: "http://192.166.7.241/LandArrange/BasicInfo.aspx?LAId=" + Laid + "&QuanXian=" + 1,
+                content: "../GoHY/index.html?LAId=" + Laid + "&QuanXian=" + 1,
                 btn: function () {//layer.alert('aaa',{title:'msg title'});  点击取消回调
                     layer.close(this);//layer.closeAll();
                 }
@@ -97,7 +97,7 @@ app.controller('mycontroller', function ($scope, $timeout) {
                 title: '物流跟进表',//弹出层标题
                 btn: ['关闭'], //按钮组
                 //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                content: "http://192.166.7.241/VNLandArrange/BasicInfo.aspx?LAId=" + Laid + "&QuanXian=" + 1,
+                content: "../GoHY/index.html?LAId=" + Laid+"&QuanXian="+2,
                 btn: function () {//layer.alert('aaa',{title:'msg title'});  点击取消回调
                     layer.close(this);//layer.closeAll();
                 }
@@ -112,7 +112,7 @@ app.controller('mycontroller', function ($scope, $timeout) {
                 title: '物流跟进表',//弹出层标题
                 btn: ['关闭'], //按钮组
                 //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
-                content: "http://192.166.7.241/LKLandArrange/BasicInfo.aspx?LAId=" + Laid + "&QuanXian=" + 1,
+                content: "../GoHY/index.html?LAId=" + Laid + "&QuanXian=" + 3,
                 btn: function () {//layer.alert('aaa',{title:'msg title'});  点击取消回调
                     layer.close(this);//layer.closeAll();
                 }
@@ -126,7 +126,7 @@ app.controller('mycontroller', function ($scope, $timeout) {
         //    alert("请填写走货开始日期");
         //    return false;
         //}
-        //             if ($("#End_Date").val() == null || $("#End_Date").val() == "") {
+        //if ($("#End_Date").val() == null || $("#End_Date").val() == "") {
         //    alert("请填写走货结束日期");
         //    return false;
         //}
@@ -155,56 +155,56 @@ app.controller('mycontroller', function ($scope, $timeout) {
         var gjz = $("#gjz").val();/*关键字*/
         var shdd = $("#shdd").val();/*收货地点*/
         var zt = $("#zt").val();/*状态*/
-        //不分页
-        $.ajax({
-            url: "/FreightArrangement/FreightArrangement/DaoChuIndexData",
-            data: {
-                "Start_Date": Start_Date,
-                "End_Date": End_Date,
-                "zhfs": zhfs,
-                "zhdd": zhdd,
-                "gjz": gjz,
-                "shdd": shdd,
-                "zt": zt
-            },
-            type: "POST",
-            dataType: "json",
-            success: function (data) {
+            //不分页
+            $.ajax({
+                url: "/NEWFreightArrangement/FreightArrangement/DaoChuIndexData",
+                data: {
+                    "Start_Date": Start_Date,
+                    "End_Date": End_Date,
+                    "zhfs": zhfs, 
+                    "zhdd": zhdd,
+                    "gjz": gjz,
+                    "shdd": shdd,
+                    "zt": zt
+                },
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
 
-                var list = data.Data;
-                $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
-                if (list.length == 0) {
-                    //第一种;
-                    $("#OAContent1").append("<tr id='notfindlist'><td colspan='9' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
-                    $scope.DaoChuList = null;
-                    $scope.$apply();
-                    $("#myPage").css({ "display": "none" }); //隐藏分页
+                    var list = data.Data;
+                    $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
+                    if (list.length == 0) {
+                        //第一种;
+                        $("#OAContent1").append("<tr id='notfindlist'><td colspan='9' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
+                        $scope.DaoChuList = null;
+                        $scope.$apply();
+                        $("#myPage").css({ "display": "none" }); //隐藏分页
+                    }
+                    else {
+                        $scope.List = null;
+                        $scope.DaoChuList = list;
+                        $scope.IndexList(1);//调用首页加载
+                        $scope.$apply();
+                    }
+
+                    if (id==1) {
+                        $timeout(function () {
+                            //处理dom加载完成，或者repeat循环完成要做的事情
+                            $scope.newApiArray(username);
+                           
+                        }, 1000);
+                    }
+                   
+                },
+                error: function (e) {
+                    alert("错误")
                 }
-                else {
-                    $scope.List = null;
-                    $scope.DaoChuList = list;
-                    $scope.IndexList(1);//调用首页加载
-                    $scope.$apply();
-                }
 
-                if (id == 1) {
-                    $timeout(function () {
-                        //处理dom加载完成，或者repeat循环完成要做的事情
-                        $scope.newApiArray(username);
-
-                    }, 1000);
-                }
-
-            },
-            error: function (e) {
-                alert("错误")
-            }
-
-        })
+            })
     }
 
     //导出表格
-    $scope.newApiArray = function (username) {
+    $scope.newApiArray = function (username ) {
         //var myDate = new Date();
         //var time = myDate.Format("yyyyMMddhhmmss");  //获得当前年月日时分秒
         //return ExcellentExport.convert({
@@ -229,9 +229,9 @@ app.controller('mycontroller', function ($scope, $timeout) {
                 // 导出的Excel文档的名称
                 name: "Excel Document Name",
                 // Excel文件的名称
-                filename: "GIP- CargoFreight -" + username + "-" + time,
+                filename: "GIP- CargoFreight -" + username + "-" + time
             });
-
+            
         }, 500);
         //加载完成后  关闭遮罩层
         $("#myModal").modal('hide');
@@ -300,7 +300,7 @@ function ToDropDownList(DropDownListName, WordCode) {
 $(function () {
     //初始加载表格显示提示  填选筛选条件后点击搜索/导出按钮加载列表
     $("#OAContent").append("<tr id='notfindlist'><td colspan='9' class='text-center' style='color:red;font-size:20px'>填选筛选条件后点击搜索/导出按钮加载列表</td></tr>");
-
+    
 
     //走货方式
     var DropDownList = "";
@@ -308,7 +308,7 @@ $(function () {
         type: "post",
         async: false,
         dataType: 'JSON',
-        url: "/FreightArrangement/FreightArrangement/SelectDropDownList",
+        url: "/NEWFreightArrangement/FreightArrangement/SelectDropDownList",
         data: { "WordCode": "TW" },
         success: function (result) {
             $.each(result.Data, function (key, value) {
@@ -325,7 +325,7 @@ $(function () {
         type: "post",
         async: false,
         dataType: 'JSON',
-        url: "/FreightArrangement/FreightArrangement/SelectDropDownList",
+        url: "/NEWFreightArrangement/FreightArrangement/SelectDropDownList",
         data: { "WordCode": "LP" },
         success: function (result) {
             $.each(result.Data, function (key, value) {

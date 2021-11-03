@@ -27,7 +27,7 @@ namespace MIS_FreightArrangement.Controllers
             }
             ViewBag.userid = userid;
             string username = new Authority().GetUserSql(userid);
-           ViewBag.username= username;
+            ViewBag.username = username;
             return View();
         }
         /// <summary>
@@ -43,7 +43,7 @@ namespace MIS_FreightArrangement.Controllers
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         /// <returns></returns>
-        public string IndexData(string Start_Date,string End_Date,string zhfs, string zhdd,string gjz,string shdd,string zt, int pageIndex = 1, int pageSize = 15)
+        public string IndexData(string Start_Date, string End_Date, string zhfs, string zhdd, string gjz, string shdd, string zt, int pageIndex = 1, int pageSize = 15)
         {
             try
             {
