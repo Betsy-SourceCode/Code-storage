@@ -1032,12 +1032,12 @@
                 <div class="col-sm-2" style="margin-top:-3%;margin-left: 4.4%">
 
                 </div>
-                <div id="anniu" class="col-sm-2" style="margin-top:-5px">
-                    <input type='button' name="btnSearch" class="btn btn-primary" value="搜&nbsp;&nbsp;&nbsp;索" id="btnSearch" style="margin-right:5%;height:40px" ng-click="btnSearch()">
+                <div id="anniu" class="col-sm-3" style="margin-top:-5px">
+                    <input type='button' name="btnSearch" class="btn btn-primary" value="搜&nbsp;&nbsp;&nbsp;索" id="btnSearch" style="height:40px" ng-click="btnSearch()">
                     @if (@ViewBag.Daochu == "T")
                     {
-        <input type="button" name="btnAdd" class="btn btn-primary" value="导&nbsp;&nbsp;&nbsp;出" id="btnAdd" style="margin-right: 5%;height: 40px" onclick="DaocChu()" />}
-                    <input type='button' name="btnSearch" class="btn btn-primary" formtarget="_top" value="离&nbsp;&nbsp;&nbsp;开" id="btnSearch" style="margin-right:5%;height:40px" ng-click="btnleave()">
+        <input type="button" name="btnAdd" class="btn btn-primary" value="导&nbsp;&nbsp;&nbsp;出" id="btnAdd" style="height: 40px" onclick="DaocChu()" />}
+                    <input type='button' name="btnSearch" class="btn btn-primary" formtarget="_top" value="离&nbsp;&nbsp;&nbsp;开" id="btnSearch" style="height:40px" ng-click="btnleave()">
                 </div>
             </div>
         </form>
@@ -1105,8 +1105,9 @@
             </tr>
             <tbody id="OAContent">
                 <tr ng-repeat="i in list track by $index" repeat-finish="ngRepeatFinished">
-                    <td ng-if="i.K3PO_Num!='' &&i.K3Qty!='' &&i.K3Qty>0 && i.ISjiean==0 && '@ViewBag.K3ddQX'=='T'" align="center" style="font-size:12px;">{{i.rownum}}<a href="#" class="glyphicon glyphicon-plus" style="display:table" ng-click="Addtr($event)"></a></td>
-                    <td ng-if="i.K3PO_Num=='' || i.K3Qty=='' || i.K3Qty==0 || i.ISjiean==1 || '@ViewBag.K3ddQX'!='T'" align="center" style="font-size:12px;">{{i.rownum}}</td>
+                    <!-- 当K3数量小于申请数量，数据不处于结案状态并且K3订单号不为空，K3数量>0时出现加号 -->
+                    <td ng-if="i.K3PO_Num!='' &&i.K3Qty!='' &&i.K3Qty>0 && i.ISjiean==0 && '@ViewBag.K3ddQX'=='T'&&i.K3Qty<i.Qty" align="center" style="font-size:12px;">{{i.rownum}}<a href="#" class="glyphicon glyphicon-plus" style="display:table" ng-click="Addtr($event)"></a></td>
+                    <td ng-if="i.K3PO_Num=='' || i.K3Qty=='' || i.K3Qty==0 || i.ISjiean==1 || '@ViewBag.K3ddQX'!='T' ||i.K3Qty>=i.Qty" align="center" style="font-size:12px;">{{i.rownum}}</td>
                     <td align="center" style="font-size:12px;">{{i.ApplyDate}}</td>
                     <td align="center" style="font-size:12px;">{{i.Applicant_CN}}</td>
                     <td align="center" style="font-size:12px;">{{i.Serial_Num}}</td>
@@ -1118,11 +1119,11 @@
                     <td align="center" style="font-size:12px;">{{i.AppD_Name}}</td>
 
                     @*K3订单号*@
-                    @*<td ng-if="'@ViewBag.K3ddQX'=='T' && i.Prop_Arr_Date=='' && i.AppD_Name=='HKFD接收' &&i.K3Recv_Date=='' &&i.ISjiean==0 &&TopicArea!='结案'" id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
-                        <td ng-if="'@ViewBag.K3ddQX'!='T' || i.Prop_Arr_Date!='' || i.AppD_Name!='HKFD接收' ||i.K3Recv_Date!='' ||i.ISjiean==1 || TopicArea=='结案'" id="K3PO_Num" align="center" style="font-size:12px;">{{i.K3PO_Num}}</td>*@
+                    <td class="color" ng-if="'@ViewBag.K3ddQX'=='T' && i.Prop_Arr_Date=='' && i.AppD_Name=='HKFD接收' &&i.K3Recv_Date=='' &&i.ISjiean==0 &&TopicArea!='结案'" id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
+                    <td class="color" ng-if="'@ViewBag.K3ddQX'!='T' || i.Prop_Arr_Date!='' || i.AppD_Name!='HKFD接收' ||i.K3Recv_Date!='' ||i.ISjiean==1 || TopicArea=='结案'" id="K3PO_Num" align="center" style="font-size:12px;">{{i.K3PO_Num}}</td>
 
                     @*测试*@
-                    <td class="color" id="K3PO_Num" align="center" style="font-size: 12px; cursor: pointer;" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
+                    <!--<td class="color" id="K3PO_Num" align="center" style="font-size: 12px; cursor: pointer;" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>-->
 
                     <td align="center" style="font-size:12px;">{{i.K3PO_Date}}</td>
                     <td align="left" style="font-size:12px;">{{i.Supplier}}</td>
@@ -1131,19 +1132,18 @@
                     <td align="left" style="font-size: 12px; text-align: right">{{i.K3Qty}}</td>
 
                     @*交期回复*@
-                    @*<td ng-if="i.K3PO_Num!=''&& i.K3Recv_Date=='' && '@ViewBag.Username'==i.Buyer && i.ISjiean==0 &&TopicArea!='结案'" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
-                        <td ng-if="i.K3PO_Num==''|| i.K3Recv_Date!='' || '@ViewBag.Username'!=i.Buyer || i.ISjiean==1 || TopicArea=='结案'" id="Prop_Arr_Date" align="center" style="font-size:12px">{{i.Prop_Arr_Date}}</td>*@
+                    <td class="color" ng-if="i.K3PO_Num!=''&& i.K3Recv_Date=='' && '@ViewBag.Username'==i.Buyer && i.ISjiean==0 &&TopicArea!='结案'" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
+                    <td class="color" ng-if="i.K3PO_Num==''|| i.K3Recv_Date!='' || '@ViewBag.Username'!=i.Buyer || i.ISjiean==1 || TopicArea=='结案'" id="Prop_Arr_Date" align="center" style="font-size:12px">{{i.Prop_Arr_Date}}</td>
 
                     @*交期回复测试*@
-                    <td class="color" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size: 12px; cursor: pointer; " ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
+                    @*<td  class="color" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size: 12px; cursor: pointer; " ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>*@
 
                     @*入库日期*@
-                    @*<td ng-if="i.K3PO_Num !=''&& i.Prop_Arr_Date !='' && '@ViewBag.RkrqQX'=='T' && i.ISjiean==0 && TopicArea!='结案'" id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
-                        <td ng-if="i.K3PO_Num==''|| i.Prop_Arr_Date =='' ||  '@ViewBag.RkrqQX'!='T' || i.ISjiean==1 || TopicArea=='结案'" id="K3Recv_Date" align="center" style="font-size:12px">{{i.K3Recv_Date}}</td>*@
+                    <td class="color" ng-if="i.K3PO_Num !=''&& i.Prop_Arr_Date !='' && '@ViewBag.RkrqQX'=='T' && i.ISjiean==0 && TopicArea!='结案'" id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
+                    <td class="color" ng-if="i.K3PO_Num==''|| i.Prop_Arr_Date =='' ||  '@ViewBag.RkrqQX'!='T' || i.ISjiean==1 || TopicArea=='结案'" id="K3Recv_Date" align="center" style="font-size:12px">{{i.K3Recv_Date}}</td>
 
                     @*入库日期测试*@
-                    <td class="color" id="K3Recv_Date" align="center" contentEditable="true" style="font-size: 12px; cursor: pointer;" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
-
+                    <!--<td class="color" id="K3Recv_Date" align="center" contentEditable="true" style="font-size: 12px; cursor: pointer;" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>-->
                     @*备注*@
                     <td ng-if="i.K3PO_Num!=''&& TopicArea!='结案'" class="p1 example-popover color" align="left" style="font-size: 12px; height: 38px; cursor: pointer;" data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left" ng-click="BZModalShow($event,i.Remark,i.MainID,i.K3PO_Num,i.ISjiean)">{{i.Remark}} </td>
                     <td ng-if="i.K3PO_Num=='' || TopicArea=='结案'" class="p1 example-popover color" align="left" style="font-size: 12px; height: 38px; " data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left">{{i.Remark}}</td>
@@ -1213,49 +1213,49 @@
                     </th>
                 </tr>
                 <tbody id="OAContent">
-                    <tr ng-repeat="i in DaoChulist track by $index" repeat-finish="ngRepeatFinished">
-                        <td ng-if="i.K3PO_Num!='' &&i.K3Qty!='' &&i.K3Qty>0 && i.ISjiean==0 && '@ViewBag.K3ddQX'=='T'" align="center" style="font-size:12px;">{{i.rownum}}<a href="#" class="glyphicon glyphicon-plus" style="display:table" ng-click="Addtr($event)"></a></td>
-                        <td ng-if="i.K3PO_Num=='' || i.K3Qty=='' || i.K3Qty==0 || i.ISjiean==1 || '@ViewBag.K3ddQX'!='T'" align="center" style="font-size:12px;">{{i.rownum}}</td>
+                    <tr ng-repeat="i in list track by $index" repeat-finish="ngRepeatFinished">
+                        <!-- 当K3数量小于申请数量，数据不处于结案状态并且K3订单号不为空，K3数量>0时出现加号 -->
+                        <td ng-if="i.K3PO_Num!='' &&i.K3Qty!='' &&i.K3Qty>0 && i.ISjiean==0 && '@ViewBag.K3ddQX'=='T'&&i.K3Qty<i.Qty" align="center" style="font-size:12px;">{{i.rownum}}<a href="#" class="glyphicon glyphicon-plus" style="display:table" ng-click="Addtr($event)"></a></td>
+                        <td ng-if="i.K3PO_Num=='' || i.K3Qty=='' || i.K3Qty==0 || i.ISjiean==1 || '@ViewBag.K3ddQX'!='T' ||i.K3Qty>=i.Qty" align="center" style="font-size:12px;">{{i.rownum}}</td>
                         <td align="center" style="font-size:12px;">{{i.ApplyDate}}</td>
                         <td align="center" style="font-size:12px;">{{i.Applicant_CN}}</td>
                         <td align="center" style="font-size:12px;">{{i.Serial_Num}}</td>
                         <td align="center" style="font-size:12px;">{{i.Mat_Code}}</td>
                         <td align="left" style="font-size:12px;">{{i.Mat_Name}}</td>
                         <td align="center" style="font-size:12px;">{{i.Unit}}</td>
-                        <td align="left" style="font-size:12px;">{{i.Qty}}</td>
+                        <td align="left" style="font-size: 12px; text-align: right">{{i.Qty}}</td>
                         <td align="center" style="font-size:12px;">{{i.RequireDate}}</td>
                         <td align="center" style="font-size:12px;">{{i.AppD_Name}}</td>
 
                         @*K3订单号*@
-                        <td ng-if="'@ViewBag.K3ddQX'=='T' && i.Prop_Arr_Date=='' && i.AppD_Name=='HKFD接收' &&i.K3Recv_Date=='' &&i.ISjiean==0 &&TopicArea!='结案'" id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
-                        <td ng-if="'@ViewBag.K3ddQX'!='T' || i.Prop_Arr_Date!='' || i.AppD_Name!='HKFD接收' ||i.K3Recv_Date!='' ||i.ISjiean==1 || TopicArea=='结案'" id="K3PO_Num" align="center" style="font-size:12px;">{{i.K3PO_Num}}</td>
+                        <td class="color" ng-if="'@ViewBag.K3ddQX'=='T' && i.Prop_Arr_Date=='' && i.AppD_Name=='HKFD接收' &&i.K3Recv_Date=='' &&i.ISjiean==0 &&TopicArea!='结案'" id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
+                        <td class="color" ng-if="'@ViewBag.K3ddQX'!='T' || i.Prop_Arr_Date!='' || i.AppD_Name!='HKFD接收' ||i.K3Recv_Date!='' ||i.ISjiean==1 || TopicArea=='结案'" id="K3PO_Num" align="center" style="font-size:12px;">{{i.K3PO_Num}}</td>
 
                         @*测试*@
-                        @*<td id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>*@
+                        <!--<td class="color" id="K3PO_Num" align="center" style="font-size: 12px; cursor: pointer;" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>-->
 
                         <td align="center" style="font-size:12px;">{{i.K3PO_Date}}</td>
                         <td align="left" style="font-size:12px;">{{i.Supplier}}</td>
                         <td align="center" style="font-size:12px;">{{i.Buyer}}</td>
                         <td align="center" style="font-size:12px;">{{i.K3Unit}}</td>
-                        <td align="left" style="font-size:12px;">{{i.K3Qty}}</td>
+                        <td align="left" style="font-size: 12px; text-align: right">{{i.K3Qty}}</td>
 
                         @*交期回复*@
-                        @*<td ng-if="i.K3PO_Num!=''&& i.K3Recv_Date=='' && '@ViewBag.Username'==i.Buyer && i.ISjiean==0 &&TopicArea!='结案'" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
-                            <td ng-if="i.K3PO_Num==''|| i.K3Recv_Date!='' || '@ViewBag.Username'!=i.Buyer || i.ISjiean==1 || TopicArea=='结案'" id="Prop_Arr_Date" align="center" style="font-size:12px">{{i.Prop_Arr_Date}}</td>*@
+                        <td class="color" ng-if="i.K3PO_Num!=''&& i.K3Recv_Date=='' && '@ViewBag.Username'==i.Buyer && i.ISjiean==0 &&TopicArea!='结案'" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
+                        <td class="color" ng-if="i.K3PO_Num==''|| i.K3Recv_Date!='' || '@ViewBag.Username'!=i.Buyer || i.ISjiean==1 || TopicArea=='结案'" id="Prop_Arr_Date" align="center" style="font-size:12px">{{i.Prop_Arr_Date}}</td>
 
                         @*交期回复测试*@
-                        <td id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>
+                        @*<td  class="color" id="Prop_Arr_Date" contentEditable="true" align="center" style="font-size: 12px; cursor: pointer; " ng-click="Del($event,i.MainID,1)" ng-dblclick="DJProp_Arr_Date($event,i.MainID ,i.K3PO_Num ,i.Supplier , i.Mat_Name , i.K3Unit ,i.K3Qty,i.Prop_Arr_Date)"> {{i.Prop_Arr_Date}}</td>*@
 
                         @*入库日期*@
-                        @*<td ng-if="i.K3PO_Num !=''&& i.Prop_Arr_Date !='' && '@ViewBag.RkrqQX'=='T' && i.ISjiean==0 && TopicArea!='结案'" id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
-                            <td ng-if="i.K3PO_Num==''|| i.Prop_Arr_Date =='' ||  '@ViewBag.RkrqQX'!='T' || i.ISjiean==1 || TopicArea=='结案'" id="K3Recv_Date" align="center" style="font-size:12px">{{i.K3Recv_Date}}</td>*@
+                        <td class="color" ng-if="i.K3PO_Num !=''&& i.Prop_Arr_Date !='' && '@ViewBag.RkrqQX'=='T' && i.ISjiean==0 && TopicArea!='结案'" id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
+                        <td class="color" ng-if="i.K3PO_Num==''|| i.Prop_Arr_Date =='' ||  '@ViewBag.RkrqQX'!='T' || i.ISjiean==1 || TopicArea=='结案'" id="K3Recv_Date" align="center" style="font-size:12px">{{i.K3Recv_Date}}</td>
 
                         @*入库日期测试*@
-                        <td id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
-
+                        <!--<td class="color" id="K3Recv_Date" align="center" contentEditable="true" style="font-size: 12px; cursor: pointer;" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>-->
                         @*备注*@
-                        <td ng-if="i.K3PO_Num!=''&& TopicArea!='结案'" class="p1 example-popover" align="left" style="font-size: 12px;height:38px;cursor: pointer" data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left" ng-click="BZModalShow($event,i.Remark,i.MainID,i.K3PO_Num,i.ISjiean)">{{i.Remark}} </td>
-                        <td ng-if="i.K3PO_Num=='' || TopicArea=='结案'" class="p1 example-popover" align="left" style="font-size:12px;height:38px" data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left">{{i.Remark}}</td>
+                        <td ng-if="i.K3PO_Num!=''&& TopicArea!='结案'" class="p1 example-popover color" align="left" style="font-size: 12px; height: 38px; cursor: pointer;" data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left" ng-click="BZModalShow($event,i.Remark,i.MainID,i.K3PO_Num,i.ISjiean)">{{i.Remark}} </td>
+                        <td ng-if="i.K3PO_Num=='' || TopicArea=='结案'" class="p1 example-popover color" align="left" style="font-size: 12px; height: 38px; " data-content='<h5><b>{{i.Remark}}<b/></h5>' data-placement="left">{{i.Remark}}</td>
                     </tr>
                 </tbody>
             </table>
