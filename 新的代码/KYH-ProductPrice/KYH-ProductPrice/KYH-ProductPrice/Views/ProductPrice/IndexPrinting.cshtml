@@ -14,7 +14,7 @@
     <script src="~/Scripts/WdatePicker/WdatePicker.js"></script>
     <script src="~/Scripts/页面/Index.js"></script>
     <script src="~/Scripts/导出/demo.page.js"></script>
-    <script src="~/Scripts/导出/excel-gen.js"></script>
+    <script src="~/Scripts/导出/excel-gen.js"></script> 
     <script src="~/Scripts/导出/FileSaver.js"></script>
     <script src="~/Scripts/导出/jszip.min.js"></script>
     <script src="~/Scripts/导出/tableExport.min.js"></script>
@@ -120,6 +120,7 @@
                 var ZT = $("#ZT").html();
                 $.ajax({
                     url: "/ProductPrice/ProductPrice/IndexData",
+                    async: false,
                     data: {
                         "CreateBy": CreateBy,
                         "CustProd": CustProd,

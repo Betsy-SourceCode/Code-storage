@@ -370,11 +370,11 @@
                                 v.Answer = RemoveHtml(v.Answer).replace(/&nbsp;/g, '').trim();
                                 if (v.CreateTime != "") {
                                     var date = new Date(v.CreateTime);
-                                    v.CreateTime = date.Format("yyyy-MM-dd");  //日期格式化
+                                    v.CreateTime = date.Format("yyyy-MM-dd hh:mm:ss");  //日期格式化
                                 }
                                 if (v.UpdateTime!="") {
                                     var date = new Date(v.UpdateTime);
-                                    v.UpdateTime = date.Format("yyyy-MM-dd");  //日期格式化
+                                    v.UpdateTime = date.Format("yyyy-MM-dd hh:mm:ss");  //日期格式化
                                 }
                                 v.SortNumber = (page-1)*size+rowSortNumber;
                             });

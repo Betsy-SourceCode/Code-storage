@@ -4,20 +4,20 @@ var PaiXu = "CreateTime DESC";
 app.controller('ProductPriceController', function ($scope, $http, $compile, $timeout) {
     //加载首页列表
     $scope.IndexList = function (aa) {
-        if (aa==1) {
+        if (aa == 1) {
             $scope.sessionStorage();
-            if ($("#Start_Date").val() == '') {
-                alert("开始时间不能为空！");
-                $("#Start_Date").focus();
-                return false;
-            }
-            if ($("#End_Date").val() == '') {
-                alert("结束时间不能为空！");
-                $("#End_Date").focus();
-                return false;
-            }
+            //if ($("#Start_Date").val() == '') {
+            //    alert("开始时间不能为空！");
+            //    $("#Start_Date").focus();
+            //    return false;
+            //}
+            //if ($("#End_Date").val() == '') {
+            //    alert("结束时间不能为空！");
+            //    $("#End_Date").focus();
+            //    return false;
+            //}
         }
-        
+
         var from = $('#Myform').serialize();
         if ($("#Cancel").is(":checked")) {
             var Cancel = true;
@@ -29,7 +29,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
 
         $.ajax({
             url: "/ProductPrice/ProductPrice/IndexData",
-            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu, "ZT": Status}) + '&' + from,
+            data: $.param({ 'Cancel': Cancel, 'Rank': PaiXu, "ZT": Status }) + '&' + from,
             type: "POST",
             dataType: "json",
             success: function (data) {
@@ -199,7 +199,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
     PaiXu = JSON.parse(sessionStorage.getItem('Array'))[7]; //排序
 
     //设置默认值
-    $("#ZT").find("option[value=" + JSON.parse(sessionStorage.getItem('Array'))[8]+"]").attr("selected", true);
+    $("#ZT").find("option[value=" + JSON.parse(sessionStorage.getItem('Array'))[8] + "]").attr("selected", true);
 
 
     //$("#ZT").find("option:selected").val(JSON.parse(sessionStorage.getItem('Array'))[8]); //排序
@@ -242,7 +242,7 @@ Date.prototype.Format = function (fmt) { // author: meizz
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
-//导出
+//导出  
 function DaoChu(User) {
     var myDate = new Date();
     var time = myDate.Format("yyyyMMddhhmmss");  //获得当前年月日时分秒

@@ -24,7 +24,7 @@ namespace KYH_ProductPrice.Models.SqlStatement
         /// <param name="username"></param>
         /// <param name="login_Dept"></param>
         /// <returns></returns>
-        public List<GetProductPriceListss> GetDetailsListSql(string CreateBy, string CustProd, string Customer, DateTime CreateTime, string EndTime, string Remarks_MD, bool Cancel, string username, string login_Dept, string Rank,string ZT)
+        public List<GetProductPriceListss> GetDetailsListSql(string CreateBy, string CustProd, string Customer, string CreateTime, string EndTime, string Remarks_MD, bool Cancel, string username, string login_Dept, string Rank,string ZT)
         {
             try
             {
@@ -48,11 +48,11 @@ namespace KYH_ProductPrice.Models.SqlStatement
                 {
                     sql =sql+ " AND A.FNumber + '|' + A.CustProdCode + '|' + A.CustProdName LIKE '%" + CustProd + "%' ";
                 }
-                if (CreateTime.ToString()!=null)
+                if (CreateTime!=null)
                 {
                     sql =sql+ " AND (DATEDIFF(d,'" + CreateTime +"',A.CreateTime) >= 0) ";
                 }
-                if (EndTime.ToString()!=null)
+                if (EndTime!="")
                 {
                     sql =sql+" AND (DATEDIFF(d,'" +EndTime +"',A.CreateTime) <= 0)";
                 }

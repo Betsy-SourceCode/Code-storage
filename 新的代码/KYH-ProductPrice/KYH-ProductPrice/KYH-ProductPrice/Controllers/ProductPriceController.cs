@@ -21,7 +21,7 @@ namespace KYH_ProductPrice.Controllers
         /// <returns></returns>
         public ActionResult Index(string userid)
         {
-            //userid = "462";
+            userid = "462";
             if (userid == null)
             {
                 userid = "";
@@ -185,12 +185,12 @@ namespace KYH_ProductPrice.Controllers
         /// <param name="EndTime"></param>
         /// <param name="CustProd"></param>
         /// <returns></returns>
-        public string IndexData(GetProductPriceListss list, string EndTime, string CustProd, string Rank,string ZT)
+        public string IndexData(GetProductPriceListss list, string EndTime, string CustProd, string Rank, string ZT)
         {
-            
-            List< GetProductPriceListss> ProductPriceList = new List<GetProductPriceListss>();
+
+            List<GetProductPriceListss> ProductPriceList = new List<GetProductPriceListss>();
             string login_Dept = new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1);
-            ProductPriceList = new PublicSqlMethodsSql().GetDetailsListSql(list.CreateBy, CustProd, list.CustomerDisplayName, DateTime.Parse( list.CreateTime), EndTime, list.Remarks_MD, list.Cancel, base.Session["username"].ToString(), login_Dept, Rank, ZT);
+            ProductPriceList = new PublicSqlMethodsSql().GetDetailsListSql(list.CreateBy, CustProd, list.CustomerDisplayName, list.CreateTime, EndTime, list.Remarks_MD, list.Cancel, base.Session["username"].ToString(), login_Dept, Rank, ZT);
 
             //if (new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1) == "ARV" || new Authority().GetDesignatedPersonSql(base.Session["username"].ToString()) > 0)
             //{

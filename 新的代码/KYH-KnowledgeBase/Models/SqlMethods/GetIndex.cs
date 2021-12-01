@@ -14,7 +14,7 @@ namespace KYH_KnowledgeBase.Models.SqlMethods
         /// <returns></returns>
         public List<SelectKnowledgeBaseIndex> GetIndexPageRow(string KeyWord, string TopicArea)
         {
-            string queryIndexSql = "select * from SelectKnowledgeBaseIndex q where ((isnull(q.Question,'')+isnull(q.KeyWord,'')+isnull(q.Answer,'') like '%{0}%')) and q.TopicArea not in('{1}')";
+            string queryIndexSql = "select * from SelectKnowledgeBaseIndex q where ((isnull(q.Question,'')+isnull(q.KeyWord,'')+isnull(q.Answer,'') like '%{0}%')) and q.TopicArea not in('{1}') order by CreateTime desc";
             queryIndexSql = string.Format(queryIndexSql, KeyWord, TopicArea);
             return this.db.Database.SqlQuery<SelectKnowledgeBaseIndex>(queryIndexSql, new object[0]).ToList<SelectKnowledgeBaseIndex>();
         }
