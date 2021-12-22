@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Reflection;
+using System.Threading;
 using System.Web.Mvc;
 using KYH_Customer.Filters;
 using KYH_Customer.Models;
@@ -124,7 +125,7 @@ namespace KYH_Customer.Controllers
                     //logParam.ActionType = "N";  //新增
                     //logParam.TableName = "Customer";
                     //logParam.TableKey = "CustomerID";
-                    //logParam.Description = logParam.UserID + "新增客户" +customer.CustomerID.ToString().PadLeft(6,'0') + "（" + company.ShortName + ")";
+                    //logParam.Description = logParam.UserID + "新增客户" + customer.CustomerID.ToString().PadLeft(6, '0') + "（" + company.ShortName + ")";
                     //oth.log = logParam;
                     //Thread th = new Thread(new ThreadStart(oth.GetActionLogAdd)); //创建线程                     
                     //th.Start(); //启动线程

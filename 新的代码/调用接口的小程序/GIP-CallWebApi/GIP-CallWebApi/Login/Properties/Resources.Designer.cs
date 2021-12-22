@@ -103,6 +103,16 @@ namespace Login.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap rowicon {
+            get {
+                object obj = ResourceManager.GetObject("rowicon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap tb_Title {
             get {
                 object obj = ResourceManager.GetObject("tb_Title", resourceCulture);

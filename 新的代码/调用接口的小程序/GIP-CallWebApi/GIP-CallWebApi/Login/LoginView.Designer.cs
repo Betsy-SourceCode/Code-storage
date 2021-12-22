@@ -56,6 +56,7 @@
             this.User.Name = "User";
             this.User.Size = new System.Drawing.Size(215, 17);
             this.User.TabIndex = 30;
+            this.User.Text = "eos_scmdip_guest";
             this.User.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.User.WaterFont = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.User.WaterText = "请输入账号";
@@ -185,6 +186,7 @@
             this.Password.PasswordChar = '*';
             this.Password.Size = new System.Drawing.Size(215, 17);
             this.Password.TabIndex = 20;
+            this.Password.Text = "tukw0df49ccfizgv";
             this.Password.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.Password.WaterFont = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Password.WaterText = "请输入密码";

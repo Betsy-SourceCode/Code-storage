@@ -23,5 +23,6 @@ namespace Login
         public string TableName { get; set; }
         public string TableKey { get; set; }
         public string Description { get; set; }
+        public string Name { get; set; }
     }
 }

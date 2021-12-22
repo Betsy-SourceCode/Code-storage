@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using System.IO;
 using GIP_CallWebApi;
 using Login;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace GIP_CallWebApi
 {
@@ -18,66 +20,41 @@ namespace GIP_CallWebApi
             string appPath = Application.StartupPath;
             DirectoryInfo topDir = Directory.GetParent(appPath);
             string topDirPath = topDir.FullName;//topDirPath即上层目录
-            if (HttpHelper.ReadTxtContent(topDirPath + "\\计数专用" + ".txt")== 0)  //自动录入
+            if (HttpHelper.ReadTxtContent(topDirPath + "\\计数专用" + ".txt") < 0)  //自动录入
             {
                 //接口地址
                 var url = "http://api.eos-ts.h3c.com";
                 //登录调用接口
                 var Account = "eos_scmdip_guest";
                 var Password = "tukw0df49ccfizgv";
-                var LoginReceive = HttpHelper.HttpPost(1, url + "/user/v1.0/account/token", "{\"account\":\"" + Account + "\",\"password\":\"" + Password + "\"}");
-                //获得当前时间戳（17位）
-                string time = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-                //随机五位数
-                Random rnd = new Random();
-                int number = rnd.Next(10000, 100000);
-                //流水号
-                var Transaction_id = "ODM-POW012-" + time + number + "";
-                //Factory_processes数据集合
-                var Factory_processes_List = "[{\"factory_code\":\"POW012\"," +
-                            "\"item_code\":\"9801A1G2\"," +
-                            "\"sn\":\"GHL75258214800315\"," +
-                            "\"order_number\":\"\"," +
-                            "\"mo_number\":\"KSYHWORK012149\"," +
-                            "\"factory\":\"POW012\"," +
-                            "\"line_code\":\"YH1-组装-大功率\"," +
-                            "\"class_code\":\"day\"," +
-                            "\"is_maintenance\":\"否\"," +
-                            "\"section_code\":\"BI\"," +
-                            "\"process_result\":\"PASS\"," +
-                            "\"start_time\":\"2021-12-13 10:24:52.107\"}]";
-                //Factory_reworks数据集合
-                var Factory_reworks_List = "[{\"factory_code\":\"POW012\"," +
-                           "\"item_code\":\"9801A1G2\"," +
-                           "\"item_type\":\"PSR380-24A\"," +
-                           "\"sn\":\"GHL75258214800315\"," +
-                           "\"fault_date\":\"2021-11-28 01:45:09.173\"," +
-                           "\"fault_appearance\":\"功率效率\"," +
-                           "\"appearance_link\":\"FATE\"," +
-                           "\"fault_type\":\"电性能\"," +
-                           "\"fault_case\":\"R167连锡\"," +
-                           "\"cause_type\":\"PROCESS(生产线作业)\"," +
-                           "\"cause_subcategory\":\"插件/执锡不良\"," +
-                           "\"root_cause\":\"PROCESS(生产线作业)\"," +
-                            "\"defect_location\":\"R167\"," +
-                           "\"repair_date\":\"2021-11-30 21:52:57.197\"}]";
-                var JKfactory_processes = HttpHelper.HttpPost(0, url + "/odm-api/v1.0/factory/process", "{\"transaction_id\":\"" + Transaction_id + "\",\"factory_processes\":" + Factory_processes_List + "}");
-                var JKfactory_reworks = HttpHelper.HttpPost(0, url + "/odm-api/v1.0/factory/rework", "{\"transaction_id\":\"" + Transaction_id + "\",\"factory_reworks\":" + Factory_reworks_List + "}");
-                Receipt Receipt = null;
-                if (LoginReceive != "")
+                if (HttpHelper.HttpPost(1, url + "/user/v1.0/account/token", "{\"account\":\"" + Account + "\",\"password\":\"" + Password + "\"}") != "")
                 {
-                    //Receipt = HttpHelper.DeserializeJsonToObject<Receipt>(JKfactory_processes);
-                    Receipt = HttpHelper.DeserializeJsonToObject<Receipt>(JKfactory_reworks);
-                }
-                //接口返回新增成功
-                if (Receipt.code == 1100)
-                {
-                    //MessageBox.Show();
-                    DevExpress.XtraEditors.XtraMessageBox.Show(Receipt.msg);
+                    #region 多线程
+                    //Factory/process接口
+                    //ThreadMethod(1, url + "/odm-api/v1.0/factory/process");
+                    // MyThread 
+                    //Factory_reworks接口
+                    //ThreadMethod(2, url + "/odm-api/v1.0/factory/rework");
+                    //Thread th = new Thread(new ThreadStart(ThreadMethod(2, url + "/odm-api/v1.0/factory/process"))); //创建线程                
+                    //th.Start(); //启动线程
+
+                    //开启第一个线程
+                    MyThread mt = new MyThread(1, url + "/odm-api/v1.0/factory/process");
+                    ThreadStart threadStart = new ThreadStart(mt.ThreadMethod);
+                    Thread thread = new Thread(threadStart);
+                    thread.Start();
+
+                    //开启第二个线程
+                    MyThread mt1 = new MyThread(2, url + "/odm-api/v1.0/factory/rework");
+                    ThreadStart threadStart1 = new ThreadStart(mt1.ThreadMethod);
+                    Thread thread1 = new Thread(threadStart);
+                    thread1.Start();
+                    #endregion
                 }
                 else
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("新增失败");
+                    //写入数据
+                    var shuju = "调用登录接口失败";
                 }
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -88,7 +65,122 @@ namespace GIP_CallWebApi
                 //手动录入显示界面
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Details());
+                Application.Run(new LoginView());
+            }
+        }
+
+        /// <summary>
+        /// 调用多线程方法
+        /// </summary>
+        /// <param name="id">1-factory_processes，2-factory_reworks</param>
+        static void ThreadMethod(int id, string url)
+        {
+            string ERPMO = "";
+            try
+            {
+                //获得当前年月日
+                //string date = DateTime.Now.ToString("yyyy-MM-dd");
+                string date = "2021-12-19";
+                //查当天的所有工单号
+                foreach (var item in SqlStoredProcedure.GetGDnumberList(date))
+                {
+                    //通过日期和工单号查出列表集合
+                    ERPMO = item.ERPMO.ToString();
+                    List<DataSet> list = SqlStoredProcedure.ByDateAndERPMOGetListSql(id, date, ERPMO);
+                    var i = 1;
+                    var DataSetList = ""; //接口数据
+                    foreach (var dataSet in list)
+                    {
+                        //获得当前时间戳（17位）
+                        string time = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                        //随机五位数
+                        Random rnd = new Random();
+                        int number = rnd.Next(10000, 100000);
+                        //流水号
+                        var Transaction_id = "ODM-" + dataSet.厂商代码 + "-" + time + number + "";
+                        //Factory_processes接口参数
+                        if (id == 1)
+                        {
+                            DataSetList += "{\"transaction_id\":\"" + Transaction_id +
+                                   "\",\"factory_processes\":[{\"factory_code\":\"" + dataSet.厂商代码 + "\"," +
+                                    "\"item_code\":\"" + dataSet.编码 + "\"," +
+                                    "\"sn\":\"" + dataSet.SN条码 + "\"," +
+                                    "\"order_number\":\"" + dataSet.Po订单号 + "\"," +
+                                    "\"mo_number\":\"" + dataSet.任务令 + "\"," +
+                                    "\"factory\":\"" + dataSet.工厂 + "\"," +
+                                    "\"line_code\":\"" + dataSet.线别 + "\"," +
+                                    "\"class_code\":\"" + dataSet.班次 + "\"," +
+                                    "\"is_maintenance\":\"" + dataSet.是否维修品 + "\"," +
+                                    "\"section_code\":\"" + dataSet.工序名称 + "\"," +
+                                    "\"process_result\":\"" + dataSet.加工结果 + "\"," +
+                                    "\"start_time\":\"" + dataSet.开始时间 + "\"}]";
+                        }
+                        //Factory_reworks接口参数
+                        if (id == 2)
+                        {
+                            DataSetList += "{\"transaction_id\":\"" + Transaction_id +
+                                           "\",\"factory_reworks\":[{\"factory_code\":\"" + dataSet.厂商代码 + "\"," +
+                                            "\"item_code\":\"" + dataSet.编码 + "\"," +
+                                            "\"item_type\":\"" + dataSet.型号 + "\"," +
+                                            "\"sn\":\"" + dataSet.SN条码 + "\"," +
+                                            "\"fault_date\":\"" + dataSet.故障日期 + "\"," +
+                                            "\"fault_appearance\":\"" + dataSet.不良现象 + "\"," +
+                                            "\"appearance_link\":\"" + dataSet.出现环节 + "\"," +
+                                            "\"fault_type\":\"" + dataSet.不良分类 + "\"," +
+                                            "\"fault_case\":\"" + dataSet.不良原因分析 + "\"," +
+                                            "\"cause_type\":\"" + dataSet.原因分类 + "\"," +
+                                            "\"cause_subcategory\":\"" + dataSet.原因小类 + "\"," +
+                                            "\"root_cause\":\"" + dataSet.根因 + "\"," +
+                                            "\"defect_location\":\"" + dataSet.不良器件位置 + "\"," +
+                                            "\"repair_date\":\"" + dataSet.修理日期 + "\"}]";
+                        }
+                        DataSetList += "}";
+                        DataSetList += ",";
+                        if (i >= 200 || i >= list.Count)
+                        {
+                            DataSetList = DataSetList.TrimEnd(',');
+                            //去掉空格
+                            //DataSetList = DataSetList.Trim();
+                            //接口返回结果
+                            var JKResult = HttpHelper.HttpPost(0, url, DataSetList);
+                            Receipt receipt = HttpHelper.DeserializeJsonToObject<Receipt>(JKResult);
+                            ////接口返回新增成功
+                            if (receipt.code != 1100)
+                            {
+                                //接口调用失败，写入数据表里:记录时间和工单号
+                                var shuju = "错误日期：" + date + "，工单号：" + ERPMO;
+                                DevExpress.XtraEditors.XtraMessageBox.Show(receipt.msg);
+                            }
+                            else
+                            {
+                                if (id == 1)
+                                {
+                                    MessageBox.Show("aaaaaaaaaa");
+                                }
+                                else
+                                {
+                                    //接口调用成功
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(receipt.msg);
+                                }
+
+                            }
+                            i = 1;
+                        }
+                        else
+                        {
+                            i++;
+                        }
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //数据新增失败，写入数据表里:记录时间和工单号
+                DateTime dt = DateTime.Now;
+                SqlStoredProcedure.AddLog_ErrorData(dt, ERPMO, ex.Message);
+                throw;
             }
         }
     }

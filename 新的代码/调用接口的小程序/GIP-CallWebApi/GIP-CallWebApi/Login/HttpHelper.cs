@@ -12,7 +12,7 @@ namespace GIP_CallWebApi
         /// <summary>
         /// 调用WEBAPI方法
         /// </summary>
-        ///<param name="id">1-登录，0-其他接口</param>
+        ///<param name="id">0-自动接口，1-登录，2-手动接口</param>
         /// <param name="url">地址</param>
         /// <param name="body">参数</param>
         /// <returns></returns>
@@ -28,6 +28,11 @@ namespace GIP_CallWebApi
                 if (id == 0 && token != null)  //登录进入之后调用接口加token
                 {
                     request.Headers.Add("Authorization", "Bearer " + token);
+                }
+                //手动模式下接收登录界面的token
+                if (id == 2)
+                {
+                    request.Headers.Add("Authorization", "Bearer " + Login.LoginView.token); //PS:测试需调用登录界面否则token为空
                 }
                 byte[] buffer = encoding.GetBytes(body);
                 request.ContentLength = buffer.Length;

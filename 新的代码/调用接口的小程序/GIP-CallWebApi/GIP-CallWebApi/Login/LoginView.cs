@@ -7,6 +7,8 @@ namespace Login
 {
     public partial class LoginView : DevExpress.XtraEditors.XtraForm
     {
+        //token
+        public static string token;
         public LoginView()
         {
             InitializeComponent();
@@ -71,8 +73,11 @@ namespace Login
             var User = this.User.Text;
             var Password = this.Password.Text;
             var url = "http://api.eos-ts.h3c.com/user/v1.0/account/token";
-            if (HttpHelper.HttpPost(1, url, "{ \"account\":\"" + User + "\",\"password\":\"" + Password + "\"}").ToString()!="")
+            var LoginResult = HttpHelper.HttpPost(1, url, "{ \"account\":\"" + User + "\",\"password\":\"" + Password + "\"}");
+            if (LoginResult != "")
             {
+                //取token值赋值给全局变量
+                token = LoginResult;
                 //跳转到详情页
                 Details details = new Details();
                 details.Show();

@@ -11,5 +11,7 @@ namespace GIP_CallWebApi
         public int code { get; set; }
         public string msg { get; set; }
         public string result { get; set; }
+        public string Name { get; set; }
+        public string ERPMO { get; set; }
     }
 }
