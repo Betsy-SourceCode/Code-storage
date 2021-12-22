@@ -39,6 +39,9 @@ namespace Login
             this.Factory_processes_dateExt.DatePicker.DateValue = DateTime.Now;
             this.Factory_reworks_dateExt.DatePicker.DateValue = DateTime.Now;
             this.Factory_sns_dateExt.DatePicker.DateValue = DateTime.Now;
+            this.Factory_processes_dateExt.DatePicker.MaxValue = DateTime.Now;
+            this.Factory_reworks_dateExt.DatePicker.MaxValue = DateTime.Now;
+            this.Factory_sns_dateExt.DatePicker.MaxValue = DateTime.Now;
             ComboxGridDataSource(1, this.Factory_processes_dateExt.DatePicker.DateValue.ToString());
             ComboxGridDataSource(2, this.Factory_reworks_dateExt.DatePicker.DateValue.ToString());
             ComboxGridDataSource(3, this.Factory_sns_dateExt.DatePicker.DateValue.ToString());
@@ -107,62 +110,69 @@ namespace Login
         /// <param name="date"></param>
         private void ComboxGridDataSource(int typeid, string date)
         {
-            //表头
-            List<DataGridViewColumnEntity> lstCulumns = new List<DataGridViewColumnEntity>();
-            lstCulumns.Add(new DataGridViewColumnEntity() { DataField = "Name", HeadText = "工单号", Width = 600, WidthType = SizeType.Absolute });
-            if (typeid == 1)
+            try
             {
-                this.Factory_processes_ucComboxGrid.GridColumns = lstCulumns;
-            }
-            if (typeid == 2)
-            {
-                this.Factory_reworks_ucComboxGrid.GridColumns = lstCulumns;
-            }
-            if (typeid == 3)
-            {
-                this.Factory_sns_ucComboxGrid.GridColumns = lstCulumns;
-            }
-            //this.ucComboxGrid1.UCDataGridView.IsShowCheckBox = true;
-            var data = new List<Receipt>();
-            List<object> lstSource = new List<object>();
-            var List = SqlStoredProcedure.GetGDnumberList(date);
-            data = List;
-            //默认添加一个全部
-            Receipt receipt = new Receipt();
-            receipt.Name = "All";
-            lstSource.Add(receipt);
-            foreach (var item in data)
-            {
-                if (data.Count < 0)
+                //表头
+                List<DataGridViewColumnEntity> lstCulumns = new List<DataGridViewColumnEntity>();
+                lstCulumns.Add(new DataGridViewColumnEntity() { DataField = "Name", HeadText = "工单号", Width = 600, WidthType = SizeType.Absolute });
+                if (typeid == 1)
                 {
-                    break;
+                    this.Factory_processes_ucComboxGrid.GridColumns = lstCulumns;
                 }
-                else
+                if (typeid == 2)
                 {
-                    Receipt model = new Receipt()
+                    this.Factory_reworks_ucComboxGrid.GridColumns = lstCulumns;
+                }
+                if (typeid == 3)
+                {
+                    this.Factory_sns_ucComboxGrid.GridColumns = lstCulumns;
+                }
+                //this.ucComboxGrid1.UCDataGridView.IsShowCheckBox = true;
+                var data = new List<Receipt>();
+                List<object> lstSource = new List<object>();
+                var List = SqlStoredProcedure.GetGDnumberList(date);
+                data = List;
+                //默认添加一个全部
+                Receipt receipt = new Receipt();
+                receipt.Name = "All";
+                lstSource.Add(receipt);
+                foreach (var item in data)
+                {
+                    if (data.Count < 0)
                     {
-                        Name = item.ERPMO
-                    };
-                    lstSource.Add(model);
+                        break;
+                    }
+                    else
+                    {
+                        Receipt model = new Receipt()
+                        {
+                            Name = item.ERPMO
+                        };
+                        lstSource.Add(model);
+                    }
+
                 }
+                if (typeid == 1)
+                {
+                    this.Factory_processes_ucComboxGrid.GridDataSource = lstSource;
+                    this.Factory_processes_ucComboxGrid.ResetText();
+                }
+                if (typeid == 2)
+                {
+                    this.Factory_reworks_ucComboxGrid.GridDataSource = lstSource;
+                    this.Factory_reworks_ucComboxGrid.ResetText();
+                }
+                if (typeid == 3)
+                {
+                    this.Factory_sns_ucComboxGrid.GridDataSource = lstSource;
+                    this.Factory_sns_ucComboxGrid.ResetText();
+                }
+            }
+            catch (Exception ex)
+            {
 
+                throw;
             }
-            if (typeid == 1)
-            {
-                this.Factory_processes_ucComboxGrid.GridDataSource = lstSource;
-                this.Factory_processes_ucComboxGrid.ResetText();
-            }
-            if (typeid == 2)
-            {
-                this.Factory_reworks_ucComboxGrid.GridDataSource = lstSource;
-                this.Factory_reworks_ucComboxGrid.ResetText();
-            }
-            if (typeid == 3)
-            {
-                this.Factory_sns_ucComboxGrid.GridDataSource = lstSource;
-                this.Factory_sns_ucComboxGrid.ResetText();
-            }
-
         }
         /// <summary>
         /// Factory_processes页签下拉列表鼠标点击事件

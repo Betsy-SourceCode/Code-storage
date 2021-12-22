@@ -201,7 +201,6 @@ namespace Login
             this.Factory_sns_skinButton.TabIndex = 40;
             this.Factory_sns_skinButton.Text = "执 行";
             this.Factory_sns_skinButton.UseVisualStyleBackColor = false;
-            this.Factory_sns_skinButton.Click += new System.EventHandler(this.Factory_sns_skinButton_Click);
             // 
             // tabPage2
             // 
@@ -379,6 +378,7 @@ namespace Login
             this.Factory_processes_dateExt.DatePicker.DateForeSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.Factory_processes_dateExt.DatePicker.DateTitleForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(105)))), ((int)(((byte)(105)))));
             this.Factory_processes_dateExt.DatePicker.Location = new System.Drawing.Point(0, 0);
+            this.Factory_processes_dateExt.DatePicker.MaxValue = new System.DateTime(2021, 12, 22, 0, 0, 0, 0);
             this.Factory_processes_dateExt.DatePicker.Name = "";
             this.Factory_processes_dateExt.DatePicker.TabIndex = 0;
             this.Factory_processes_dateExt.DatePicker.TimeForeSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
