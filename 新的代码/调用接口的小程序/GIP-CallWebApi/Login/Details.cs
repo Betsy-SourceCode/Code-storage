@@ -30,8 +30,6 @@ namespace Login
         gipwip_R1Entities gipwip_R1 = new gipwip_R1Entities();
         List<object> listSource = new List<object>();
         public int i = 0;
-        //定义一个委托实现子线程更新主线程
-        //public IAsyncResult.BeginInvoke aa(Delegate method);
         private void Details_Load(object sender, EventArgs e)
         {
             //var data= gipwip_R1.Log_ErrorData.OrderByDescending(a => a.Error_Date).ToList();
@@ -450,10 +448,10 @@ namespace Login
                         ////接口返回新增成功
                         if (receipt.code != 1100)
                         {
-                            //数据新增失败，写入数据表里:记录时间和工单号，跳过当前工单号到下一个工单号
+                            //数据新增失败，写入数据表里:记录时间和工单号
                             SqlStoredProcedure.AddLog_ErrorData(dt, ERPMO, receipt.msg);
                             flag = 1;
-                            continue;
+                            continue; //跳过当前工单号直接到下一个工单号
 
                         }
                         else
@@ -562,15 +560,8 @@ namespace Login
         }
         #endregion
         /// <summary>
-        /// 超时处理
+        /// 异步
         /// </summary>
-        /// <returns></returns>
-        private Task Async()
-        {
-            UseInterface(1, "http://api.eos-ts.h3c.com/odm-api/v1.0/factory/process");
-            return Task.CompletedTask;
-        }
-
         private async void ToDo()
         {
             await DoSomeWork();
