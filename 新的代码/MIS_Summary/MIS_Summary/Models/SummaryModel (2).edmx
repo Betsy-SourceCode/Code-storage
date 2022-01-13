@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="C6Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“C6.dbo.View_Summary”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="View_Summary">
+          <Key>
+            <PropertyRef Name="Serial_Num" />
+          </Key>
+          <Property Name="Serial_Num" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Applicant_CN" Type="varchar" MaxLength="50" />
+          <Property Name="OA_number" Type="varchar" MaxLength="50" />
+          <Property Name="Mat_Code" Type="varchar" MaxLength="50" />
+          <Property Name="Mat_Name" Type="varchar" MaxLength="200" />
+          <Property Name="Unit" Type="varchar" MaxLength="50" />
+          <Property Name="Qty" Type="varchar" MaxLength="50" />
+          <Property Name="Brand" Type="varchar" MaxLength="300" />
+          <Property Name="Fixed_number" Type="varchar" MaxLength="200" />
+          <Property Name="Expr1" Type="varchar" MaxLength="50" />
+          <Property Name="PO" Type="varchar" MaxLength="20" />
+          <Property Name="Results" Type="varchar" MaxLength="50" />
+          <Property Name="belongCompany" Type="varchar" MaxLength="50" />
+          <Property Name="UseDept" Type="varchar" MaxLength="50" />
+          <Property Name="ApplyDate" Type="varchar" MaxLength="50" />
+          <Property Name="Mpn" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityContainer Name="C6ModelStoreContainer">
+          <EntitySet Name="View_Summary" EntityType="Self.View_Summary" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Summary].[Serial_Num] AS [Serial_Num], 
+    [View_Summary].[Applicant_CN] AS [Applicant_CN], 
+    [View_Summary].[OA_number] AS [OA_number], 
+    [View_Summary].[Mat_Code] AS [Mat_Code], 
+    [View_Summary].[Mat_Name] AS [Mat_Name], 
+    [View_Summary].[Unit] AS [Unit], 
+    [View_Summary].[Qty] AS [Qty], 
+    [View_Summary].[Brand] AS [Brand], 
+    [View_Summary].[Fixed_number] AS [Fixed_number], 
+    [View_Summary].[Expr1] AS [Expr1], 
+    [View_Summary].[PO] AS [PO], 
+    [View_Summary].[Results] AS [Results], 
+    [View_Summary].[belongCompany] AS [belongCompany], 
+    [View_Summary].[UseDept] AS [UseDept], 
+    [View_Summary].[ApplyDate] AS [ApplyDate], 
+    [View_Summary].[Mpn] AS [Mpn]
+    FROM [dbo].[View_Summary] AS [View_Summary]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="C6Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="View_Summary">
+          <Key>
+            <PropertyRef Name="Serial_Num" />
+          </Key>
+          <Property Name="Serial_Num" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Applicant_CN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OA_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mat_Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mat_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Qty" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Brand" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Fixed_number" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Expr1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Results" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="belongCompany" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UseDept" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplyDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mpn" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="C6Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="View_Summary" EntityType="Self.View_Summary" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="C6ModelStoreContainer" CdmEntityContainer="C6Entities">
+          <EntitySetMapping Name="View_Summary">
+            <EntityTypeMapping TypeName="C6Model.View_Summary">
+              <MappingFragment StoreEntitySet="View_Summary">
+                <ScalarProperty Name="Serial_Num" ColumnName="Serial_Num" />
+                <ScalarProperty Name="Applicant_CN" ColumnName="Applicant_CN" />
+                <ScalarProperty Name="OA_number" ColumnName="OA_number" />
+                <ScalarProperty Name="Mat_Code" ColumnName="Mat_Code" />
+                <ScalarProperty Name="Mat_Name" ColumnName="Mat_Name" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="Fixed_number" ColumnName="Fixed_number" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+                <ScalarProperty Name="PO" ColumnName="PO" />
+                <ScalarProperty Name="Results" ColumnName="Results" />
+                <ScalarProperty Name="belongCompany" ColumnName="belongCompany" />
+                <ScalarProperty Name="UseDept" ColumnName="UseDept" />
+                <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
+                <ScalarProperty Name="Mpn" ColumnName="Mpn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

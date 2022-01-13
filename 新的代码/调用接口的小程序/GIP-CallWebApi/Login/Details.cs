@@ -133,7 +133,7 @@ namespace Login
             {
                 //表头
                 List<DataGridViewColumnEntity> lstCulumns = new List<DataGridViewColumnEntity>();
-                lstCulumns.Add(new DataGridViewColumnEntity() { DataField = "Name", HeadText = "工单号", Width = 600, WidthType = SizeType.Absolute });
+                lstCulumns.Add(new DataGridViewColumnEntity() { DataField = "Name", HeadText = "工单号", Width = 400, WidthType = SizeType.Absolute });
                 if (typeid == 1)
                 {
                     this.Factory_processes_ucComboxGrid.GridColumns = lstCulumns;
@@ -149,27 +149,38 @@ namespace Login
                 //this.ucComboxGrid1.UCDataGridView.IsShowCheckBox = true;
                 var data = new List<Receipt>();
                 List<object> lstSource = new List<object>();
+                //var List = SqlStoredProcedure.GetGDnumberList(date);
+                //测试分页
                 var List = SqlStoredProcedure.GetGDnumberList(date);
                 data = List;
                 //默认添加一个全部
-                Receipt receipt = new Receipt();
-                receipt.Name = "All";
-                lstSource.Add(receipt);
-                foreach (var item in data)
-                {
-                    if (data.Count < 0)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Receipt model = new Receipt()
-                        {
-                            Name = item.ERPMO
-                        };
-                        lstSource.Add(model);
-                    }
+                //Receipt receipt = new Receipt();
+                //receipt.Name = "All";
+                //lstSource.Add(receipt);
+                //foreach (var item in data)
+                //{
+                //    if (data.Count < 0)
+                //    {
+                //        break;
+                //    }
+                //    else
+                //    {
+                //        Receipt model = new Receipt()
+                //        {
+                //            Name = item.ERPMO
+                //        };
+                //        lstSource.Add(model);
+                //    }
 
+                //}
+                for (int i = 0; i < 100; i++)
+                {
+                    TestGridModel model = new TestGridModel()
+                    {
+
+                        Name = "选项——" + i,
+                    };
+                    lstSource.Add(model);
                 }
                 if (typeid == 1)
                 {

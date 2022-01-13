@@ -30,11 +30,11 @@ namespace Login
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Details));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Details));
             this.selectCustomerAllBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.Factory_sns_ucComboxGrid = new HZH_Controls.Controls.UCComboxGrid();
@@ -59,12 +59,12 @@ namespace Login
             this.label1 = new System.Windows.Forms.Label();
             this.DataList = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.ucPagerControl = new HZH_Controls.Controls.UCPagerControl2();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Error_Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error_Data = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error_Reason = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error_Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ucPagerControl = new HZH_Controls.Controls.UCPagerControl2();
             ((System.ComponentModel.ISupportInitialize)(this.selectCustomerAllBindingSource)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -517,20 +517,6 @@ namespace Login
             this.tabPage4.TabIndex = 3;
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // ucPagerControl
-            // 
-            this.ucPagerControl.BackColor = System.Drawing.Color.White;
-            this.ucPagerControl.DataSource = ((System.Collections.Generic.List<object>)(resources.GetObject("ucPagerControl.DataSource")));
-            this.ucPagerControl.Location = new System.Drawing.Point(0, 464);
-            this.ucPagerControl.Name = "ucPagerControl";
-            this.ucPagerControl.PageCount = 0;
-            this.ucPagerControl.PageIndex = 1;
-            this.ucPagerControl.PageModel = HZH_Controls.Controls.PageModel.Soure;
-            this.ucPagerControl.PageSize = 10;
-            this.ucPagerControl.Size = new System.Drawing.Size(860, 40);
-            this.ucPagerControl.StartIndex = 0;
-            this.ucPagerControl.TabIndex = 18;
-            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -542,7 +528,7 @@ namespace Login
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(139)))), ((int)(((byte)(146)))));
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
@@ -556,7 +542,7 @@ namespace Login
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(139)))), ((int)(((byte)(146)))));
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
@@ -569,7 +555,7 @@ namespace Login
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(139)))), ((int)(((byte)(146)))));
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
@@ -620,6 +606,20 @@ namespace Login
             this.Error_Date.HeaderText = "产生时间";
             this.Error_Date.Name = "Error_Date";
             this.Error_Date.ReadOnly = true;
+            // 
+            // ucPagerControl
+            // 
+            this.ucPagerControl.BackColor = System.Drawing.Color.White;
+            this.ucPagerControl.DataSource = ((System.Collections.Generic.List<object>)(resources.GetObject("ucPagerControl.DataSource")));
+            this.ucPagerControl.Location = new System.Drawing.Point(0, 464);
+            this.ucPagerControl.Name = "ucPagerControl";
+            this.ucPagerControl.PageCount = 0;
+            this.ucPagerControl.PageIndex = 1;
+            this.ucPagerControl.PageModel = HZH_Controls.Controls.PageModel.Soure;
+            this.ucPagerControl.PageSize = 10;
+            this.ucPagerControl.Size = new System.Drawing.Size(860, 40);
+            this.ucPagerControl.StartIndex = 0;
+            this.ucPagerControl.TabIndex = 18;
             // 
             // Details
             // 

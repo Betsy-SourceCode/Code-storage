@@ -1,0 +1,159 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>电脑及周边设备验收单汇总</title>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <link href="~/Scripts/layui/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/页面/index.js"></script>
+    <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <script src="~/Scripts/layui/layui/modules/table.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            margin: 5px auto;
+            width: 97%
+        }
+
+
+        .layui-input {
+            width: 88%;
+        }
+
+        #font1 {
+            text-align: center;
+            margin: 30px auto;
+        }
+
+        .layui-table-cell {
+            text-align: center;
+            height: auto;
+            padding: 8px;
+            overflow: visible;
+            text-overflow: inherit;
+            white-space: normal;
+            word-break: break-all;
+        }
+        /*{# 设置table每一行的height #}*/
+        tbody .layui-table-cell {
+            height: 50px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .layui-form-label {
+            padding: 0px 11px;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="font1">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>
+                    <h2>电脑及周边设备验收单汇总</h2><br />
+                    <h3>Computer & Periperal Equipment Acceptance Forms Summary</h3>
+                </legend>
+            </fieldset>
+        </div>
+        <div id="mainContent">
+            <div class="layui-row" style="text-align:center;">
+                <div class="layui-col-md2">
+                    <div class="grid-demo grid-demo-bg1">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">单据编号：<br />FormNumber</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="DocumentNo" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md2">
+                    <div class="grid-demo">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">物料代码：<br />MaterialCode</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="Mat_Code" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md3" style="width:18%;min-width:18%">
+                    <div class="grid-demo">
+                        <div class="grid-demo">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width:100px">物料名称：<br />Material Name</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="Mat_Name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md3" style="width:18%;min-width:18%">
+                    <div class="grid-demo">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width:102px">验收单申请日期:<br />Apply Date</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="ApplyStartDate" id="ApplyStartDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md2" style="margin-left:-3.5%">
+                    <div class="grid-demo">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">到<br />To</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="ApplyEndDate" id="ApplyEndDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-demo" style="float:left;margin-right:10px">
+                    <button type="button" class="layui-btn" id="btnSelect" style="margin-bottom:20px">查询</button>
+                </div>
+                <div class="grid-demo" style="float:left">
+                    <button type="button" class="layui-btn" id="btnExport">导出</button>
+                </div>
+            </div>
+        </div>
+
+        <table class="layui-hide" lay-filter="test" id="SummaryTable" style="width:95%"></table>
+
+    </div>
+
+
+    <script type="text/html" id="xuhao">
+        {{d.LAY_TABLE_INDEX+1}}
+    </script>
+    <script>
+        //日期
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#ApplyStartDate'
+
+            });
+            laydate.render({
+
+                elem: ' #ApplyEndDate'
+            });
+        });
+
+    </script>
+</body>
+</html>

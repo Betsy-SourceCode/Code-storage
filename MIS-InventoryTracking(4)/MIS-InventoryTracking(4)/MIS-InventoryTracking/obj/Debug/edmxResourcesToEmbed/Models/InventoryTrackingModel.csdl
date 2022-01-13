@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WebStationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CheckFullInventory_Temp_" EntityType="WebStationModel.CheckFullInventory_Temp_" />
+  </EntityContainer>
+  <EntityType Name="CheckFullInventory_Temp_">
+    <Key>
+      <PropertyRef Name="LPSerial" />
+    </Key>
+    <Property Name="LPSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ledger" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+    <Property Name="Fnumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="MeasureUnit" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="WIP_Qty" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="MRB_Qty" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="WH_Qty" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="IQC_Qty" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="OpenPO_Qty" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Invt_Time" Type="DateTime" Precision="3" />
+    <Property Name="Material" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

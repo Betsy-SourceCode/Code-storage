@@ -1,0 +1,78 @@
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\MIS-InventoryTracking.dll.config
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\MIS-InventoryTracking.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\MIS-InventoryTracking.pdb
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\Newtonsoft.Json.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\EntityFramework.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\EntityFramework.SqlServer.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\System.Web.Razor.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\System.Web.Webpages.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\System.Web.Webpages.Deployment.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\System.Web.Webpages.Razor.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\System.Web.Helpers.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\System.Web.Mvc.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\zh-Hans\EntityFramework.resources.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\zh-Hans\EntityFramework.SqlServer.resources.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Razor.resources.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.resources.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.Deployment.resources.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.Razor.resources.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Helpers.resources.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Mvc.resources.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.AssemblyReference.cache
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.CoreCompileInputs.cache
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.CopyComplete
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.dll
+D:\study\学习\微信\WeChat Files\wxid_98tp4257r1mv22\FileStorage\File\2022-01\MIS-InventoryTracking(2)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.pdb
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\MIS-InventoryTracking.dll.config
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\MIS-InventoryTracking.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\MIS-InventoryTracking.pdb
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\Newtonsoft.Json.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\EntityFramework.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\EntityFramework.SqlServer.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Razor.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Webpages.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Webpages.Deployment.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Webpages.Razor.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Helpers.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Mvc.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\EntityFramework.resources.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\EntityFramework.SqlServer.resources.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Razor.resources.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.resources.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.Deployment.resources.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.Razor.resources.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Helpers.resources.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Mvc.resources.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.AssemblyReference.cache
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.CoreCompileInputs.cache
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.CopyComplete
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.dll
+C:\Users\KYH\Documents\WeChat Files\wxid_bz1pojz7k4ad21\FileStorage\File\2022-01\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.pdb
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\MIS-InventoryTracking.dll.config
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\MIS-InventoryTracking.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\MIS-InventoryTracking.pdb
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\Newtonsoft.Json.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\EntityFramework.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\EntityFramework.SqlServer.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Razor.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Webpages.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Webpages.Deployment.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Webpages.Razor.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Helpers.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\System.Web.Mvc.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\EntityFramework.resources.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\EntityFramework.SqlServer.resources.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Razor.resources.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.resources.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.Deployment.resources.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Webpages.Razor.resources.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Helpers.resources.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\bin\zh-Hans\System.Web.Mvc.resources.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.AssemblyReference.cache
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.CoreCompileInputs.cache
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.csproj.CopyComplete
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.dll
+E:\项目源码\GitHub源代码管理\MIS-InventoryTracking(4)\MIS-InventoryTracking\obj\Debug\MIS-InventoryTracking.pdb

@@ -30,7 +30,7 @@ namespace KYH_NewEmailDomain
                 TimeSpan timeSpan = stopwatch.Elapsed; //  获取总时间
                 double minutes = timeSpan.TotalMinutes;  // 分钟
                 double seconds = timeSpan.TotalSeconds;  //  秒数
-                MessageBox.Show("运行了:" + minutes + "分钟," + seconds + "秒");
+                //MessageBox.Show("运行了:" + minutes + "分钟," + seconds + "秒");
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 //Application.Run(new Index());

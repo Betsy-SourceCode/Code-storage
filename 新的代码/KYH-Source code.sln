@@ -17,7 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-ProductPrice", "KYH-Pro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KYH-JigFixture", "KYH-JigFixture\KYH-JigFixture.csproj", "{3EAF3C96-A538-4E8E-AB5B-08396E7B8BA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS-FreightArrangement", "MIS-FreightArrangement\MIS-FreightArrangement.csproj", "{BF938859-527E-4281-BE65-6554AAEADCBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS-InventoryTracking", "MIS-InventoryTracking\MIS-InventoryTracking.csproj", "{89425454-A32C-4DC3-B517-71BF02418969}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS-FreightArrangement", "MIS-FreightArrangement\MIS-FreightArrangement\MIS-FreightArrangement\MIS-FreightArrangement.csproj", "{BF938859-527E-4281-BE65-6554AAEADCBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS-Summary", "MIS-Summary\MIS-Summary.csproj", "{88A229EA-B19E-4C42-8DD4-67A64B0B44D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +57,18 @@ Global
 		{3EAF3C96-A538-4E8E-AB5B-08396E7B8BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EAF3C96-A538-4E8E-AB5B-08396E7B8BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EAF3C96-A538-4E8E-AB5B-08396E7B8BA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89425454-A32C-4DC3-B517-71BF02418969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89425454-A32C-4DC3-B517-71BF02418969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89425454-A32C-4DC3-B517-71BF02418969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89425454-A32C-4DC3-B517-71BF02418969}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF938859-527E-4281-BE65-6554AAEADCBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF938859-527E-4281-BE65-6554AAEADCBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF938859-527E-4281-BE65-6554AAEADCBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF938859-527E-4281-BE65-6554AAEADCBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88A229EA-B19E-4C42-8DD4-67A64B0B44D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A229EA-B19E-4C42-8DD4-67A64B0B44D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A229EA-B19E-4C42-8DD4-67A64B0B44D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A229EA-B19E-4C42-8DD4-67A64B0B44D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

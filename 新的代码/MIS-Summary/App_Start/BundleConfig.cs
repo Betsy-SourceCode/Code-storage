@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace MIS_Summary
+namespace demo2
 {
     public class BundleConfig
     {

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息是通过以下项进行控制的
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("MIS_Summary")]
+[assembly: AssemblyTitle("demo2")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MIS_Summary")]
+[assembly: AssemblyProduct("demo2")]
 [assembly: AssemblyCopyright("版权所有(C)  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于 typelib 的 ID
-[assembly: Guid("27ed9abc-d4b9-4985-bd72-79ae6477d0a5")]
+[assembly: Guid("afe450eb-725a-47d6-ac1d-438b4800fcd8")]
 
 // 程序集的版本信息由下列四个值组成:
 //

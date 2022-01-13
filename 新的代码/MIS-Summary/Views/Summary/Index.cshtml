@@ -1,12 +1,297 @@
-﻿<html>
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <script src="~/Scripts/jQuery v1.10.2.js"></script>
-    <script src="~/Scripts/React/react.development.js"></script>
-    <script src="~/Scripts/React/react-dom.development.js"></script>
-    <script src="~/Scripts/Index.js" type="text/babel"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>电脑及周边设备验收单汇总</title>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <link href="~/Scripts/layui/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <script src="~/Scripts/layui/layui/modules/table.js"></script>
+    <script src="~/Scripts/页面/index.js"></script>
+
+    @*<script src="~/Scripts/导出/tableExport.min.js"></script>*@
+    <script src="~/Scripts/导出/jquery.table2excel.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+
+        }
+        .layui-table-tips-main, .layui-table-grid-down .layui-icon {
+            display: none
+        }
+        .layui-table-tips-c{display:none}
+        .layui-row {
+            font-size: 10px;
+        }
+        #container {
+            margin: 5px auto;
+            width: 97%
+        }
+        .layui-form-label {
+            padding: 0 9px 0 0;
+        }
+        .layui-table th, .layui-table td{
+            font-size:10px;
+        }
+        .layui-input {
+            width: 70%;
+        }
+
+        #font1 {
+            text-align: center;
+            margin: 30px auto;
+        }
+
+        .layui-table-cell {
+            text-align: center;
+            padding:0;
+            height: auto !important;
+            line-height: 11px !important;
+            white-space: normal;
+            overflow: visible;
+            @*padding: 8px;
+            overflow: hidden;
+            text-overflow: inherit;
+            white-space: normal;*@
+
+            word-break: break-all;
+        }
+        /*{# 设置table每一行的height #}*/
+        tbody .layui-table-cell {
+            height: auto !important;
+            line-height: 16px !important;
+            overflow: visible;
+            @*white-space: wrap;*@
+            text-overflow: ellipsis;
+            padding:0 0 0 3px;
+            @*white-space: normal;*@
+        }
+        .laytable-cell-10001-0-8{
+            text-align:left;
+        }
+       th  .laytable-cell-10001-0-8 {
+            text-align: center;
+        }
+
+
+
+/*
+        #DocumentNo {
+            width: 190%;
+            margin-right:10px;
+        }*/
+       .layui-btn,  .layui-laypage .layui-laypage-curr .layui-laypage-em, .layui-laydate .layui-this {
+            background-color: rgb(39,140,240) !important;
+        }
+        @*#container {
+            display: flex;
+        }*@
+        .layui-table-view{
+            margin :0;
+        }
+    </style>
 </head>
-<body>
-    <div id="example"></div>
+<body style="max-width:98%;min-width:1250px; margin:0px auto">
+    <div id="font1">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>
+                <h2>电脑及周边设备验收单汇总</h2><br />
+                <h3>Computer & Periperal Equipment Acceptance Forms Summary</h3>
+            </legend>
+        </fieldset>
+    </div>
+    <div id="container" class="layui-fluid">
+        <div class="layui-col-md2" style="margin-right:6%">
+            <div class="">
+                <label class="layui-form-label">单据编号：<br />FormNumber</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="DocumentNo" style="width:118%" lay-verify="required" placeholder="请输入验收单号、采购订单号..." title="请输入验收单号、采购订单号、OA申请单号、资产编号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md2">
+
+            <label class="layui-form-label">物料代码：<br />MaterialCode</label>
+            <div style="flex-flow:row">
+                <input type="text" id="Mat_Code" style=" width: 135px;" lay-verify="required" placeholder="请输入物料代码" autocomplete="off" class="layui-input">
+            </div>
+
+        </div>
+        <div class="layui-col-md2">
+
+            <label class="layui-form-label" style="width:100px">物料名称：<br />Material Name</label>
+            <div class="layui-input-inline">
+                <input type="text" id="Mat_Name" lay-verify="required" style=" min-width: 129px; width: 129px;" placeholder="请输入物料名称" autocomplete="off" class="layui-input">
+            </div>
+
+
+        </div>
+        <div class="layui-fluid layui-col-md4">
+
+            <div class="layui-col-md6">
+                <label class="layui-form-label" style="width:120px;text-align:center">验收单申请日期:<br />Apply Date</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="ApplyStartDate" style=" min-width: 129px; width: 129px;" id="ApplyStartDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-col-md4">
+
+                <label class="layui-form-label" style="width: 9px;text-align:center;padding-right:17%">到<br />To</label>
+                <div class="layui-input-inline" id="End">
+                    <input type="text" name="ApplyEndDate" id="ApplyEndDate" style=" min-width: 129px; width: 129px;" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+        </div>
+        <div class="grid-demo" style="float:left;margin-right:10px">
+            <button type="button" class="layui-btn" id="btnSelect" style="margin-bottom:20px">查询</button>
+        </div>
+        <div class="grid-demo" style="float:left">
+            <button type="button" class="layui-btn" id="btnExport">导出</button>
+        </div>
+
+
+    </div>
+
+
+
+    <div id="tableheight" style="width: 98%; margin: auto; overflow:hidden">
+        <table class="layui-hide" lay-filter="test" id="SummaryTable">
+        </table>
+    </div>
+
+
+
+    <div id="ExportData" style="display:none">
+        <table class="layui-hide" lay-filter="test" id="SummaryTable1" style="width:95%">
+        </table>
+        @*<table id="AllList" style="text-align:center" class="layui-table" lay-data="{url: '/Summary/Summary/IndexData'},height:530}">
+                <thead>
+                    <tr>
+                        <th lay-data="{templet: '#xuhao',width:'3%'}">序号</th>
+                        <th lay-data="{field:'ApplyDate',width:'7%'}">验收单申请日期Apply Date</th>
+                        <th lay-data="{field:'Serial_Num',width: '9%'}">验收单编号<br />Acceptance<br /> FormNumber</th>
+                        <th lay-data="{field:'OA_number',width:'7%'}">采购订单号<br />PO Num</th>
+                        <th lay-data="{field:'PO',width:'10%'}">OA申请单号<br />OA Flow Num</th>
+                        <th lay-data="{field:'Fixed_number',width:'6%'}">资产编号<br />Asset Num</th>
+                        <th lay-data="{field:'Mat_Code',width:'6%'}">物料代码<br />MaterialCode</th>
+                        <th lay-data="{field:'Mat_Name',width: '8%'}">物料名称<br />Material Name</th>
+                        <th lay-data="{field:'Brand',width:'15%'}">型号<br />Model</th>
+                        <th lay-data="{field:'Unit',width:'3%'}">单位<br />Unit</th>
+                        <th lay-data="{field:'Qty',width: '3%'}">数量<br />Qty</th>
+                        <th lay-data="{field:'Mpn',width:'8%'}">生产厂家<br />Manufacturer</th>
+                        <th lay-data="{field:'Results',width:'4%'}">验收结果<br />CheckResult</th>
+                        <th lay-data="{field:'belongCompany',width:'5%'}">归属工厂<br />FactoryBelongs</th>
+                        <th lay-data="{field:'UseDept',width:102}">使用部门<br />Operating<br /> Department</th>
+                    </tr>
+                </thead>
+                <tbody id="conat">
+                </tbody>
+            </table>*@
+    </div>
+    <script>
+
+        layui.use(['table', 'form'], function () {
+            var table = layui.table,
+                form = layui.form;
+
+            // 监听搜索操作
+            $('#btnSelect').click(function () {
+
+                var DocumentNo = $("#DocumentNo").val();//单据编号
+                var Mat_Code = $("#Mat_Code").val();//物料代码
+                var Mat_Name = $("#Mat_Name").val();//物料名称
+                var ApplyStartDate = $("#ApplyStartDate").val();//验收单申请开始日期
+                var ApplyEndDate = $("#ApplyEndDate").val();//验收单申请结束日期
+                table.render({
+                    elem: 'conat',//指定表格元素
+                    url: '/Summary/Summary/IndexData' //请求路径
+                    , where: {
+                        DocumentNo: DocumentNo, Mat_Code: Mat_Code, Mat_Name: Mat_Name, ApplyStartDate: ApplyStartDate, ApplyEndDate: ApplyEndDate
+                    }
+                });
+                $.ajax({
+                    url: '/Summary/Summary/IndexData',
+                    dataType: 'json',
+                    success: function (res) {
+                        //执行搜索重载
+                        table.reload('AllList', {
+                            page: {
+                                curr: 1
+                            }
+                            , where: {
+                                ApplyStartDate: ApplyStartDate,
+                                ApplyEndDate: ApplyEndDate
+                            }
+                        }, res.data);
+                    }
+                    , error: function () {
+                        layer.msg('异常，请刷新后重试！', {
+                            icon: 3,
+                            skin: 'layer-ext-demo',
+                            time: 2000
+                        })
+                    }
+                });
+
+
+                return false
+            });
+        })
+    </script>
+    <script type="text/html" id="xuhao">
+        {{d.LAY_TABLE_INDEX+1}}
+    </script>
+    <script type="text/html" id="date">
+        {{ "2022-10-27 10:21:21" }}
+    </script>
+    <script>
+        $(function () {
+            $('#btnExport').addClass("layui-btn-disabled").attr("disabled", true);
+            console.log(window.screen.availHeight - $("body").height() - 200)
+            console.log($("body").height())
+        });
+        //日期
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            var ApplyStartDate = laydate.render({
+                elem: '#ApplyStartDate'
+                , done: function (value) {
+                    $('#ApplyStartDate').change();
+                    $('#ApplyEndDate').remove();
+                    $("#End").html(
+                        ' <input  type="text" name="ApplyEndDate" id="ApplyEndDate" style=" min-width: 129px; width: 129px;" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" />'
+                    );
+                    loadDate(value);
+                }
+            });
+            var ApplyEndDate = laydate.render({
+
+                elem: ' #ApplyEndDate',
+                done: function () {
+                    $('#ApplyEndDate').change();
+                }
+            });
+            //渲染修订的时间控件
+            function loadDate(value) {
+                laydate.render({
+                    elem: '#ApplyEndDate',
+                    min: value
+                })
+            }
+        });
+
+
+    </script>
+
 </body>
 </html>
