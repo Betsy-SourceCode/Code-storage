@@ -18,7 +18,7 @@ namespace MIS_InventoryTracking.Controllers
         /// <returns></returns>
         public ActionResult Index(string userid)
         {
-            userid = "467";
+            //userid = "467";
             if (userid == null)
             {
                 userid = "";
