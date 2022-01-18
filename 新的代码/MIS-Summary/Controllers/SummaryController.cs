@@ -24,7 +24,7 @@ namespace MIS_Summary.Controllers
         /// </summary>
         /// <param name="DocumentNo"></param>
         /// <param name="Mat_Code"></param>
-        /// <param name="Mat_Name"></param>
+        /// <param name="Mat_Name"></param>  
         /// <param name="ApplyStartDate"></param>
         /// <param name="ApplyEndDate"></param>
         /// <returns></returns>
