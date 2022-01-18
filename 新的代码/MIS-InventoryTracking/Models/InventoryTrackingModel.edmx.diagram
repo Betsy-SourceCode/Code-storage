@@ -4,7 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="32b4c6e193174dbe9c1447141ba050f8" Name="Diagram1" />
+      <Diagram DiagramId="32b4c6e193174dbe9c1447141ba050f8" Name="Diagram1" >
+        <EntityTypeShape EntityType="WebStationModel.CheckFullInventory_Temp_" Width="1.5" PointX="0.75" PointY="0.75" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

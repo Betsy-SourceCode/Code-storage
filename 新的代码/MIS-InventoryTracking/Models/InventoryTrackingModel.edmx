@@ -4,20 +4,86 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WebStationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="WebStationModelStoreContainer" />
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="WebStationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CheckFullInventory_Temp_">
+          <Key>
+            <PropertyRef Name="LPSerial" />
+          </Key>
+          <Property Name="LPSerial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ledger" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Fnumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Material" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="MeasureUnit" Type="nvarchar" MaxLength="8" />
+          <Property Name="WIP_Qty" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="MRB_Qty" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="WH_Qty" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="IQC_Qty" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="OpenPO_Qty" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Invt_Time" Type="datetime" />
+        </EntityType>
+        <Function Name="InventoryTrackingProc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tableName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Fnumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="querySql" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="querySql2" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <EntityContainer Name="WebStationModelStoreContainer">
+          <EntitySet Name="CheckFullInventory_Temp_" EntityType="Self.CheckFullInventory_Temp_" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WebStationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true" />
+        <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="CheckFullInventory_Temp_" EntityType="WebStationModel.CheckFullInventory_Temp_" />
+          <FunctionImport Name="InventoryTrackingProc">
+            <Parameter Name="tableName" Mode="In" Type="String" />
+            <Parameter Name="Fnumber" Mode="In" Type="String" />
+            <Parameter Name="querySql" Mode="In" Type="String" />
+            <Parameter Name="querySql2" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="CheckFullInventory_Temp_">
+          <Key>
+            <PropertyRef Name="LPSerial" />
+          </Key>
+          <Property Name="LPSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ledger" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Fnumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MeasureUnit" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="WIP_Qty" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="MRB_Qty" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="WH_Qty" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="IQC_Qty" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="OpenPO_Qty" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Invt_Time" Type="DateTime" Precision="3" />
+          <Property Name="Material" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="WebStationModelStoreContainer" CdmEntityContainer="WebStationEntities" />
+        <EntityContainerMapping StorageEntityContainer="WebStationModelStoreContainer" CdmEntityContainer="WebStationEntities" >
+          <EntitySetMapping Name="CheckFullInventory_Temp_">
+            <EntityTypeMapping TypeName="WebStationModel.CheckFullInventory_Temp_">
+              <MappingFragment StoreEntitySet="CheckFullInventory_Temp_">
+                <ScalarProperty Name="Material" ColumnName="Material" />
+                <ScalarProperty Name="Invt_Time" ColumnName="Invt_Time" />
+                <ScalarProperty Name="OpenPO_Qty" ColumnName="OpenPO_Qty" />
+                <ScalarProperty Name="IQC_Qty" ColumnName="IQC_Qty" />
+                <ScalarProperty Name="WH_Qty" ColumnName="WH_Qty" />
+                <ScalarProperty Name="MRB_Qty" ColumnName="MRB_Qty" />
+                <ScalarProperty Name="WIP_Qty" ColumnName="WIP_Qty" />
+                <ScalarProperty Name="MeasureUnit" ColumnName="MeasureUnit" />
+                <ScalarProperty Name="Fnumber" ColumnName="Fnumber" />
+                <ScalarProperty Name="Ledger" ColumnName="Ledger" />
+                <ScalarProperty Name="LPSerial" ColumnName="LPSerial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InventoryTrackingProc" FunctionName="WebStationModel.Store.InventoryTrackingProc" />
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

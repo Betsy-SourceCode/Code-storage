@@ -100,8 +100,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\Alert美化弹出框\sweetalert-2.1.2.min.js" />
-    <Content Include="Scripts\Alert美化弹出框\sweetalert.min.css" />
+    <Content Include="Scripts\Alert美化弹出框\sweetalert2.min.css" />
+    <Content Include="Scripts\Alert美化弹出框\sweetalert2.min.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\DataTables-1.11.3\css\dataTables.bootstrap.css" />
     <Content Include="Scripts\DataTables-1.11.3\css\dataTables.bootstrap.min.css" />
@@ -126,6 +126,7 @@
     <Content Include="Scripts\DataTables-1.11.3\images\sort_both.png" />
     <Content Include="Scripts\DataTables-1.11.3\images\sort_desc.png" />
     <Content Include="Scripts\DataTables-1.11.3\images\sort_desc_disabled.png" />
+    <Content Include="Scripts\DataTables-1.11.3\images\加载.gif" />
     <Content Include="Scripts\DataTables-1.11.3\js\dataTables.bootstrap.js" />
     <Content Include="Scripts\DataTables-1.11.3\js\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\DataTables-1.11.3\js\dataTables.bootstrap4.js" />
@@ -164,6 +165,7 @@
     <Content Include="Scripts\Index.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jQuery.print.js" />
+    <Content Include="Scripts\jquery.table2excel.js" />
     <Content Include="Scripts\tastySelect.css" />
     <Content Include="Scripts\tastySelect.min.js" />
     <Content Include="Scripts\删除.png" />
@@ -175,6 +177,9 @@
     <Compile Include="Controllers\InventoryTrackingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CheckFullInventory_Temp_.cs">
+      <DependentUpon>InventoryTrackingModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\InventoryTrackingModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -191,6 +196,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InventoryTrackingModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\LogHelper.cs" />
+    <Compile Include="Models\Others.cs" />
     <Compile Include="Models\ResponseJson.cs" />
     <Compile Include="Models\SqlStatement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -206,6 +213,7 @@
     </Content>
     <None Include="packages.config" />
     <Content Include="Views\InventoryTracking\Index.cshtml" />
+    <Content Include="Views\InventoryTracking\IndexPrint.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -215,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -244,12 +253,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

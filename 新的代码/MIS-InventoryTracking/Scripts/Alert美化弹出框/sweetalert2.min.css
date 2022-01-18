@@ -1,4 +1,6 @@
-﻿.swal2-modal, .swal2-overlay {
+﻿body {
+}
+.swal2-modal, .swal2-overlay {
     position: fixed;
     display: none
 }

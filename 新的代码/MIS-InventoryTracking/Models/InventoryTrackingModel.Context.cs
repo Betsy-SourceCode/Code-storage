@@ -12,6 +12,8 @@ namespace MIS_InventoryTracking.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class WebStationEntities : DbContext
     {
@@ -25,5 +27,27 @@ namespace MIS_InventoryTracking.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<CheckFullInventory_Temp_> CheckFullInventory_Temp_ { get; set; }
+    
+        public virtual int InventoryTrackingProc(string tableName, string fnumber, string querySql, string querySql2)
+        {
+            var tableNameParameter = tableName != null ?
+                new ObjectParameter("tableName", tableName) :
+                new ObjectParameter("tableName", typeof(string));
+    
+            var fnumberParameter = fnumber != null ?
+                new ObjectParameter("Fnumber", fnumber) :
+                new ObjectParameter("Fnumber", typeof(string));
+    
+            var querySqlParameter = querySql != null ?
+                new ObjectParameter("querySql", querySql) :
+                new ObjectParameter("querySql", typeof(string));
+    
+            var querySql2Parameter = querySql2 != null ?
+                new ObjectParameter("querySql2", querySql2) :
+                new ObjectParameter("querySql2", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InventoryTrackingProc", tableNameParameter, fnumberParameter, querySqlParameter, querySql2Parameter);
+        }
     }
 }

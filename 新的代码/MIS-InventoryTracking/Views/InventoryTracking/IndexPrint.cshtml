@@ -1,0 +1,274 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/tastySelect.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Scripts/Alert美化弹出框/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/Scripts/Alert美化弹出框/sweetalert2.min.js"></script>
+    <style>
+        .btn-primary {
+            color: black;
+        }
+
+        th, td {
+            border: 1px solid gray;
+        }
+
+        thead {
+            background-color: #f2f2f2;
+        }
+
+        table.dataTable thead th {
+            border-bottom: 0px solid #111;
+        }
+
+        /*重写样式*/
+        .style-select.future .style-select-title {
+            background-image: linear-gradient(#ffffff, #ffffff);
+        }
+
+        .style-select-title {
+            height: 54px;
+            line-height: 38px;
+            text-align: center;
+        }
+
+        .style-select.future .style-select-title:after {
+            border-width: 0.5rem .35em 0 .5rem;
+            border-color: #000000 transparent transparent transparent;
+        }
+
+        ul {
+            margin-left: -40px;
+        }
+
+        .style-select.future .style-select-title:after {
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .style-select.future .style-select-options {
+            border-color: #33333352;
+            left: -1px;
+            right: -1px;
+        }
+
+        .style-select.future .style-select-option:before {
+            background: #555;
+        }
+
+        .style-select-options {
+            margin-top: 1px;
+        }
+
+        #dayReveiveMoney_payment_list_table_wrapper .dataTables_scrollHead {
+            display: block !important;
+            Z-index: 888;
+        }
+
+        #dayReveiveMoney_payment_list_table_wrapper .dataTables_scrollBody {
+            margin-top: -40px !important;
+        }
+
+        .style-select.future .style-select-option {
+            text-align: center
+        }
+
+        table.dataTable.no-footer {
+            border-bottom: none;
+        }
+
+        /*.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary:visited {
+            color: black;
+        }
+        .btn-primary:focus {
+            background-color: darkred !important;
+        }*/
+        .btnstyle {
+            height: 54px;
+            border: 1px solid gray;
+            border-radius: 6%;
+        }
+
+            .btnstyle:hover {
+                color: white;
+                background-color: lightskyblue !important;
+            }
+
+            .btnstyle:active::before, .btn-primary:visited::after, .btnstyle::backdrop {
+                color: cadetblue;
+            }
+
+            /*.btnstyle:focus {
+
+        }*/
+            .btnstyle:active {
+                background-color: dodgerblue !important;
+                color: white;
+            }
+    </style>
+    <script>
+        var app = angular.module('myApp', []);  //创建模块
+        //格式化时间
+        Date.prototype.Format = function (fmt) { // author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, // 月份
+                "d+": this.getDate(), // 日
+                "h+": this.getHours(), // 小时
+                "m+": this.getMinutes(), // 分
+                "s+": this.getSeconds(), // 秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+                "S": this.getMilliseconds() // 毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+        app.controller('mycontroller', function ($scope, $timeout) {
+            //加载首页主表数据
+            $scope.GetIndexList = function (bank) {
+                $.ajax({
+                    url: "/InventoryTracking/InventoryTracking/IndexData",
+                    type: "POST",
+                    data: { 'bank': bank },
+                    dataType: "json",
+                    success: function (data) {
+                        var list = data.Data;
+                        $("#notfindlist").remove();   //empty-子节点清空，不会删除本身
+                        if (list.length != 0) {
+                            $.each(list, function (key, value) {
+                                var date = new Date(value.Invt_Time);
+                                value.Invt_Time = date.Format("yyyy-MM-dd hh:mm:ss");  //日期格式化
+                            })
+                            $scope.List = list;
+                            $scope.$apply();
+                        }
+                        else {
+                            //第一种;
+                            $("#OAContent").append("<tr id='notfindlist'><td colspan='11' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
+                            $scope.List = null;
+                            $scope.$apply();
+
+                        }
+                        $timeout(function () {
+                            //处理dom加载完成，或者repeat循环完成要做的事情
+                            window.print();
+                        }, 1000);
+                    }
+                })
+            };
+        })
+        //打印页面
+        function Dayin(bank) {
+            var appElement = document.querySelector('[ng-controller=mycontroller]');
+            var scope = angular.element(appElement).scope();
+            scope.GetIndexList(bank);
+        }
+                //测试
+                //$(function () {
+                //    Dayin('  order by  Invt_Time desc,Ledger desc ,Fnumber desc');
+                //})
+
+    </script>
+</head>
+<body style="margin: 0px auto;width:95%;" ng-app="myApp" ng-controller="mycontroller">
+    <div>
+        <h1 style="text-align: center;">
+            <span id="Title">打 印 物 料 库 存 追 踪 工 具</span>
+        </h1>
+
+    </div>
+    <!--主表格-->
+    <!--startprint-->
+    <table id="MainTable" class="datatable table-striped tab-content table-hover" style="margin: 20px auto;">
+        <thead>
+            <tr style="height:65px">
+                <th class="Ledger" style="width: 5%; text-align: center; vertical-align: middle;">
+                    账套
+                    Ledger
+
+                </th>
+                <th class="MatrialCode" style="width: 8%; text-align: center; vertical-align: middle;">
+                    物料号
+                    <br />
+                    Matrial Code
+                </th>
+                <th class="MaterialNamedescription" style="width: 20%; text-align: center; vertical-align: middle;">
+                    物料名称规格
+                    <br />
+                    Material Name & description
+                </th>
+                <th class="redTitle" style="width:5%;text-align:center;vertical-align: middle;">
+                    计量单位
+                    <br />
+                    Unit
+                </th>
+                <th class="WIP" style="width: 5%; text-align: center; vertical-align: middle;">
+                    生产库存
+                    <br />
+                    WIP
+                </th>
+                <th class="MRB" style="width: 7%; text-align: center; vertical-align: middle;">
+                    已报废
+                    <br />
+                    MRB
+                </th>
+                <th class="WH-Stock" style="width: 8%; text-align: center; vertical-align: middle;">
+                    仓库库存
+                    <br />
+                    WH-Stock
+                </th>
+                <th class="IQC" style="width: 5%; text-align: center; vertical-align: middle;">
+                    待检
+                    <br />
+                    IQC
+                </th>
+                <th class=" OpenPOUnfinished" style="width: 8%; text-align: center; vertical-align: middle;">
+                    未完成订单量
+                    <br />
+                    Open-PO-Unfinished
+                </th>
+                <th class="AtTime" style="width: 8%; text-align: center; vertical-align: middle;">
+                    统计时间
+                    <br />
+                    At-Time
+                </th>
+            </tr>
+        </thead>
+        <tbody id="OAContent" class="Maintablebody" style="text-align:center">
+            <tr ng-repeat="i in List track by $index">
+                <td>{{i.Ledger}}</td>
+                <td>{{i.Fnumber}}</td>
+                <td>{{i.Material}}</td>
+                <td>{{i.MeasureUnit}}</td>
+                <td>{{i.WIP_Qty}}</td>
+                <td>{{i.MRB_Qty}}</td>
+                <td>{{i.WH_Qty}}</td>
+                <td>{{i.IQC_Qty}}</td>
+                <td>{{i.OpenPO_Qty}}</td>
+                <td>{{i.Invt_Time}}</td>
+            </tr>
+        </tbody>
+    </table>
+    @*打印人和打印时间*@
+    <div id="Print" style="margin:10px auto">
+        <div style="float:left;"> 打印人： @ViewBag.username</div>
+        <div style="float:right"> 打印时间：@DateTime.Now.ToString("G") </div>
+    </div>
+    <!--endprint-->
+    @*打印*@
+    <script src="~/Scripts/tastySelect.min.js"></script>
+    @*<script src="~/Scripts/common.js"></script>*@
+</body>
+</html>
