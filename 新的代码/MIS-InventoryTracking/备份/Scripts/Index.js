@@ -3,8 +3,8 @@ bank = " order by  Invt_Time desc,Ledger desc ,Fnumber desc";//默认的排序
 
 $(function () {
     $("#btnAddtoList").attr("disabled", true);
-})
 
+})
 //格式化时间
 Date.prototype.Format = function (fmt) { // author: meizz
     var o = {
@@ -55,7 +55,7 @@ app.controller('mycontroller', function ($scope) {
                     document.getElementById("btnEmptyTable").setAttribute("disabled", true);//设置不可点击
 
                     //第一种;
-                    $("#OAContent").append("<tr id='notfindlist'><td colspan='11' class='text-center' style='color:red;font-size:20px'>未找到任何记录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>No Record Found!<b/></td></tr>");
+                    $("#OAContent").append("<tr id='notfindlist'><td colspan='11' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
                     $scope.List = null;
                     $scope.$apply();
 
@@ -138,11 +138,11 @@ app.controller('mycontroller', function ($scope) {
                             $scope.GetIndexList();
                         }
                     })
-
+                   
                 }
             })
 
-
+        
     };
     //删除当前行弹出提示
     $scope.DeleteOneData = function (Ledger, Fnumber) {
@@ -301,32 +301,18 @@ function clearNoNum(obj) {
     obj.value = obj.value.replace(/^\./g, "");//验证第一个字符是数字而不是.
 }
 //导出
-function DaoChu(format, username) {
+function DaoChu(username) {
     var myDate = new Date();
     var time = myDate.Format("yyyyMMddhhmmss");
     //给提示赋值
-    $("#DaoChuLabel").html('以下的物料库存量由用户' + username + '于' + myDate.getFullYear() + '年' + myDate.getMonth() + 1 + '月' + myDate.getDate() + '日导出<br/>The inventory of the following materials is determined by the user ' + username + ' to ' + myDate.getFullYear() + ' year ' + myDate.getMonth() + 1 + '  month ' + myDate.getDate() + ' day export');
-    //$("#Main").table2excel({
-    //    // 不被导出的表格行的CSS class类
-    //    exclude: "#noExl", //生效
-    //    // 导出的Excel文档的名称
-    //    name: "Excel Document Name",
-    //    // Excel文件的名称
-    //    filename: "GIP-CheckFullInventory-" + username + "-" + time
-    //});
-    var fileName = "GIP-CheckFullInventory-" + username + "-" + time + ".xls";
-    $.ajax({
-        url: "/InventoryTracking/InventoryTracking/DownLoad",
-        type: "POST",
-        data: { 'fileName': fileName, 'bank': bank },
-        success: function (data) {
-            console.log("成功");
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            /*错误信息处理*/
-            alert("进入error---");
-            alert("错误信息:" + xhr.statusText);
-        }
-    })
+    $("#DaoChuLabel").html('以下的物料库存量由用户' + username + '于' + myDate.getFullYear() + '年' + myDate.getMonth() + 1 + '月' + myDate.getDate() + '日导出');
+    $("#Main").table2excel({
+        // 不被导出的表格行的CSS class类
+        exclude: "#noExl", //生效
+        // 导出的Excel文档的名称
+        name: "Excel Document Name",
+        // Excel文件的名称
+        filename: "GIP-CheckFullInventory-" + username + "-" + time
+    });
 }
 

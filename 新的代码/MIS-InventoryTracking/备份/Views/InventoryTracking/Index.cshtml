@@ -19,7 +19,6 @@
     <script src="~/Scripts/datatables.min.js"></script>
     <script src="~/Scripts/Index.js"></script>
     <script src="~/Scripts/jquery.table2excel.js"></script>
-    <script src="~/Scripts/导出/tableExporter.js"></script>
     <style>
         .btn-primary {
             color: black;
@@ -125,14 +124,13 @@
 <body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
     <div>
         <h1 style="text-align: center;">
-            <span id="Title">物 料 库 存 追 踪 工 具</span><br />
-            <span>Material Inventory Tracking Tool</span>
+            <span id="Title">物 料 库 存 追 踪 工 具</span>
         </h1>
     </div>
     @*打印页面嵌套过来调用打印页面的方法实现打印*@
     <iframe src="~/InventoryTracking/IndexPrint" height="500" name="iframName" id="iframeId" style="width:100%;display:none">
     </iframe>
-    <div style="margin: 0px auto; margin-top: 2%; width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 11% ">
+    <div style="margin: 0px auto; margin-top: 4%; width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 11% ">
         <!--条件表格-->
         <table id="SearchTable" class="table-striped tab-content table-hover" style="width:60%;float:left;margin-right:5%;border:1px solid black">
             <thead>
@@ -181,12 +179,7 @@
             <button id="btnEmptyTable" ng-click="EmptyTable();" class="btnstyle" style="width: 100px; background-color:#f4f4ff">清空列表<br />Empty Table</button>
             <br />
             <button class="btnstyle" style="width: 90px; margin-top: 1%; background-color:#f4ffff" ng-click="Dayin()">打印<br />Print</button>
-            @*<button class="btnstyle" id="DaoChuBtn" style="width: 150px; background-color:#fff4ff" onclick="DaoChu('xls','@ViewBag.username')">导出试算表<br />Export to XLS</button>*@
-            <!--a标签调用导出（NPOI）方法-->
-            <a href="@Url.Action("DownLoad","InventoryTracking")" style="color:black">
-                <button class="btnstyle" id="DaoChuBtn" style="width: 150px; background-color:#fff4ff">导出试算表<br />Export to XLS</button>
-            </a>
-
+            <button class="btnstyle" style="width: 150px; background-color:#fff4ff" onclick="DaoChu('@ViewBag.username')">导出试算表<br />Export to XLS</button>
             <button class="btnstyle" style="width: 100px; background-color:#d9d9d0" onclick="window.location.href = 'http://192.166.7.241/Admin/ProjectList.aspx?userid=@ViewBag.userid'">离开<br />Exit</button>
         </div>
     </div>
@@ -194,7 +187,7 @@
         <!--导出需要的提示-->
         <table style="display:none">
             <tr>
-                <td colspan="10"><label id="DaoChuLabel"></label></td>
+                <td colspan="3"><label id="DaoChuLabel"></label></td>
                 <td></td>
             </tr>
         </table>
@@ -212,7 +205,7 @@
                     <th class="MatrialCode" style="width: 8%; text-align: center; vertical-align: middle;">
                         物料号  <img id="MatrialCode" src="~/Scripts/DataTables-1.11.3/images/sort_both.png" style="float:right;width:18px;cursor: pointer" ng-click="CheckImg('MatrialCode',' ORDER BY Fnumber desc, Ledger desc, Invt_Time desc')" />
                         <br />
-                        Material Code
+                        Matrial Code
                     </th>
                     <th class="MaterialNamedescription" style="width: 20%; text-align: center; vertical-align: middle;">
                         物料名称规格
@@ -247,7 +240,7 @@
                     <th class=" OpenPOUnfinished" style="width: 8%; text-align: center; vertical-align: middle;">
                         未完成订单量
                         <br />
-                        Open PO
+                        Open-PO-Unfinished
                     </th>
                     <th class="AtTime" style="width: 8%; text-align: center; vertical-align: middle;">
                         统计时间<img id="Invt-Time" src="~/Scripts/DataTables-1.11.3/images/sort_both.png" style="float:right;width:18px;cursor: pointer" ng-click="CheckImg('Invt-Time',' ORDER BY Invt_Time desc, Ledger desc, Fnumber desc')" />
@@ -267,15 +260,14 @@
                     <td>{{i.Fnumber}}</td>
                     <td>{{i.Material}}</td>
                     <td>{{i.MeasureUnit}}</td>
-                    <td>{{i.WIP_Qty}}&nbsp;</td>
-                    @*不加&nbsp;格式会丢失*@
+                    <td>{{i.WIP_Qty}}&nbsp;</td>@*不加&nbsp;格式会丢失*@
                     <td>{{i.MRB_Qty}}&nbsp;</td>
                     <td>{{i.WH_Qty}}&nbsp;</td>
                     <td>{{i.IQC_Qty}}&nbsp;</td>
                     <td>{{i.OpenPO_Qty}}&nbsp;</td>
-                    <td>{{i.Invt_Time}}&nbsp;</td>
+                    <td >{{i.Invt_Time}}&nbsp;</td>
                     <td class="Printclass noExl">
-                        <a href="#" style="margin-right:10%" title="删除(Delete)"><img src="~/Scripts/DataTables-1.11.3/images/Rushed.jpg" width="25" height="23" ng-click="DeleteOneData(i.Ledger,i.Fnumber);" /></a>
+                        <a href="#" style="margin-right:10%" title="删除(Delete)"><img src="~/Scripts/删除.png" width="25" height="23" ng-click="DeleteOneData(i.Ledger,i.Fnumber);" /></a>
                         <a href="#" title="刷新采集数据(reFresh-Capture)"> <img src="~/Scripts/刷新.png" width="25" height="25" ng-click="UpdateOneData(i.Ledger,i.Fnumber);" /></a>
                     </td>
                 </tr>
@@ -301,6 +293,5 @@
     @*打印*@
     <script src="~/Scripts/tastySelect.min.js"></script>
     <script src="~/Scripts/common.js"></script>
-    <script src="~/Scripts/excellentexport.js"></script>
 </body>
 </html>
