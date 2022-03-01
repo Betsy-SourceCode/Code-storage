@@ -27,7 +27,7 @@ namespace KYH_JigFixture.Controllers
         {
             try
             {
-                userid = "444";
+                //userid = "435";
                 Session["userid"] = userid;
                 ViewBag.userid = userid;
                 if (userid == null)
@@ -81,7 +81,7 @@ namespace KYH_JigFixture.Controllers
                 ViewBag.pageIndex = pageIndex;  //当前页
                 return View();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;

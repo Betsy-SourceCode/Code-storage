@@ -1,4 +1,4 @@
-﻿// 为模型“G:\知识库代码管理\KYH-JigFixture\Models\jigfixtrueModel.edmx”启用了 T4 代码生成。
+﻿// 为模型“E:\项目源码\GitHub源代码管理\新的代码\KYH-JigFixture\Models\jigfixtrueModel.edmx”启用了 T4 代码生成。
 // 要启用旧代码生成功能，请将“代码生成策略”设计器属性的值
 // 更改为“旧的 ObjectContext”。当在设计器中打开该模型时，此属性会出现在
 // “属性”窗口中。

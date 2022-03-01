@@ -29,7 +29,7 @@ namespace KYH_ProductPrice.Models.SqlStatement
             try
             {
                 sql = "Set Language US_English";
-                sql = sql+ " SELECT A.CreateDept+D.UpperDept AS upDepartment, A.CPSerial , REPLACE(CONVERT(VARCHAR(11),A.CreateTime,113),' ','-') + ' ' + RIGHT(CONVERT(varchar(20),A.CreateTime, 113), 8) CreateTime, C.AliasName + ' ' + C.LastName + ' (' + D.DeptCode + ')' CreateBy, A.Ledger, ISNULL(F.FullName_CN, F.FullName_EN) + ' (' + F.CountryID + '-' + G.CityName_CN + ')' CustomerDisplayName,A.FNumber, A.CustProdCode, A.CustProdName, A.PrvCurr, A.PrvUnit, A.UpdCurr, A.UpdUnit, E.Name_EN EffType, A.EffDetail, A.Remarks_MD, A.Remarks_FD, A.Cancel";
+                sql = sql+ " SELECT A.CreateDept+D.UpperDept AS upDepartment, A.CPSerial , REPLACE(CONVERT(VARCHAR(11),A.CreateTime,113),' ','-') + ' ' + RIGHT(CONVERT(varchar(20),A.CreateTime, 113), 8) CreateTime, C.AliasName + ' ' + C.LastName + ' (' + D.DeptCode + ')' CreateBy, A.Ledger, ISNULL(F.FullName_CN, F.FullName_EN) + ' (' + F.CountryID + '-' + G.CityName_CN + ')' CustomerDisplayName,A.FNumber, A.CustProdCode, A.CustProdName, A.PrvCurr, A.PrvUnit, A.UpdCurr, A.UpdUnit, E.Name_EN EffType, A.EffDetail,A.Remarks_mOQ, A.Remarks_MD, A.Remarks_FD, A.Cancel";
                 sql = sql+ " FROM CustProductPriceRecords A LEFT OUTER JOIN Customer B ON A.CustomerID = B.CustomerID LEFT OUTER JOIN Employee C ON A.CreateBy = C.EmpID LEFT OUTER JOIN Department D ON C.DeptID = D.DeptID LEFT OUTER JOIN TBWords E ON A.EffType = E.Value AND E.WordCode = 'EF' LEFT OUTER JOIN Company F ON B.SysID = F.CompanyID LEFT OUTER JOIN City AS G ON F.CityID = G.CityID";
                 sql = sql+ " WHERE 1=1 ";
                 if (CreateBy!=null) //业务员文本框的值

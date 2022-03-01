@@ -238,7 +238,7 @@ namespace MIS_InventoryTracking.Controllers
                 cellhour.CreateCell(9).SetCellValue("At-Time");
                 List<CheckFullInventory_Temp_> list = new SqlStatement().GetIndexList(Session["username"].ToString(), Session["bank"].ToString());
                 var j = 3;
-                //4.创建CellStyle与DataFormat并加载格式样式
+                //创建CellStyle与DataFormat并加载格式样式
                 IDataFormat dataformat = HSSFWorkbook.CreateDataFormat();
                 ICellStyle style1 = HSSFWorkbook.CreateCellStyle();
                 style1.DataFormat = dataformat.GetFormat("0.00"); //改变小数精度【小数点后有几个0表示精确到小数点后几位】
@@ -248,25 +248,66 @@ namespace MIS_InventoryTracking.Controllers
                     rowtemp.CreateCell(0).SetCellValue(list[i].Ledger.ToString());
                     rowtemp.CreateCell(1).SetCellValue(list[i].Fnumber.ToString());
                     rowtemp.CreateCell(2).SetCellValue(list[i].Material.ToString());
-                    rowtemp.CreateCell(3).SetCellValue(list[i].MeasureUnit.ToString());
-                    rowtemp.CreateCell(4).SetCellValue((float)list[i].WIP_Qty);
-                    rowtemp.GetCell(4).CellStyle = style1;
-                    rowtemp.CreateCell(5).SetCellValue((float)list[i].MRB_Qty);
-                    rowtemp.GetCell(5).CellStyle = style1;
-                    rowtemp.CreateCell(6).SetCellValue((float)list[i].WH_Qty);
-                    rowtemp.GetCell(6).CellStyle = style1;
-                    rowtemp.CreateCell(7).SetCellValue((float)list[i].IQC_Qty);
-                    rowtemp.GetCell(7).CellStyle = style1;
-                    rowtemp.CreateCell(8).SetCellValue((float)list[i].OpenPO_Qty);
-                    rowtemp.GetCell(8).CellStyle = style1;
+                    //不做判断数据为空会报错
+                    if (list[i].MeasureUnit != null)
+                    {
+                        rowtemp.CreateCell(3).SetCellValue(list[i].MeasureUnit.ToString());
+                    }
+                    else
+                    {
+                        rowtemp.CreateCell(3).SetCellValue("");
+                    }
+                    if (list[i].WIP_Qty != null)
+                    {
+                        rowtemp.CreateCell(4).SetCellValue((float)list[i].WIP_Qty);
+                        rowtemp.GetCell(4).CellStyle = style1;
+                    }
+                    else
+                    {
+                        rowtemp.CreateCell(4).SetCellValue("");
+                    }
+                    if (list[i].MRB_Qty != null)
+                    {
+                        rowtemp.CreateCell(5).SetCellValue((float)list[i].MRB_Qty);
+                        rowtemp.GetCell(5).CellStyle = style1;
+                    }
+                    else
+                    {
+                        rowtemp.CreateCell(5).SetCellValue("");
+                    }
+                    if (list[i].WH_Qty != null)
+                    {
+                        rowtemp.CreateCell(6).SetCellValue((float)list[i].WH_Qty);
+                        rowtemp.GetCell(6).CellStyle = style1;
+                    }
+                    else
+                    {
+                        rowtemp.CreateCell(6).SetCellValue("");
+                    }
+                    if (list[i].IQC_Qty != null)
+                    {
+                        rowtemp.CreateCell(7).SetCellValue((float)list[i].IQC_Qty);
+                        rowtemp.GetCell(7).CellStyle = style1;
+                    }
+                    else
+                    {
+                        rowtemp.CreateCell(7).SetCellValue("");
+                    }
+                    if (list[i].OpenPO_Qty != null)
+                    {
+                        rowtemp.CreateCell(8).SetCellValue((float)list[i].OpenPO_Qty);
+                        rowtemp.GetCell(8).CellStyle = style1;
+                    }
+                    else
+                    {
+                        rowtemp.CreateCell(8).SetCellValue("");
+                    }
                     rowtemp.CreateCell(9).SetCellValue(list[i].Invt_Time.ToString());
                 }
-                Response.ContentType = "application/vnd.ms-excel;charset=UTF-8";
                 MemoryStream bookStream = new MemoryStream();
                 HSSFWorkbook.Write(bookStream);
                 bookStream.Seek(0, SeekOrigin.Begin);
                 bookStream.Flush();
-                bookStream.Position = 0;
                 string fileName = "GIP-CheckFullInventory-" + Session["username"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".csv";
                 return File(bookStream, "application/vnd.ms-excel", fileName);
             }

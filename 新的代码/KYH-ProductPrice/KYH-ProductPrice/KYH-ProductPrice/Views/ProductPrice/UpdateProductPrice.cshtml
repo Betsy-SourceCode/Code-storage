@@ -2,9 +2,6 @@
 @{
     Layout = null;
 }
-
-<!DOCTYPE html>
-
 <html>
 <head>
     <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
@@ -39,6 +36,19 @@
     </style>
     <script>
         $(function () {
+        //备注显示做判断
+             if ('@ViewBag.ISACC' == 1) {
+                $("#RemarksFD_label").css("display", "none");
+                $("#Remarks_FD").css("display", "block");
+                QJRemarks = 1;            //财务部
+            }
+            else {
+                $("#RemarksMD_label").css("display", "none");
+                $("#Remarks_MD").css("display", "block");
+                $("#RemarksmOQ_label").css("display", "none");
+                $("#Remarks_mOQ").css("display", "block");
+                QJRemarks = 2;            //业务部
+            }
         //货币下拉框
         var CurrList = "";
         $.ajax({
@@ -79,7 +89,7 @@
         });
         })
         //保存数据
-        function SaveMyform(Cancel) {
+        function SaveMyform() {
             var EffDetail = document.getElementById('EffDetail');
             var UpdUnit = document.getElementById('UpdUnit');
             if (EffDetail.value.length<5) {
@@ -93,12 +103,15 @@
                 return false;
             }
             var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
-            var data = $('#myform').serialize();
+            /* var data = $('#myform').serialize();*/
+            var data = new FormData($('#myform')[0]);
             $.ajax({
-                url: "/ProductPrice/ProductPriceZG/AddCustProductPrice",
+                url: "/ProductPrice/ProductPriceZG/AddCustProductPrice?CPSerial=" + CPSerial +"&num=1",
                 type: 'POST',
                 dataType: 'json',
-                data: $.param({ 'CPSerial': CPSerial }) + '&'+ $.param({ 'num': 1}) + '&'+ data,
+                data: data,
+                contentType: false,// 告诉jQuery不要去设置Content-Type请求头
+                processData: false,   // 告诉jQuery不要去处理发送的数据,使用FormData一定要加contentType和processData
                 success: function (result) {
                     if (result.Success > 0) {
                         alert("保存成功！");
@@ -122,7 +135,7 @@
                 <span id="Title">Amend Customer's Product Prices Records</span>
             </h1>
         </div>
-        <form id="myform" style="width:70%;margin-left:25%" method="post" class="form-inline" role="form" onsubmit="return false" enctype="multipart/form-data">
+        <form id="myform" style="width:70%;margin-left:25%" method="post" class="form-inline" role="form" onsubmit="SaveMyform()" enctype="multipart/form-data">
             <div class="container-fluid panel-heading">
                 <div class="col-sm-5">
                     <label style="font-weight:bold;text-align:right">业务员：</label>
@@ -179,7 +192,7 @@
                 <div class="col-sm-6">
                     <p style="color:red;display:inline">*</p>
                     <label style="font-weight:bold;text-align:right">价格：</label>
-                    <input name="UpdUnit" type="number" step="0.000000000000000001" min=" 0.0000" max="999999999.9999"  id="UpdUnit" class="form-control input-content" style="width:63%; display:inline" value="@ViewBag.ProductPriceList.UpdUnit" required="required" oninput="if(value.length>14)value=value.slice(0,14)">
+                    <input name="UpdUnit" type="number" step="0.000000000000000001" min=" 0.0000" max="999999999.9999" id="UpdUnit" class="form-control input-content" style="width:63%; display:inline" value="@ViewBag.ProductPriceList.UpdUnit" required="required" oninput="if(value.length>14)value=value.slice(0,14)">
                 </div>
             </div>
             <div class="container-fluid panel-heading">
@@ -196,20 +209,29 @@
                 </div>
             </div>
             <div class="container-fluid panel-heading">
-                <div class="col-sm-11">
-                    <label style="font-weight:bold;text-align:right">销售备注：</label>
-                    <textarea name="Remarks_MD" type="text" id="CP_input" class="form-control input-content" style="width:78%;display:inline;height:100px;background-color:white">@ViewBag.ProductPriceList.Remarks_MD</textarea>
+                <div class="col-sm-12">
+                    <label style="font-weight:bold;text-align:right">mOQ备注：</label>
+                    <label id="RemarksmOQ_label">@ViewBag.ProductPriceList.Remarks_mOQ</label><br />
+                    <textarea name="Remarks_mOQ" type="text" id="Remarks_mOQ" class="form-control input-content" style="width:80%;display:inline;height:100px;background-color:white;display:none">@ViewBag.ProductPriceList.Remarks_mOQ</textarea>
                 </div>
             </div>
             <div class="container-fluid panel-heading">
-                <div class="col-sm-11">
+                <div class="col-sm-12">
+                    <label style="font-weight:bold;text-align:right">销售备注：</label>
+                    <label id="RemarksMD_label">@ViewBag.ProductPriceList.Remarks_MD</label><br />
+                    <textarea name="Remarks_MD" type="text" id="Remarks_MD" class="form-control input-content" style="width:80%;display:inline;height:100px;background-color:white;display:none">@ViewBag.ProductPriceList.Remarks_MD</textarea>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-12">
                     <label style="font-weight:bold;text-align:right">财务笔记：</label>
-                    <label>@ViewBag.ProductPriceList.Remarks_FD</label>
+                    <label id="RemarksFD_label">@ViewBag.ProductPriceList.Remarks_FD</label><br />
+                    <textarea name="Remarks_FD" type="text" id="Remarks_FD" class="form-control input-content" style="width:80%;display:inline;height:100px;background-color:white;display:none">@ViewBag.ProductPriceList.Remarks_FD</textarea>
                 </div>
             </div>
             <div class="container-fluid panel-heading">
                 <div style="padding-bottom:2%;text-align:right;margin-left:-2%" class="col-sm-6">
-                    <button id="Savebtn" type="button" class="btn-lg btn-primary form-group" onclick="SaveMyform()">
+                    <button id="Savebtn" type="submit" class="btn-lg btn-primary form-group">
                         保&nbsp;&nbsp;存
                     </button>
                     <button type="button" class="btn-lg btn-primary form-group" onclick="window.location.href = '/ProductPrice/ProductPrice/Index?userid=@ViewBag.userid'">

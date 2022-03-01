@@ -94,13 +94,14 @@
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="FNumber" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="CustProdCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CustProdName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="CustProdName" Type="nvarchar" MaxLength="400" Nullable="false" />
           <Property Name="PrvCurr" Type="nchar" MaxLength="3" Nullable="false" />
-          <Property Name="PrvUnit" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="PrvUnit" Type="decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="UpdCurr" Type="nchar" MaxLength="3" Nullable="false" />
-          <Property Name="UpdUnit" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="UpdUnit" Type="decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="EffType" Type="nchar" MaxLength="2" Nullable="false" />
-          <Property Name="EffDetail" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="EffDetail" Type="nvarchar" MaxLength="450" Nullable="false" />
+          <Property Name="Remarks_mOQ" Type="nvarchar(max)" />
           <Property Name="Remarks_MD" Type="nvarchar(max)" />
           <Property Name="Remarks_FD" Type="nvarchar(max)" />
           <Property Name="Cancel" Type="bit" Nullable="false" />
@@ -144,15 +145,15 @@
           <Property Name="CPSerial" Type="int" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="CustProdCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CustProdName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="CustProdName" Type="nvarchar" MaxLength="400" Nullable="false" />
           <Property Name="PrvCurr" Type="nchar" MaxLength="3" Nullable="false" />
-          <Property Name="PrvUnit" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="PrvUnit" Type="decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="NewPrvUnit" Type="varchar" MaxLength="43" />
           <Property Name="UpdCurr" Type="nchar" MaxLength="3" Nullable="false" />
-          <Property Name="UpdUnit" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="UpdUnit" Type="decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="NewUpdUnit" Type="varchar" MaxLength="43" />
           <Property Name="EffType" Type="nchar" MaxLength="2" Nullable="false" />
-          <Property Name="EffDetail" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="EffDetail" Type="nvarchar" MaxLength="450" Nullable="false" />
           <Property Name="Remarks_MD" Type="nvarchar(max)" />
           <Property Name="Remarks_FD" Type="nvarchar(max)" />
           <Property Name="FNumber" Type="nvarchar" MaxLength="30" Nullable="false" />
@@ -162,9 +163,8 @@
           <Property Name="UpperDept" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="DeptID" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="ServiceBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="Remarks_mOQ" Type="nvarchar(max)" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“WebStation.dbo.GetProductPriceLists”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityContainer Name="WebStationModelStoreContainer">
           <EntitySet Name="ActionLog2021" EntityType="Self.ActionLog2021" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
@@ -196,7 +196,8 @@
     [GetProductPriceList].[CreateDept] AS [CreateDept], 
     [GetProductPriceList].[UpperDept] AS [UpperDept], 
     [GetProductPriceList].[DeptID] AS [DeptID], 
-    [GetProductPriceList].[ServiceBy] AS [ServiceBy]
+    [GetProductPriceList].[ServiceBy] AS [ServiceBy], 
+    [GetProductPriceList].[Remarks_mOQ] AS [Remarks_mOQ]
     FROM [dbo].[GetProductPriceList] AS [GetProductPriceList]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
@@ -213,13 +214,13 @@
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="FNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CustProdCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CustProdName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CustProdName" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PrvCurr" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="PrvUnit" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="PrvUnit" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="UpdCurr" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="UpdUnit" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="UpdUnit" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="EffType" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="EffDetail" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EffDetail" Type="String" MaxLength="450" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Remarks_MD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Remarks_FD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Cancel" Type="Boolean" Nullable="false" />
@@ -229,6 +230,7 @@
           <Property Name="UpdateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="UpdateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Remarks_mOQ" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CustProductPriceRecords" EntityType="Self.CustProductPriceRecords" />
@@ -347,15 +349,15 @@
           <Property Name="CPSerial" Type="Int32" Nullable="false" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="CustProdCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CustProdName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CustProdName" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Name="PrvCurr" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
-          <Property Name="PrvUnit" Type="Decimal" Nullable="false" Precision="14" Scale="4" />
+          <Property Name="PrvUnit" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="NewPrvUnit" Type="String" MaxLength="43" FixedLength="false" Unicode="false" />
           <Property Name="UpdCurr" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
-          <Property Name="UpdUnit" Type="Decimal" Nullable="false" Precision="14" Scale="4" />
+          <Property Name="UpdUnit" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="NewUpdUnit" Type="String" MaxLength="43" FixedLength="false" Unicode="false" />
           <Property Name="EffType" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
-          <Property Name="EffDetail" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="EffDetail" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
           <Property Name="Remarks_MD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Remarks_FD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FNumber" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
@@ -365,6 +367,7 @@
           <Property Name="UpperDept" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DeptID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="ServiceBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks_mOQ" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -375,6 +378,7 @@
           <EntitySetMapping Name="CustProductPriceRecords">
             <EntityTypeMapping TypeName="WebStationModel.CustProductPriceRecords">
               <MappingFragment StoreEntitySet="CustProductPriceRecords">
+                <ScalarProperty Name="Remarks_mOQ" ColumnName="Remarks_mOQ" />
                 <ScalarProperty Name="CPSerial" ColumnName="CPSerial" />
                 <ScalarProperty Name="Ledger" ColumnName="Ledger" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
@@ -484,6 +488,7 @@
           <EntitySetMapping Name="GetProductPriceList">
             <EntityTypeMapping TypeName="WebStationModel.GetProductPriceList">
               <MappingFragment StoreEntitySet="GetProductPriceList">
+                <ScalarProperty Name="Remarks_mOQ" ColumnName="Remarks_mOQ" />
                 <ScalarProperty Name="ServiceBy" ColumnName="ServiceBy" />
                 <ScalarProperty Name="DeptID" ColumnName="DeptID" />
                 <ScalarProperty Name="UpperDept" ColumnName="UpperDept" />

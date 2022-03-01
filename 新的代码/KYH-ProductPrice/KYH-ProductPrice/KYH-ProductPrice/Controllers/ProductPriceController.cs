@@ -21,7 +21,8 @@ namespace KYH_ProductPrice.Controllers
         /// <returns></returns>
         public ActionResult Index(string userid)
         {
-            userid = "462";
+            //userid = "298";
+            //userid = "444";
             if (userid == null)
             {
                 userid = "";
@@ -173,6 +174,18 @@ namespace KYH_ProductPrice.Controllers
                 ProductPriceList[0].EffDetail = "";
             }
             ViewBag.EffDetail = ProductPriceList[0].EffDetail;
+            if (new Authority().GetQuanSql(base.Session["userid"].ToString(), "CustProductPriceRecords_C") > 0)
+            {
+                ViewBag.Add = 1;  //新增权限
+            }
+            if (new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1) != "ACC")
+            {
+                ViewBag.GuanLi = 1; //作废权限
+            }
+            if (new Authority().GetDepartmentSql(base.Session["username"].ToString(), 1) == "ACC")
+            {
+                ViewBag.ISACC = 1; //财务部权限
+            }
             return base.View();
         }
         #endregion

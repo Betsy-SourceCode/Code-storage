@@ -24,5 +24,6 @@ namespace KYH_ProductPrice.Models.PublicSqlMethods
         public string Remarks_MD { get; set; }
         public string Remarks_FD { get; set; }
         public bool Cancel { get; set; }
+        public string Remarks_mOQ { get; set; }
     }
 }

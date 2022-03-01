@@ -52,7 +52,7 @@ namespace KYH_ProductPrice.Controllers
                     CPP.CustProdName = oldcpp.CustProdName;
                     CPP.PrvCurr = oldcpp.PrvCurr;
                     CPP.PrvUnit = oldcpp.PrvUnit;
-                    CPP.Remarks_FD = oldcpp.Remarks_FD;
+                    //CPP.Remarks_FD = oldcpp.Remarks_FD;
                 }
                 CPP.CreateBy = username;
                 CPP.CreateDept = DeptIDs;
@@ -81,11 +81,12 @@ namespace KYH_ProductPrice.Controllers
         /// <summary>
         /// 单个字段修改
         /// </summary>
-        /// <param name="CPP"></param>
-        /// <param name="num"></param>
+        /// <param name="CPP">对象实体</param>
+        /// <param name="num">功能编号 1-作废，2-备注</param>
+        /// <param name="type">类型编号 0-跳过，1-财务部 2-业务部</param>
         /// <returns></returns>
         [ValidateInput(false)]
-        public string ChangeCustProductPriceRecords(CustProductPriceRecords CPP, int num)
+        public string ChangeCustProductPriceRecords(CustProductPriceRecords CPP, int num, int type)
         {
             string result;
             try
@@ -99,14 +100,27 @@ namespace KYH_ProductPrice.Controllers
                 }
                 if (num == 2)  //备注
                 {
-                    if (CPP.Remarks_MD != null)
-                    {
-                        oldcpp.Remarks_MD = CPP.Remarks_MD; //业务备注
-                    }
-                    if (CPP.Remarks_FD != null)
+                    if (type == 1)
                     {
                         oldcpp.Remarks_FD = CPP.Remarks_FD; //财务备注
                     }
+                    if (type == 2)
+                    {
+                        oldcpp.Remarks_MD = CPP.Remarks_MD; //业务备注
+                        oldcpp.Remarks_mOQ = CPP.Remarks_mOQ; //新增的mOQ备注
+                    }
+                    //if (CPP.Remarks_MD != null)
+                    //{
+                    //    oldcpp.Remarks_MD = CPP.Remarks_MD; //业务备注
+                    //}
+                    //if (CPP.Remarks_FD != null)
+                    //{
+                    //    oldcpp.Remarks_FD = CPP.Remarks_FD; //财务备注
+                    //}
+                    //if (CPP.Remarks_mOQ != null)
+                    //{
+                    //    oldcpp.Remarks_mOQ = CPP.Remarks_mOQ; //新增的mOQ备注
+                    //}
                 }
                 oldcpp.UpdateBy = username;
                 oldcpp.UpdateDept = DeptIDs;

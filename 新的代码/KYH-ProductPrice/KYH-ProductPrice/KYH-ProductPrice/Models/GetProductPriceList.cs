@@ -40,5 +40,6 @@ namespace KYH_ProductPrice.Models
         public string UpperDept { get; set; }
         public string DeptID { get; set; }
         public string ServiceBy { get; set; }
+        public string Remarks_mOQ { get; set; }
     }
 }

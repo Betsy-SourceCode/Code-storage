@@ -35,5 +35,6 @@ namespace KYH_ProductPrice.Models
         public string UpdateBy { get; set; }
         public string UpdateDept { get; set; }
         public System.DateTime UpdateTime { get; set; }
+        public string Remarks_mOQ { get; set; }
     }
 }

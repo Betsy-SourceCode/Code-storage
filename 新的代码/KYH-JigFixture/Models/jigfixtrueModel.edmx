@@ -13,6 +13,7 @@
           <Parameter Name="End_Date" Type="varchar" Mode="In" />
           <Parameter Name="Mat_Code" Type="nvarchar" Mode="In" />
           <Parameter Name="Mat_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Status" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="C6ModelStoreContainer" />
       </Schema></edmx:StorageModels>
@@ -28,29 +29,32 @@
             <Parameter Name="End_Date" Mode="In" Type="String" />
             <Parameter Name="Mat_Code" Mode="In" Type="String" />
             <Parameter Name="Mat_Name" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SelectOA_Result">
           <Property Type="Int64" Name="rownum" Nullable="true" />
-          <Property Type="DateTime" Name="ApplyDate" Nullable="true" Precision="23" />
-          <Property Type="String" Name="Serial_Num" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Mat_Code" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Mat_Name" Nullable="true" MaxLength="500" />
-          <Property Type="String" Name="Unit" Nullable="true" MaxLength="50" />
-          <Property Type="Decimal" Name="Qty" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="String" Name="MainID" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="ApplyDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Serial_Num" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Mat_Code" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Mat_Name" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Unit" Nullable="false" MaxLength="10" />
+          <Property Type="Decimal" Name="Qty" Nullable="false" Precision="10" Scale="2" />
           <Property Type="DateTime" Name="RequireDate" Nullable="true" Precision="23" />
-          <Property Type="String" Name="AppD_Name" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="AppD_Name" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="Applicant_CN" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="K3PO_Num" Nullable="true" MaxLength="30" />
           <Property Type="DateTime" Name="K3PO_Date" Nullable="false" Precision="23" />
           <Property Type="String" Name="Supplier" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="K3Unit" Nullable="true" MaxLength="10" />
           <Property Type="Decimal" Name="K3Qty" Nullable="true" Precision="10" Scale="2" />
           <Property Type="String" Name="Buyer" Nullable="true" MaxLength="20" />
           <Property Type="DateTime" Name="Prop_Arr_Date" Nullable="false" Precision="23" />
           <Property Type="DateTime" Name="K3Recv_Date" Nullable="false" Precision="23" />
           <Property Type="String" Name="Remark" Nullable="true" MaxLength="300" />
-          <Property Type="String" Name="K3Unit" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="MainID" Nullable="true" MaxLength="11" />
+          <Property Type="Int32" Name="UpdateNumber" Nullable="false" />
+          <Property Type="Int32" Name="App_IdeaFlag" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -62,6 +66,7 @@
             <ResultMapping>
               <ComplexTypeMapping TypeName="C6Model.SelectOA_Result">
                 <ScalarProperty Name="rownum" ColumnName="rownum" />
+                <ScalarProperty Name="MainID" ColumnName="MainID" />
                 <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
                 <ScalarProperty Name="Serial_Num" ColumnName="Serial_Num" />
                 <ScalarProperty Name="Mat_Code" ColumnName="Mat_Code" />
@@ -74,13 +79,14 @@
                 <ScalarProperty Name="K3PO_Num" ColumnName="K3PO_Num" />
                 <ScalarProperty Name="K3PO_Date" ColumnName="K3PO_Date" />
                 <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="K3Unit" ColumnName="K3Unit" />
                 <ScalarProperty Name="K3Qty" ColumnName="K3Qty" />
                 <ScalarProperty Name="Buyer" ColumnName="Buyer" />
                 <ScalarProperty Name="Prop_Arr_Date" ColumnName="Prop_Arr_Date" />
                 <ScalarProperty Name="K3Recv_Date" ColumnName="K3Recv_Date" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="K3Unit" ColumnName="K3Unit" />
-                <ScalarProperty Name="MainID" ColumnName="MainID" />
+                <ScalarProperty Name="UpdateNumber" ColumnName="UpdateNumber" />
+                <ScalarProperty Name="App_IdeaFlag" ColumnName="App_IdeaFlag" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

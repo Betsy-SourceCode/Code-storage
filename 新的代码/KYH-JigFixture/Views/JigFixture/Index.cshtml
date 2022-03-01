@@ -98,6 +98,7 @@
         QJApplyDate = null, QJOAFlow_Num = null, QJMat_Code = null, QJMat_Name = null, QJUnit = null, QJQty = null, QJArr_Date = null, QJApproval = null, QJFid = null, QjID = 0, ChangeBZ = 0, NewBZ = null, ChangeK3 = 0, NewK3 = null, ChangeJQ = 0, NewJQ = null, ChangeRK = 0, NewRK = null, IsClose = null; var flag = 0;
         //QjID用来保存新表ID（唯一列），QJFid为1走修改方法,BZ(备注),NewBZ用来放新的备注
         jQuery(function () {
+            console.log("2022-2-24修改");
             //给列表结果赋值
             var Start_Date = $("#Start_Date").val();//申请日期
             var End_Date = $("#End_Date").val();//结束日期
@@ -350,9 +351,6 @@
                         else {
                             $("#notfindlist").remove();
                             angular.forEach(res.Data.IndexList, function (obj, k) {  //obj-表字段值
-
-
-
                                 rowSortNumber++;
                                 var applyDate = new Date(obj.ApplyDate);
                                 obj.ApplyDate = applyDate.Format("yyyy-MM-dd");  //日期格式化
@@ -364,14 +362,6 @@
                                 if (obj.RequireDate == "1900-01-01") {
                                     obj.RequireDate = "";
                                 }
-
-
-
-
-
-
-
-
                                 var K3PO_Date = new Date(obj.K3PO_Date);
                                 obj.K3PO_Date = K3PO_Date.Format("yyyy-MM-dd");  //日期格式化
                                 if (obj.K3PO_Date == "1900-01-01") {
@@ -1036,7 +1026,7 @@
                     <input type='button' name="btnSearch" class="btn btn-primary" value="搜&nbsp;&nbsp;&nbsp;索" id="btnSearch" style="height:40px" ng-click="btnSearch()">
                     @if (@ViewBag.Daochu == "T")
                     {
-        <input type="button" name="btnAdd" class="btn btn-primary" value="导&nbsp;&nbsp;&nbsp;出" id="btnAdd" style="height: 40px" onclick="DaocChu()" />}
+                        <input type="button" name="btnAdd" class="btn btn-primary" value="导&nbsp;&nbsp;&nbsp;出" id="btnAdd" style="height: 40px" onclick="DaocChu()" />}
                     <input type='button' name="btnSearch" class="btn btn-primary" formtarget="_top" value="离&nbsp;&nbsp;&nbsp;开" id="btnSearch" style="height:40px" ng-click="btnleave()">
                 </div>
             </div>
@@ -1119,12 +1109,11 @@
                     <td align="center" style="font-size:12px;">{{i.AppD_Name}}</td>
 
                     @*K3订单号*@
-                    <td class="color" ng-if="'@ViewBag.K3ddQX'=='T' && i.Prop_Arr_Date=='' && i.AppD_Name=='HKFD接收' &&i.K3Recv_Date=='' &&i.ISjiean==0 &&TopicArea!='结案'" id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
-                    <td class="color" ng-if="'@ViewBag.K3ddQX'!='T' || i.Prop_Arr_Date!='' || i.AppD_Name!='HKFD接收' ||i.K3Recv_Date!='' ||i.ISjiean==1 || TopicArea=='结案'" id="K3PO_Num" align="center" style="font-size:12px;">{{i.K3PO_Num}}</td>
+                    <td class="color" ng-if="'@ViewBag.K3ddQX'=='T' && i.Prop_Arr_Date=='' && i.AppD_Name=='GO经理' && i.App_IdeaFlag==9 &&i.K3Recv_Date=='' &&i.ISjiean==0 &&TopicArea!='结案'" id="K3PO_Num" align="center" style="font-size:12px;cursor:pointer" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>
+                    <td class="color" ng-if="'@ViewBag.K3ddQX'!='T' || i.Prop_Arr_Date!='' || i.AppD_Name!='GO经理' || i.App_IdeaFlag!=9 ||i.K3Recv_Date!='' ||i.ISjiean==1 || TopicArea=='结案'" id="K3PO_Num" align="center" style="font-size:12px;">{{i.K3PO_Num}}</td>
 
                     @*测试*@
                     <!--<td class="color" id="K3PO_Num" align="center" style="font-size: 12px; cursor: pointer;" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>-->
-
                     <td align="center" style="font-size:12px;">{{i.K3PO_Date}}</td>
                     <td align="left" style="font-size:12px;">{{i.Supplier}}</td>
                     <td align="center" style="font-size:12px;">{{i.Buyer}}</td>
@@ -1141,6 +1130,8 @@
                     @*入库日期*@
                     <td class="color" ng-if="i.K3PO_Num !=''&& i.Prop_Arr_Date !='' && '@ViewBag.RkrqQX'=='T' && i.ISjiean==0 && TopicArea!='结案'" id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
                     <td class="color" ng-if="i.K3PO_Num==''|| i.Prop_Arr_Date =='' ||  '@ViewBag.RkrqQX'!='T' || i.ISjiean==1 || TopicArea=='结案'" id="K3Recv_Date" align="center" style="font-size:12px">{{i.K3Recv_Date}}</td>
+
+
 
                     @*入库日期测试*@
                     <!--<td class="color" id="K3Recv_Date" align="center" contentEditable="true" style="font-size: 12px; cursor: pointer;" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>-->
@@ -1233,6 +1224,7 @@
 
                         @*测试*@
                         <!--<td class="color" id="K3PO_Num" align="center" style="font-size: 12px; cursor: pointer;" ng-dblclick="DJK3PO_Num($event,i.MainID,i.ApplyDate,i.Serial_Num,i.Mat_Code,i.Mat_Name,i.Unit,i.Qty,i.RequireDate,i.AppD_Name,i.K3PO_Num)">{{i.K3PO_Num}}</td>-->
+                        al
 
                         <td align="center" style="font-size:12px;">{{i.K3PO_Date}}</td>
                         <td align="left" style="font-size:12px;">{{i.Supplier}}</td>
@@ -1250,6 +1242,12 @@
                         @*入库日期*@
                         <td class="color" ng-if="i.K3PO_Num !=''&& i.Prop_Arr_Date !='' && '@ViewBag.RkrqQX'=='T' && i.ISjiean==0 && TopicArea!='结案'" id="K3Recv_Date" align="center" contentEditable="true" style="font-size:12px;cursor:pointer" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>
                         <td class="color" ng-if="i.K3PO_Num==''|| i.Prop_Arr_Date =='' ||  '@ViewBag.RkrqQX'!='T' || i.ISjiean==1 || TopicArea=='结案'" id="K3Recv_Date" align="center" style="font-size:12px">{{i.K3Recv_Date}}</td>
+
+
+
+
+
+
 
                         @*入库日期测试*@
                         <!--<td class="color" id="K3Recv_Date" align="center" contentEditable="true" style="font-size: 12px; cursor: pointer;" ng-click="Del($event,i.MainID,2)" ng-dblclick="DJK3Recv_Date($event,i.MainID,i.Serial_Num,i.K3PO_Num,i.K3Qty,i.RequireDate,i.Prop_Arr_Date,i.K3Recv_Date)">{{i.K3Recv_Date}}</td>-->

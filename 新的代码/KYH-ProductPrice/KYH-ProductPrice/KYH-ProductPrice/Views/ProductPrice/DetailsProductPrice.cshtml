@@ -50,7 +50,7 @@
             var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
             $.ajax({
                 url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
-                data: { "Cancel": false, "CPSerial": CPSerial, "num": 1 },
+                data: { "Cancel": false, "CPSerial": CPSerial, "num": 1 ,"type":0},
                 type: "POST",
                 dataType: "json",
                 success: function (data) {
@@ -74,6 +74,8 @@
             else {
                 $("#RemarksMD_label").css("display", "none");
                 $("#Remarks_MD").css("display", "block");
+                $("#RemarksmOQ_label").css("display", "none");
+                $("#Remarks_mOQ").css("display", "block");
                 QJRemarks = 2;            //业务部
             }
             $("#ChangeRemarks_button").css("display", "none");
@@ -82,16 +84,18 @@
         function ChangeRemarks() {
             var Remarks_FD = null;
             var Remarks_MD = null;
+            var Remarks_mOQ = null; //新增的mOQ备注
             var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
             if (QJRemarks == 1) { //财务部
                 Remarks_FD = $("#Remarks_FD").val();
             }
             if (QJRemarks == 2) { //业务部
-                 Remarks_MD = $("#Remarks_MD").val();
+                Remarks_MD = $("#Remarks_MD").val();
+                Remarks_mOQ = $("#Remarks_mOQ").val(); //新增的mOQ备注
             }
             $.ajax({
                 url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
-                data: { "Remarks_MD": Remarks_MD, "Remarks_FD": Remarks_FD, "CPSerial": CPSerial, "num": 2 },
+                data: { "Remarks_MD": Remarks_MD, "Remarks_FD": Remarks_FD, "Remarks_mOQ": Remarks_mOQ, "CPSerial": CPSerial, "num": 2, "type": QJRemarks},
                 type: "POST",
                 dataType: "json",
                 success: function (data) {
@@ -176,6 +180,13 @@
             </div>
             <div class="container-fluid panel-heading">
                 <div class="col-sm-12">
+                    <label style="font-weight:bold;text-align:right">mOQ备注：</label>
+                    <label id="RemarksmOQ_label">@ViewBag.ProductPriceList.Remarks_mOQ</label><br />
+                    <textarea name="Remarks_mOQ" type="text" id="Remarks_mOQ" class="form-control input-content" style="width:86%;display:inline;height:100px;background-color:white;display:none">@ViewBag.ProductPriceList.Remarks_mOQ</textarea>
+                </div>
+            </div>
+            <div class="container-fluid panel-heading">
+                <div class="col-sm-12">
                     <label style="font-weight:bold;text-align:right">销售备注：</label>
                     <label id="RemarksMD_label">@ViewBag.ProductPriceList.Remarks_MD</label><br />
                     <textarea name="Remarks_MD" type="text" id="Remarks_MD" class="form-control input-content" style="width:86%;display:inline;height:100px;background-color:white;display:none">@ViewBag.ProductPriceList.Remarks_MD</textarea>
@@ -201,7 +212,7 @@
             </button>
             @if (@ViewBag.GuanLi == 1 && @ViewBag.Cancel == true)
             {
-                <button id="Savebtn" type="submit" class="btn-lg btn-primary form-group" onclick="ZuoFei('@ViewBag.mydate','@ViewBag.username','@ViewBag.ProductPriceList.Ledger','@ViewBag.ProductPriceList.FNumber','@ViewBag.ProductPriceList.NewPrvUnit')">
+                <button id="Savebtn" type="submit" class="btn-lg btn-primary form-group" onclick="ZuoFei('@ViewBag.mydate','@ViewBag.username','@ViewBag.ProductPriceList.Ledger','@ViewBag.ProductPriceList.FNumber','@ViewBag.ProductPriceList.NewUpdUnit')">
                     作&nbsp;&nbsp;废
                 </button>
             }
