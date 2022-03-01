@@ -156,7 +156,7 @@
                         }
                         else {
                             //第一种;
-                            $("#OAContent").append("<tr id='notfindlist'><td colspan='11' class='text-center' style='color:red;font-size:20px'>未找到任何记录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>No Record Found!<b/></td></tr>");
+                            $("#OAContent").append("<tr id='notfindlist'><td colspan='11' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
                             $scope.List = null;
                             $scope.$apply();
 
@@ -175,10 +175,10 @@
             var scope = angular.element(appElement).scope();
             scope.GetIndexList(bank);
         }
-                    //测试
-                    //$(function () {
-                    //    Dayin('  order by  Invt_Time desc,Ledger desc ,Fnumber desc');
-                    //})
+                //测试
+                //$(function () {
+                //    Dayin('  order by  Invt_Time desc,Ledger desc ,Fnumber desc');
+                //})
 
     </script>
 </head>
@@ -186,7 +186,6 @@
     <div>
         <h1 style="text-align: center;">
             <span id="Title">打 印 物 料 库 存 追 踪 工 具</span>
-            <span>Print Material Inventory Tracking Tool</span>
         </h1>
 
     </div>
@@ -203,7 +202,7 @@
                 <th class="MatrialCode" style="width: 8%; text-align: center; vertical-align: middle;">
                     物料号
                     <br />
-                    Material Code
+                    Matrial Code
                 </th>
                 <th class="MaterialNamedescription" style="width: 20%; text-align: center; vertical-align: middle;">
                     物料名称规格
@@ -238,7 +237,7 @@
                 <th class=" OpenPOUnfinished" style="width: 8%; text-align: center; vertical-align: middle;">
                     未完成订单量
                     <br />
-                    Open PO
+                    Open-PO-Unfinished
                 </th>
                 <th class="AtTime" style="width: 8%; text-align: center; vertical-align: middle;">
                     统计时间

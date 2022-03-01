@@ -1,7 +1,7 @@
 ﻿var m = new Map();   //m.get('Adam'); 键值对
 $(function () {
     //日期控件绑定默认值 
-
+   
 
     var formatDateTime = function (date) {
         var y = date.getFullYear();
@@ -16,7 +16,7 @@ $(function () {
         Second = Second < 10 ? ('0' + Second) : Second;
         return y + '-' + m + '-' + d;
     };
-
+   
 
     var date = new Date();
 
@@ -60,7 +60,7 @@ $(function () {
         }
     });
 })
-var xh = 0;
+var xh=0;
 function IndexList() {
     m.clear();
     xh = 1;
@@ -282,7 +282,7 @@ function IndexList() {
                         }
                     }
                 });
-
+               
                 //$("#data").html("");
                 m.forEach(function (value, key, index) {
                     //console.log(value);
@@ -290,18 +290,18 @@ function IndexList() {
                     if (value.ApprovalStepNodes[maxid - 1].length == 0) {
                         value.ApprovalStepNodes.pop();
                     }
-
+                    
                     if (value.FlowStatus == $("#Status option:selected").text() || $("#Status").val() == -1) {
                         addtr(value, xh);
                         xh++;
                     };
-
+                    
                 });
             }
             //页面渲染完之后再创建插件
             $('.example-popover').popover({ container: 'body', trigger: 'hover', html: 'true' });
             var tb = document.getElementById("data");
-            if (tb.rows.length <= 0) {
+            if (tb.rows.length<=0) {
                 //关闭导出按钮
                 $('#btn_DaoChu').prop('disabled', true);
                 $("#data").append("<tr id='notfindlist'><td colspan='28' class='text-left' style='color:red;font-size:20px;padding-left:893px'>未找到任何记录</td></tr>");
@@ -317,7 +317,7 @@ function addtr(value, xh) {
     var stepName = ["申请人", "PM判断", "ECR提出部门经理审批", "RD文员", "RD工程师", "RD确认信息", "安规审批", "RD负责人审批", "CM_CP确认信息", "MC确认", "PC确认", "RD处理措施", "PMC审批", "EM审批", "ED审批", "QD审批", "MD审批", "RD经理审批", "RD指定人员打印"];
     var flowcount = value.ApprovalStepNodes.length;//审批流程次数
     for (var i = 0; i < flowcount; i++) {
-        tr += '<tr onmouseover="myfun(this)" onmouseout="myfunremove(this)">'
+        tr += '<tr onmouseover="myfun(this)" onmouseout="myfunremove(this)>'
         for (var j = 0; j < 11; j++) {
             if (j < 10) {
                 switch (j) {
@@ -399,7 +399,7 @@ function addtr(value, xh) {
                             if (stepName[step] == value["ApprovalStepNodes"][i][k]["stepNodeName"]) {  //遍历所有节点找出和当前数据节点对应的节点
                                 //转换格式
                                 var SubmitTimeDate = new Date(value["ApprovalStepNodes"][i][k]["submitTime"]);
-                                tr += '<td>' + SubmitTimeDate.Format("yyyy-MM-dd hh:mm:ss ") + '&nbsp;</td>';
+                                tr += '<td>'+ SubmitTimeDate.Format("yyyy-MM-dd hh:mm:ss ")+ '&nbsp;</td>';
                                 var ApproveTimeDate = new Date(value["ApprovalStepNodes"][i][k]["approveTime"]);
                                 tr += '<td>' + ApproveTimeDate.Format("yyyy-MM-dd hh:mm:ss ") + '&nbsp;</td>';
                                 tr += '<td>' + value["ApprovalStepNodes"][i][k]["approvePerson"] + '</td>';

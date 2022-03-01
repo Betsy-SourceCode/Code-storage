@@ -33,7 +33,7 @@
     }
     var j = "table2excel",
         k = {
-            exclude: ".noExl", name: "Table2Excel", filename: "table2excel", fileext: ".csv", exclude_img: !0, exclude_links: !0, exclude_inputs: !0
+            exclude: ".noExl", name: "Table2Excel", filename: "table2excel", fileext: ".xls", exclude_img: !0, exclude_links: !0, exclude_inputs: !0
             , columns: ""
         };
     e.prototype =
