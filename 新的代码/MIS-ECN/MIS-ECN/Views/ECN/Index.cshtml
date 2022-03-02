@@ -20,6 +20,10 @@
     <style>
         table {
             table-layout: fixed;
+            
+        }
+        label {
+            font-weight: 400 !important;
         }
         .Redfont {
             color: red;
@@ -51,13 +55,16 @@
 
         .panel-heading {
             font-size: 17px;
-            font-weight: bold;
+            
         }
         /*.table-hover > tbody > tr:hover {
             background-color: lightskyblue !important;*/ /*优先级最高*/
         /*}*/
         .hoverClass {
-            background-color: lightskyblue !important;
+            background-color: rgba(0,176,240,0.1) !important;
+        }
+        .clickColor {
+            background-color: rgba(255,248,220,0.4) !important;
         }
     </style>
 </head>
@@ -86,9 +93,9 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="input-group-clear">
-                            <label style="font-weight:bold">ECN申请日期:</label>
+                            <label style="">ECN申请日期：</label>
                             <input id="Start_Date" name="StartDate" type="text" class="Wdate form-control" onclick="WdatePicker({minDate:'2018-3-12',maxDate:'#F{$dp.$D(\'End_Date\')}'});" style="cursor:pointer;height:34px;text-align:left;width:24%;background-color:white" readonly="readonly" />
-                            <label style="font-weight:bold;margin-left:3%;margin-right:3%">到</label>
+                            <label style="margin-left:3%;margin-right:3%">到</label>
                             <input id="End_Date" name="EndDate" type="text" class="Wdate form-control"
                                    onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}'}); " style="cursor: pointer; height: 34px; text-align: left; width: 24%; background-color: white" readonly="readonly" title="默认结束日期为当天！" />
                         </div>
@@ -110,7 +117,7 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="input-group-clear">
-                            <label style="font-weight:bold">生产工厂：</label>
+                            <label style="">生产工厂：</label>
                             <select id="ProduceFactory" style=" width: 60%; display: inline; " class="form-control">
                                 <option value="">ALL</option>
                             </select>
@@ -118,7 +125,7 @@
                     </div>
                     <div class="col-sm-2">
                         <div class="input-group-clear">
-                            <label style="font-weight:bold">ECN主导工厂：</label>
+                            <label style="">ECN主导工厂：</label>
                             <select id="LeadFactory" style=" width: 36%; display: inline; " class="form-control">
                                 <option value="">ALL</option>
                             </select>
@@ -126,7 +133,7 @@
                     </div>
                     <div class="col-sm-2">
                         <div class="input-group-clear">
-                            <label style="font-weight:bold">流程状态：</label>
+                            <label style="">流程状态：</label>
                             <select id="Status" style=" width: 50%; display: inline; " class="form-control">
                                 <option value="-1">ALL</option>
                                 <option value="6">办理中</option>
@@ -135,7 +142,8 @@
                         </div>
                     </div>
                     <input type="button" name="btn_select" value="查&nbsp;&nbsp;询" id="btn_select" class="btn btn-primary" onclick="IndexList()" />
-                    <input type="button" name="btn_DaoChu" value="导&nbsp;&nbsp;出" id="btn_DaoChu" class="btn btn-primary" onclick="newApiArray()" disabled="disabled" />
+                    <input type="button" name="btn_DaoChu" value="导&nbsp;&nbsp;出" id="btn_DaoChu" class="btn btn-primary" onclick="newApiArray()" disabled="disabled" style="margin-right:10px" />
+                    <div style="font-size:13px;font-weight:200;color:darkgray;float:right;margin-right:4%;margin-top:0.8%;">共计: <label id="count"></label>条</div>
                 </div>
             </div>
         </form>
@@ -145,7 +153,7 @@
         <table id="GridView" class="table table-bordered table-hover" style="margin:0px auto;margin-bottom:1%;text-align:center;width:10000px">
             <thead style="">
                 <tr style="">
-                    <th rowspan="2" style=" width: 30px; background-color: rgb(0,176,240)"></th>
+                    <th rowspan="2" style=" width: 30px; background-color: rgb(0,176,240)" class="noExl"></th>
                     <th rowspan="2" style=" width: 50px; background-color: rgb(0,176,240)">序号</th>
                     <th rowspan="2" style=" width:160px; background-color:rgb(0,176,240)">ECR编号(打印请双击)</th>
                     <th rowspan="2" style=" width: 200px; background-color: rgb(0,176,240)">流程标题</th>
@@ -155,25 +163,26 @@
                     <th rowspan="2" style=" width: 80px; background-color: rgb(0,176,240) ">生产工厂</th>
                     <th rowspan="2" style=" width: 220px; background-color: rgb(0,176,240) ">申请更改内容</th>
                     <th rowspan="2" style=" width: 100px; background-color: rgb(0,176,240)">流程状态</th>
-                    <th colspan="4" style=" width: 700px;">申请人审批节点</th>
-                    <th colspan="4" style="width: 700px; ">PM判断</th>
-                    <th colspan="4" style="width: 700px; ">ECR提出部门经理审批</th>
-                    <th colspan="4" style="width: 700px; ">RD文员</th>
-                    <th colspan="4" style="width: 700px; ">RD工程师</th>
-                    <th colspan="4" style="width: 700px; ">RD确认信息</th>
-                    <th colspan="4" style="width: 700px; ">安规审批</th>
-                    <th colspan="4" style="width: 700px ">RD负责人审批</th>
-                    <th colspan="4" style="width: 700px ">CM_CP确认信息</th>
-                    <th colspan="4" style=" width: 700px">MC确认</th>
-                    <th colspan="4" style=" width: 700px">PC确认</th>
-                    <th colspan="4" style=" width: 700px">RD处理措施</th>
-                    <th colspan="4" style=" width: 700px">PMC审批</th>
-                    <th colspan="4" style=" width: 700px">EM审批</th>
-                    <th colspan="4" style=" width: 700px">ED审批</th>
-                    <th colspan="4" style=" width: 700px">QD审批</th>
-                    <th colspan="4" style=" width: 700px">MD审批</th>
-                    <th colspan="4" style=" width: 700px">RD经理审批</th>
-                    <th colspan="4" style=" width: 700px">RD指定人员打印</th>
+                    <th rowspan="2" style=" width: 120px; background-color: rgb(0,176,240)">共耗时间(分钟)</th>
+                    <th colspan="4" style=" width: 600px;">申请人审批节点</th>
+                    <th colspan="4" style="width: 600px; ">PM判断</th>
+                    <th colspan="4" style="width: 600px; ">ECR提出部门经理审批</th>
+                    <th colspan="4" style="width: 600px; ">RD文员</th>
+                    <th colspan="4" style="width: 600px; ">RD工程师</th>
+                    <th colspan="4" style="width: 600px; ">RD确认信息</th>
+                    <th colspan="4" style="width: 600px; ">安规审批</th>
+                    <th colspan="4" style="width: 600px ">RD负责人审批</th>
+                    <th colspan="4" style="width: 600px ">CM_CP确认信息</th>
+                    <th colspan="4" style=" width: 600px">MC确认</th>
+                    <th colspan="4" style=" width: 600px">PC确认</th>
+                    <th colspan="4" style=" width: 600px">RD处理措施</th>
+                    <th colspan="4" style=" width: 600px">PMC审批</th>
+                    <th colspan="4" style=" width: 600px">EM审批</th>
+                    <th colspan="4" style=" width: 600px">ED审批</th>
+                    <th colspan="4" style=" width: 600px">QD审批</th>
+                    <th colspan="4" style=" width: 600px">MD审批</th>
+                    <th colspan="4" style=" width: 600px">RD经理审批</th>
+                    <th colspan="4" style=" width: 600px">RD指定人员打印</th>
                 </tr>
                 <tr>
 

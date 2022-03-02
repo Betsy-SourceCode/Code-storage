@@ -1,7 +1,7 @@
 ﻿var m = new Map();   //m.get('Adam'); 键值对
 $(function () {
     //日期控件绑定默认值 
-   
+
 
     var formatDateTime = function (date) {
         var y = date.getFullYear();
@@ -16,7 +16,7 @@ $(function () {
         Second = Second < 10 ? ('0' + Second) : Second;
         return y + '-' + m + '-' + d;
     };
-   
+
 
     var date = new Date();
 
@@ -60,11 +60,11 @@ $(function () {
         }
     });
 })
-var xh=0;
+var xh = 1;
 function IndexList() {
     m.clear();
-    xh = 1;
     $("tbody").html("");
+    $("#count").html("");//
     $("#myModal").modal({ backdrop: 'static', keyboard: false });
     $.ajax({
         url: "/ECN/ECN/IndexData",
@@ -282,7 +282,7 @@ function IndexList() {
                         }
                     }
                 });
-               
+
                 //$("#data").html("");
                 m.forEach(function (value, key, index) {
                     //console.log(value);
@@ -290,39 +290,49 @@ function IndexList() {
                     if (value.ApprovalStepNodes[maxid - 1].length == 0) {
                         value.ApprovalStepNodes.pop();
                     }
-                    
+                    var TimeCount = 0;
                     if (value.FlowStatus == $("#Status option:selected").text() || $("#Status").val() == -1) {
-                        addtr(value, xh);
+                        for (var i = 0; i < value.ApprovalStepNodes.length; i++) {
+                            for (var j = 0; j < value.ApprovalStepNodes[i].length; j++) {
+                                TimeCount = TimeCount += value.ApprovalStepNodes[i][j].timeConsuming;
+                            }
+                        }
+                        console.log(TimeCount);
+                        addtr(value, xh, TimeCount);
                         xh++;
                     };
-                    
+
+
                 });
             }
             //页面渲染完之后再创建插件
             $('.example-popover').popover({ container: 'body', trigger: 'hover', html: 'true' });
             var tb = document.getElementById("data");
-            if (tb.rows.length<=0) {
+            if (tb.rows.length <= 0) {
                 //关闭导出按钮
                 $('#btn_DaoChu').prop('disabled', true);
                 $("#data").append("<tr id='notfindlist'><td colspan='28' class='text-left' style='color:red;font-size:20px;padding-left:893px'>未找到任何记录</td></tr>");
             }
             //加载完成后  关闭遮罩层
             $("#myModal").modal('hide');
-            $('.freeze-table').freezeTable({ 'scrollBar': true, 'columnNum': 10, 'shadow': true, 'freezeColumn': true });//冻结 xh = 1;
+            $('.freeze-table').freezeTable({ 'scrollBar': true, 'columnNum': 11, 'freezeColumn': true });//冻结 
+            
+            $("#count").html(xh - 1);//显示总条数
+            xh = 1;
         }
     });
 }
-function addtr(value, xh) {
+function addtr(value, xh,TimeCount) {
     var tr = "";
     var stepName = ["申请人", "PM判断", "ECR提出部门经理审批", "RD文员", "RD工程师", "RD确认信息", "安规审批", "RD负责人审批", "CM_CP确认信息", "MC确认", "PC确认", "RD处理措施", "PMC审批", "EM审批", "ED审批", "QD审批", "MD审批", "RD经理审批", "RD指定人员打印"];
     var flowcount = value.ApprovalStepNodes.length;//审批流程次数
     for (var i = 0; i < flowcount; i++) {
-        tr += '<tr onmouseover="myfun(this)" onmouseout="myfunremove(this)>'
-        for (var j = 0; j < 11; j++) {
-            if (j < 10) {
+        tr += '<tr onmouseover="myfun(this)" onmouseout="myfunremove(this)" onclick="ChangeBackColor(this)">'
+        for (var j = 0; j < 12; j++) {
+            if (j < 11) {
                 switch (j) {
                     case 0:
-                        tr += '<td onclick="Download(this)"> <p style="cursor: pointer"><span class="glyphicon glyphicon-plus"></span ></p></td>' //加号预留位置
+                        tr += '<td onclick="Download(this)" class="noExl"> <p style="cursor: pointer"><span class="glyphicon glyphicon-plus noExl"></span ></p></td>' //加号预留位置
                         break
                     case 1:
                         tr += '<td>' + xh + '</td>' //自增序号
@@ -383,6 +393,9 @@ function addtr(value, xh) {
                     case 9:
                         tr += '<td>' + value["FlowStatus"] + '</td>'
                         break
+                    case 10:
+                        tr += '<td>' + TimeCount + '</td>'
+                        break
                     default:
                         tr += '<td></td>'
                 }
@@ -399,7 +412,7 @@ function addtr(value, xh) {
                             if (stepName[step] == value["ApprovalStepNodes"][i][k]["stepNodeName"]) {  //遍历所有节点找出和当前数据节点对应的节点
                                 //转换格式
                                 var SubmitTimeDate = new Date(value["ApprovalStepNodes"][i][k]["submitTime"]);
-                                tr += '<td>'+ SubmitTimeDate.Format("yyyy-MM-dd hh:mm:ss ")+ '&nbsp;</td>';
+                                tr += '<td>' + SubmitTimeDate.Format("yyyy-MM-dd hh:mm:ss ") + '&nbsp;</td>';
                                 var ApproveTimeDate = new Date(value["ApprovalStepNodes"][i][k]["approveTime"]);
                                 tr += '<td>' + ApproveTimeDate.Format("yyyy-MM-dd hh:mm:ss ") + '&nbsp;</td>';
                                 tr += '<td>' + value["ApprovalStepNodes"][i][k]["approvePerson"] + '</td>';
@@ -424,7 +437,8 @@ function addtr(value, xh) {
     var tb = document.getElementById("GridView");
     var endrow = tb.rows.length - 1;
     var startrow = endrow - flowcount;
-    mergeCell("GridView", startrow, endrow, 13);
+    
+    mergeCell("GridView", startrow, endrow, 14);
     mergeCell("GridView", flowcount, 8);
     mergeCell("GridView", flowcount, 7);
     mergeCell("GridView", flowcount, 6);
@@ -459,6 +473,23 @@ function myfunremove(obj) {
             $(trId).removeClass("hoverClass");
         }
     }
+}
+var flag = "";
+var index = 0;
+function ChangeBackColor(obj) {
+    $(obj).siblings().removeClass("clickColor");
+    $(obj).addClass("clickColor");
+    var rowspan = $(obj).find("td:first").attr('rowspan');
+    console.log(rowspan);
+    if (rowspan != undefined) {
+        var index = $('tr').index($(obj));
+        tot = parseInt(index) + parseInt(rowspan);
+        for (var i = index, len = tot; i < len; i++) {
+            var trId = "table tr:eq(" + i + ")";
+            $(trId).addClass("clickColor");
+        }
+    }
+      
 }
 //格式化时间
 Date.prototype.Format = function (fmt) { // author: meizz
@@ -520,10 +551,13 @@ function mergeCell(table1, startRow, endRow, col) {
 function Download(obj) {
     var MainId = $(obj).siblings().eq(1).html();
     var spanObj = $(obj).find("span:first");
+   // $("#myModal").modal({ backdrop: 'static', keyboard: false });
     var tr = "";
     if (spanObj.hasClass("glyphicon-plus")) {    //如果是+改成-/如果是-改成+
         spanObj.removeClass("glyphicon-plus");
         spanObj.addClass("glyphicon-minus");
+
+        $("#myModal").modal({ backdrop: 'static', keyboard: false });
         //通过Main获取路径
         $.ajax({
             url: "/ECN/ECN/ByMainGetDjbhName",
@@ -531,6 +565,7 @@ function Download(obj) {
             type: "POST",
             dataType: "json",
             success: function (data) {
+
                 if (data.length > 0) {
                     $.each(data, function (key, value) {
                         tr += '<tr class="' + MainId + '">'
@@ -557,7 +592,12 @@ function Download(obj) {
                 } else {
                     $(obj).parent().nextAll().eq(index - 1).after(tr);
                 }
+                
+               
                 // console.log($(obj).parent().html());
+            }, complete: function () {
+                //加载完成后  关闭遮罩层
+                $("#myModal").modal('hide');
             }
         });
     }

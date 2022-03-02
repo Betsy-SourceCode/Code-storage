@@ -58,7 +58,7 @@ select reverse(substring( reverse(filename),0,charindex('\',reverse(filename),0)
 
 	
 
-	select * from SelectCENDataList cen where cen.流程编号<>'' and cen.接收时间>'2017-3-12' and cen.流程编号='GIPECR20171212001' ORDER BY cen.流程编号,cen.审批步骤
+	select * from SelectCENDataList cen where  cen.流程编号='GIPECR20180516001' ORDER BY cen.流程编号,cen.审批步骤
 
 
 	select * from SelectCENDataList cen where cen.流程编号<>'' and cen.流程状态<>0 
@@ -73,7 +73,7 @@ select distinct MainID from SelectCENDataList cen where cen.审批节点 is not null
 
 select reverse(substring( reverse(filename),0,charindex('\',reverse(filename),0))) as filename,filepos, attachid from FC_ATTACH where djbh='JHC00036958'
 
-select top 200 num,MainID,流程编号,流程标题,产品型号,产品代码,主导工厂,生产工厂,申请更改内容,流程状态,接收时间,审批时间,case when 审批节点 = 'QD确认信息' then 'QD确认信息'
+select  num,MainID,流程编号,流程标题,产品型号,产品代码,主导工厂,生产工厂,申请更改内容,流程状态,接收时间,审批时间,case when 审批节点 = 'QD确认信息' then 'QD确认信息'
                   when 审批节点 = 'MD评审' then 'MD评审'
   
                   when 审批节点 = '采购报数' then 'CM_CP确认信息'
@@ -125,19 +125,19 @@ select top 200 num,MainID,流程编号,流程标题,产品型号,产品代码,主导工厂,生产工厂,
                   when 审批节点 = '申请人' then '申请人'
                   else '未知'
                  end 审批节点 ,审批步骤,审批人,审批耗用时间 from SelectCENDataList cen where cen.审批节点 is not null and cen.审批节点<>'未知' 
+				 and 流程编号='GIPECR20190222003'
                   order by cen.流程编号,cen.审批步骤
 
 
-				  SELECT DISTINCT *,DATEDIFF( Minute,提交时间, 审批时间) AS '审批耗用时间(分钟)'  FROM (
-    SELECT  RANK() OVER (PARTITION BY a.FlowNo ORDER BY c.App_Order ) AS Num,a.MainID,  a.FlowNo  '流程编号',c.AppO_Title '流程标题',a.Good_Model '产品型号',a.Good_Num '产品代码',a.Produce_Plant '主导工厂',a.Domin_Fty '生产工厂', a.Change_Details '申请更改内容',c.App_IdeaFlag '流程状态', app_begintime '提交时间',ISNULL(App_Time,GETDATE())  '审批时间',
-                d.AppD_Name  '审批节点' ,c.App_Order  '审批步骤',u.UserName  '审批人'
-FROM dbo.CustomModule_201552114222962  AS a INNER JOIN
-     dbo.JHOA_Approve AS c ON a.MainID = c.AppO_Values
-     INNER JOIN dbo.JHOA_Approve_Temp_Dispose AS d ON c.AppD_ID = d.AppD_ID
-     LEFT JOIN dbo.users u WITH(NOLOCK) ON c.Reg_Code = u.UserID
-WHERE   (c.Del_Flag = '0'AND a.FlowNo='GIPECR20211208002'AND d.appd_name<>'开始')
-) a ORDER BY a.流程编号
+--下拉框
+--主导工厂
+SELECT distinct Domin_Fty FROM c6.dbo.CustomModule_201552114222962 where Domin_Fty<>''
+--WHERE Domin_Fty='HL'
+--生产工厂
+SELECT distinct Produce_Plant FROM c6.dbo.CustomModule_201552114222962 where Produce_Plant<>''
+--WHERE Produce_Plant='HL/KS'
 
 
-select * from dbo.CustomModule_201552114222962
+
+
 
