@@ -1,0 +1,42 @@
+{
+  "id": "h5-Extension",
+  "name": "uni-app",
+  "description": "uni-app发行插件(支持H5、微信)",
+  "displayName": "uni-app发行插件",
+  "version": "0.1.8-2022012019",
+  "publisher": "HBuilderX",
+  "engines": {
+    "HBuilderX": "^3.3.7"
+  },
+  "categories": [
+    "Other"
+  ],
+  "__private": true,
+  "main": "./out.js",
+  "activationEvents": [
+    "onLaunch:uniapp.publish.weapp",
+    "onLaunch:uniapp.publish.h5"
+  ],
+  "contributes": {
+    "launchers": [
+      {
+        "type": "uniapp.publish.weapp",
+        "label": "小程序-微信(仅适用于uni-app)(&W)",
+        "when": "workspaceFolder.type == 'UniApp_Vue'",
+        "mode": "custom"
+      },
+      {
+        "type": "uniapp.publish.h5",
+        "label": "网站-PC Web或手机H5(仅适用于uni-app)(&H).",
+        "when": "workspaceFolder.type == 'UniApp_Vue'",
+        "mode": "custom"
+      }
+    ]
+  },
+  "extensionDependencies": [
+    "plugin-manager"
+  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "_dc_signatures": "3cd7710df9744158ce238e784af1987e3f16a9c8a978fdd857b1faee7e6e43aad80ab46dc94a8c660d4f7b326688e5ef"
+}

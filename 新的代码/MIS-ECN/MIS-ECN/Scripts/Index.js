@@ -64,7 +64,7 @@ var xh = 1;
 function IndexList() {
     m.clear();
     $("tbody").html("");
-    $("#count").html("");//
+    $("#count").html("");
     $("#myModal").modal({ backdrop: 'static', keyboard: false });
     $.ajax({
         url: "/ECN/ECN/IndexData",
@@ -114,7 +114,11 @@ function IndexList() {
                         approvalStepNode.approveTime = value["审批时间"];
                         approvalStepNode.approvePerson = value["审批人"];
                         approvalStepNode.timeConsumingWork = 0; //工作耗时
-                        //计算工作耗时需要跳过周末+节假日+非上班时间，审批时间-接收时间
+                        var time = 0;
+                        //计算工作耗时需要跳过周末，审批时间-接收时间
+                        //if (approvalStepNode.approveTime.getDay() == 0 || approvalStepNode.approveTime.getDay() == 6) {
+                        //    time += 480;
+                        //}
                         //每天工作时间是8小时，上午4小时（08:00--12:00）,下午4小时(13:30--17:30)，非工作时间跳过不计算
                         //一天五阶段
                         //0:00-8:00（跳过）
@@ -616,15 +620,11 @@ function mergeCell(table1, startRow, endRow, col) {
 //二级表格显示文件下载路径
 function Download(obj) {
     var MainId = $(obj).siblings().eq(1).html();
-    var Id = $(obj).siblings().eq(0).html();
     var spanObj = $(obj).find("span:first");
-    // $("#myModal").modal({ backdrop: 'static', keyboard: false });
     var tr = "";
     if (spanObj.hasClass("glyphicon-plus")) {    //如果是+改成-/如果是-改成+
         spanObj.removeClass("glyphicon-plus");
         spanObj.addClass("glyphicon-minus");
-
-        $("#myModal").modal({ backdrop: 'static', keyboard: false });
         //通过Main获取路径
         $.ajax({
             url: "/ECN/ECN/ByMainGetDjbhName",
@@ -632,17 +632,16 @@ function Download(obj) {
             type: "POST",
             dataType: "json",
             success: function (data) {
-
                 if (data.length > 0) {
                     $.each(data, function (key, value) {
                         tr += '<tr class="' + MainId + '">'
-                        tr += "<td colspan = '28' style='text-align:left;z-index:-1'><a href='#' onclick='GetHref(\"" + value["attachid"] + "\")' >" + value["filename"] + "</a></td >";
+                        tr += "<td colspan = '28' style='text-align:left;z-index:200'><a href='#' onclick='GetHref(\"" + value["attachid"] + "\")' >" + value["filename"] + "</a></td >";
                         tr += '</tr >'
                     });
                 }
                 else {
                     tr += '<tr class="' + MainId + '">'
-                    tr += "<td colspan = '28' style='text-align:left;z-index:-1'>暂无文档</td >";
+                    tr += "<td colspan = '28' style='text-align:left;z-index:200'>暂无文档</td >";
                     tr += '</tr >'
                 }
                 //$(obj).parent().parent().parent().children().next().children().eq(3).after(tr);
@@ -655,19 +654,11 @@ function Download(obj) {
                     }
                 })
                 if (index == 0) {
-                    $("tbody").find(obj).parent().after(tr);
-                    $(".clone-column-table-wrap tbody").find("#data").children().eq(Id - 1).after(tr);
+                    $(obj).parent().after(tr);
                 } else {
-                    $("tbody").find(obj).parent().eq(index - 1).after(tr);
-
-                    //$("#" + MainId).nextAll().eq(index - 1).after(tr);
+                    $(obj).parent().nextAll().eq(index - 1).after(tr);
                 }
-
-
                 // console.log($(obj).parent().html());
-            }, complete: function () {
-                //加载完成后  关闭遮罩层
-                $("#myModal").modal('hide');
             }
         });
     }
@@ -678,11 +669,7 @@ function Download(obj) {
         $("tbody").find("." + MainId).remove();
         //console.log($(obj).parent().parent().parent().children().next().children().eq(4).html());
     }
-    //alert($(".clone-column-table-wrap").find("." + MainId).html());
-    //alert($(obj).parent().html());
-    //alert(Id);
-    // $(".clone-column-table-wrap").find("#data").children().eq(0).after(tr);
-    //alert($(".clone-column-table-wrap").find("#data").children().eq(0).html());
+
 }
 
 //下载文件
