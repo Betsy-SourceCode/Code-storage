@@ -108,10 +108,20 @@ function IndexList() {
                             statusStr = "办理中";
                         }
                         obj.FlowStatus = statusStr;
-                        var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsuming": "", "stepNodeName": "" } //节点数组
+                        //节点数组
+                        var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsumingWork": "", "timeConsuming": "", "stepNodeName": "" } //增加工作耗时 
                         approvalStepNode.submitTime = value["接收时间"];
                         approvalStepNode.approveTime = value["审批时间"];
                         approvalStepNode.approvePerson = value["审批人"];
+                        approvalStepNode.timeConsumingWork = 0; //工作耗时
+                        //计算工作耗时需要跳过周末+节假日+非上班时间，审批时间-接收时间
+                        //每天工作时间是8小时，上午4小时（08:00--12:00）,下午4小时(13:30--17:30)，非工作时间跳过不计算
+                        //一天五阶段
+                        //0:00-8:00（跳过）
+                        //8:00-12:00(上班)
+                        //12:00-13:30(跳过)
+                        //13:30-17:30(上班)
+                        //17:30-00:00（跳过）
                         approvalStepNode.timeConsuming = value["审批耗用时间"];
                         approvalStepNode.stepNodeName = value["审批节点"];
                         if (obj.ApprovalStepNodes[flownum] != undefined) {
@@ -161,10 +171,11 @@ function IndexList() {
                                     statusStr = "办理中";
                                 }
                                 obj.FlowStatus = statusStr;
-                                var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsuming": "", "stepNodeName": "" }
+                                var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsumingWork": "", "timeConsuming": "", "stepNodeName": "" } //增加工作耗时
                                 approvalStepNode.submitTime = value["接收时间"];
                                 approvalStepNode.approveTime = value["审批时间"];
                                 approvalStepNode.approvePerson = value["审批人"];
+                                approvalStepNode.timeConsumingWork = 0; //工作耗时
                                 approvalStepNode.timeConsuming = value["审批耗用时间"];
                                 approvalStepNode.stepNodeName = value["审批节点"];
                                 obj.ApprovalStepNodes[0].push(approvalStepNode);
@@ -172,10 +183,11 @@ function IndexList() {
                             }
                             if (value["审批节点"] == "ECR提出部门经理审批") {
                                 var arr = new Array();
-                                var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsuming": "", "stepNodeName": "" }
+                                var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsumingWork": "", "timeConsuming": "", "stepNodeName": "" } //增加工作耗时
                                 approvalStepNode.submitTime = value["接收时间"];
                                 approvalStepNode.approveTime = value["审批时间"];
                                 approvalStepNode.approvePerson = value["审批人"];
+                                approvalStepNode.timeConsumingWork = 0; //工作耗时
                                 approvalStepNode.timeConsuming = value["审批耗用时间"];
                                 approvalStepNode.stepNodeName = value["审批节点"];
                                 var statusStr = "办理中"; //默认为办理中
@@ -202,10 +214,11 @@ function IndexList() {
                                 obj.ApprovalStepNodes.push(arr);
                             }
                             else {
-                                var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsuming": "", "stepNodeName": "" }
+                                var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsumingWork": "", "timeConsuming": "", "stepNodeName": "" } //增加工作耗时
                                 approvalStepNode.submitTime = value["接收时间"];
                                 approvalStepNode.approveTime = value["审批时间"];
                                 approvalStepNode.approvePerson = value["审批人"];
+                                approvalStepNode.timeConsumingWork = 0; //工作耗时
                                 approvalStepNode.timeConsuming = value["审批耗用时间"];
                                 approvalStepNode.stepNodeName = value["审批节点"];
                                 var statusStr = "办理中"; //默认为办理中
@@ -271,10 +284,11 @@ function IndexList() {
                                 statusStr = "办理中";
                             }
                             obj.FlowStatus = statusStr;
-                            var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsuming": "", "stepNodeName": "" }
+                            var approvalStepNode = { "submitTime": "", "approveTime": "", "approvePerson": "", "timeConsumingWork": "", "timeConsuming": "", "stepNodeName": "" } //增加工作耗时
                             approvalStepNode.submitTime = value["接收时间"];
                             approvalStepNode.approveTime = value["审批时间"];
                             approvalStepNode.approvePerson = value["审批人"];
+                            approvalStepNode.timeConsumingWork = 0; //工作耗时
                             approvalStepNode.timeConsuming = value["审批耗用时间"];
                             approvalStepNode.stepNodeName = value["审批节点"];
                             obj.ApprovalStepNodes[0].push(approvalStepNode);
@@ -321,10 +335,11 @@ function IndexList() {
         }
     });
 }
-function addtr(value, xh,TimeCount) {
+function addtr(value, xh, TimeCount) {
     var tr = "";
     var stepName = ["申请人", "PM判断", "ECR提出部门经理审批", "RD文员", "RD工程师", "RD确认信息", "安规审批", "RD负责人审批", "CM_CP确认信息", "MC确认", "PC确认", "RD处理措施", "PMC审批", "EM审批", "ED审批", "QD审批", "MD审批", "RD经理审批", "RD指定人员打印"];
     var flowcount = value.ApprovalStepNodes.length;//审批流程次数
+
     for (var i = 0; i < flowcount; i++) {
         tr += '<tr onmouseover="myfun(this)" onmouseout="myfunremove(this)" onclick="ChangeBackColor(this)">'
         for (var j = 0; j < 12; j++) {
@@ -340,35 +355,72 @@ function addtr(value, xh,TimeCount) {
                         tr += '<td  class="Redfont" ondblclick="Print(this)" style="cursor: pointer">' + value["CERNumber"] + '</td>' //ECR编号(打印请双击)
                         break
                     case 3: //流程标题
-                        if (value["Title"].length > 30) {
-                            var Title = value["Title"].substring(0, 30) + "...";
-                            tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["Title"] + '<b/></h5>" data-placement="right">' + Title + '</td>'
+                        if (flowcount > 1) {
+                            if (flowcount > 4) {
+                                tr += '<td class="example-popover noExl"  data-content="<h5><b>' + value["Title"] + '<b/></h5>" data-placement="right"><div>' + value["Title"] + '</div></td>'
+                            }
+                            else {
+                                tr += '<td class="example-popover noExl"  data-content="<h5><b>' + value["Title"] + '<b/></h5>" data-placement="right"><div class=" hiddens">' + value["Title"] + '</div></td> '
+                            }
+
                         }
                         else {
-                            tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["Title"] + '<b/></h5>" data-placement="right">' + value["Title"] + '</td>'
+                            if (value["Title"].length > 25) {
+                                var Title = value["Title"].substring(0, 25) + "...";
+                                tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["Title"] + '<b/></h5>" data-placement="right">' + Title + '</td>'
+                            }
+                            else {
+                                tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["Title"] + '<b/></h5>" data-placement="right">' + value["Title"] + '</td>'
+                            }
                         }
                         //导出专用
                         tr += '<td style="display:none">' + value["Title"] + '</td>'
                         break
                     case 4://产品型号
-                        if (value["ProductType"].length > 20) {
-                            var ProductType = value["ProductType"].substring(0, 20) + "...";
-                            tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ProductType"] + '<b/></h5>" data-placement="right">' + ProductType + '</td>'
+                        if (flowcount > 1) {
+                            if (flowcount > 4) {
+                                tr += '<td class="example-popover noExl hiddens"  data-content="<h5><b>' + value["ProductType"] + '<b/></h5>" data-placement="right"><div>' + value["ProductType"] + '</div></td>'
+                            }
+                            else {
+                                tr += '<td class="example-popover noExl hiddens"  data-content="<h5><b>' + value["ProductType"] + '<b/></h5>" data-placement="right"><div class=" hiddens">' + value["ProductType"] + '</div></td>'
+                            }
+
                         }
                         else {
-                            tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ProductType"] + '<b/></h5>" data-placement="right">' + value["ProductType"] + '</td>'
+                            if (value["ProductType"].length > 15) {
+                                var ProductType = value["ProductType"].substring(0, 15) + "...";
+                                tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ProductType"] + '<b/></h5>" data-placement="right">' + ProductType + '</td>'
+                            }
+                            else {
+                                tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ProductType"] + '<b/></h5>" data-placement="right">' + value["ProductType"] + '</td>'
+                            }
                         }
+
+
                         //导出专用
                         tr += '<td style="display:none">' + value["ProductType"] + '</td>'
                         break
-                    case 5:
-                        if (value["ProductCode"].length > 40) {
-                            var ProductCode = value["ProductCode"].substring(0, 40) + "...";
-                            tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ProductCode"] + '<b/></h5>" data-placement="right">' + ProductCode + '</td>'
+                    case 5: //产品代码
+                        if (flowcount > 1) {
+                            if (flowcount > 4) {
+                                tr += '<td class="example-popover noExl"  data-content="<h5><b>' + value["ProductCode"] + '<b/></h5>" data-placement="right"><div>' + value["ProductCode"] + '</div></td>'
+                            }
+                            else {
+                                tr += '<td class="example-popover noExl hiddens"  data-content="<h5><b>' + value["ProductCode"] + '<b/></h5>" data-placement="right"><div class=" hiddens">' + value["ProductCode"] + '</div></td>'
+                            }
+
                         }
                         else {
-                            tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ProductCode"] + '<b/></h5>" data-placement="right">' + value["ProductCode"] + '</td>'
+                            if (value["ProductCode"].length > 25) {
+                                var ProductCode = value["ProductCode"].substring(0, 25) + "...";
+                                tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ProductCode"] + '<b/></h5>" data-placement="right">' + ProductCode + '</td>'
+                            }
+                            else {
+                                tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ProductCode"] + '<b/></h5>" data-placement="right">' + value["ProductCode"] + '</td>'
+                            }
                         }
+
+
                         //导出专用
                         tr += '<td style="display:none">' + value["ProductCode"] + '</td>'
                         break
@@ -378,14 +430,27 @@ function addtr(value, xh,TimeCount) {
                     case 7:
                         tr += '<td>' + value["ProduceFactory"] + '</td>'
                         break
-                    case 8:
-                        if (value["ApprovelContent"].length > 28) {
-                            var ApprovelContent = value["ApprovelContent"].substring(0, 28) + "...";
-                            tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ApprovelContent"] + '<b/></h5>" data-placement="right">' + ApprovelContent + '</td>'
+                    case 8: //申请更改内容
+                        if (flowcount > 1) {
+                            if (flowcount > 4) {
+                                tr += '<td class="example-popover noExl"  data-content="<h5><b>' + value["ApprovelContent"] + '<b/></h5>" data-placement="right"><div>' + value["ApprovelContent"] + '</div></td>'
+                            }
+                            else {
+                                tr += '<td class="example-popover noExl hiddens"  data-content="<h5><b>' + value["ApprovelContent"] + '<b/></h5>" data-placement="right"><div class=" hiddens">' + value["ApprovelContent"] + '</div></td>'
+                            }
+
                         }
                         else {
-                            tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ApprovelContent"] + '<b/></h5>" data-placement="right">' + value["ApprovelContent"] + '</td>'
+                            if (value["ApprovelContent"].length > 20) {
+                                var ApprovelContent = value["ApprovelContent"].substring(0, 20) + "...";
+                                tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ApprovelContent"] + '<b/></h5>" data-placement="right">' + ApprovelContent + '</td>'
+                            }
+                            else {
+                                tr += '<td class="example-popover noExl" data-content="<h5><b>' + value["ApprovelContent"] + '<b/></h5>" data-placement="right">' + value["ApprovelContent"] + '</td>'
+                            }
                         }
+
+
                         //导出专用
                         tr += '<td style="display:none">' + value["ApprovelContent"] + '</td>'
                         break
@@ -415,6 +480,7 @@ function addtr(value, xh,TimeCount) {
                                 var ApproveTimeDate = new Date(value["ApprovalStepNodes"][i][k]["approveTime"]);
                                 tr += '<td>' + ApproveTimeDate.Format("yyyy-MM-dd hh:mm:ss ") + '&nbsp;</td>';
                                 tr += '<td>' + value["ApprovalStepNodes"][i][k]["approvePerson"] + '</td>';
+                                tr += '<td>' + value["ApprovalStepNodes"][i][k]["timeConsumingWork"] + '</td>'; //工作耗时
                                 tr += '<td>' + value["ApprovalStepNodes"][i][k]["timeConsuming"] + '</td>';
                                 hasValue = true;//判断是否找到值
                                 break;
@@ -437,7 +503,7 @@ function addtr(value, xh,TimeCount) {
     var tb = document.getElementById("GridView");
     var endrow = tb.rows.length - 1;
     var startrow = endrow - flowcount;
-    
+
     mergeCell("GridView", startrow, endrow, 14);
     mergeCell("GridView", flowcount, 8);
     mergeCell("GridView", flowcount, 7);
@@ -452,7 +518,7 @@ function addtr(value, xh,TimeCount) {
 function myfun(obj) {
     $(obj).addClass("hoverClass");
     var rowspan = $(obj).find("td:first").attr('rowspan');
-   // console.log(rowspan);
+    // console.log(rowspan);
     if (rowspan != undefined) {
         var index = $('tr').index($(obj));
         tot = parseInt(index) + parseInt(rowspan);
@@ -489,7 +555,7 @@ function ChangeBackColor(obj) {
             $(trId).addClass("clickColor");
         }
     }
-      
+
 }
 //格式化时间
 Date.prototype.Format = function (fmt) { // author: meizz
@@ -552,7 +618,7 @@ function Download(obj) {
     var MainId = $(obj).siblings().eq(1).html();
     var Id = $(obj).siblings().eq(0).html();
     var spanObj = $(obj).find("span:first");
-   // $("#myModal").modal({ backdrop: 'static', keyboard: false });
+    // $("#myModal").modal({ backdrop: 'static', keyboard: false });
     var tr = "";
     if (spanObj.hasClass("glyphicon-plus")) {    //如果是+改成-/如果是-改成+
         spanObj.removeClass("glyphicon-plus");
@@ -593,11 +659,11 @@ function Download(obj) {
                     $(".clone-column-table-wrap tbody").find("#data").children().eq(Id - 1).after(tr);
                 } else {
                     $("tbody").find(obj).parent().eq(index - 1).after(tr);
-                    
+
                     //$("#" + MainId).nextAll().eq(index - 1).after(tr);
                 }
-                
-               
+
+
                 // console.log($(obj).parent().html());
             }, complete: function () {
                 //加载完成后  关闭遮罩层
@@ -615,7 +681,7 @@ function Download(obj) {
     //alert($(".clone-column-table-wrap").find("." + MainId).html());
     //alert($(obj).parent().html());
     //alert(Id);
-   // $(".clone-column-table-wrap").find("#data").children().eq(0).after(tr);
+    // $(".clone-column-table-wrap").find("#data").children().eq(0).after(tr);
     //alert($(".clone-column-table-wrap").find("#data").children().eq(0).html());
 }
 

@@ -69,6 +69,13 @@
         .clickColor {
             background-color: rgba(255,248,220,0.4) !important;
         }
+
+        .hiddens {
+            max-height:150px;
+            overflow: hidden; /*溢出隐藏*/
+            /*white-space: nowrap;*/ /*规定文本不进行换行*/
+            text-overflow: ellipsis; /*当对象内文本溢出时显示省略标记（...）*/
+        }
     </style>
 </head>
 <body style="min-width:1400px; margin:0px auto">
@@ -157,131 +164,150 @@
             <thead style="">
                 <tr style="height:20px;">
                     <th rowspan="2" style=" width: 30px; background-color: rgb(0,176,240)" class="noExl"></th>
-                    <th rowspan="2" style=" width: 50px; background-color: rgb(0,176,240)">序号</th>
+                    <th rowspan="2" style=" width: 45px; background-color: rgb(0,176,240)">序号</th>
                     <th rowspan="2" style=" width:160px; background-color:rgb(0,176,240)">ECR编号(打印请双击)</th>
-                    <th rowspan="2" style=" width: 200px; background-color: rgb(0,176,240)">流程标题</th>
-                    <th rowspan="2" style=" width: 100px; background-color: rgb(0,176,240)">产品型号</th>
-                    <th rowspan="2" style=" width: 180px; background-color: rgb(0,176,240) ">产品代码</th>
-                    <th rowspan="2" style=" width: 80px; background-color: rgb(0,176,240) ">主导工厂</th>
-                    <th rowspan="2" style=" width: 80px; background-color: rgb(0,176,240) ">生产工厂</th>
-                    <th rowspan="2" style=" width: 220px; background-color: rgb(0,176,240) ">申请更改内容</th>
-                    <th rowspan="2" style=" width: 100px; background-color: rgb(0,176,240)">流程状态</th>
-                    <th rowspan="2" style=" width: 120px; background-color: rgb(0,176,240)">已共耗时(分钟)</th>
-                    <th colspan="4" style=" width: 600px;">申请人审批节点</th>
-                    <th colspan="4" style="width: 600px; ">PM判断</th>
-                    <th colspan="4" style="width: 600px; ">ECR提出部门经理审批</th>
-                    <th colspan="4" style="width: 600px; ">RD文员</th>
-                    <th colspan="4" style="width: 600px; ">RD工程师</th>
-                    <th colspan="4" style="width: 600px; ">RD确认信息</th>
-                    <th colspan="4" style="width: 600px; ">安规审批</th>
-                    <th colspan="4" style="width: 600px ">RD负责人审批</th>
-                    <th colspan="4" style="width: 600px ">CM_CP确认信息</th>
-                    <th colspan="4" style=" width: 600px">MC确认</th>
-                    <th colspan="4" style=" width: 600px">PC确认</th>
-                    <th colspan="4" style=" width: 600px">RD处理措施</th>
-                    <th colspan="4" style=" width: 600px">PMC审批</th>
-                    <th colspan="4" style=" width: 600px">EM审批</th>
-                    <th colspan="4" style=" width: 600px">ED审批</th>
-                    <th colspan="4" style=" width: 600px">QD审批</th>
-                    <th colspan="4" style=" width: 600px">MD审批</th>
-                    <th colspan="4" style=" width: 600px">RD经理审批</th>
-                    <th colspan="4" style=" width: 600px">RD指定人员打印</th>
+                    <th rowspan="2" style=" width: 150px; background-color: rgb(0,176,240)">流程标题</th>
+                    <th rowspan="2" style=" width: 135px; background-color: rgb(0,176,240)">产品型号</th>
+                    <th rowspan="2" style=" width: 150px; background-color: rgb(0,176,240) ">产品代码</th>
+                    <th rowspan="2" style=" width: 75px; background-color: rgb(0,176,240) ">主导工厂</th>
+                    <th rowspan="2" style=" width: 75px; background-color: rgb(0,176,240) ">生产工厂</th>
+                    <th rowspan="2" style=" width: 150px; background-color: rgb(0,176,240) ">申请更改内容</th>
+                    <th rowspan="2" style=" width: 75px; background-color: rgb(0,176,240)">流程状态</th>
+                    <th rowspan="2" style=" width: 115px; background-color: rgb(0,176,240)">已共耗时(分钟)</th>
+                    <th colspan="5" style=" width:740px;">申请人审批节点</th>
+                    <th colspan="5" style="width: 740px; ">PM判断</th>
+                    <th colspan="5" style="width: 740px; ">ECR提出部门经理审批</th>
+                    <th colspan="5" style="width: 740px; ">RD文员</th>
+                    <th colspan="5" style="width: 740px; ">RD工程师</th>
+                    <th colspan="5" style="width: 740px; ">RD确认信息</th>
+                    <th colspan="5" style="width: 740px; ">安规审批</th>
+                    <th colspan="5" style="width: 740px ">RD负责人审批</th>
+                    <th colspan="5" style="width: 740px ">CM_CP确认信息</th>
+                    <th colspan="5" style=" width: 740px">MC确认</th>
+                    <th colspan="5" style=" width: 740px">PC确认</th>
+                    <th colspan="5" style=" width: 740px">RD处理措施</th>
+                    <th colspan="5" style=" width: 740px">PMC审批</th>
+                    <th colspan="5" style=" width: 740px">EM审批</th>
+                    <th colspan="5" style=" width: 740px">ED审批</th>
+                    <th colspan="5" style=" width: 740px">QD审批</th>
+                    <th colspan="5" style=" width: 740px">MD审批</th>
+                    <th colspan="5" style=" width: 740px">RD经理审批</th>
+                    <th colspan="5" style=" width: 740px">RD指定人员打印</th>
                 </tr>
                 <tr style="height:20px">
 
                     <th style="width:8%">提交时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时</th>
                     <th style="width:4%">实际耗时</th>
                 </tr>
             </thead>
