@@ -17,17 +17,20 @@
     <script src="~/Scripts/jquery.table2excel.js"></script>
     <script src="~/Scripts/WdatePicker/WdatePicker.js"></script>
     <script src="~/Scripts/冻结/freeze-table.js"></script>
+    <script src="~/Scripts/冻结/jquery-freeze-1.0.js"></script>
     <style>
         table {
             table-layout: fixed;
-            
         }
+
         label {
             font-weight: 400 !important;
         }
+
         .Redfont {
             color: red;
         }
+
         td {
             word-break: break-all
         }
@@ -55,7 +58,6 @@
 
         .panel-heading {
             font-size: 17px;
-            
         }
         /*.table-hover > tbody > tr:hover {
             background-color: lightskyblue !important;*/ /*优先级最高*/
@@ -63,6 +65,7 @@
         .hoverClass {
             background-color: rgba(0,176,240,0.1) !important;
         }
+
         .clickColor {
             background-color: rgba(255,248,220,0.4) !important;
         }
@@ -75,7 +78,7 @@
         </h1>
     </div>
     <!-- 搜索条件 -->
-    <div class="panel panel-default" style="height:auto;">
+    <div class=" panel-default" style="height:auto;">
         <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false">
             <div class="container-fluid">
                 <div class="row panel-heading">
@@ -143,16 +146,16 @@
                     </div>
                     <input type="button" name="btn_select" value="查&nbsp;&nbsp;询" id="btn_select" class="btn btn-primary" onclick="IndexList()" />
                     <input type="button" name="btn_DaoChu" value="导&nbsp;&nbsp;出" id="btn_DaoChu" class="btn btn-primary" onclick="newApiArray()" disabled="disabled" style="margin-right:10px" />
-                    <div style="font-size:13px;font-weight:200;color:darkgray;float:right;margin-right:4%;margin-top:0.8%;">共计: <label id="count"></label>条</div>
+                    <div style="font-size:13px;font-weight:200;color:darkgray;float:right;margin-right:4%;margin-top:10px">共计: <label id="count"></label>条</div>
                 </div>
             </div>
         </form>
     </div>
     <!-- 表格 -->
     <div class="freeze-table">
-        <table id="GridView" class="table table-bordered table-hover" style="margin:0px auto;margin-bottom:1%;text-align:center;width:10000px">
+        <table id="GridView" class="table table-bordered table-hover" style="margin:0px auto;text-align:center;width:10000px">
             <thead style="">
-                <tr style="">
+                <tr style="height:20px;">
                     <th rowspan="2" style=" width: 30px; background-color: rgb(0,176,240)" class="noExl"></th>
                     <th rowspan="2" style=" width: 50px; background-color: rgb(0,176,240)">序号</th>
                     <th rowspan="2" style=" width:160px; background-color:rgb(0,176,240)">ECR编号(打印请双击)</th>
@@ -163,7 +166,7 @@
                     <th rowspan="2" style=" width: 80px; background-color: rgb(0,176,240) ">生产工厂</th>
                     <th rowspan="2" style=" width: 220px; background-color: rgb(0,176,240) ">申请更改内容</th>
                     <th rowspan="2" style=" width: 100px; background-color: rgb(0,176,240)">流程状态</th>
-                    <th rowspan="2" style=" width: 120px; background-color: rgb(0,176,240)">共耗时间(分钟)</th>
+                    <th rowspan="2" style=" width: 120px; background-color: rgb(0,176,240)">已共耗时(分钟)</th>
                     <th colspan="4" style=" width: 600px;">申请人审批节点</th>
                     <th colspan="4" style="width: 600px; ">PM判断</th>
                     <th colspan="4" style="width: 600px; ">ECR提出部门经理审批</th>
@@ -184,102 +187,102 @@
                     <th colspan="4" style=" width: 600px">RD经理审批</th>
                     <th colspan="4" style=" width: 600px">RD指定人员打印</th>
                 </tr>
-                <tr>
+                <tr style="height:20px">
 
                     <th style="width:8%">提交时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
 
                     <th style="width:8%">接收时间</th>
                     <th style="width:8%">审批时间</th>
                     <th style="width:3%">审批人</th>
-                    <th style="width:4%">审批耗时</th>
+                    <th style="width:4%">实际耗时</th>
                 </tr>
             </thead>
             <tbody id="data">

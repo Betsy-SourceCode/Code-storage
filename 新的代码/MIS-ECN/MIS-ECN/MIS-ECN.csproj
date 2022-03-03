@@ -134,6 +134,7 @@
     <Content Include="Scripts\WdatePicker\skin\whyGreen\img.gif" />
     <Content Include="Scripts\WdatePicker\WdatePicker.js" />
     <Content Include="Scripts\冻结\freeze-table.js" />
+    <Content Include="Scripts\冻结\jquery-freeze-1.0.js" />
     <Content Include="Scripts\导出\demo.page.js" />
     <Content Include="Scripts\导出\excel-gen.js" />
     <Content Include="Scripts\导出\FileSaver.js" />

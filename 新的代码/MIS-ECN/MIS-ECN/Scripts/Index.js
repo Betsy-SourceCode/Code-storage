@@ -118,7 +118,7 @@ function IndexList() {
                             obj.ApprovalStepNodes[flownum].push(approvalStepNode); //push()方法可向数组的末尾添加一个或多个元素，并返回新的长度
                         }
                         else {
-                            console.log(value["流程编号"]);
+                            //console.log(value["流程编号"]);
                         }
                     }
                     else {
@@ -197,7 +197,7 @@ function IndexList() {
                                     obj.ApprovalStepNodes[flownum].push(approvalStepNode);
                                 }
                                 else {
-                                    console.log(value["流程编号"]);
+                                    //console.log(value["流程编号"]);
                                 }
                                 obj.ApprovalStepNodes.push(arr);
                             }
@@ -228,7 +228,7 @@ function IndexList() {
                                     obj.ApprovalStepNodes.push(arr);
                                 }
                                 else {
-                                    console.log(value["流程编号"]);
+                                    //console.log(value["流程编号"]);
                                 }
                             }
                             flownum = obj.ApprovalStepNodes.length - 1;
@@ -297,7 +297,7 @@ function IndexList() {
                                 TimeCount = TimeCount += value.ApprovalStepNodes[i][j].timeConsuming;
                             }
                         }
-                        console.log(TimeCount);
+                        //console.log(TimeCount);
                         addtr(value, xh, TimeCount);
                         xh++;
                     };
@@ -316,7 +316,6 @@ function IndexList() {
             //加载完成后  关闭遮罩层
             $("#myModal").modal('hide');
             $('.freeze-table').freezeTable({ 'scrollBar': true, 'columnNum': 11, 'freezeColumn': true });//冻结 
-            
             $("#count").html(xh - 1);//显示总条数
             xh = 1;
         }
@@ -432,6 +431,7 @@ function addtr(value, xh,TimeCount) {
             }
         }
         tr += '</tr>'
+
     }
     $("#data").append(tr);
     var tb = document.getElementById("GridView");
@@ -452,7 +452,7 @@ function addtr(value, xh,TimeCount) {
 function myfun(obj) {
     $(obj).addClass("hoverClass");
     var rowspan = $(obj).find("td:first").attr('rowspan');
-    console.log(rowspan);
+   // console.log(rowspan);
     if (rowspan != undefined) {
         var index = $('tr').index($(obj));
         tot = parseInt(index) + parseInt(rowspan);
@@ -480,7 +480,7 @@ function ChangeBackColor(obj) {
     $(obj).siblings().removeClass("clickColor");
     $(obj).addClass("clickColor");
     var rowspan = $(obj).find("td:first").attr('rowspan');
-    console.log(rowspan);
+    //console.log(rowspan);
     if (rowspan != undefined) {
         var index = $('tr').index($(obj));
         tot = parseInt(index) + parseInt(rowspan);
@@ -550,6 +550,7 @@ function mergeCell(table1, startRow, endRow, col) {
 //二级表格显示文件下载路径
 function Download(obj) {
     var MainId = $(obj).siblings().eq(1).html();
+    var Id = $(obj).siblings().eq(0).html();
     var spanObj = $(obj).find("span:first");
    // $("#myModal").modal({ backdrop: 'static', keyboard: false });
     var tr = "";
@@ -569,13 +570,13 @@ function Download(obj) {
                 if (data.length > 0) {
                     $.each(data, function (key, value) {
                         tr += '<tr class="' + MainId + '">'
-                        tr += "<td colspan = '28' style='text-align:left;z-index:200'><a href='#' onclick='GetHref(\"" + value["attachid"] + "\")' >" + value["filename"] + "</a></td >";
+                        tr += "<td colspan = '28' style='text-align:left;z-index:-1'><a href='#' onclick='GetHref(\"" + value["attachid"] + "\")' >" + value["filename"] + "</a></td >";
                         tr += '</tr >'
                     });
                 }
                 else {
                     tr += '<tr class="' + MainId + '">'
-                    tr += "<td colspan = '28' style='text-align:left;z-index:200'>暂无文档</td >";
+                    tr += "<td colspan = '28' style='text-align:left;z-index:-1'>暂无文档</td >";
                     tr += '</tr >'
                 }
                 //$(obj).parent().parent().parent().children().next().children().eq(3).after(tr);
@@ -588,9 +589,12 @@ function Download(obj) {
                     }
                 })
                 if (index == 0) {
-                    $(obj).parent().after(tr);
+                    $("tbody").find(obj).parent().after(tr);
+                    $(".clone-column-table-wrap tbody").find("#data").children().eq(Id - 1).after(tr);
                 } else {
-                    $(obj).parent().nextAll().eq(index - 1).after(tr);
+                    $("tbody").find(obj).parent().eq(index - 1).after(tr);
+                    
+                    //$("#" + MainId).nextAll().eq(index - 1).after(tr);
                 }
                 
                
@@ -608,7 +612,11 @@ function Download(obj) {
         $("tbody").find("." + MainId).remove();
         //console.log($(obj).parent().parent().parent().children().next().children().eq(4).html());
     }
-
+    //alert($(".clone-column-table-wrap").find("." + MainId).html());
+    //alert($(obj).parent().html());
+    //alert(Id);
+   // $(".clone-column-table-wrap").find("#data").children().eq(0).after(tr);
+    //alert($(".clone-column-table-wrap").find("#data").children().eq(0).html());
 }
 
 //下载文件

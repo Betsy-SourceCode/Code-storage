@@ -125,7 +125,7 @@ select  num,MainID,Á÷³Ì±àºÅ,Á÷³Ì±êÌâ,²úÆ·ĞÍºÅ,²úÆ·´úÂë,Ö÷µ¼¹¤³§,Éú²ú¹¤³§,ÉêÇë¸ü¸
                   when ÉóÅú½Úµã = 'ÉêÇëÈË' then 'ÉêÇëÈË'
                   else 'Î´Öª'
                  end ÉóÅú½Úµã ,ÉóÅú²½Öè,ÉóÅúÈË,ÉóÅúºÄÓÃÊ±¼ä from SelectCENDataList cen where cen.ÉóÅú½Úµã is not null and cen.ÉóÅú½Úµã<>'Î´Öª' 
-				 and Á÷³Ì±àºÅ='GIPECR20190222003'
+				 and cen.Á÷³Ì±àºÅ='GIPECR20180504001'
                   order by cen.Á÷³Ì±àºÅ,cen.ÉóÅú²½Öè
 
 
