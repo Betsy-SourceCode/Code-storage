@@ -32,5 +32,6 @@ namespace MIS_ECN.Models
         public Nullable<int> 审批耗用时间 { get; set; }
         public string 流程版本号 { get; set; }
         public string 申请日期 { get; set; }
+        public object 工作耗时 { get; set; }
     }
 }

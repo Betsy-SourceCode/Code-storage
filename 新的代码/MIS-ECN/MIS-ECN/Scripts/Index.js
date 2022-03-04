@@ -113,19 +113,26 @@ function IndexList() {
                         approvalStepNode.submitTime = value["接收时间"];
                         approvalStepNode.approveTime = value["审批时间"];
                         approvalStepNode.approvePerson = value["审批人"];
-                        approvalStepNode.timeConsumingWork = 0; //工作耗时
+                        approvalStepNode.timeConsumingWork = value["工作耗时"]; //工作耗时
                         var time = 0;
                         //计算工作耗时需要跳过周末，审批时间-接收时间
                         //if (approvalStepNode.approveTime.getDay() == 0 || approvalStepNode.approveTime.getDay() == 6) {
                         //    time += 480;
                         //}
-                        //每天工作时间是8小时，上午4小时（08:00--12:00）,下午4小时(13:30--17:30)，非工作时间跳过不计算
-                        //一天五阶段
-                        //0:00-8:00（跳过）
-                        //8:00-12:00(上班)
-                        //12:00-13:30(跳过)
-                        //13:30-17:30(上班)
-                        //17:30-00:00（跳过）
+                        var submitTime = new Date(approvalStepNode.submitTime);
+                        var approveTime = new Date(approvalStepNode.approveTime);
+                        var diffDay = (approveTime - submitTime) / (1000 * 60 * 60 * 24) + 1;
+                        for (var f = 0; f < diffDay; f++) {
+                            if (submitTime.getDay() == 0 || submitTime.getDay() == 6 || approveTime.getDay() == 0 || approveTime
+                                .getDay() == 6) {
+                                approvalStepNode.timeConsumingWork = parseInt(approvalStepNode.timeConsumingWork - 480); //减掉周末的8个小时
+                            }
+                            submitTime.setDate(submitTime.getDate() + 1);
+                        }
+                        approvalStepNode.timeConsumingWork = (((Math.floor(approvalStepNode.timeConsumingWork / 60)).toString().length) < 2 ? "0" + (Math.floor(approvalStepNode.timeConsumingWork / 60)).toString() : (Math.floor((approvalStepNode.timeConsumingWork / 60) * 100) / 100).toString());
+
+
+
                         approvalStepNode.timeConsuming = value["审批耗用时间"];
                         approvalStepNode.stepNodeName = value["审批节点"];
                         if (obj.ApprovalStepNodes[flownum] != undefined) {
@@ -179,7 +186,7 @@ function IndexList() {
                                 approvalStepNode.submitTime = value["接收时间"];
                                 approvalStepNode.approveTime = value["审批时间"];
                                 approvalStepNode.approvePerson = value["审批人"];
-                                approvalStepNode.timeConsumingWork = 0; //工作耗时
+                                approvalStepNode.timeConsumingWork = value["工作耗时"]; //工作耗时
                                 approvalStepNode.timeConsuming = value["审批耗用时间"];
                                 approvalStepNode.stepNodeName = value["审批节点"];
                                 obj.ApprovalStepNodes[0].push(approvalStepNode);
@@ -222,7 +229,7 @@ function IndexList() {
                                 approvalStepNode.submitTime = value["接收时间"];
                                 approvalStepNode.approveTime = value["审批时间"];
                                 approvalStepNode.approvePerson = value["审批人"];
-                                approvalStepNode.timeConsumingWork = 0; //工作耗时
+                                approvalStepNode.timeConsumingWork = value["工作耗时"]; //工作耗时
                                 approvalStepNode.timeConsuming = value["审批耗用时间"];
                                 approvalStepNode.stepNodeName = value["审批节点"];
                                 var statusStr = "办理中"; //默认为办理中
@@ -292,7 +299,7 @@ function IndexList() {
                             approvalStepNode.submitTime = value["接收时间"];
                             approvalStepNode.approveTime = value["审批时间"];
                             approvalStepNode.approvePerson = value["审批人"];
-                            approvalStepNode.timeConsumingWork = 0; //工作耗时
+                            approvalStepNode.timeConsumingWork = value["工作耗时"]; //工作耗时
                             approvalStepNode.timeConsuming = value["审批耗用时间"];
                             approvalStepNode.stepNodeName = value["审批节点"];
                             obj.ApprovalStepNodes[0].push(approvalStepNode);
@@ -473,7 +480,7 @@ function addtr(value, xh, TimeCount) {
                     var hasValue = false;
                     for (var k = 0; k <= value["ApprovalStepNodes"][i].length; k++) {
                         if (value["ApprovalStepNodes"][i][k] == undefined) {   //步骤很少，没走完整流程,不做判断会报错
-                            tr += '<td></td><td></td><td></td><td></td>';
+                            tr += '<td></td><td></td><td></td><td></td><td></td><td></td>';
                             break; //结束当前循环出去外循环
                         }
                         else {
@@ -620,11 +627,15 @@ function mergeCell(table1, startRow, endRow, col) {
 //二级表格显示文件下载路径
 function Download(obj) {
     var MainId = $(obj).siblings().eq(1).html();
+    var Id = $(obj).siblings().eq(0).html();
     var spanObj = $(obj).find("span:first");
+    // $("#myModal").modal({ backdrop: 'static', keyboard: false });
     var tr = "";
     if (spanObj.hasClass("glyphicon-plus")) {    //如果是+改成-/如果是-改成+
         spanObj.removeClass("glyphicon-plus");
         spanObj.addClass("glyphicon-minus");
+
+        $("#myModal").modal({ backdrop: 'static', keyboard: false });
         //通过Main获取路径
         $.ajax({
             url: "/ECN/ECN/ByMainGetDjbhName",
@@ -632,16 +643,17 @@ function Download(obj) {
             type: "POST",
             dataType: "json",
             success: function (data) {
+
                 if (data.length > 0) {
                     $.each(data, function (key, value) {
                         tr += '<tr class="' + MainId + '">'
-                        tr += "<td colspan = '28' style='text-align:left;z-index:200'><a href='#' onclick='GetHref(\"" + value["attachid"] + "\")' >" + value["filename"] + "</a></td >";
+                        tr += "<td colspan = '28' style='text-align:left;z-index:-1'><a href='#' onclick='GetHref(\"" + value["attachid"] + "\")' >" + value["filename"] + "</a></td >";
                         tr += '</tr >'
                     });
                 }
                 else {
                     tr += '<tr class="' + MainId + '">'
-                    tr += "<td colspan = '28' style='text-align:left;z-index:200'>暂无文档</td >";
+                    tr += "<td colspan = '28' style='text-align:left;z-index:-1'>暂无文档</td >";
                     tr += '</tr >'
                 }
                 //$(obj).parent().parent().parent().children().next().children().eq(3).after(tr);
@@ -658,7 +670,12 @@ function Download(obj) {
                 } else {
                     $(obj).parent().nextAll().eq(index - 1).after(tr);
                 }
+
+
                 // console.log($(obj).parent().html());
+            }, complete: function () {
+                //加载完成后  关闭遮罩层
+                $("#myModal").modal('hide');
             }
         });
     }
@@ -669,7 +686,11 @@ function Download(obj) {
         $("tbody").find("." + MainId).remove();
         //console.log($(obj).parent().parent().parent().children().next().children().eq(4).html());
     }
-
+    //alert($(".clone-column-table-wrap").find("." + MainId).html());
+    //alert($(obj).parent().html());
+    //alert(Id);
+    // $(".clone-column-table-wrap").find("#data").children().eq(0).after(tr);
+    //alert($(".clone-column-table-wrap").find("#data").children().eq(0).html());
 }
 
 //下载文件

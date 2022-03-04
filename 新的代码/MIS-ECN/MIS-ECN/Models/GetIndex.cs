@@ -188,5 +188,23 @@ namespace MIS_ECN.Models
                 return null;
             }
         }
+
+        public int GetWeekendSql(string submitTime, string approveTime)
+        {
+            string sql = "SELECT  dbo.F_btTimes('{0}','{1}') 工作耗时";
+            try
+            {
+                
+                sql = string.Format(sql, submitTime, approveTime);
+                int Data = db.Database.SqlQuery<int>(sql).FirstOrDefault();
+                return Data;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message + "错误sql为：" + sql);
+                throw;
+            }
+
+        }
     }
 }

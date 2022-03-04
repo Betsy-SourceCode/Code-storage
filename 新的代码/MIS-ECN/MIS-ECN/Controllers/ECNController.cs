@@ -36,6 +36,11 @@ namespace MIS_ECN.Controllers
             try
             {
                 List<SelectCENDataList> data = new GetIndex().GetIndexListSql(cen, StartDate, EndDate);
+                //将处理过的工作耗时放入集合
+                for (int i = 0; i < data.Count; i++)
+                {
+                    data[i].工作耗时 = IndexWeekend(data[i].接收时间.ToString(), data[i].审批时间.ToString());
+                }
                 return JsonConvert.SerializeObject(data);
             }
             catch (Exception ex)
@@ -101,6 +106,29 @@ namespace MIS_ECN.Controllers
                 LogHelper.Write(ex.Message.ToString());
                 throw;
             }
+        }
+
+        /// <summary>
+        /// 查询周末
+        /// </summary>
+        /// <param name="NewEmailDomain"></param>
+        /// <param name="EndTime"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public int IndexWeekend(string submitTime, string approveTime)
+        {
+            try
+            {
+                int data = new GetIndex().GetWeekendSql(submitTime, approveTime);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message.ToString());
+                throw;
+            }
+
         }
         #endregion
     }
