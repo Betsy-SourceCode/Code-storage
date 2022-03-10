@@ -224,6 +224,7 @@
     <Content Include="Scripts\图标\Default.png" />
     <Content Include="Scripts\图标\Desc.png" />
     <Content Include="Scripts\图标\Esc.png" />
+    <Content Include="Scripts\图标\修改.gif" />
     <Content Include="Scripts\图标\更新价格.png" />
     <Content Include="Scripts\图标\记录作废.png" />
     <Content Include="Scripts\导出\demo.page.js" />
@@ -233,6 +234,7 @@
     <Content Include="Scripts\导出\jszip.min.js" />
     <Content Include="Scripts\导出\tableExport.min.js" />
     <Content Include="Scripts\页面\AddProductPrice.js" />
+    <Content Include="Scripts\页面\DetailsProductPrice.js" />
     <Content Include="Scripts\页面\Index.js" />
     <Content Include="Scripts\页面\SetupCustomer.js" />
     <Content Include="Web.config" />

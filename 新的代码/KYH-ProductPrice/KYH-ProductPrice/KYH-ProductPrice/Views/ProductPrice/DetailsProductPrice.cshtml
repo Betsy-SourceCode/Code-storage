@@ -11,6 +11,7 @@
     <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/页面/DetailsProductPrice.js"></script>
     <style>
         .form-group {
             margin-right: 20px;
@@ -34,91 +35,91 @@
         }
     </style>
     <script>
-        QJRemarks = null;
-        //作废记录
-        function ZuoFei(CreateTime, username, Ledger, FNumber, NewUnit) {
-            $('#myModal').modal({ backdrop: 'static', keyboard: false }); /*禁止点击空白处关闭模态框*/
-            $('.modal-body').find("p").remove();
-            var Message = "";
-            Message += '<p><b style = "color:red" value="这">这';
-            Message += '</b >';
-            Message += '' + " " + CreateTime + '' + " " + username + " 在 " + Ledger + " 账套建立的GIP产品号" + FNumber + "之" + NewUnit + "价格信息记录吗？";
-            Message += '</p>'
-            $(".modal-body").append(Message);
-        }
-        function ChangeCancel() {
-            var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
-            $.ajax({
-                url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
-                data: { "Cancel": false, "CPSerial": CPSerial, "num": 1 ,"type":0},
-                type: "POST",
-                dataType: "json",
-                success: function (data) {
-                    if (data.Success > 0) {
-                        alert("作废成功！");
-                        window.location.href ="/ProductPrice/ProductPrice/Index?userid=@ViewBag.userid";
-                    }
-                    else {
-                        alert("作废失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
-                    }
-                }
-            })
-        }
-        //修改备注
-        function Remarks() {
-            if ('@ViewBag.ISACC' == 1) {
-                $("#RemarksFD_label").css("display", "none");
-                $("#Remarks_FD").css("display", "block");
-                QJRemarks = 1;            //财务部
+        QJRemarks = null; //决定是修改什么备注，1-财务部，2-业务部
+//作废记录
+function ZuoFei(CreateTime, username, Ledger, FNumber, NewUnit) {
+    $('#myModal').modal({ backdrop: 'static', keyboard: false }); /*禁止点击空白处关闭模态框*/
+    $('.modal-body').find("p").remove();
+    var Message = "";
+    Message += '<p><b style = "color:red" value="这">这';
+    Message += '</b >';
+    Message += '' + " " + CreateTime + '' + " " + username + " 在 " + Ledger + " 账套建立的GIP产品号" + FNumber + "之" + NewUnit + "价格信息记录吗？";
+    Message += '</p>'
+    $(".modal-body").append(Message);
+}
+function ChangeCancel() {
+    var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
+    $.ajax({
+        url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
+        data: { "Cancel": false, "CPSerial": CPSerial, "num": 1 ,"type":0},
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            if (data.Success > 0) {
+                alert("作废成功！");
+                window.location.href ="/ProductPrice/ProductPrice/Index?userid=@ViewBag.userid";
             }
             else {
-                $("#RemarksMD_label").css("display", "none");
-                $("#Remarks_MD").css("display", "block");
-                $("#RemarksmOQ_label").css("display", "none");
-                $("#Remarks_mOQ").css("display", "block");
-                QJRemarks = 2;            //业务部
+                alert("作废失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
             }
-            $("#ChangeRemarks_button").css("display", "none");
-            $("#Save_button").css("display", "inline");
         }
-        function ChangeRemarks() {
-            var Remarks_FD = null;
-            var Remarks_MD = null;
-            var Remarks_mOQ = null; //新增的mOQ备注
-            var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
-            if (QJRemarks == 1) { //财务部
-                Remarks_FD = $("#Remarks_FD").val();
+    })
+}
+//修改备注
+function Remarks() {
+    if ('@ViewBag.ISACC' == 1) {
+        $("#RemarksFD_label").css("display", "none");
+        $("#Remarks_FD").css("display", "block");
+        QJRemarks = 1;            //财务部
+    }
+    else {
+        $("#RemarksMD_label").css("display", "none");
+        $("#Remarks_MD").css("display", "block");
+        $("#RemarksmOQ_label").css("display", "none");
+        $("#Remarks_mOQ").css("display", "block");
+        QJRemarks = 2;            //业务部
+    }
+    $("#ChangeRemarks_button").css("display", "none");
+    $("#Save_button").css("display", "inline");
+}
+function ChangeRemarks() {
+    var Remarks_FD = null;
+    var Remarks_MD = null;
+    var Remarks_mOQ = null; //新增的mOQ备注
+    var CPSerial = '@ViewBag.ProductPriceList.CPSerial';
+    if (QJRemarks == 1) { //财务部
+        Remarks_FD = $("#Remarks_FD").val();
+    }
+    if (QJRemarks == 2) { //业务部
+        Remarks_MD = $("#Remarks_MD").val();
+        Remarks_mOQ = $("#Remarks_mOQ").val(); //新增的mOQ备注
+    }
+    $.ajax({
+        url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
+        data: { "Remarks_MD": Remarks_MD, "Remarks_FD": Remarks_FD, "Remarks_mOQ": Remarks_mOQ, "CPSerial": CPSerial, "num": 2, "type": QJRemarks},
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            if (data.Success > 0) {
+                alert("保存成功！");
+                location.reload(); //刷新页面
             }
-            if (QJRemarks == 2) { //业务部
-                Remarks_MD = $("#Remarks_MD").val();
-                Remarks_mOQ = $("#Remarks_mOQ").val(); //新增的mOQ备注
+            else {
+                alert("保存失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
             }
-            $.ajax({
-                url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
-                data: { "Remarks_MD": Remarks_MD, "Remarks_FD": Remarks_FD, "Remarks_mOQ": Remarks_mOQ, "CPSerial": CPSerial, "num": 2, "type": QJRemarks},
-                type: "POST",
-                dataType: "json",
-                success: function (data) {
-                    if (data.Success > 0) {
-                        alert("保存成功！");
-                        location.reload(); //刷新页面
-                    }
-                    else {
-                        alert("保存失败，发生错误，请联系电脑部！内部成员请查看日志文件！");
-                    }
-                }
-            })
         }
+    })
+}
     </script>
 </head>
 <body style="max-width:96%;min-width:1250px; margin:0px auto;">
     <div id="Mydiv" style="border: 2px solid #000000;background-color: #ddd;height:auto;">
         <div id="top" style="background-color:#ccc;margin:2%">
             <h1 style="text-align: center;">
-                <span id="Title">客 户 产 品 价 格 信 息 详 细</span>
+                <span id="ChineseTitle">客 户 产 品 价 格 信 息 详 细</span>
             </h1>
             <h1 style="text-align: center;margin-top:-10px">
-                <span id="Title">Customer's Product Prices Record Details</span>
+                <span id="EnglishTitle">Customer's Product Prices Record Details</span>
             </h1>
         </div>
         <form style="padding:2% 0%;width:60%;margin:0px 26%">
@@ -154,8 +155,16 @@
             </div>
             <div class="container-fluid panel-heading">
                 <div class="col-sm-12">
+
+                    <a href="#" onclick="OpenProductDescription()"><img src="~/Scripts/图标/修改.gif" /></a>
                     <label style="font-weight:bold;text-align:right">产品描述：</label>
                     <label>@ViewBag.ProductPriceList.CustProdName</label>
+                    <!-- 修改产品描述功能富文本框 -->
+                    <div id="OtherDiv" style="display:none">
+                        <br />
+                        <label>更改为：</label>
+                        <textarea type="text" id="OtherText" class="form-control input-content" style="width:86%;display:inline;height:100px;background-color:white;"></textarea>
+                    </div>
                 </div>
             </div>
             <div class="container-fluid panel-heading">
@@ -200,7 +209,7 @@
                 </div>
             </div>
         </form>
-        <div style="width:50%;margin:0px 37%;padding-bottom:2%">
+        <div id="MainBtn" style="text-align: center;padding-bottom:2%;">
             @if (@ViewBag.Add == 1)
             {
                 <button id="Savebtn" type="button" class="btn-lg btn-primary form-group" onclick="window.location.href = '/ProductPrice/ProductPrice/UpdateProductPrice?CPSerial='+@ViewBag.ProductPriceList.CPSerial">
@@ -224,6 +233,15 @@
             }
             <button id="Save_button" type="button" class="btn-lg btn-primary form-group" style="display:none" onclick="ChangeRemarks()">
                 保&nbsp;&nbsp;存
+            </button>
+        </div>
+        <!-- 修改产品描述功能按钮 -->
+        <div id="OtherBtn" style="padding-bottom: 2%; text-align: center; display: none">
+            <button type="button" class="btn-lg btn-primary form-group" onclick="AmendProductDescription('@ViewBag.ProductPriceList.CPSerial')">
+                确&nbsp;&nbsp;认
+            </button>
+            <button type="button" class="btn-lg btn-primary form-group" onclick="location.reload()">
+                取&nbsp;&nbsp;消
             </button>
         </div>
     </div>

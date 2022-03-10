@@ -475,12 +475,12 @@ function addtr(value, xh, TimeCount) {
                         tr += '<td></td>'
                 }
             }
-            else {
+            else { 
                 for (var step = 0; step < 19; step++) {
                     var hasValue = false;
                     for (var k = 0; k <= value["ApprovalStepNodes"][i].length; k++) {
                         if (value["ApprovalStepNodes"][i][k] == undefined) {   //步骤很少，没走完整流程,不做判断会报错
-                            tr += '<td></td><td></td><td></td><td></td><td></td><td></td>';
+                            tr += '<td></td> <td></td> <td></td> <td></td> <td></td>';
                             break; //结束当前循环出去外循环
                         }
                         else {

@@ -82,7 +82,7 @@ namespace KYH_ProductPrice.Controllers
         /// 单个字段修改
         /// </summary>
         /// <param name="CPP">对象实体</param>
-        /// <param name="num">功能编号 1-作废，2-备注</param>
+        /// <param name="num">功能编号 1-作废，2-备注，3-产品描述</param>
         /// <param name="type">类型编号 0-跳过，1-财务部 2-业务部</param>
         /// <returns></returns>
         [ValidateInput(false)]
@@ -121,6 +121,10 @@ namespace KYH_ProductPrice.Controllers
                     //{
                     //    oldcpp.Remarks_mOQ = CPP.Remarks_mOQ; //新增的mOQ备注
                     //}
+                }
+                if (num==3)//产品描述
+                {
+                    oldcpp.CustProdName = CPP.CustProdName;
                 }
                 oldcpp.UpdateBy = username;
                 oldcpp.UpdateDept = DeptIDs;
