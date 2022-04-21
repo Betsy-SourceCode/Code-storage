@@ -32,6 +32,8 @@ namespace Login
             //获得当前年月日
             DateTime dt = DateTime.Now;
             DateTime date = DateTime.Now;  //默认为当天
+            //DateTime dt = DateTime.Parse("2022-4-8");
+            //DateTime date = DateTime.Parse("2022-4-8"); //测试专用
             //string date = dt.ToString("yyyy-MM-dd");
             /*DateTime date = dt.AddDays(-1.0); *///默认为当前时间的前两天
 
@@ -42,11 +44,11 @@ namespace Login
             {
                 if (typeid == 1)
                 {
-                    items = SqlStoredProcedure.GetGDnumberList("Station", date.ToString()); //查当天的所有工单号
+                    items = SqlStoredProcedure.GetGDnumberList("Station", date.ToString("yyyy-MM-dd")); //查当天的所有工单号
                 }
                 if (typeid == 2)
                 {
-                    items = SqlStoredProcedure.GetGDnumberList("Repair", date.ToString()); //查当天的所有工单号
+                    items = SqlStoredProcedure.GetGDnumberList("Repair", date.ToString("yyyy-MM-dd")); //查当天的所有工单号
                 }
                 //判断为空return掉，不然循环会报错
                 if (items == null || items.Count == 0)
@@ -58,7 +60,7 @@ namespace Login
                 {
                     //通过日期和工单号查出列表集合
                     ERPMO = item.ERPMO.ToString();
-                    List<DataSet> list = SqlStoredProcedure.ByDateAndERPMOGetListSql(this.typeid, date.ToString(), ERPMO);
+                    List<DataSet> list = SqlStoredProcedure.ByDateAndERPMOGetListSql(this.typeid, date.ToString("yyyy-MM-dd"), ERPMO);
                     count = list.Count;
                     var DataSetList = ""; //接口数据
                     var index = 0;//用于记录第几个200条
@@ -90,7 +92,7 @@ namespace Login
                         if (typeid == 2)
                         {
                             DataSetList += "{\"factory_code\":\"" + dataSet.厂商代码.Trim() + "\",\"item_code\":\"" + dataSet.编码.Trim() + "\"," +
-                                            "\"item_type\":\"" + dataSet.型号.Trim() + "\",\"sn\":\"" + dataSet.SN条码.Trim() + "\",\"fault_date\":\"" + dataSet.故障日期.Trim() + "\",\"fault_appearance\":\"" + dataSet.不良现象.Trim() + "\",\"appearance_link\":\"" + dataSet.出现环节.Trim() + "\",\"fault_type\":\"" + dataSet.不良分类.Trim() + "\",\"fault_cause\":\"" + dataSet.不良原因分析.Trim() + "\",\"cause_type\":\"" + dataSet.原因分类.Trim() + "\",\"cause_subcategory\":\"" + dataSet.原因小类.Trim() + "\",\"root_cause\":\"" + dataSet.根因.Trim() + "\",\"defect_location\":\"" + dataSet.不良器件位置.Trim() + "\",\"repair_date\":\"" + dataSet.修理日期.Trim() + "\"},";
+                                            "\"item_type\":\"" + dataSet.型号.Trim() + "\",\"sn\":\"" + dataSet.SN条码.Trim() + "\",\"fault_date\":\"" + dataSet.故障日期.Trim() + "\",\"fault_appearance\":\"" + dataSet.不良现象.Trim() + "\",\"appearance_link\":\"" + dataSet.出现环节.Trim() + "\",\"fault_type\":\"" + dataSet.不良分类.Trim() + "\",\"fault_cause\":\"" + dataSet.不良原因分析.Replace('\n', ' ').Replace('\r', ' ').Trim() + "\",\"cause_type\":\"" + dataSet.原因分类.Trim() + "\",\"cause_subcategory\":\"" + dataSet.原因小类.Trim() + "\",\"root_cause\":\"" + dataSet.根因.Trim() + "\",\"defect_location\":\"" + dataSet.不良器件位置.Trim() + "\",\"repair_date\":\"" + dataSet.修理日期.Trim() + "\"},";
                         }
                         if (list.Count < 200)
                         {

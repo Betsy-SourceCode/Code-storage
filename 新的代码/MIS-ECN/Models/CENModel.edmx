@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="C6Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“C6.dbo.FC_ATTACH”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="FC_ATTACH">
+          <Key>
+            <PropertyRef Name="djbh" />
+          </Key>
+          <Property Name="extend" Type="char" MaxLength="255" />
+          <Property Name="djbh" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="dj_sn" Type="int" />
+          <Property Name="attach" Type="image" />
+          <Property Name="filename" Type="char" MaxLength="255" />
+          <Property Name="attachid" Type="char" MaxLength="11" />
+          <Property Name="bz" Type="varchar" MaxLength="255" />
+          <Property Name="djsn" Type="varchar" MaxLength="400" />
+          <Property Name="filepos" Type="varchar" MaxLength="250" />
+          <Property Name="delete_flag" Type="nvarchar" MaxLength="50" />
+          <Property Name="controlID" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“C6.dbo.SelectCENDataList”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="SelectCENDataList">
+          <Key>
+            <PropertyRef Name="流程状态" />
+            <PropertyRef Name="审批时间" />
+            <PropertyRef Name="审批节点" />
+            <PropertyRef Name="审批步骤" />
+          </Key>
+          <Property Name="Num" Type="bigint" />
+          <Property Name="流程版本号" Type="varchar" MaxLength="200" />
+          <Property Name="MainID" Type="varchar" MaxLength="11" />
+          <Property Name="流程编号" Type="varchar" MaxLength="50" />
+          <Property Name="申请日期" Type="varchar" MaxLength="50" />
+          <Property Name="流程标题" Type="varchar" MaxLength="500" />
+          <Property Name="产品型号" Type="varchar" MaxLength="1000" />
+          <Property Name="产品代码" Type="varchar" MaxLength="1000" />
+          <Property Name="主导工厂" Type="varchar" MaxLength="50" />
+          <Property Name="生产工厂" Type="varchar" MaxLength="50" />
+          <Property Name="申请更改内容" Type="varchar" MaxLength="1000" />
+          <Property Name="流程状态" Type="int" Nullable="false" />
+          <Property Name="接收时间" Type="datetime" />
+          <Property Name="审批时间" Type="datetime" Nullable="false" />
+          <Property Name="审批节点" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="审批步骤" Type="int" Nullable="false" />
+          <Property Name="审批人" Type="varchar" MaxLength="50" />
+          <Property Name="审批耗用时间" Type="int" />
+        </EntityType>
+        <EntityContainer Name="C6ModelStoreContainer">
+          <EntitySet Name="FC_ATTACH" EntityType="Self.FC_ATTACH" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FC_ATTACH].[extend] AS [extend], 
+    [FC_ATTACH].[djbh] AS [djbh], 
+    [FC_ATTACH].[dj_sn] AS [dj_sn], 
+    [FC_ATTACH].[attach] AS [attach], 
+    [FC_ATTACH].[filename] AS [filename], 
+    [FC_ATTACH].[attachid] AS [attachid], 
+    [FC_ATTACH].[bz] AS [bz], 
+    [FC_ATTACH].[djsn] AS [djsn], 
+    [FC_ATTACH].[filepos] AS [filepos], 
+    [FC_ATTACH].[delete_flag] AS [delete_flag], 
+    [FC_ATTACH].[controlID] AS [controlID]
+    FROM [dbo].[FC_ATTACH] AS [FC_ATTACH]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SelectCENDataList" EntityType="Self.SelectCENDataList" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SelectCENDataList].[Num] AS [Num], 
+    [SelectCENDataList].[流程版本号] AS [流程版本号], 
+    [SelectCENDataList].[MainID] AS [MainID], 
+    [SelectCENDataList].[流程编号] AS [流程编号], 
+    [SelectCENDataList].[申请日期] AS [申请日期], 
+    [SelectCENDataList].[流程标题] AS [流程标题], 
+    [SelectCENDataList].[产品型号] AS [产品型号], 
+    [SelectCENDataList].[产品代码] AS [产品代码], 
+    [SelectCENDataList].[主导工厂] AS [主导工厂], 
+    [SelectCENDataList].[生产工厂] AS [生产工厂], 
+    [SelectCENDataList].[申请更改内容] AS [申请更改内容], 
+    [SelectCENDataList].[流程状态] AS [流程状态], 
+    [SelectCENDataList].[接收时间] AS [接收时间], 
+    [SelectCENDataList].[审批时间] AS [审批时间], 
+    [SelectCENDataList].[审批节点] AS [审批节点], 
+    [SelectCENDataList].[审批步骤] AS [审批步骤], 
+    [SelectCENDataList].[审批人] AS [审批人], 
+    [SelectCENDataList].[审批耗用时间] AS [审批耗用时间]
+    FROM [dbo].[SelectCENDataList] AS [SelectCENDataList]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="C6Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="SelectCENDataList">
+          <Key>
+            <PropertyRef Name="流程状态" />
+            <PropertyRef Name="审批时间" />
+            <PropertyRef Name="审批节点" />
+            <PropertyRef Name="审批步骤" />
+          </Key>
+          <Property Name="Num" Type="Int64" />
+          <Property Name="MainID" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="流程编号" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="流程标题" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="产品型号" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="产品代码" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="主导工厂" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="生产工厂" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="申请更改内容" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="流程状态" Type="Int32" Nullable="false" />
+          <Property Name="审批时间" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="审批节点" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="审批步骤" Type="Int32" Nullable="false" />
+          <Property Name="审批人" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="接收时间" Type="DateTime" Precision="3" />
+          <Property Name="审批耗用时间" Type="Int32" />
+          <Property Name="流程版本号" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="申请日期" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="C6Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SelectCENDataList" EntityType="Self.SelectCENDataList" />
+          <EntitySet Name="FC_ATTACH" EntityType="C6Model.FC_ATTACH" />
+        </EntityContainer>
+        <EntityType Name="FC_ATTACH">
+          <Key>
+            <PropertyRef Name="djbh" />
+          </Key>
+          <Property Name="extend" Type="String" MaxLength="255" FixedLength="true" Unicode="false" />
+          <Property Name="djbh" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="dj_sn" Type="Int32" />
+          <Property Name="attach" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="filename" Type="String" MaxLength="255" FixedLength="true" Unicode="false" />
+          <Property Name="attachid" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="bz" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="djsn" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Name="filepos" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="delete_flag" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="controlID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="C6ModelStoreContainer" CdmEntityContainer="C6Entities">
+          <EntitySetMapping Name="SelectCENDataList">
+            <EntityTypeMapping TypeName="C6Model.SelectCENDataList">
+              <MappingFragment StoreEntitySet="SelectCENDataList">
+                <ScalarProperty Name="申请日期" ColumnName="申请日期" />
+                <ScalarProperty Name="流程版本号" ColumnName="流程版本号" />
+                <ScalarProperty Name="审批耗用时间" ColumnName="审批耗用时间" />
+                <ScalarProperty Name="接收时间" ColumnName="接收时间" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="MainID" ColumnName="MainID" />
+                <ScalarProperty Name="流程编号" ColumnName="流程编号" />
+                <ScalarProperty Name="流程标题" ColumnName="流程标题" />
+                <ScalarProperty Name="产品型号" ColumnName="产品型号" />
+                <ScalarProperty Name="产品代码" ColumnName="产品代码" />
+                <ScalarProperty Name="主导工厂" ColumnName="主导工厂" />
+                <ScalarProperty Name="生产工厂" ColumnName="生产工厂" />
+                <ScalarProperty Name="申请更改内容" ColumnName="申请更改内容" />
+                <ScalarProperty Name="流程状态" ColumnName="流程状态" />
+                <ScalarProperty Name="审批时间" ColumnName="审批时间" />
+                <ScalarProperty Name="审批节点" ColumnName="审批节点" />
+                <ScalarProperty Name="审批步骤" ColumnName="审批步骤" />
+                <ScalarProperty Name="审批人" ColumnName="审批人" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FC_ATTACH">
+            <EntityTypeMapping TypeName="C6Model.FC_ATTACH">
+              <MappingFragment StoreEntitySet="FC_ATTACH">
+                <ScalarProperty Name="controlID" ColumnName="controlID" />
+                <ScalarProperty Name="delete_flag" ColumnName="delete_flag" />
+                <ScalarProperty Name="filepos" ColumnName="filepos" />
+                <ScalarProperty Name="djsn" ColumnName="djsn" />
+                <ScalarProperty Name="bz" ColumnName="bz" />
+                <ScalarProperty Name="attachid" ColumnName="attachid" />
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="attach" ColumnName="attach" />
+                <ScalarProperty Name="dj_sn" ColumnName="dj_sn" />
+                <ScalarProperty Name="djbh" ColumnName="djbh" />
+                <ScalarProperty Name="extend" ColumnName="extend" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

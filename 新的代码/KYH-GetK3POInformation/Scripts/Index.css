@@ -60,6 +60,7 @@ th {
     background-color: #f2f2f2;
     text-align: right;
 }
+
 a {
     color: #305496;
 }
@@ -80,17 +81,18 @@ a {
 .greyTitle {
     background-color: #cbcbcb;
 }
+
 .one {
     border: 0;
     background: transparent url('图标/ImportLoadingList.png') no-repeat 0 0;
     background-size: 210px 70px;
 }
 
-.one:hover {
-    border: 0;
-    background: transparent url('图标/ImportLoadingList-Hover.png') no-repeat 0 0;
-    background-size: 210px 70px;
-}
+    .one:hover {
+        border: 0;
+        background: transparent url('图标/ImportLoadingList-Hover.png') no-repeat 0 0;
+        background-size: 210px 70px;
+    }
 
 #two {
     border: 0;
@@ -127,3 +129,7 @@ a {
         background: transparent url('图标/Exit-Hover.png') no-repeat 0 0;
         background-size: 100% 70px;
     }
+
+.fontred {
+    color: red;
+}

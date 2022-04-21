@@ -60,14 +60,14 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                 for (var i in arr) {
                     if (j == 0) {
                         if (q == 0 && i.toString() != "Serial-No") {  //标题1
-                            
+
                             flag = false;
                         } else if (q == 1 && i.toString() != "GIP-PO") {
-                            
-                            flag =  false;
+
+                            flag = false;
                         } else if (q == 2 && i.toString() != "Part-No") {
 
-                            flag =  false;
+                            flag = false;
                         } else if (q == 3 && i.toString() != "Qty") {
 
                             flag = false;
@@ -99,7 +99,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                     }
                     q++;
                 }
-            
+
                 //var processbar = Math.floor((j + 1) * 100 / tempLength);
                 //DaoRu = processbar;
                 //jdt(processbar);
@@ -165,6 +165,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
         // 以二进制方式打开文件
         fileReader.readAsBinaryString(files[0]);
     });
+    //开始采集按钮
     $scope.Startbtn = function (urlcanshu) {
         $("#myModal").modal({ backdrop: 'static', keyboard: false });
         yy = 0;
@@ -212,106 +213,6 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
             }
         })
     }
-    //{
-        //$scope.IndexList = function (Index, SuccessMsg, Msg) {
-        //    $.ajax({
-        //        type: "post",
-        //        async: true,
-        //        dataType: 'json',
-        //        url: "/GetK3POInformation/GetK3POInformation/IndexData",
-        //        success: function (result) {
-        //            window.clearInterval(dstime);//清空定时器
-        //            if (result.Data.length == 0) {
-        //                jdt(100); //进度条赋值
-        //            }
-        //            else {
-        //                var ww = Index;
-        //                var i = 0;
-        //                var s = 1;
-        //                var tempLength = result.Data.length;
-        //                var loop = function () {
-        //                    if (i >= tempLength) {   //退出循环
-        //                        if (SuccessMsg == 0) {   //查询失败
-        //                            setTimeout(function () {
-        //                                $scope.globalmodal(false);
-        //                                alert(Msg);
-        //                                jdt(0);
-        //                            }, 1000)
-        //                        }
-        //                        else {
-        //                            setTimeout(function () {
-        //                                $scope.globalmodal(false);
-        //                                jdt(0);
-        //                            }, 1000)
-        //                        }
-        //                        return;
-        //                    }
-        //                    if (result.Data[i].NeedDate != null) {
-        //                        result.Data[i].NeedDate = new Date(result.Data[i].NeedDate).Format("yyyy/MM/dd");  //日期格式化;
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(12).html(result.Data[i].NeedDate);
-        //                    }
-        //                    else {
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(12).html("");
-        //                    }
-        //                    if (result.Data[i].LoadUnit != null) {
-        //                        result.Data[i].LoadUnit = result.Data[i].LoadUnit.toUpperCase();  //转大写
-        //                    }
-        //                    if (result.Data[i].POUnit != null) {
-        //                        result.Data[i].POUnit = result.Data[i].POUnit.toUpperCase();      //转大写
-        //                    }
-        //                    //数据超过三行显示省略号+鼠标悬浮出现全部内容
-        //                    if (result.Data[i].Supplier != null && result.Data[i].Supplier.length >= 20 && Index == 0) {
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(6).find("a").prop("title", result.Data[i].Supplier);
-        //                        result.Data[i].Supplier = result.Data[i].Supplier.substring(0, 19) + "...";
-        //                    }
-        //                    if (result.Data[i].Material != null && result.Data[i].Material.length >= 20 && Index == 0) {
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(7).find("a").prop("title", result.Data[i].Material);
-        //                        result.Data[i].Material = result.Data[i].Material.substring(0, 19) + "...";
-        //                    }
-        //                    if (result.Data[i].Remarks != null && result.Data[i].Remarks.length >= 20 && Index == 0) {
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(13).find("a").prop("title", result.Data[i].Remarks);
-        //                        result.Data[i].Remarks = result.Data[i].Remarks.substring(0, 19) + "...";
-        //                    }
-        //                    if (result.Data[i].LoadUnit != result.Data[i].POUnit && result.Data[i].LoadUnit != null && result.Data[i].POUnit != null) {
-        //                        //字体变红
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(4).css({ "color": "red" });
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(9).css({ "color": "red" });
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(14).html("N/A").css({ "background-color": "#FFDDDD" });
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(16).html("N/A").css({ "background-color": "#FFDDDD" });
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(17).html("N/A").css({ "background-color": "#FFDDDD" });
-        //                    }
-        //                    else {
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(14).html(result.Data[i].OriCurr_tt_Amt);
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(16).html(result.Data[i].USD_Unit_Price);
-        //                        $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(17).html(result.Data[i].USD_tt_Amt);
-        //                    }
-        //                    //$('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(1).html(result.Data[i].PONum);
-        //                    //$('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(2).html(result.Data[i].Fnumber);
-        //                    //$('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(3).html(result.Data[i].LoadQty).css({ "text-align": "right" });
-        //                    //$('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(4).html(result.Data[i].LoadUnit);
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(5).html(result.Data[i].Ledger);
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(6).find("a").html(result.Data[i].Supplier).css({ "text-align": "left" });
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(7).find("a").html(result.Data[i].Material).css({ "text-align": "left" });
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(8).html(result.Data[i].POQty).css({ "text-align": "right" });
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(9).html(result.Data[i].POUnit);
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(10).html(result.Data[i].POCurr);
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(11).html(result.Data[i].UnitPrice).css({ "text-align": "right" });
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(13).find("a").html(result.Data[i].Remarks).css({ "text-align": "left" });
-        //                    $('.tablebody').eq(ww).children('tr').eq(i).find("td").eq(15).html(result.Data[i].USDRate);
-        //                    var processCount = Math.floor(yy + ((i + 1) * (100 - yy) / tempLength));
-        //                    jdt(processCount);
-
-        //                    i++;
-        //                    s++;
-        //                    this.window.setTimeout(loop, 0);
-        //                }
-        //                this.loopId = window.setTimeout(loop, 0);
-        //            }
-
-        //        }
-        //    })
-        //    }
-    //} //方法暂时作废了
     $scope.globalmodal = function (action) {
         /*全局遮罩层*/
         var mod = $("#myModal");//全局遮罩层
@@ -349,7 +250,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                 }
                 //= result.Data.length;
                 var j = 0;
-                var ww = 0;
+                var index = 0;
                 if (tempLength != 0) {
                     var loop = function () {
                         if (j >= tempLength) {
@@ -368,17 +269,16 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                                 if (canshu == 2 && SuccessMsg == 0) {  //采集数据没成功，成功则不用提示
                                     alert(Msg);
                                 }
-                                if (canshu!=0) {
+                                if (canshu != 0) {
                                     jdt(0);
                                     yy = 0;
                                 }
-                              
+
                             }, 1000);
                             return;
                         }
                         $(".tablebody").append("<tr class='excelcontent'></tr>");
-                        
-                        $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:cneter'>" + result.Data[j].LPSerial+ "</td>");
+                        $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:cneter'>" + result.Data[j].LPSerial + "</td>");
                         $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:center'>" + result.Data[j].PONum + "</td>");
                         $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:center'>" + result.Data[j].Fnumber + "</td>");
                         $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:right'>" + result.Data[j].LoadQty + "</td>");
@@ -393,58 +293,85 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                         if (canshu != 1) {    //不是导入加载
                             if (result.Data[j].NeedDate != null) {
                                 result.Data[j].NeedDate = new Date(result.Data[j].NeedDate).Format("yyyy/MM/dd");  //日期格式化;
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(12).html(result.Data[j].NeedDate);
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(12).html(result.Data[j].NeedDate);
                             }
                             else {
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(12).html("");
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(12).html("");
                             }
                             if (result.Data[j].NeedDate == '1900/01/01') {   //进行二次判断
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(12).html("");
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(12).html("");
                             }
                             //数据超过三行显示省略号+鼠标悬浮出现全部内容
                             if (result.Data[j].Supplier != null && result.Data[j].Supplier.length >= 50 && result.Data[j].Supplier != '') {
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(6).find("a").prop("title", result.Data[j].Supplier);
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(6).find("a").prop("title", result.Data[j].Supplier);
                                 result.Data[j].Supplier = result.Data[j].Supplier.substring(0, 50) + "...";
                             }
                             if (result.Data[j].Material != null && result.Data[j].Material.length >= 60 && result.Data[j].Material != '') {
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(7).find("a").prop("title", result.Data[j].Material);
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(7).find("a").prop("title", result.Data[j].Material);
                                 result.Data[j].Material = result.Data[j].Material.substring(0, 60) + "...";
                             }
                             if (result.Data[j].Remarks != null && result.Data[j].Remarks.length >= 40 && result.Data[j].Remarks != '') {
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(13).find("a").prop("title", result.Data[j].Remarks);
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).find("a").prop("title", result.Data[j].Remarks);
                                 result.Data[j].Remarks = result.Data[j].Remarks.substring(0, 40) + "...";
                             }
                             if (result.Data[j].LoadUnit != result.Data[j].POUnit && result.Data[j].LoadUnit != null && result.Data[j].POUnit != null && result.Data[j].LoadUnit != '' && result.Data[j].POUnit != '') {
                                 //字体变红
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(4).css({ "color": "red" });
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(9).css({ "color": "red" });
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(14).html("N/A").css({ "background-color": "#FFDDDD" });
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(16).html("N/A").css({ "background-color": "#FFDDDD" });
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(17).html("N/A").css({ "background-color": "#FFDDDD" });
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(4).css({ "color": "red" });
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(9).css({ "color": "red" });
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(14).html("N/A").css({ "background-color": "#FFDDDD" });
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(16).html("N/A").css({ "background-color": "#FFDDDD" });
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(17).html("N/A").css({ "background-color": "#FFDDDD" });
                             }
                             else {
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(14).html(result.Data[j].OriCurr_tt_Amt);
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(16).html(result.Data[j].USD_Unit_Price);
-                                $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(17).html(result.Data[j].USD_tt_Amt);
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(14).html(result.Data[j].OriCurr_tt_Amt);
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(16).html(result.Data[j].USD_Unit_Price);
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(17).html(result.Data[j].USD_tt_Amt);
                             }
-                            //$('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(1).html(result.Data[j].PONum);
-                            //$('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(2).html(result.Data[j].Fnumber);
-                            //$('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(3).html(result.Data[j].LoadQty).css({ "text-align": "right" });
-                            //$('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(4).html(result.Data[j].LoadUnit);
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(5).html(result.Data[j].Ledger);
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(6).find("a").html(result.Data[j].Supplier).css({ "text-align": "left" });
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(6).css({ "text-align": "left" });
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(7).find("a").html(result.Data[j].Material).css({ "text-align": "left" });
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(7).css({ "text-align": "left" });
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(8).html(result.Data[j].POQty).css({ "text-align": "right" });
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(9).html(result.Data[j].POUnit);
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(10).html(result.Data[j].POCurr);
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(13).find("a").html(result.Data[j].Remarks).css({ "text-align": "left" });
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(13).css({ "text-align": "left" });
-                            $('.tablebody').eq(ww).children('tr').eq(j).find("td").eq(15).html(result.Data[j].USDRate);
+                            //$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(1).html(result.Data[j].PONum);
+                            //$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(2).html(result.Data[j].Fnumber);
+                            //$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(3).html(result.Data[j].LoadQty).css({ "text-align": "right" });
+                            //$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(4).html(result.Data[j].LoadUnit);
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(5).html(result.Data[j].Ledger);
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(6).find("a").html(result.Data[j].Supplier).css({ "text-align": "left" });
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(6).css({ "text-align": "left" });
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(7).find("a").html(result.Data[j].Material).css({ "text-align": "left" });
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(7).css({ "text-align": "left" });
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(8).html(result.Data[j].POQty).css({ "text-align": "right" });
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(9).html(result.Data[j].POUnit);
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(10).html(result.Data[j].POCurr);
+                            //判断是否出现同一采购订单多笔相同物料号
+                            if (result.Data.length != j + 1) {
+                                if (result.Data[j].PONum == result.Data[j + 1].PONum && result.Data[j].Fnumber == result.Data[j + 1].Fnumber) {
+                                    //同一采购订单多笔相同物料号的单价有差异的，显示小红字 “multi-price”
+                                    if (result.Data[j].UnitPrice != result.Data[j + 1].UnitPrice) {
+                                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice + "<br/><p style='color:red'>multi-price</p>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
+                                        $('.tablebody').eq(index).children('tr').eq(j + 1).find("td").eq(11).html(result.Data[j + 1].UnitPrice + "<br/><p style='color:red'>multi-price</p>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
+                                    }
+                                    else {
+                                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
+                                    }
+
+                                }
+                                else {
+                                    if ($('.tablebody').eq(index).children('tr').eq(j - 1).find("td").eq(11).html().indexOf("multi-price") != -1 && result.Data[j].PONum == result.Data[j - 1].PONum && result.Data[j].Fnumber == result.Data[j - 1].Fnumber) {
+                                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice + "<br/><p style='color:red'>multi-price</p>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
+                                    } else {
+                                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
+                                    }
+                                }
+                            }
+                            else {
+
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
+                            }
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).find("a").html(result.Data[j].Remarks).css({ "text-align": "left" });
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).css({ "text-align": "left" });
+                            $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(15).html(result.Data[j].USDRate);
+                            /*$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice + "<br/><p style='color:red'>multi-price</p>").css({ "text-align": "right" });//po单价*/
+                            /*console.log($('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html());*/
+
                         }
-                        if (canshu!=0) {
+                        if (canshu != 0) {
                             var processCount = Math.floor(yy + ((j + 1) * (100 - yy) / tempLength));
                             if (processCount >= 100) {
                                 jdt(100);
@@ -453,7 +380,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                                 jdt(processCount);
                             }
                         }
-                        
+
                         j++;
                         //下一步循环  
                         this.window.setTimeout(loop, 0); //递归
@@ -547,7 +474,34 @@ function DaoChuList() {
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(8).html(result.Data[j].POQty)
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(9).html(result.Data[j].POUnit);
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(10).html(result.Data[j].POCurr);
-                    $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice)
+                    /*$('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice)*/
+                    //判断是否出现同一采购订单多笔相同物料号
+                    if (result.Data.length != j + 1) {
+                        if (result.Data[j].PONum == result.Data[j + 1].PONum && result.Data[j].Fnumber == result.Data[j + 1].Fnumber) {
+                            //同一采购订单多笔相同物料号的单价有差异的，显示小红字 “multi-price”
+                            if (result.Data[j].UnitPrice != result.Data[j + 1].UnitPrice) {
+                                $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice + '\r\n' + "<span class='fontred' style='color: red'>multi-price</span>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
+                                $('.DaoChuTablebody').children('tr').eq(j + 1).find("td").eq(11).html(result.Data[j + 1].UnitPrice + '\r\n' + "<span class='fontred' style='color: red'>multi-price</span>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
+                            }
+                            else {
+
+                                $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
+
+                            }
+
+                        }
+                        else {
+                            if ($('.DaoChuTablebody').children('tr').eq(j-1).find("td").eq(11).html().indexOf("multi-price") != -1 && result.Data[j].PONum == result.Data[j - 1].PONum && result.Data[j].Fnumber == result.Data[j - 1].Fnumber) {
+                                $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice + '\r\n' + "<span class='fontred' style='color: red'>multi-price</span>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
+                            } else {
+                                $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
+                            }
+                        }
+                    }
+                    else {
+
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
+                    }
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(13).html(result.Data[j].Remarks)
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(15).html(result.Data[j].USDRate);
                     j++;
@@ -566,15 +520,23 @@ function DaoChuList() {
 function newApiArray(format, username) {
     var myDate = new Date();
     var time = myDate.Format("yyyyMMddhhmmss");  //获得当前年月日时分秒
-    return ExcellentExport.convert({
-        anchor: 'anchorNewApi-' + format + '-array',
-        filename: time + "〈" + username + "〉LoadingList w POData.xls",
-        format: format
-    }, [{
-        name: 'Table',
-        from: {
-            table: 'DaoChuGridView'
-        }
-    }]);
+    //return ExcellentExport.convert({
+    //    anchor: 'anchorNewApi-' + format + '-array',
+    //    filename: time + "〈" + username + "〉LoadingList w POData.xls",
+    //    format: format
+    //}, [{
+    //    name: 'Table',
+    //    from: {
+    //        table: 'DaoChuGridView'
+    //    }
+    //}]);
+    $("#DaoChuGridView").table2excel({
+        // 不被导出的表格行的CSS class类
+        exclude: ".noExl",
+        // 导出的Excel文档的名称
+        name: "Excel Document Name",
+        // Excel文件的名称
+        filename: "ECN-" + time
+    });
 }
 

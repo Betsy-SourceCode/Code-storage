@@ -112,7 +112,7 @@ app.controller('ProductPriceController', function ($scope, $http, $compile, $tim
     $scope.ChangeCancel = function () {
         $.ajax({
             url: "/ProductPrice/ProductPriceZG/ChangeCustProductPriceRecords",
-            data: { "Cancel": false, "CPSerial": QJCPSerial, "num": 1 },
+            data: { "Cancel": false, "CPSerial": QJCPSerial, "num": 1,"type":0},
             type: "POST",
             dataType: "json",
             success: function (data) {

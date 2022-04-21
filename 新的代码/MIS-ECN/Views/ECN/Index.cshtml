@@ -1,0 +1,352 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="" />
+    <title>Index</title>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/WdatePicker/skin/default/datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/Index.js"></script>
+    <script src="~/Scripts/jquery.table2excel.js"></script>
+    <script src="~/Scripts/WdatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/冻结/freeze-table.js"></script>
+    <script src="~/Scripts/冻结/jquery-freeze-1.0.js"></script>
+    <style>
+        table {
+            table-layout: fixed;
+        }
+
+        label {
+            font-weight: 400 !important;
+        }
+
+        .Redfont {
+            color: red;
+        }
+
+        td {
+            word-break: break-all
+        }
+
+        th, td {
+            text-align: center;
+        }
+
+        /*文本框后面的小叉叉*/
+        .input-clear-a {
+            color: white;
+        }
+
+        .input-content:hover + .input-clear-a {
+            color: #d4d4d4;
+        }
+
+        .qq {
+            display: contents;
+        }
+
+        .panel-default {
+            border-color: #ddd;
+        }
+
+        .panel-heading {
+            font-size: 17px;
+        }
+        /*.table-hover > tbody > tr:hover {
+            background-color: lightskyblue !important;*/ /*优先级最高*/
+        /*}*/
+        .hoverClass {
+            background-color: rgba(0,176,240,0.1) !important;
+        }
+
+        .clickColor {
+            background-color: rgba(255,248,220,0.4) !important;
+        }
+
+        .hiddens {
+            max-height: 150px;
+            overflow: hidden; /*溢出隐藏*/
+            /*white-space: nowrap;*/ /*规定文本不进行换行*/
+            text-overflow: ellipsis; /*当对象内文本溢出时显示省略标记（...）*/
+        }
+
+        .fontred {
+            color: red;
+        }
+    </style>
+</head>
+<body style="min-width:1400px; margin:0px auto">
+    <div id="Title">
+        <h1 style="text-align: center;">
+            <span>ECN执行情况统计清单</span>
+        </h1>
+    </div>
+    <!-- 搜索条件 -->
+    <div class=" panel-default" style="height:auto;">
+        <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false">
+            <div class="container-fluid">
+                <div class="row panel-heading">
+                    <div class="has-feedback col-sm-3">
+                        流程标题：<input name="ProcessTitle" type="text" id="ProcessTitle" class="form-control input-content" style="width:60%" />
+                        <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                           style="pointer-events: auto;"
+                           onclick="$('#ProcessTitle').val('')"></a>
+                    </div>
+                    <div class="has-feedback col-sm-3">
+                        ECR编号：<input name="CERNumber" type="text" id="CERNumber" class="form-control input-content" style="width:60%" />
+                        <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                           style="pointer-events: auto;"
+                           onclick="$('#CERNumber').val('')"></a>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group-clear">
+                            <label style="">ECN申请日期：</label>
+                            <input id="Start_Date" name="StartDate" type="text" class="Wdate form-control" onclick="WdatePicker({minDate:'2018-3-12',maxDate:'#F{$dp.$D(\'End_Date\')}'});" style="cursor:pointer;height:34px;text-align:left;width:24%;background-color:white" readonly="readonly" />
+                            <label style="margin-left:3%;margin-right:3%">到</label>
+                            <input id="End_Date" name="EndDate" type="text" class="Wdate form-control"
+                                   onclick="WdatePicker({ minDate: '#F{$dp.$D(\'Start_Date\')}'}); " style="cursor: pointer; height: 34px; text-align: left; width: 24%; background-color: white" readonly="readonly" title="默认结束日期为当天！" />
+                        </div>
+                    </div>
+                    <div class="has-feedback col-sm-3">
+                        产品型号：<input name="ProductType" type="text" id="ProductType" class="form-control input-content" style="width:60%" />
+                        <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                           style="pointer-events: auto;"
+                           onclick="$('#ProductType').val('')"></a>
+                    </div>
+
+                </div>
+                <div class="row panel-heading">
+                    <div class="has-feedback col-sm-3">
+                        产品代码：<input name="ProductCode" type="text" id="ProductCode" class="form-control input-content" style="width:60%" />
+                        <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                           style="pointer-events: auto;"
+                           onclick="$('#ProductCode').val('')"></a>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group-clear">
+                            <label style="">生产工厂：</label>
+                            <select id="ProduceFactory" style=" width: 60%; display: inline; " class="form-control">
+                                <option value="">ALL</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="input-group-clear">
+                            <label style="">ECN主导工厂：</label>
+                            <select id="LeadFactory" style=" width: 36%; display: inline; " class="form-control">
+                                <option value="">ALL</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="input-group-clear">
+                            <label style="">流程状态：</label>
+                            <select id="Status" style=" width: 50%; display: inline; " class="form-control">
+                                <option value="-1">ALL</option>
+                                <option value="6">办理中</option>
+                                <option value="9">已办理完成</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="button" name="btn_select" value="查&nbsp;&nbsp;询" id="btn_select" class="btn btn-primary" onclick="IndexList()" />
+                    <input type="button" name="btn_DaoChu" value="导&nbsp;&nbsp;出" id="btn_DaoChu" class="btn btn-primary" onclick="newApiArray()" disabled="disabled" style="margin-right:10px" />
+                    <div style="font-size:13px;font-weight:200;color:darkgray;float:right;margin-right:4%;margin-top:10px">共计: <label id="count"></label>条</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 表格 -->
+    <div class="freeze-table">
+        <table id="GridView" class="table table-bordered table-hover" style="margin:0px auto;text-align:center;width:100%">
+            <thead style="">
+                <tr style="height:20px">
+                    <th rowspan="2" style=" width: 30px; background-color: rgb(0,176,240)" class="noExl"></th>
+                    <th rowspan="2" style=" width: 45px; background-color: rgb(0,176,240)">序号</th>
+                    <th rowspan="2" style=" width:160px; background-color:rgb(0,176,240)">ECR编号(打印请双击)</th>
+                    <th rowspan="2" style=" width: 150px; background-color: rgb(0,176,240)">流程标题</th>
+                    <th rowspan="2" style=" width: 135px; background-color: rgb(0,176,240)">产品型号</th>
+                    <th rowspan="2" style=" width: 150px; background-color: rgb(0,176,240) ">产品代码</th>
+                    <th rowspan="2" style=" width: 75px; background-color: rgb(0,176,240) ">主导工厂</th>
+                    <th rowspan="2" style=" width: 75px; background-color: rgb(0,176,240) ">生产工厂</th>
+                    <th rowspan="2" style=" width: 140px; background-color: rgb(0,176,240) ">申请更改内容</th>
+                    <th rowspan="2" style=" width: 90px; background-color: rgb(0,176,240)">流程状态</th>
+                    <th rowspan="2" style=" width: 115px; background-color: rgb(0,176,240)">共实际耗时<br />(小时)</th>
+                    <th rowspan="2" style=" width: 115px; background-color: rgb(0,176,240)">共工作耗时<br />(小时)</th>
+                    @*<th colspan="5" style=" width:740px;">申请人审批节点</th>
+                        <th colspan="5" style="width: 740px; ">PM判断</th>
+                        <th colspan="5" style="width: 740px; ">ECR提出部门经理审批</th>
+                        <th colspan="5" style="width: 740px; ">RD文员</th>
+                        <th colspan="5" style="width: 740px; ">RD工程师</th>
+                        <th colspan="5" style="width: 740px; ">RD确认信息</th>
+                        <th colspan="5" style="width: 740px; ">安规审批</th>
+                        <th colspan="5" style="width: 740px ">RD负责人审批</th>
+                        <th colspan="5" style="width: 740px ">CM_CP确认信息</th>
+                        <th colspan="5" style=" width: 740px">MC确认</th>
+                        <th colspan="5" style=" width: 740px">PC确认</th>
+                        <th colspan="5" style=" width: 740px">RD处理措施</th>
+                        <th colspan="5" style=" width: 740px">PMC审批</th>
+                        <th colspan="5" style=" width: 740px">EM审批</th>
+                        <th colspan="5" style=" width: 740px">ED审批</th>
+                        <th colspan="5" style=" width: 740px">QD审批</th>
+                        <th colspan="5" style=" width: 740px">MD审批</th>
+                        <th colspan="5" style=" width: 740px">RD经理审批</th>
+                        <th colspan="5" style=" width: 740px">RD指定人员打印</th>*@
+                    <th colspan="4" style=" width:610px;">申请人审批节点</th>
+                    <th colspan="4" style="width: 610px; ">PM判断</th>
+                    <th colspan="4" style="width: 610px; ">ECR提出部门经理审批</th>
+                    <th colspan="4" style="width: 610px; ">RD文员</th>
+                    <th colspan="4" style="width: 610px; ">RD工程师</th>
+                    <th colspan="4" style="width: 610px; ">RD确认信息</th>
+                    <th colspan="4" style="width: 610px; ">安规审批</th>
+                    <th colspan="4" style="width: 610px ">RD负责人审批</th>
+                    <th colspan="4" style="width: 610px ">CM_CP确认信息</th>
+                    <th colspan="4" style=" width: 610px">MC确认</th>
+                    <th colspan="4" style=" width: 610px">PC确认</th>
+                    <th colspan="4" style=" width: 610px">RD处理措施</th>
+                    <th colspan="4" style=" width: 610px">PMC审批</th>
+                    <th colspan="4" style=" width: 610px">EM审批</th>
+                    <th colspan="4" style=" width: 610px">ED审批</th>
+                    <th colspan="4" style=" width: 610px">QD审批</th>
+                    <th colspan="4" style=" width: 610px">MD审批</th>
+                    <th colspan="4" style=" width: 610px">RD经理审批</th>
+                    <th colspan="4" style=" width: 610px">RD指定人员打印</th>
+                </tr>
+                <tr style="height:20px">
+
+                    <th style="width:8%">提交时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%;">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+
+                    <th style="width:8%">接收时间</th>
+                    <th style="width:8%">审批时间</th>
+                    <th style="width:3%">审批人</th>
+                    <th style="width:4%">工作耗时<br />(小时)</th>
+                    @*<th style="width:4%">实际耗时<br />(小时)</th>*@
+                </tr>
+            </thead>
+            <tbody id="data">
+            </tbody>
+        </table>
+    </div>
+    <!--遮罩层-->
+    <div class="modal" id="myModal" style="display:none" data-backdrop="static">
+        @*加载进度条*@
+        <div id="jdt" style="height:100px">
+            <div style="width:200px;margin:18% auto;border-radius:10px;background-color:white">
+                <img src="~/Scripts/Images/加载.gif" style="margin:0px 25%;width: 100px; height: 100px;" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

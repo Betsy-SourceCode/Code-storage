@@ -1,0 +1,648 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CallWebApi</title>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <script src="~/Scripts/layui/layui/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/layui/layui/layui.all.js"></script>
+    <link href="~/Scripts/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <script src="~/Scripts/layui/layui/modules/form.js"></script>
+    <link href="~/Scripts/layui/formSelects-v4.css" rel="stylesheet" />
+    @*<script src="~/Scripts/layui/formSelects-v4.min.js"></script>*@
+    <style>
+        .layui-form-select dl {
+            max-height: 200px;
+        }
+
+        .xm-select-title {
+            width: 550px;
+        }
+
+        .xm-cz-group {
+            width: 350px;
+        }
+
+        .layui-tab-content {
+            padding: 25px 0px 0px 0px;
+            /*background-color: rgba(216,214,214,0.4);*/
+            height: 100%;
+        }
+
+        .xm-input .xm-select {
+            width: 309px;
+        }
+
+        .inputstyle{
+            width: 209%;
+        }
+         
+        body {
+            margin: 10px;
+        }
+
+        .demo-carousel {
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+        }
+
+        .layui-form-label.required:before {
+            content: '*';
+            color: red;
+        }
+
+        @*.layui-input {
+            width: 209%;
+        }*@
+
+        .layui-form-label {
+            padding: 10px 15px 9px 15px;
+        }
+
+
+        .layui-tab-title > li {
+            font-size: 15px;
+            font-weight: 500;
+            color: #C4C5C9;
+        }
+
+        .layui-table-view {
+            width: 98%;
+            margin: 0px auto;
+        }
+
+        .layui-tab-title {
+            line-height: 60px;
+        }
+
+       /* .layui-select-title {
+            width: 380px;
+        }*/
+    </style>
+</head>
+<body style="margin:0;padding:0;" ng-controller="mycontroller">
+    <div>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend><h1>CallWebApi</h1></legend>
+        </fieldset>
+    </div>
+
+    <div class="layui-tab layui-tab layui-tab-brief" style="margin-top:20px">
+        <ul class="layui-nav layui-tab-title" style="height:60px">
+            <li class="layui-this">过站记录重传</li>
+            <li>维修记录重传</li>
+            <li>条码号记录重传<a style="color:red;font-size:8px;float:right">未开发</a></li>
+            <li>接口错误信息查询</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                @*background-color: rgba(216,214,214,0.2);*@
+                <div style="margin: 0px auto; width: 800px; height: 360px; padding: 80px 50px;border-radius: 20px;box-shadow:0px 10px 20px gray">
+                    <div style="margin:0px 0px 100px 0px;text-align:center">
+                        <h1>过站记录重传</h1>
+                        <h2>Factory_processes</h2>
+                    </div>
+                    <div style="text-align:center">
+                        <div class="layui-inline" style="margin-bottom:20px">
+                            <label class="layui-form-label layui-inline">入库日期：</label>
+                            <!-- 注意：这一层元素并不是必须的 -->
+                            <div class="layui-input-inline">
+                                <input lay-filter="DateFilter" class="layui-input inputstyle" type="text" id="date1">
+                            </div>
+                            <button id="Factory_processes" style="width:100px;margin-left:263px" type="button" class="layui-btn">执行</button>
+                        </div>
+                        <div class="layui-form">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">工  单  号：</label>
+                                <div class="layui-input-inline">
+                                    <select xm-select="Factory_processes" style="text-align:center" name="Factory_processes" multiple="" xm-select-search="">
+                                        <option value="">点我看工单号列表</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="layui-tab-item">
+                <div style="margin: 0px auto; width: 800px; height: 360px; padding: 80px 50px;border-radius: 20px;box-shadow:0px 10px 20px gray">
+                    <div style="margin: 0px 0px 100px 0px; text-align: center">
+                        <h1>维修记录重传</h1>
+                        <h2>Factory_reworks</h2>
+                    </div>
+                    <div style="text-align:center">
+                        <div class="layui-inline" style="margin-bottom:20px">
+                            <label class="layui-form-label layui-inline">入库日期：</label>
+                            <!-- 注意：这一层元素并不是必须的 -->
+                            <div class="layui-input-inline">
+                                <input class="layui-input inputLength inputstyle" type="text" id="date2">
+                            </div>
+                            <button id="Factory_reworks" style="width:100px;margin-left:263px" type="button" class="layui-btn">执行</button>
+                        </div>
+                        <div class="layui-form">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">工  单  号：</label>
+                                <div class="layui-input-inline">
+                                    <select xm-select="Factory_reworks" name="Factory_reworks" multiple="" xm-select-search="">
+                                        <option value="">点我看工单号列表</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div style="margin: 0px auto; width: 800px; height: 360px; padding: 80px 50px;border-radius: 20px;box-shadow:0px 10px 20px gray">
+                    <div style="margin: 0px 0px 100px 0px; text-align: center">
+                        <h1>条码号记录重传</h1>
+                        <h2>Factory_sns</h2>
+                    </div>
+                    <div style="text-align:center">
+                        <div class="layui-inline" style="margin-bottom:20px">
+                            <label class="layui-form-label layui-inline">入库日期：</label>
+                            <!-- 注意：这一层元素并不是必须的 -->
+                            <div class="layui-input-inline">
+                                <input class="layui-input inputLength inputstyle" type="text" id="date3">
+                            </div>
+                            <button id="Factory_sns" style="width:100px;margin-left:263px" type="button" class="layui-btn">执行</button>
+                        </div>
+                        <div class="layui-form">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">工  单  号：</label>
+                                <div class="layui-input-inline">
+                                    <select xm-select="Factory_sns" name="Factory_sns" xm-select-search="">
+                                        <option value="">点我看工单号列表</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div style="text-align:center;margin-top:-20px">
+                    <h1>接口信息查询</h1>
+                    <h2>Interface error information</h2>
+                </div>
+                <div class="layui-form" style="margin:1% auto">
+                    <div class="layui-form-item layui-inline">
+                        <label class="layui-form-label required" style="width: 63px;">工单号：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" style="width:103%" id="moname" lay-verify="required" placeholder="请输入工单" autocomplete="off" class="layui-input" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-inline">
+                        <label style="width:100px" class="layui-form-label required">产生日期从：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" style="width: 103%" id="startDate" lay-verify="required" placeholder="请输入开始日期" autocomplete="off" class="layui-input" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-inline">
+                        <label class="layui-form-label required">到：</label>
+                        <div class="layui-input-inline" id="End">
+                            <input type="text" style="width: 103%" id="endDate" lay-verify="required" placeholder="请输入结束日期" autocomplete="off" class="layui-input" />
+                        </div>
+                    </div> 
+                    <div class="layui-form-item layui-inline" style="width:20%">
+                        <label class="layui-form-label">数据类型：</label>
+                        <div class="layui-inline" style="width:20%">
+                            <select lay-verify="required" class="layui-select" id="DataType">
+                                <option value="全部" selected>全部</option>
+                                <option value="成功">成功</option>
+                                <option value="失败">失败</option>
+                            </select>
+                        </div>
+                        <button id="Select" type="button" class="layui-btn" style="margin-left: 22px;">查 询</button>
+                    </div>
+                </div>
+                <div style="margin:0px auto;">
+                    <table class="layui-hide" id="demo" lay-filter="test" style="width:98%"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        //全局定义一次, 加载formSelects
+        layui.config({
+            base: '/CallWebApi/Scripts/ext/' //此处路径请自行处理, 可以使用绝对路径
+            }).extend({
+                formSelects: 'formSelects-v4'
+            });
+        //加载模块
+        layui.use(['jquery', 'form', 'util', 'table', 'formSelects', 'laydate'], function () {
+            //初始化select多选
+            var formSelects = layui.formSelects,
+                form = layui.form,
+                laydate = layui.laydate,
+                table = layui.table,
+                util = layui.util;
+            //下拉多选框
+            formSelects.render('Factory_processes', {
+                skin: "primary", //多选皮肤normal|primary|default|danger|warm
+                radio: false,                  //是否设置为单选模式
+                on: function (id, vals, val, isAdd, isDisabled) {
+
+                },            //同formSelects.on
+                filterable: true,
+                searchType: "dl"    //搜索框的位置
+            });
+            formSelects.render('Factory_reworks', {
+                skin: "primary", //多选皮肤normal|primary|default|danger|warm
+                radio: false,                  //是否设置为单选模式
+                on: function (id, vals, val, isAdd, isDisabled) {
+
+                },            //同formSelects.on
+                searchType: "dl"    //搜索框的位置
+            });
+            formSelects.render('Factory_sns', {
+                skin: "primary", //多选皮肤normal|primary|default|danger|warm
+                radio: false,                  //是否设置为单选模式
+                on: function (id, vals, val, isAdd, isDisabled) {
+
+                },            //同formSelects.on
+                searchType: "dl"    //搜索框的位置
+            });
+            //下拉框
+            $(function () {
+                var date1 = $("#date1").val();
+                getWH(date1, 1);
+
+                var date2 = $("#date2").val();
+                getWH(date2, 2);
+
+                var date3 = $("#date3").val();
+                getWH(date3, 3);
+            });
+            //时间下拉框复制联动下拉多选框
+            function getWH(date,id) {
+                $.ajax({
+                    type: 'post',
+                    url: '/CallWebApi/CallWebApi/DataList', //获取数据的路径
+                    data: { typeid: id, date: date }, //传值到后台
+                    dataType: 'json',
+                    async: false,
+                    success: function (res) {
+                        var data = res;
+                        //console.log(res);
+                        var keys = [];
+                        $.each(data, function (index, item) { //赋值
+                            var temp = {
+                                "name": item.ERPMO,
+                                "value": item.ERPMO
+                            }
+                            //var temp = {
+                            //    "name": item.工单号,
+                            //    "value": item.工单号
+                            //}
+                            keys.push(temp);
+                        });
+                        if (id==1) {
+                            //local模式
+                            formSelects.data('Factory_processes', 'local', {
+                                arr: keys
+                            });
+                        }
+                        if (id==2) {
+                            //local模式
+                            formSelects.data('Factory_reworks', 'local', {
+                                arr: keys
+                            });
+                        }
+                        if (id==3) {
+                            //local模式
+                            formSelects.data('Factory_sns', 'local', {
+                                arr: keys
+                            });
+                        }
+                    },
+                    complete: function () {
+                        form.render("select");
+                    },
+                    error: function () {
+                        layer.msg('异常，请刷新后重试！', {
+                            icon: 3,
+                            skin: 'layer-ext-demo',
+                            time: 2000
+                        })
+                    }
+                });
+            }
+
+            var DateTime = new Date();
+            //时间转换
+            var formatDateTime = function (date) {
+                var y = date.getFullYear();
+                var m = date.getMonth() + 1;
+                m = m < 10 ? ('0' + m) : m;
+                var d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                var h = date.getHours();
+                var minute = date.getMinutes();
+                minute = minute < 10 ? ('0' + minute) : minute;
+                var Second = date.getSeconds();
+                Second = Second < 10 ? ('0' + Second) : Second;
+                return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + Second;
+            };
+            time = formatDateTime(DateTime);
+            var starttime;
+            //日期时间选择器
+            laydate.render({
+                elem: '#date1'
+                , type: 'datetime',
+                value: time
+                , isInitValue: true
+                , done: function (value, date, endDate) {
+                    $('#date1').change();  // 一定要加上这句！！！不然没有回调！！！
+                    formSelects.data('Factory_processes', 'local', {
+                        arr: []
+                    });
+                   // console.log(value); //得到日期生成的值，如：2017-08-18
+                    //console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    //console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    getWH(value, 1);
+                }
+            });
+            laydate.render({
+                elem: '#date2'
+                , type: 'datetime'
+                , value: time
+                , isInitValue: true
+                , done: function (value, date, endDate) {
+                    $('#date2').change();  // 一定要加上这句！！！不然没有回调！！！
+                    formSelects.data('Factory_reworks', 'local', {
+                        arr: []
+                    });
+                    //console.log(value); //得到日期生成的值，如：2017-08-18
+                    //console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    //console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    getWH(value, 2);
+                }
+            });
+            laydate.render({
+                elem: '#date3'
+                , type: 'datetime'
+                , value: time
+                , isInitValue: true
+                , done: function (value, date, endDate) {
+                    $('#date3').change();  // 一定要加上这句！！！不然没有回调！！！
+                    formSelects.data('Factory_sns', 'local', {
+                        arr: []
+                    });
+                    //console.log(value); //得到日期生成的值，如：2017-08-18
+                    //console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    //console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    getWH(value, 3);
+                }
+            });
+            var startDate=  laydate.render({
+                elem: '#startDate'
+                , done: function (value, date, endDate) {
+                    $('#startDate').change();  // 一定要加上这句！！！不然没有回调！！！
+                    starttime = value;
+                    console.log(starttime); //得到日期生成的值，如：2017-08-18
+                    //console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    //console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    $('#endDate').remove();
+                    $("#End").html(
+                      ' <input type="text" style="width: 103%"  id="endDate" lay-verify="required" placeholder="请输入结束日期" autocomplete="off" class="layui-input" />'
+                  );
+                    loadDate(value);
+              }
+              , eventElem: '#startDate'
+              , trigger: 'click'
+            });
+            var endDate=laydate.render({
+                elem: '#endDate'
+                 , done: function (value, date, endDate) {
+                    $('#endDate').change();  // 一定要加上这句！！！不然没有回调！！！
+                     //console.log("'"+starttime+"'"); //得到日期生成的值，如：2017-08-18
+
+                    //console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    //console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                }
+            });
+
+            //渲染错误信息表格界面的时间控件
+            function loadDate(value) {
+                laydate.render({
+                    elem: '#endDate',
+                    min: value
+                })
+            }
+
+            var startDate = $("#startDate").val();//产生开始日期
+            var endDate = $("#endDate").val();//产生开始日期
+            var moname = $("#moname").val();//工单号
+            var DataType = $("#DataType option:selected").val();//下拉框数据类型的选择
+            function tablebb() {
+                //初始加载表格
+                table.render({
+                    elem: '#demo'
+                    , cols: [[
+                        { field: 'Error_Number', align: 'center', width: '8%', title: '编号' }
+                        , { field: 'Error_Data', width: '20%', title: '数据' }
+                        , { field: 'Error_Reason', width: '60%', title: '错误原因' }
+                        , {
+                            field: 'Error_Date', width: '10%', title: '产生时间', templet: "<div>{{layui.util.toDateString(d.Error_Date)}}</div>"
+                        }
+                    ]]
+                    , page: true //开启分页
+                    , limits: [10, 20, 30, 40, 50] //一页选显示3,5或10条数据
+                    , limit: 10 //一页显示10条数据
+                });
+            };
+            
+            ///渲染表格
+            tablebb();
+            $.ajax({
+                url: '/CallWebApi/SQLMethods/log_ErrorDatas',
+                data: { "startDate": startDate, "ERPMO": moname, "endDate": endDate, "DataType": DataType },
+                dataType: 'json',
+                success: function (res) {
+                    table.reload('demo', {
+                        data: res.data//加载所有数据
+                    })
+                },
+            });
+            //查询错误数据表格
+            $("#Select").click(function () {
+                var startDate = $("#startDate").val();//产生开始日期
+                var endDate = $("#endDate").val();//产生开始日期
+                var moname = $("#moname").val();//工单号
+                var DataType = $("#DataType option:selected").val();//下拉框数据类型的选择
+                console.log(DataType);
+                $.ajax({
+                    url: '/CallWebApi/SQLMethods/log_ErrorDatas',
+                    data: { "startDate": startDate, "ERPMO": moname, "endDate": endDate, "DataType": DataType},
+                    dataType: 'json',
+                    success: function (res) {
+                        var data = res.data;
+                        console.log(res.data);
+                        ///渲染表格
+                        tablebb();
+                        table.reload('demo', {
+                            data: data//加载所有数据
+                        }, true)
+                    },
+                });
+
+            })
+            var token = "@ViewBag.Token";
+            //调用Factory_processes接口
+            $("#Factory_processes").click(function () {
+                var index;
+
+                var all = formSelects.value('Factory_processes', 'valStr');
+                var ExportLoad;
+                if (all != "") {
+
+                        //处理dom加载完成，或者repeat循环完成要做的事情
+                    $.ajax({
+                        type: "post",
+                        url: '/CallWebApi/SQLMethods/UseInterface',
+                        data: {
+                            "typeid": 1,
+                            "url": "https://api.eos.h3c.com/odm-api/v1.0/factory/process",
+                            "ERPMO": all,
+                            "date": $("#date1").val(),
+                            "token": token
+                        },
+                        beforeSend: function () {
+                            ExportLoad = layer.msg('批量新增中，请稍候...', {
+                                icon: 16,
+                                shade: 0.2,
+                                time: false
+                            });
+                        }
+                       ,
+                            dataType: 'json',
+                            success: function (res) {
+                                if (res.id == 0) {
+                                    layer.alert('工单号数据出现异常，请查看错误数据表格！', {
+                                        icon: 3,
+                                        skin: 'layer-ext-demo'
+                                    })
+
+                                }
+                                if (res.id == 1) {
+                                    layer.alert('批量新增成功！<br/>' + res.data, {
+                                        icon: 1,
+                                        skin: 'layer-ext-demo'
+                                    })
+                                }
+                                console.log(res.id);
+                                //清除下拉框的值
+                                var aa = formSelects.value('Factory_processes', 'val');
+                                formSelects.value('Factory_processes', aa, false);
+                            },
+                            error: function (res) {
+                                console.log("cuowu");
+                                layer.alert('程序出现错误，请联系电脑部！', {
+                                    icon: 3,
+                                    skin: 'layer-ext-demo'
+                                })
+                        },
+                        complete: function () {
+                            layer.close(ExportLoad);
+                        }
+                        });
+                } else {
+                    layer.msg('请先选择工单号！', {
+                        icon: 2,
+                        skin: 'layer-ext-demo',
+                        time: 2000
+                    })
+                }
+            });
+            //UseInterface(2, "http://api.eos-ts.h3c.com/odm-api/v1.0/factory/rework");
+            //调用Factory_reworks接口
+            $("#Factory_reworks").click(function () {
+                var all = formSelects.value('Factory_reworks', 'valStr');
+                var ExportLoad;
+                if (all != "") {
+                        //处理dom加载完成，或者repeat循环完成要做的事情
+                    $.ajax({
+                        type: "post",
+                        url: '/CallWebApi/SQLMethods/UseInterface',
+                        data: {
+                            "typeid": 2,
+                            "url": "https://api.eos.h3c.com/odm-api/v1.0/factory/rework",
+                            "ERPMO": all,
+                            "date": $("#date2").val(),
+                            "token": token
+                        },
+                        beforeSend: function () {
+                            ExportLoad = layer.msg('批量新增中，请稍候...', {
+                                icon: 16,
+                                shade: 0.2,
+                                time: false
+                            });
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            console.log(res.id);
+                            if (res.id == 0) {
+                                layer.alert('工单号数据出现异常，请查看错误数据表格！', {
+                                    icon: 3,
+                                    skin: 'layer-ext-demo'
+                                })
+
+                            }
+                            if (res.id == 2) {
+                                layer.alert('该工单号暂无数据！', {
+                                    icon: 3,
+                                    skin: 'layer-ext-demo'
+                                })
+
+                            }
+                            if (res.id == 1) {
+                                layer.alert('批量新增成功！<br/>' + res.data, {
+                                    icon: 1,
+                                    skin: 'layer-ext-demo'
+                                })
+
+
+                            }
+                            //清除下拉框的值
+                            var aa = formSelects.value('Factory_reworks', 'val');
+                            formSelects.value('Factory_reworks', aa, false);
+                        },
+                        complete: function () {
+                            //处理dom加载完成，或者repeat循环完成要做的事情
+                            layer.close(ExportLoad);
+                        },
+                            error: function (res) {
+                                console.log("cuowu");
+                            }
+                        });
+                } else {
+                    layer.msg('请先选择工单号！', {
+                        icon: 2,
+                        skin: 'layer-ext-demo',
+                        time: 2000
+                    })
+                }
+            });
+            $("#Factory_sns").click(function () {
+                layer.msg('还未开发！', {
+                    icon: 0,
+                    skin: 'layer-ext-demo',
+                    time: 2000
+                })
+            })
+        });
+    </script>
+</body>
+<form class="layui-form" action="">
+</html>

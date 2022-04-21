@@ -15,6 +15,8 @@ function OpenProductDescription() {
     //修改页面标题
     $("#ChineseTitle").html("修 改 产 品 描 述");
     $("#EnglishTitle").html("Amend Product Description");
+    //隐藏修改产品描述图标（a标签）
+    $("#ProductDescriptionImg").css("display", "none");
     //隐藏其他所有功能按钮，显示修改产品描述功能按钮
     $("#MainBtn").css("display", "none");
     $("#OtherBtn").css("display", "");

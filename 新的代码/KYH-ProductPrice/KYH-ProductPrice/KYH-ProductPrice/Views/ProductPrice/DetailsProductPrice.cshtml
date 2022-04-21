@@ -40,7 +40,7 @@
 function ZuoFei(CreateTime, username, Ledger, FNumber, NewUnit) {
     $('#myModal').modal({ backdrop: 'static', keyboard: false }); /*禁止点击空白处关闭模态框*/
     $('.modal-body').find("p").remove();
-    var Message = "";
+    var Message = "";  
     Message += '<p><b style = "color:red" value="这">这';
     Message += '</b >';
     Message += '' + " " + CreateTime + '' + " " + username + " 在 " + Ledger + " 账套建立的GIP产品号" + FNumber + "之" + NewUnit + "价格信息记录吗？";
@@ -156,7 +156,7 @@ function ChangeRemarks() {
             <div class="container-fluid panel-heading">
                 <div class="col-sm-12">
 
-                    <a href="#" onclick="OpenProductDescription()"><img src="~/Scripts/图标/修改.gif" /></a>
+                    <a id="ProductDescriptionImg" href="#" onclick="OpenProductDescription()"><img src="~/Scripts/图标/修改.gif" /></a>
                     <label style="font-weight:bold;text-align:right">产品描述：</label>
                     <label>@ViewBag.ProductPriceList.CustProdName</label>
                     <!-- 修改产品描述功能富文本框 -->

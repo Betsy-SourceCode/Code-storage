@@ -26,12 +26,12 @@
         .panel-default {
             border-color: #ddd;
         }
-
+         
         .panel-heading {
             font-size: 17px;
             font-weight: bold;
         }
-
+                                                                     
         .pre-scrollable {
             max-height: 60%;
         }
@@ -94,7 +94,7 @@
                 </ul>
             </div>
             @*未指派列表*@
-            <div class="pre-scrollable" style="float: left; width: 40%; height: 55%; font-size: 12px">
+            <div class="pre-scrollable" style="float: left; width:30%; height: 55%; font-size: 12px">
                 <ul class="list-group noDirectList">
                     <li ng-if="i.Text!=''" id="UnassignedList{{$index}}" class="list-group-item" ng-repeat="i in UnassignedList track by $index" repeat-finish="ngRepeatFinished" style="min-height: 42px; cursor: pointer; padding-bottom: 3px;" @*onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'"*@ ng-click="ChangeBg('#UnassignedList',$index)"><label>{{i.Text}}</label></li>
                     <li ng-if="i.Text==''" id="Assign{{$index}}" class="list-group-item" ng-repeat="i in UnassignedList track by $index" repeat-finish="ngRepeatFinished" style="min-height: 42px; cursor: pointer; padding-bottom: 3px;" @*onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'"*@><label>{{i.Text}}</label></li>
@@ -111,7 +111,7 @@
                 </button>
             </div>
             @*已指派列表*@
-            <div class="pre-scrollable" style="float: left; width: 30%; height: 55%; font-size: 12px">
+            <div class="pre-scrollable" style="float: left; width:30%; height: 55%; font-size: 12px">
                 <ul class="list-group DirectList">
                     <li ng-if="i.Text!=''" id="AssignList{{$index}}" class="list-group-item" ng-repeat="i in AssignList track by $index" repeat-finish="ngRepeatFinished" style="min-height: 42px; cursor: pointer; padding-bottom: 3px;" ng-click="ChangeBg('#AssignList',$index)" @*onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'"*@><label>{{i.Text}}</label></li>
                     <li ng-if="i.Text==''" id="AssignList{{$index}}" class="list-group-item" ng-repeat="i in AssignList track by $index" repeat-finish="ngRepeatFinished" style="min-height: 42px; cursor: pointer; padding-bottom: 3px;" @*onmouseover="this.style.backgroundColor='#ccc'" onmouseout="this.style.backgroundColor='#FFFFFF'"*@><label>{{i.Text}}</label></li>
