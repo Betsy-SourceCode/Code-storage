@@ -71,7 +71,7 @@ namespace KYH_GetK3POInformation.Controllers
         /// <param name="username"></param>
         /// <param name="ArrayList"></param>
         /// <returns></returns>
-        public int UpdFunction(string username, LoadingListAddPOdata_Temp ArrayList)
+        public int UpdFunction(string username, NewLoadingListAddPOdata_Temp ArrayList)
         {
             int result;
             try

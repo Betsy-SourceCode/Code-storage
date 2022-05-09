@@ -3,6 +3,7 @@ ExcelList = null;
 dstime = null;  //记录定时器
 yy = 0; //记录进度条
 DaoRu = null;
+var DataIndexList = []; //需要标红的数据序号集合
 app.controller('GetK3POInformationController', function ($scope, $http, $compile, $timeout) {
     $('#excel-file').change(function (e) {
         var files = e.target.files;
@@ -241,6 +242,8 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
             dataType: 'json',
             url: "/GetK3POInformation/GetK3POInformation/IndexData",
             success: function (result) {
+                //将需要标红的数据序号集合添加进数组
+                DataIndexList.push(result.DataIndexList);
                 window.clearInterval(dstime);//清空定时器
                 var tempLength;
                 if (result.Data == null || result.Data == "") {
@@ -364,6 +367,10 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
 
                                 $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
                             }
+                            //将存在数据集合的数据序号加红色标注
+                            if (DataIndexList[0].find(obj => obj == result.Data[j].LPSerial) != undefined) {
+                                $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice + "<br/><p style='color:red'>multi-price</p>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
+                            }
                             $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).find("a").html(result.Data[j].Remarks).css({ "text-align": "left" });
                             $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).css({ "text-align": "left" });
                             $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(15).html(result.Data[j].USDRate);
@@ -392,9 +399,12 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                     $scope.globalmodal(false);
                     $(".tablebody").append("<tr><td colspan='18' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
                 }
+                /* console.log(DataIndexList);*/
             }
         })
         DaoChuList();
+        //用完之后清空数组
+        DataIndexList = [];
     }
     $scope.List(0);
 })
@@ -491,7 +501,7 @@ function DaoChuList() {
 
                         }
                         else {
-                            if ($('.DaoChuTablebody').children('tr').eq(j-1).find("td").eq(11).html().indexOf("multi-price") != -1 && result.Data[j].PONum == result.Data[j - 1].PONum && result.Data[j].Fnumber == result.Data[j - 1].Fnumber) {
+                            if ($('.DaoChuTablebody').children('tr').eq(j - 1).find("td").eq(11).html().indexOf("multi-price") != -1 && result.Data[j].PONum == result.Data[j - 1].PONum && result.Data[j].Fnumber == result.Data[j - 1].Fnumber) {
                                 $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice + '\r\n' + "<span class='fontred' style='color: red'>multi-price</span>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
                             } else {
                                 $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
@@ -501,6 +511,10 @@ function DaoChuList() {
                     else {
 
                         $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice).css({ "text-align": "right" });//po单价
+                    }
+                    //将存在数据集合的数据序号加红色标注
+                    if (DataIndexList[0].find(obj => obj == result.Data[j].LPSerial) != undefined) {
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(11).html(result.Data[j].UnitPrice + '\r\n' + "<span class='fontred' style='color: red'>multi-price</span>").css({ "text-align": "right" });//po单价//显示小红字 “multi-price”
                     }
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(13).html(result.Data[j].Remarks)
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(15).html(result.Data[j].USDRate);

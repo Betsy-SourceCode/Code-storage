@@ -10,17 +10,13 @@ using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
-
+using System.Linq;
 namespace KYH_GetK3POInformation.Controllers
 {
     // Token: 0x02000010 RID: 16
     public class GetK3POInformationController : Controller
     {
-        //public ActionResult GetPdf()
-        //{
-
-        //    return new FilePathResult("~/146-UG-20210903.pdf", "application/pdf");
-        //}
+        List<string> DataIndexList = new List<string>(); //全局变量记录需要标红的数据序号
         /// <summary>
         /// 首页加载
         /// </summary>
@@ -28,7 +24,7 @@ namespace KYH_GetK3POInformation.Controllers
         /// <returns></returns>
         public ActionResult Index(string userid)
         {
-            //userid = "444";
+            userid = "444";
             if (userid == null)
             {
                 userid = "";
@@ -54,20 +50,24 @@ namespace KYH_GetK3POInformation.Controllers
                 int List = new GetIndex().GetIndexList(base.Session["username"].ToString()).Count;
                 for (int a = 1; a <= List; a++)
                 {
-                    LoadingListAddPOdata_Temp LoadingList = new GetIndex().GetIndexListFirst(base.Session["username"].ToString(), a);
+                    NewLoadingListAddPOdata_Temp LoadingList = new GetIndex().GetIndexListFirst(base.Session["username"].ToString(), a);
                     string num = LoadingList.PONum;
-                    LoadingListAddPOdata_Temp K3 = new LoadingListAddPOdata_Temp();
+                    NewLoadingListAddPOdata_Temp K3 = new NewLoadingListAddPOdata_Temp();
                     if (num.Contains("HSYHPOORD"))
                     {
                         K3 = new GetIndex().ByK3PO_NumSelect("HSYH_New", LoadingList.PONum, LoadingList.Fnumber, "F_105");
                         if (K3 == null)
                         {
-                            K3 = new LoadingListAddPOdata_Temp();
+                            K3 = new NewLoadingListAddPOdata_Temp();
                         }
                         if (K3.Material == "error")  //查询SQL报错，告诉系统发生错误传到前台给出提示
                         {
                             result = 0;
                             break;
+                        }
+                        if (K3.OtherUnitPrice > 0) //同一个订单号同一个物料代码不同单价是否存在，返回数量，>0代表存在
+                        {
+                            DataIndexList.Add(a.ToString()); //添加需要标红的数据序号到集合里
                         }
                         K3.PONum = LoadingList.PONum;
                         K3.Fnumber = LoadingList.Fnumber;
@@ -82,12 +82,16 @@ namespace KYH_GetK3POInformation.Controllers
                         K3 = new GetIndex().ByK3PO_NumSelect("AIS20170316112450", LoadingList.PONum, LoadingList.Fnumber, "F_109");
                         if (K3 == null)
                         {
-                            K3 = new LoadingListAddPOdata_Temp();
+                            K3 = new NewLoadingListAddPOdata_Temp();
                         }
                         if (K3.Material == "error") //查询SQL报错，告诉系统发生错误传到前台给出提示
                         {
                             result = 0;
                             break;
+                        }
+                        if (K3.OtherUnitPrice > 0) //同一个订单号同一个物料代码不同单价是否存在，返回数量，>0代表存在
+                        {
+                            DataIndexList.Add(a.ToString()); //添加需要标红的数据序号到集合里
                         }
                         K3.PONum = LoadingList.PONum;
                         K3.Fnumber = LoadingList.Fnumber;
@@ -101,12 +105,16 @@ namespace KYH_GetK3POInformation.Controllers
                         K3 = new GetIndex().ByK3PO_NumSelect("AIS20181011094554", LoadingList.PONum, LoadingList.Fnumber, "F_102");
                         if (K3 == null)
                         {
-                            K3 = new LoadingListAddPOdata_Temp();
+                            K3 = new NewLoadingListAddPOdata_Temp();
                         }
                         if (K3.Material == "error") //查询SQL报错，告诉系统发生错误传到前台给出提示
                         {
                             result = 0;
                             break;
+                        }
+                        if (K3.OtherUnitPrice > 0) //同一个订单号同一个物料代码不同单价是否存在，返回数量，>0代表存在
+                        {
+                            DataIndexList.Add(a.ToString()); //添加需要标红的数据序号到集合里
                         }
                         K3.PONum = LoadingList.PONum;
                         K3.Fnumber = LoadingList.Fnumber;
@@ -124,12 +132,16 @@ namespace KYH_GetK3POInformation.Controllers
                         K3 = new GetIndex().ByK3PO_NumSelect("AIS20151013110946", LoadingList.PONum, LoadingList.Fnumber, "F_102");
                         if (K3 == null)
                         {
-                            K3 = new LoadingListAddPOdata_Temp();
+                            K3 = new NewLoadingListAddPOdata_Temp();
                         }
                         if (K3.Material == "error") //查询SQL报错，告诉系统发生错误传到前台给出提示
                         {
                             result = 0;
                             break;
+                        }
+                        if (K3.OtherUnitPrice > 0) //同一个订单号同一个物料代码不同单价是否存在，返回数量，>0代表存在
+                        {
+                            DataIndexList.Add(a.ToString()); //添加需要标红的数据序号到集合里
                         }
                         K3.PONum = LoadingList.PONum;
                         K3.Fnumber = LoadingList.Fnumber;
@@ -143,6 +155,7 @@ namespace KYH_GetK3POInformation.Controllers
                 {
                     ResponseJson json = new ResponseJson
                     {
+                        Data = DataIndexList,  //需要标红的数据序号集合传到前台
                         Success = result
                     };
                     result2 = JsonConvert.SerializeObject(json);
@@ -177,9 +190,16 @@ namespace KYH_GetK3POInformation.Controllers
                 return "";
             }
             List<LoadingListAddPOdata_Temp_Select> List = new GetIndex().GetIndexList(base.Session["username"].ToString());
+            if (List.Count > 0)
+            {
+                //更新数据表查询需要显示的红色标志集合
+                SelectK3PO_Num();
+            }
             ResponseJson json = new ResponseJson
             {
-                Data = List
+                Data = List,
+                DataIndexList = DataIndexList
+
             };
             return JsonConvert.SerializeObject(json);
         }

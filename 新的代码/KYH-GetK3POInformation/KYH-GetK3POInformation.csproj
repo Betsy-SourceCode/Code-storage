@@ -178,6 +178,7 @@
     </Compile>
     <Compile Include="Models\PublicSqlMethods\Authority.cs" />
     <Compile Include="Models\PublicSqlMethods\LogHelper.cs" />
+    <Compile Include="Models\PublicSqlMethods\NewLoadingListAddPOdata_Temp.cs" />
     <Compile Include="Models\PublicSqlMethods\Others.cs" />
     <Compile Include="Models\PublicSqlMethods\ResponseJson.cs" />
     <Compile Include="Models\SqlMethods\GetIndex.cs" />

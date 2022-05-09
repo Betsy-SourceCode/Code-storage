@@ -17,13 +17,12 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
         /// <param name="Mat_Code"></param>
         /// <param name="Fname"></param>
         /// <returns></returns>
-        public LoadingListAddPOdata_Temp ByK3PO_NumSelect(string Bname, string FBillNo, string Mat_Code, string Fname)
+        public NewLoadingListAddPOdata_Temp ByK3PO_NumSelect(string Bname, string FBillNo, string Mat_Code, string Fname)
         {
-            LoadingListAddPOdata_Temp list = new LoadingListAddPOdata_Temp();
-            LoadingListAddPOdata_Temp result;
+            NewLoadingListAddPOdata_Temp list = new NewLoadingListAddPOdata_Temp();
             try
             {
-                string queryIndexSql = @"SELECT Top(1) 0 as LPSerial,0.00 as LoadQty,'' as LoadUnit, B.FBillNo PONum, C.FNumber, F.FName Supplier, 
+                string queryIndexSql = @"SELECT Top(1)(Select count(FItemID) from mis.{0}.dbo.POOrderEntry where FInterID=A.FInterID and FItemID=A.FItemID and FAuxPrice<>A.FAuxPrice) AS OtherUnitPrice,0 as LPSerial,0.00 as LoadQty,'' as LoadUnit, B.FBillNo PONum, C.FNumber, F.FName Supplier, 
                                         left(C.FName + ' ' + C.FModel + ' ' + isnull(C.{3},''),300) Material, CAST(A.FAuxQty AS DECIMAL(10,3)) POQty ,
                                          D.FName POUnit, E.FName POCurr, CAST(A.FAuxPrice AS DECIMAL(14,6)) UnitPrice, A.FDate AS NeedDate, A.FNote Remarks, 
                                         CAST ((SELECT (Select FExchangeRate from mis.AIS20181011094554.dbo.t_ExchangeRateEntry
@@ -33,8 +32,7 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
                                         Where (select FNumber from mis.AIS20181011094554.dbo.t_Currency H
                                         where H.FCurrencyID = G.FCyTo )= E.FNumber and  FExchangeRateType =1 
                                         and DateDiff(D,FBegDate,GETDATE()) >= 0 and DateDiff(d,getdate(),FEndDate) >= 0 ) AS DECIMAL(12,6)) USDRate
-                                        FROM mis.{0}.dbo.POOrderEntry A LEFT OUTER JOIN mis.{0}.dbo.POOrder B  ON A.FInterID = B.FInterID AND B.FCancellation = 'False'                                     
-                                        LEFT OUTER JOIN mis.{0}.dbo.t_ICItem C ON C.FItemID = A.FItemID                                    
+                                        FROM mis.{0}.dbo.POOrderEntry A LEFT OUTER JOIN mis.{0}.dbo.POOrder B  ON A.FInterID = B.FInterID AND B.FCancellation = 'False'  LEFT OUTER JOIN mis.{0}.dbo.t_ICItem C ON C.FItemID = A.FItemID                                    
                                         LEFT OUTER JOIN mis.{0}.dbo.t_MeasureUnit D ON D.FMeasureUnitID = A.FUnitID                        
                                          LEFT OUTER JOIN mis.{0}.dbo.t_Currency E ON E.FCurrencyID = B.FCurrencyID                            
                                           LEFT OUTER JOIN mis.{0}.dbo.t_Supplier F ON F.FItemID = B.FSupplyID          
@@ -47,16 +45,15 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
                     Mat_Code,
                     Fname
                 });
-                LoadingListAddPOdata_Temp totalCount = this.db.Database.SqlQuery<LoadingListAddPOdata_Temp>(queryIndexSql, new object[0]).FirstOrDefault<LoadingListAddPOdata_Temp>();
-                result = totalCount;
+                list = this.db.Database.SqlQuery<NewLoadingListAddPOdata_Temp>(queryIndexSql).FirstOrDefault();
+
             }
             catch (Exception ex)
             {
                 LogHelper.Write(ex.ToString());
                 list.Material = "error";  //如果报错就给字段赋值告诉系统
-                return list;
             }
-            return result;
+            return list;
         }
 
         /// <summary>
@@ -86,13 +83,13 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
         /// <param name="username"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public LoadingListAddPOdata_Temp GetIndexListFirst(string username, int index)
+        public NewLoadingListAddPOdata_Temp GetIndexListFirst(string username, int index)
         {
-            LoadingListAddPOdata_Temp result;
+            NewLoadingListAddPOdata_Temp result;
             try
             {
                 string sql = "SELECT * from LoadingListAddPOdata_Temp_" + username + "  where LPSerial=" + index.ToString();
-                LoadingListAddPOdata_Temp list = this.db.Database.SqlQuery<LoadingListAddPOdata_Temp>(sql, new object[0]).FirstOrDefault<LoadingListAddPOdata_Temp>();
+                NewLoadingListAddPOdata_Temp list = this.db.Database.SqlQuery<NewLoadingListAddPOdata_Temp>(sql, new object[0]).FirstOrDefault<NewLoadingListAddPOdata_Temp>();
                 result = list;
             }
             catch (Exception ex)
@@ -175,7 +172,7 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
                     List.Part_No,
                     List.Qty,
                     List.Unit
-                   
+
                 });
                 DBNull totalCount = this.db.Database.SqlQuery<DBNull>(sql, new object[0]).SingleOrDefault<DBNull>();
                 result = true;
@@ -194,27 +191,27 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
         /// <param name="username"></param>
         /// <param name="List"></param>
         /// <returns></returns>
-        public bool UpdateData(string username, LoadingListAddPOdata_Temp List)
+        public bool UpdateData(string username, NewLoadingListAddPOdata_Temp List)
         {
             bool result;
             string Remarks = List.Remarks;
-            if (Remarks==null)
+            if (Remarks == null)
             {
                 Remarks = "";
             }
             try
             {
-                if (Remarks.Length >= 80 && Remarks!="")
+                if (Remarks.Length >= 80 && Remarks != "")
                 {
                     Remarks = List.Remarks.Substring(0, 80);
                 }
-                
+
                 string sql = "update  dbo.LoadingListAddPOdata_Temp_" + username + "    SET Supplier ='{0}',Material='{1}',POQty ={2},POUnit ='{3}',POCurr ='{4}',UnitPrice ={5},NeedDate ='{6}',Remarks = '{7}',USDRate={8} WHERE LPSerial=" + List.LPSerial.ToString();
                 if (List.POQty == null && List.UnitPrice == null && List.USDRate == null)
                 {
                     sql = "update  dbo.LoadingListAddPOdata_Temp_" + username + "    SET Supplier ='{0}',Material='{1}',POQty =null,POUnit ='{3}',POCurr ='{4}',UnitPrice =null,NeedDate ='{6}',Remarks = '{7}',USDRate=null  WHERE LPSerial=" + List.LPSerial.ToString();
                 }
-                
+
                 sql = string.Format(sql, new object[]
                 {
                     List.Supplier,

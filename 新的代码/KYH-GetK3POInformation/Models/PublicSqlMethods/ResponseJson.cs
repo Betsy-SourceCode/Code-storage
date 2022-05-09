@@ -34,5 +34,6 @@ namespace KYH_GetK3POInformation.Models.PublicSqlMethods
 		// (get) Token: 0x0600008C RID: 140 RVA: 0x00002DF8 File Offset: 0x00000FF8
 		// (set) Token: 0x0600008D RID: 141 RVA: 0x00002E00 File Offset: 0x00001000
 		public int pape { get; set; }
+		public object DataIndexList { get; set; }
 	}
 }
