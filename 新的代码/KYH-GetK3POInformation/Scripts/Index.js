@@ -317,6 +317,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                                 $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).find("a").prop("title", result.Data[j].Remarks);
                                 result.Data[j].Remarks = result.Data[j].Remarks.substring(0, 40) + "...";
                             }
+                            //显示N/A
                             if (result.Data[j].LoadUnit != result.Data[j].POUnit && result.Data[j].LoadUnit != null && result.Data[j].POUnit != null && result.Data[j].LoadUnit != '' && result.Data[j].POUnit != '') {
                                 //字体变红
                                 $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(4).css({ "color": "red" });
@@ -518,6 +519,22 @@ function DaoChuList() {
                     }
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(13).html(result.Data[j].Remarks)
                     $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(15).html(result.Data[j].USDRate);
+                    //显示N/A
+                    if (result.Data[j].LoadUnit != result.Data[j].POUnit && result.Data[j].LoadUnit != null && result.Data[j].POUnit != null && result.Data[j].LoadUnit != '' && result.Data[j].POUnit != '') {
+                        //字体变红
+                        //$('.DaoChuTablebody').children('tr').eq(j).find("td").eq(4).css({ "color": "red" });
+                        //$('.DaoChuTablebody').children('tr').eq(j).find("td").eq(9).css({ "color": "red" });
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(4).addClass("fontred");
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(9).addClass("fontred");
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(14).html("N/A").addClass("changebgcolor");
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(16).html("N/A").addClass("changebgcolor");
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(17).html("N/A").addClass("changebgcolor");
+                    }
+                    else {
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(14).html(result.Data[j].OriCurr_tt_Amt);
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(16).html(result.Data[j].USD_Unit_Price);
+                        $('.DaoChuTablebody').children('tr').eq(j).find("td").eq(17).html(result.Data[j].USD_tt_Amt);
+                    }
                     j++;
                     //下一步循环  
                     this.window.setTimeout(loop, 0); //递归
@@ -551,6 +568,7 @@ function newApiArray(format, username) {
         name: "Excel Document Name",
         // Excel文件的名称
         filename: "ECN-" + time
+       /* specialStyle: ["fontred", "changebgcolor"]*/
     });
 }
 

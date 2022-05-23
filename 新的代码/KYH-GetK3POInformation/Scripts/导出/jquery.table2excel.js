@@ -19,8 +19,8 @@
             exclude_links: true,
             exclude_inputs: true,
             preserveColors: false
+            /*specialStyle: [], //特殊样式添加*/
         };
-
     // The actual plugin constructor
     function Plugin(element, options) {
         this.element = element;
@@ -96,11 +96,17 @@
                             cols: $(this).attr("colspan"),
                             flag: $(q).find(e.settings.exclude)
                         };
-
-                        if (q.className == "fontred") {
-                            tempRows += "<td style='color:red;max-width:3%'>";
+                        //特殊样式数组
+                        /*tempRows += "<td style='color:red;max-width:3%'>";*/
+                        if (q.className.indexOf("fontred") != -1) {
+                            tempRows += "<td style='color:red;max-width:3%;text-align:center;'>"; //字体变红
                             tempRows += $(q).html() + "</td>";
-                        } else {
+                        }
+                        else if (q.className.indexOf("changebgcolor") != -1) {
+                            tempRows += "<td style='background-color:#FFDDDD;max-width:3%;text-align:right;'>"; //加背景颜色
+                            tempRows += $(q).html() + "</td>";
+                        }
+                        else {
                             if (rc.flag.length > 0) {
                                 tempRows += "<td> </td>"; // exclude it!!
                             } else {
