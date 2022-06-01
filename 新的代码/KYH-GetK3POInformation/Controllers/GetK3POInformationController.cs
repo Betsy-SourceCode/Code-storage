@@ -24,7 +24,7 @@ namespace KYH_GetK3POInformation.Controllers
         /// <returns></returns>
         public ActionResult Index(string userid)
         {
-            userid = "444";
+            //userid = "444";
             if (userid == null)
             {
                 userid = "";

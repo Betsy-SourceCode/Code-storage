@@ -1,8 +1,8 @@
-﻿using System;
+﻿using KYH_GetK3POInformation.Models.PublicSqlMethods;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using KYH_GetK3POInformation.Models.PublicSqlMethods;
 
 namespace KYH_GetK3POInformation.Models.SqlMethods
 {
@@ -38,13 +38,8 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
                                           LEFT OUTER JOIN mis.{0}.dbo.t_Supplier F ON F.FItemID = B.FSupplyID          
                                         WHERE  (B.FBillNo = '{1}') AND C.FNumber = '{2}'
                                         ORDER by FAuxQty DESC";
-                queryIndexSql = string.Format(queryIndexSql, new object[]
-                {
-                    Bname,
-                    FBillNo,
-                    Mat_Code,
-                    Fname
-                });
+                queryIndexSql = string.Format(queryIndexSql, Bname, FBillNo, Mat_Code, Fname);
+                var aa = queryIndexSql;
                 list = this.db.Database.SqlQuery<NewLoadingListAddPOdata_Temp>(queryIndexSql).FirstOrDefault();
 
             }

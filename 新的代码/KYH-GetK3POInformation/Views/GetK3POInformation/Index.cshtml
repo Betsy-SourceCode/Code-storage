@@ -11,12 +11,14 @@
     <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/AngularJS.js"></script>
     <script src="~/Scripts/导入/xlsx.core.min.js"></script>
     <script src="~/Scripts/导出/jquery.table2excel.js"></script>
     <script src="~/Scripts/Index.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
     <style>
         .fontred {
             color: red;
@@ -24,6 +26,18 @@
 
         .changebgcolor {
             background-color: #FFDDDD;
+        }
+
+        .DaoChuClass {
+            display: none;
+        }
+
+        .modal-backdrop {
+            opacity: 0.8 !important;
+        }
+
+        .aa {
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -58,7 +72,7 @@
     </div>
     <div class="col-sm-8">
         @*<a class="btn btn-lg btn-primary" ng-click="Startbtn()">Start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;K3's PO Data<br />开始采集&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据</a>*@
-        <a class="btn btn-lg btn-primary" id="two" style="height:70px; width: 210px;border:0;" ng-click="Startbtn()"></a>
+        <a id="two" class="btn btn-lg btn-primary" style="height:70px; width: 210px;border:0;" ng-click="Startbtn()"></a>
     </div>
     <div class="col-sm-1">
         @*<form action="/GetK3POInformation/GetK3POInformation/DownLoad" method="post" enctype="multipart/form-data">
@@ -123,53 +137,6 @@
         <tbody class="tablebody">
         </tbody>
     </table>
-    @*导出专用*@
-    <table id="DaoChuGridView" class="table table-bordered table-hover my_table" style="width:auto;display:none">
-        <thead>
-            <tr>
-                <th class="red" style="min-width:9%;text-align:center">Item</th>
-                <th class="red" style="min-width:9%;text-align:center">GIP-PO</th>
-                <th class="red" style="min-width:10%;text-align:center">Part-No</th>
-                <th class="red" style="min-width:5%;text-align:right">Packed Qty</th>
-                <th class="red" style="min-width:5%;text-align:center">Unit</th>
-                <th class="violet" style="min-width:2%;text-align:center">Ledger</th>
-                <th class="violet" style="min-width:9%;text-align:left">Supplier</th>
-                <th class="violet" style="min-width:9%;text-align:left">Material detail</th>
-                <th class="violet" style="min-width:5%;text-align:right">Qty.</th>
-                <th class="violet" style="min-width:5%;text-align:center">Unit</th>
-                <th class="violet" style="min-width:5%;text-align:center">Curr.</th>
-                <th class="violet" style="min-width:5%;text-align:right">Unit Price</th>
-                <th class="violet" style="min-width:5%;text-align:center">Delivery</th>
-                <th class="violet" style="min-width:5%;text-align:left">Remark</th>
-                <th class="grey" style="min-width:6%;text-align:right">Ori-Curr. tt.Amt</th>
-                <th class="grey" style="min-width:4%;text-align:right">USD rate</th>
-                <th class="grey" style="min-width:4%;text-align:right">USD Unit Price</th>
-                <th class="grey" style="min-width:6%;text-align:right">USD tt.Amt</th>
-            </tr>
-            <tr>
-                <th class="red" style="min-width:9%;text-align:center">行数</th>
-                <th class="red" style="min-width:9%;text-align:center">订单号</th>
-                <th class="red" style="min-width:10%;text-align:center">物料长代码</th>
-                <th class="red" style="min-width:5%;text-align:right">装箱数量</th>
-                <th class="red" style="min-width:5%;text-align:center">单位</th>
-                <th class="violet" style="min-width:2%;text-align:center">账套</th>
-                <th class="violet" style="min-width:9%;text-align:left">供货商</th>
-                <th class="violet" style="min-width:9%;text-align:left">物料名称/规格/制造商</th>
-                <th class="violet" style="min-width:5%;text-align:right">数量</th>
-                <th class="violet" style="min-width:5%;text-align:center">单位</th>
-                <th class="violet" style="min-width:5%;text-align:center">货币</th>
-                <th class="violet" style="min-width:5%;text-align:right">PO 单价</th>
-                <th class="violet" style="min-width:5%;text-align:center">交货日期</th>
-                <th class="violet" style="min-width:5%;text-align:left">备注</th>
-                <th class="grey" style="min-width:6%;text-align:right">原币总金额</th>
-                <th class="grey" style="min-width:4%;text-align:right">美金汇率</th>
-                <th class="grey" style="min-width:4%;text-align:right">美金单价</th>
-                <th class="grey" style="min-width:6%;text-align:right">美金总金额</th>
-            </tr>
-        </thead>
-        <tbody class="DaoChuTablebody">
-        </tbody>
-    </table>
     @*遮罩层*@
     <div class="modal" id="myModal" style="display:none" data-backdrop="static">
         @*加载进度条*@
@@ -184,6 +151,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    @*遮罩层*@
+    @*熊猫动态加载等待图*@
+    <div style="background-color:white !important;z-index:1041;position:fixed;top:45%;left:45%;width:200px;border-radius:10px;" id="XMModal">
+        <div>
+            <img src="~/Scripts/Images/加载.gif" style="margin:0px 25%;width: 100px; height: 100px;" />
         </div>
     </div>
 </body>
