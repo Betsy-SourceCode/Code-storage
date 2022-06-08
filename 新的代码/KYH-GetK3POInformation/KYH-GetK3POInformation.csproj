@@ -177,6 +177,7 @@
       <DependentUpon>GetK3POInformation.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PublicSqlMethods\Authority.cs" />
+    <Compile Include="Models\PublicSqlMethods\IndexData.cs" />
     <Compile Include="Models\PublicSqlMethods\LogHelper.cs" />
     <Compile Include="Models\PublicSqlMethods\NewLoadingListAddPOdata_Temp.cs" />
     <Compile Include="Models\PublicSqlMethods\Others.cs" />
@@ -259,22 +260,6 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_33_08_813.cs.8735.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_47_18_124.cs.8896.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_47_51_408.cs.8942.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_47_57_522.cs.8979.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_48_08_642.cs.8982.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_48_20_418.cs.9009.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_48_24_481.cs.9003.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_48_48_545.cs.9091.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_49_04_130.cs.9103.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_49_20_544.cs.9167.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_49_58_900.cs.9237.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_50_01_137.cs.9240.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_50_16_919.cs.9295.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_50_41_394.cs.9391.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_50_57_377.cs.9487.gz" />
-    <Content Include="Models\SqlMethods\.vshistory\GetIndex.cs\2021-08-03_10_51_14_209.cs.9548.gz" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

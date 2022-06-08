@@ -11,6 +11,7 @@ namespace KYH_GetK3POInformation.Controllers
     // Token: 0x0200000F RID: 15
     public class AddLoadingListAddPOdata_TempController : Controller
     {
+        GetK3POInformationController otherController = DependencyResolver.Current.GetService<GetK3POInformationController>();
         // Token: 0x0600008F RID: 143 RVA: 0x00002E09 File Offset: 0x00001009
         public ActionResult Index()
         {
@@ -59,7 +60,7 @@ namespace KYH_GetK3POInformation.Controllers
             }
             catch (Exception ex)
             {
-                LogHelper.Write(ex.ToString());
+                LogHelper.Write("AddFunction:" + ex.ToString());
                 return 0;
             }
             return result;
@@ -92,6 +93,41 @@ namespace KYH_GetK3POInformation.Controllers
             }
             return result;
         }
+
+
+        /// <summary>
+        /// 查账套抓出数据批量修改到主表（优化）
+        /// </summary>
+        /// <param name="DatabaseName">服务器的数据库名</param>
+        /// <param name="TableName">副表名</param>
+        /// <param name="oginName">登录者的主表名</param>
+        /// <returns></returns>
+        public string NewUpdFunction()
+        {
+            try
+            {
+                string LoginName = "LoadingListAddPOdata_Temp_" + Session["username"].ToString();
+                int result = new GetIndex().BatchUpdateSql(LoginName);
+                if (result > 0)
+                {
+                    //调用查询的存储过程
+                    List<LoadingListAddPOdata_Temp_Select> list = new GetIndex().NewGetIndexList(LoginName);
+                    return JsonConvert.SerializeObject(list);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write("NewUpdFunction:" + ex.Message);
+                return null;
+            }
+        }
+
+
+
 
         // Token: 0x0400003A RID: 58
         private WebStationEntities db = new WebStationEntities();

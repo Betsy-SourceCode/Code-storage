@@ -45,7 +45,7 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             }
             catch (Exception ex)
             {
-                LogHelper.Write(ex.ToString());
+                LogHelper.Write(ex.Message);
                 list.Material = "error";  //如果报错就给字段赋值告诉系统
             }
             return list;
@@ -71,6 +71,32 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             }
             return result;
         }
+
+        /// <summary>
+        /// 优化：首页列表加载SQL
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public List<LoadingListAddPOdata_Temp_Select> NewGetIndexList(string LoginName)
+        {
+            try
+            {
+                //执行存储过程
+                string sql = "exec porc_GetK3POInformationIndexData " + LoginName;
+                List<LoadingListAddPOdata_Temp_Select> list = db.Database.SqlQuery<LoadingListAddPOdata_Temp_Select>(sql).ToList();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                return null;
+            }
+        }
+
+
+
+
+
 
         /// <summary>
         /// 查询临时表SQL（单条）
@@ -230,6 +256,30 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             return result;
         }
 
+
+        /// <summary>
+        /// 优化：修改临时表数据SQL-账套抓出数据批量修改到主表Sql
+        /// </summary>
+        /// <param name="DatabaseName">服务器的数据库名</param>
+        /// <param name="TableName">副表名</param>
+        /// <param name="LoginName">登录者的主表名</param>
+        /// <returns></returns>
+        public int BatchUpdateSql(string LoginName)
+        {
+            try
+            {
+                //执行存储过程
+                string sql = "exec porc_GetK3POInformation " + LoginName;
+                int list = db.Database.SqlQuery<int>(sql).FirstOrDefault();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                throw;
+            }
+
+        }
         /// <summary>
         /// 清空临时表数据SQL
         /// </summary>

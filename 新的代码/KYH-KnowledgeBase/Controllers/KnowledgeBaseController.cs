@@ -37,7 +37,7 @@ namespace KYH_KnowledgeBase.Controllers
             ActionResult result;
             try
             {
-                //userid = "444";
+                userid = "444";
                 string username = this.GetUsername(userid);
                 string DeptIDs = this.GetUser(username);
                 this.GetPosition(username);

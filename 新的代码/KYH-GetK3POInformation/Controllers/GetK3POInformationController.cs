@@ -172,7 +172,7 @@ namespace KYH_GetK3POInformation.Controllers
             }
             catch (Exception ex)
             {
-                LogHelper.Write(ex.ToString());
+                LogHelper.Write(ex.Message);
                 throw;
             }
             return result2;
@@ -203,6 +203,35 @@ namespace KYH_GetK3POInformation.Controllers
             };
             return JsonConvert.SerializeObject(json);
         }
+
+        /// <summary>
+        /// 优化：首页加载列表数据
+        /// </summary>
+        /// <returns></returns>
+        public string NewIndexData()
+        {
+            try
+            {
+                //查表前先看看表是否存在，不存在则新建一张表
+                if (new GetIndex().CheckTable(base.Session["username"].ToString()) == 0 && !new GetIndex().CREATETable(base.Session["username"].ToString()))
+                {
+                    return "";
+                }
+                string LoginName = "LoadingListAddPOdata_Temp_" + Session["username"].ToString();
+                //调存储过程
+                List<LoadingListAddPOdata_Temp_Select> List = new GetIndex().NewGetIndexList(LoginName);
+                return JsonConvert.SerializeObject(List);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                throw;
+            }
+        }
+
+
+
+
 
         /// <summary>
         /// 用NPOI导出临时表，根据新的需求已作废
