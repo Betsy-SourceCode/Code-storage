@@ -11,7 +11,7 @@ namespace KYH_GetK3POInformation.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class LoadingListAddPOdata_Temp
     {
         public int LPSerial { get; set; }

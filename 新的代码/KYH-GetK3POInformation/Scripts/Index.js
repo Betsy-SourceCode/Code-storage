@@ -1,10 +1,10 @@
 ﻿var app = angular.module('myApp', []);  //创建模块
-ExcelList = null;
+ExcelList = null; //excel表的数据
 dstime = null;  //记录定时器
 yy = 0; //记录进度条
-DaoRu = null;
-var DataIndexList = []; //需要标红的数据序号集合
-app.controller('GetK3POInformationController', function ($scope, $http, $compile, $timeout) {
+var DataIndexList = []; //需要标红的数据序号集合，已作废
+var NullData = false; //是否为空数据
+app.controller('GetK3POInformationController', function ($scope) {
     $('#excel-file').change(function (e) {
         var files = e.target.files;
         var fileReader = new FileReader();
@@ -29,12 +29,9 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
             }
         }, 300)
         if ("csv" != extension) {
-            swal('只能上传后缀名为csv的文件！', '', 'error');
+            swal('导入失败，只能上传后缀名为csv的文件！', '', 'error');
             //关闭遮罩层，清空
             $scope.globalmodal(false);
-            jdt(0);
-            yy = 0;
-            $('#two').removeAttr("disabled").css("pointer-events", "auto"); //打开开始采集按钮
             return false;
         }
         fileReader.onload = function (ev) {
@@ -44,6 +41,12 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                         type: 'binary'
                     }), // 以二进制流方式读取得到整份excel表格对象
                     persons = []; // 存储获取到的数据
+                if (data.indexOf("CurrencyID") == -1 && data.indexOf("InvUPrice") == -1) {
+                    swal('导入失败，请使用最新的装箱表格式重新导入！', '', 'error');
+                    //关闭遮罩层，清空
+                    $scope.globalmodal(false);
+                    return false;
+                }
             }
             catch (e) {
                 console.log('文件类型不正确');
@@ -75,44 +78,58 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                     $scope.NewStartbtn(0);
                     return;
                 }
+                if (j == 0) {
+                    //console.log(new Array(persons[0])[0]["GIP-PO"])
+                    //2022-6-14新增两个字段CurrencyID和InvUPrice，可为空
+                    if (persons[0].CurrencyID == undefined && persons[0].InvUPrice != undefined) {
+                        persons[0] = new Object({ "Serial-No": new Array(persons[0])[0]["Serial-No"], "GIP-PO": new Array(persons[0])[0]["GIP-PO"], "Part-No": new Array(persons[0])[0]["Part-No"], "Qty": new Array(persons[0])[0]["Qty"], "Unit": new Array(persons[0])[0]["Unit"], "CurrencyID": " ", "InvUPrice": new Array(persons[0])[0]["InvUPrice"] });
+                    }
+                    if (persons[0].CurrencyID != undefined && persons[0].InvUPrice == undefined) {
+                        persons[0] = new Object({ "Serial-No": new Array(persons[0])[0]["Serial-No"], "GIP-PO": new Array(persons[0])[0]["GIP-PO"], "Part-No": new Array(persons[0])[0]["Part-No"], "Qty": new Array(persons[0])[0]["Qty"], "Unit": new Array(persons[0])[0]["Unit"], "CurrencyID": new Array(persons[0])[0]["CurrencyID"], "InvUPrice": " " });
+                    }
+                }
                 var arr = persons[j];
+                //console.log(persons[0]);
                 var flag = true;
                 for (var i in arr) {
+                    i = i.toLowerCase();
                     if (j == 0) {
-                        if (q == 0 && i.toString() != "Serial-No") {  //标题1
+                        if (q == 0 && i.toString() != "serial-no") {  //标题1
 
                             flag = false;
-                        } else if (q == 1 && i.toString() != "GIP-PO") {
+                        } else if (q == 1 && i.toString() != "gip-po") {
 
                             flag = false;
-                        } else if (q == 2 && i.toString() != "Part-No") {
+                        } else if (q == 2 && i.toString() != "part-no") {
 
                             flag = false;
-                        } else if (q == 3 && i.toString() != "Qty") {
+                        } else if (q == 3 && i.toString() != "qty") {
 
                             flag = false;
                         }
-                        else if (q == 4 && i.toString() != "Unit") {
+                        else if (q == 4 && i.toString() != "unit") {
+
+                            flag = false;
+                        }
+                        //2022-6-14新增两个字段CurrencyID和InvUPrice*/
+                        else if (q == 5 && i.toString() != "currencyid") {
+
+                            flag = false;
+                        }
+                        else if (q == 6 && i.toString() != "invuprice") {
 
                             flag = false;
                         }
                         if (!flag) {
                             //关闭遮罩层，清空
                             $scope.globalmodal(false);
-                            jdt(0);
-                            yy = 0;
-                            swal('错误的装箱格式，请核对后重新上传！，错误出在<' + i + '>标题上', '', 'error');
+                            swal('导入失败，错误的装箱格式，请核对后重新上传！，错误出在<' + i + '>标题上', '', 'error');
                             ExcelList = null;
-                            $('#two').removeAttr("disabled").css("pointer-events", "auto"); //打开开始采集按钮k
-                            return flase;
+                            return false;
                         }
                     }
                     q++;
                 }
-
-                //var processbar = Math.floor((j + 1) * 100 / tempLength);
-                //DaoRu = processbar;
-                //jdt(processbar);
                 j++;
                 //下一步循环  
                 this.window.setTimeout(loop, 0); //递归
@@ -130,7 +147,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                         //$("#tt0").css("width", processCount + "%");
                         console.log(processCount);
                     })(j);
- 
+             
                     var arr = persons[j];
                     //if (j == 0) {
                     //    $(".tablehead").append("<tr class='exceltitle'></tr>");
@@ -139,7 +156,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                     rowSortNumber++;
                     $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' >" + rowSortNumber + "</td>");
                     $(".tablebody").eq(1).children("tr").eq(j).append("<td class='red' >" + rowSortNumber + "</td>");
- 
+             
                     for (var i in arr) {
                         //alert(i+"---"+arr[i]);
                         if (j == 0 && q == 0) {
@@ -150,7 +167,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                                 alert("错误的装箱表文件，请重新上传！");
                                 ExcelList = null;
                                 return false;
- 
+             
                             }
                             q++;
                         }
@@ -174,7 +191,10 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
         };
         // 以二进制方式打开文件
         fileReader.readAsBinaryString(files[0]);
+        //用完之后清空文件值
+        $("#jobData").val("");
     });
+
     //开始采集按钮
     $scope.Startbtn = function (urlcanshu) {
         $("#myModal").modal({ backdrop: 'static', keyboard: false });
@@ -254,7 +274,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
             data: data,
             success: function (data) {
                 $(".tablebody").html("");
-                //调用查询方法
+                //调用新增方法
                 if (urlcanshu == "/GetK3POInformation/AddLoadingListAddPOdata_Temp/AddFunction") {
                     //if (data == 0) {
                     //    alert("没有完成导入工作，数据格式错误，请检查原始数据！");//新增出现问题
@@ -265,8 +285,6 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                     if (data == "") {   //修改出现问题
                         //关闭遮罩层，清空
                         $scope.globalmodal(false);
-                        yy = 0;
-                        jdt(0);
                         swal('发生错误，请联系电脑部！内部成员请查看日志文件！', '', 'error');
                     }
                     $scope.List(2, data.Success, data);  //采集
@@ -277,13 +295,12 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
             error: function () {
                 //关闭遮罩层，清空
                 $scope.globalmodal(false);
-                yy = 0;
-                jdt(0);
                 swal('发生错误，请联系电脑部！内部成员请查看日志文件！', '', 'error');
             }
         })
     }
 
+    //关闭弹出框，清空值和定时器
     $scope.globalmodal = function (action) {
         /*全局遮罩层*/
         var mod = $("#myModal");//全局遮罩层
@@ -293,14 +310,22 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
         }
         else {
             /*关闭遮罩层*/
+            jdt(0);
+            yy = 0;
+            TrCount = $(".tablebody tr").length; //页面上的数据
+            //数据不为空 ，打开开始采集按钮
+            if (TrCount > 0 && NullData == false) {
+                $('#two').removeAttr("disabled").css("pointer-events", "auto");
+            }
+            window.clearInterval(dstime);//清空定时器
             mod.modal('hide');
+            NullData = false; //标志位初始化
         }
         /*遮罩层样式及位置*/
         //mod.height(element.height() + 10);//遮罩层高度
         //mod.width(element.width());//设置遮罩层宽度
         //mod.offset(element.offset());//根据遮罩对象来进行定位
     }
-
 
     //0-进入页面加载，1-导入数据，2-采集数据
     $scope.List = function (canshu, SuccessMsg, DataList) {
@@ -321,6 +346,7 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
             $scope.FillData(canshu, tempLength, DataList, SuccessMsg);
         }
         else {
+            //加载数据
             $.ajax({
                 type: "post",
                 async: true,
@@ -341,8 +367,6 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                 error: function () {
                     //关闭遮罩层，清空
                     $scope.globalmodal(false);
-                    yy = 0;
-                    jdt(0);
                     swal('发生错误，请联系电脑部！内部成员请查看日志文件！', '', 'error');
                 }
             })
@@ -395,115 +419,141 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
                 $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:center'>" + Data[j].Fnumber + "</td>");
                 $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:right'>" + Data[j].LoadQty + "</td>");
                 $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:center'>" + Data[j].LoadUnit + "</td>");
+                //2022-6-14新增两个字段LoadQty和LoadUnit
+                $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:right'>" + Data[j].LoadCurr + "</td>");
+                $(".tablebody").eq(0).children("tr").eq(j).append("<td class='red' style='text-align:center'>" + Data[j].LoadUPrice + "</td>");
                 if (canshu == 1) {
-                    for (var i = 0; i <= 8; i++) {  //导入不需要三行导出的数据
+                    for (var i = 0; i <= 8; i++) {  //导入的时候不需要三行导出的数据
                         $(".tablebody").eq(0).children("tr").eq(j).append("<td class='violet'></td>");
                     }
-                } else {
-                    for (var i = 0; i <= 11; i++) {
+                }
+                else {
+                    for (var i = 0; i <= 12; i++) {
                         $(".tablebody").eq(0).children("tr").eq(j).append("<td class='violet'></td>");
                     }
                 }
                 for (var i = 0; i <= 3; i++) {
                     $(".tablebody").eq(0).children("tr").eq(j).append("<td class='grey'></td>");
-                    $(".tablebody").eq(1).children("tr").eq(j).append("<td class='grey'></td>");
                 }
                 //采集数据/进入页面数据加载
                 if (canshu != 1) {
-                    //采集数据从5开始
-                    //第5行显示Ledger（账套）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(5).html(Data[j].Ledger);
+                    //采集数据从7开始
+                    //第7行显示Ledger（账套）
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(7).html(Data[j].Ledger);
 
                     //供货商（Supplier）数据超过三行显示省略号+鼠标悬浮（a标签）出现全部内容
-                    //导出显示全部内容 （第6行导出显示Supplier）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(6).html(Data[j].Supplier).addClass("DaoChuClass");
+                    //导出显示全部内容 （第8行导出显示Supplier）
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(8).html(Data[j].Supplier).addClass("DaoChuClass");
 
-                    //不导出，第7行显示Supplier（供货商）
+                    //不导出，第9行显示Supplier（供货商）
                     if (Data[j].Supplier != null && Data[j].Supplier.length >= 50 && Data[j].Supplier != '') {
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(7).prop("title", Data[j].Supplier);
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(9).prop("title", Data[j].Supplier);
                         Data[j].Supplier = Data[j].Supplier.substring(0, 50) + "...";
                     }
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(7).html(Data[j].Supplier).css({ "text-align": "left" }).addClass("noExl");
-                    //给第7行加样式
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(7).css({ "text-align": "left" });
-
-
-
-                    //物料名称/规格/制造商（Material detail）数据超过三行显示省略号+鼠标悬浮（a标签）出现全部内容
-                    //导出显示全部内容  （第8行导出显示Material detail）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(8).html(Data[j].Material).addClass("DaoChuClass");
-
-                    //不导出，第9行显示Material（物料名称/规格/制造商）
-                    if (Data[j].Material != null && Data[j].Material.length >= 60 && Data[j].Material != '') {
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(9).prop("title", Data[j].Material);
-                        Data[j].Material = Data[j].Material.substring(0, 60) + "...";
-                    }
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(9).html(Data[j].Material).css({ "text-align": "left" }).addClass("noExl");
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(9).html(Data[j].Supplier).css({ "text-align": "left" }).addClass("noExl");
                     //给第9行加样式
                     $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(9).css({ "text-align": "left" });
 
 
 
-                    //第10行显示POQty（数量）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(10).html(Data[j].POQty).css({ "text-align": "right" });
-                    //第11行显示POUnit（单位）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(Data[j].POUnit);
-                    //第12行显示POCurr（货币）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(12).html(Data[j].POCurr);
+                    //物料名称/规格/制造商（Material detail）数据超过三行显示省略号+鼠标悬浮（a标签）出现全部内容
+                    //导出显示全部内容  （第10行导出显示Material detail）
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(10).html(Data[j].Material).addClass("DaoChuClass");
 
-                    //第13行（UnitPrice）特殊处理（作废）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).html(Data[j].UnitPrice).css({ "text-align": "right" });//po单价
+                    //不导出，第11行显示Material（物料名称/规格/制造商）
+                    if (Data[j].Material != null && Data[j].Material.length >= 60 && Data[j].Material != '') {
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).prop("title", Data[j].Material);
+                        Data[j].Material = Data[j].Material.substring(0, 60) + "...";
+                    }
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).html(Data[j].Material).css({ "text-align": "left" }).addClass("noExl");
+                    //给第11行加样式
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).css({ "text-align": "left" });
 
-                    //第14行交货日期（Delivery）格式处理
-                    if (Data[j].NeedDate != null) {
-                        Data[j].NeedDate = new Date(Data[j].NeedDate).Format("yyyy/MM/dd");  //日期格式化;
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(14).html(Data[j].NeedDate);
+
+
+                    //第12行显示POQty（数量）
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(12).html(Data[j].POQty).css({ "text-align": "right" });
+                    //第13行显示POUnit（单位）
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).html(Data[j].POUnit);
+                    //第14行显示POCurr（货币）
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(14).html(Data[j].POCurr);
+
+                    //第15行（UnitPrice）特殊处理
+                    //装箱表的货币或者价格不相同时，导出显示[！PO$]（第15行导出显示UnitPrice）
+                    if (Data[j].ISPOIcon == 1) {
+                        var span = "<span>[！PO$]</span>    ";
+                        var UnitPrice = "<span style='color:black'>" + Data[j].UnitPrice + "</span>";
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(15).html(span + '<br style="mso-data-placement:same-cell;"/>' + UnitPrice).css({ "text-align": "right" }).addClass("DaoChuClass").addClass("fontred");//po单价
                     }
                     else {
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(14).html("");
+                        //导出没标志
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(15).html(Data[j].UnitPrice).css({ "text-align": "right" }).addClass("DaoChuClass");//po单价
+                    }
+                    //装箱表的货币或者价格不相同时，显示图标(第16行)
+                    if (Data[j].ISPOIcon == 1) {
+                        //加一个小图标
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(16).html('<img src="./Scripts/Images/ISPOIcon.gif"  style="float:left"/>' + Data[j].UnitPrice).css({ "text-align": "right" }).addClass("noExl");//po单价
+                    }
+                    else {
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(16).html(Data[j].UnitPrice).css({ "text-align": "right" }).addClass("noExl");//po单价
+                    }
+                    //第17行交货日期（Delivery）格式处理
+                    if (Data[j].NeedDate != null) {
+                        Data[j].NeedDate = new Date(Data[j].NeedDate).Format("yyyy/MM/dd");  //日期格式化;
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(17).html(Data[j].NeedDate);
+                    }
+                    else {
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(17).html("");
                     }
                     if (Data[j].NeedDate == '1900/01/01') {   //进行二次判断
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(14).html("");
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(17).html("");
                     }
 
                     //备注（Remark）数据超过三行显示省略号+鼠标悬浮（a标签）出现全部内容
-                    //导出显示全部内容（第15行导出显示Remark）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(15).html(Data[j].Remarks).addClass("DaoChuClass");
+                    //导出显示全部内容（第18行导出显示Remark）
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(18).html(Data[j].Remarks).addClass("DaoChuClass");
 
-                    //不导出，第16行显示Remark（备注）
+                    //不导出，第19行显示Remark（备注）
                     if (Data[j].Remarks != null && Data[j].Remarks.length >= 40 && Data[j].Remarks != '') {
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(16).prop("title", Data[j].Remarks);
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(19).prop("title", Data[j].Remarks);
                         Data[j].Remarks = Data[j].Remarks.substring(0, 40) + "...";
                     }
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(16).html(Data[j].Remarks).css({ "text-align": "left" }).addClass("noExl");
-                    //给第16行加样式
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(16).css({ "text-align": "left" });
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(19).html(Data[j].Remarks).css({ "text-align": "left" }).addClass("noExl");
+                    //给第19行加样式
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(19).css({ "text-align": "left" });
 
-                    //第17行（OriCurr_tt_Amt）特殊处理
-                    //第18行显示USDRate（美金汇率）
-                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(18).html(Data[j].USDRate);
-
-                    //第19行（USD_Unit_Price）特殊处理
-
-                    //第20行（USD_tt_Amt）特殊处理
-                    //显示N/A（17-19-20）,显示红色字体（4-11）
+                    //第20行（OriCurr_tt_Amt）特殊处理
                     if (Data[j].LoadUnit != Data[j].POUnit && Data[j].LoadUnit != null && Data[j].POUnit != null && Data[j].LoadUnit != '' && Data[j].POUnit != '') {
-                        //字体变红
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(4).addClass("fontred");
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(11).addClass("fontred");
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(17).html("N/A").addClass("changebgcolor");
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(19).html("N/A").addClass("changebgcolor");
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(20).html("N/A").addClass("changebgcolor");
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(20).html("N/A").addClass("changebgcolor"); //OriCurr_tt_Amt
                     }
                     else {
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(17).html(Data[j].OriCurr_tt_Amt);
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(19).html(Data[j].USD_Unit_Price);
-                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(20).html(Data[j].USD_tt_Amt);
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(20).html(Data[j].OriCurr_tt_Amt);
                     }
-                    //$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(1).html(Data[j].PONum);
-                    //$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(2).html(Data[j].Fnumber);
-                    //$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(3).html(Data[j].LoadQty).css({ "text-align": "right" });
-                    //$('.tablebody').eq(index).children('tr').eq(j).find("td").eq(4).html(Data[j].LoadUnit);
+                    //第21行显示USDRate（美金汇率）
+                    $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(21).html(Data[j].USDRate);
+
+                    //第22行（USD_Unit_Price）特殊处理
+                    if (Data[j].LoadUnit != Data[j].POUnit && Data[j].LoadUnit != null && Data[j].POUnit != null && Data[j].LoadUnit != '' && Data[j].POUnit != '') {
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(22).html("N/A").addClass("changebgcolor");//USD_Unit_Price
+                    }
+                    else {
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(22).html(Data[j].USD_Unit_Price);
+                    }
+                    //第23行（USD_tt_Amt）特殊处理
+                    if (Data[j].LoadUnit != Data[j].POUnit && Data[j].LoadUnit != null && Data[j].POUnit != null && Data[j].LoadUnit != '' && Data[j].POUnit != '') {
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(23).html("N/A").addClass("changebgcolor");//USD_tt_Amt
+                    }
+                    else {
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(23).html(Data[j].USD_tt_Amt);
+                    }
+                    //显示N/A和红色字体
+                    if (Data[j].LoadUnit != Data[j].POUnit && Data[j].LoadUnit != null && Data[j].POUnit != null && Data[j].LoadUnit != '' && Data[j].POUnit != '') {
+                        //字体变红
+                        //装箱表Unit字段
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(4).addClass("fontred");
+                        //K3数据Unit字段
+                        $('.tablebody').eq(index).children('tr').eq(j).find("td").eq(13).addClass("fontred");
+                    }
 
 
                     //判断是否出现同一采购订单多笔相同物料号（第13行）已作废
@@ -555,7 +605,8 @@ app.controller('GetK3POInformationController', function ($scope, $http, $compile
             $scope.globalmodal(false);
             //没有数据禁用开始采集按钮
             $('#two').css("pointer-events", "none").attr('disabled', "true");
-            $(".tablebody").append("<tr><td colspan='18' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
+            $(".tablebody").append("<tr><td colspan='20' class='text-center' style='color:red;font-size:20px'>未找到任何记录</td></tr>");
+            NullData = true;
         }
     }
 

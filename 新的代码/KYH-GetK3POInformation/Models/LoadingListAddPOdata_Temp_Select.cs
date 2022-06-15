@@ -32,5 +32,8 @@ namespace KYH_GetK3POInformation.Models
         public string LoadUnit { get; set; }
         public int LPSerial { get; set; }
         public Nullable<System.DateTime> NeedDate { get; set; }
+        public int ISPOIcon { get; set; }
+        public string LoadCurr { get; set; }
+        public string LoadUPrice { get; set; }
     }
 }

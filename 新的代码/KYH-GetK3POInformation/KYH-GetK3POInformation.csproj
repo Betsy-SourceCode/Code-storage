@@ -217,6 +217,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Images\ISPOIcon.gif" />
     <Content Include="Scripts\Images\加载.gif" />
     <Content Include="Scripts\Index.css" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />

@@ -12,12 +12,6 @@ namespace KYH_GetK3POInformation.Controllers
     public class AddLoadingListAddPOdata_TempController : Controller
     {
         GetK3POInformationController otherController = DependencyResolver.Current.GetService<GetK3POInformationController>();
-        // Token: 0x0600008F RID: 143 RVA: 0x00002E09 File Offset: 0x00001009
-        public ActionResult Index()
-        {
-            return base.View();
-        }
-
         /// <summary>
         /// 新增临时表数据 ps:因为表名不固定所以ef改用SQL了
         /// </summary>
@@ -40,6 +34,7 @@ namespace KYH_GetK3POInformation.Controllers
                 {
                     return 0;
                 }
+                //2022-6-14新增两个字段CurrencyID和InvUPrice
                 ArrayList = ArrayList.Replace("GIP-PO", "GIP_PO");
                 ArrayList = ArrayList.Replace("Part-No", "Part_No");
                 ArrayList = ArrayList.Replace("Serial-No", "Serial_No");
@@ -47,9 +42,13 @@ namespace KYH_GetK3POInformation.Controllers
                 foreach (Others Con in List)
                 {
                     List[a].Unit = List[a].Unit.ToUpper(); //转大写
+                    if (List[a].CurrencyID != null)
+                    {
+                        List[a].CurrencyID = List[a].CurrencyID.ToUpper(); //转大写
+                    }
                     List[a].Qty = List[a].Qty.Replace("，", ""); //去掉中文逗号
                     List[a].Qty = List[a].Qty.Replace(",", ""); //去掉英文逗号
-                    if (!new GetIndex().InsertData(base.Session["username"].ToString(), List[a]))
+                    if (!new GetIndex().InsertData(Session["username"].ToString(), List[a]))
                     {
                         result = 0;
                         break;
@@ -67,7 +66,7 @@ namespace KYH_GetK3POInformation.Controllers
         }
 
         /// <summary>
-        /// 修改临时表数据，（添加K3数据到临时表） ps:因为表名不固定所以ef改用SQL了
+        /// 修改临时表数据，（添加K3数据到临时表） ps:因为表名不固定所以ef改用SQL了,已作废
         /// </summary>
         /// <param name="username"></param>
         /// <param name="ArrayList"></param>

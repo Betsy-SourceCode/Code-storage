@@ -161,10 +161,23 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
             bool result;
             try
             {
-                DBNull sql = this.db.Database.SqlQuery<DBNull>("CREATE TABLE dbo.LoadingListAddPOdata_Temp_" + username + "([LPSerial] [int] NOT NULL, [PONum] [nvarchar](20) NOT NULL,[Fnumber][nvarchar](20) NOT NULL,[LoadQty][decimal](10, 3) NOT NULL,[LoadUnit][nvarchar](8) NOT NULL,[Supplier][nvarchar](100) NULL,[Material][nvarchar](300) NULL,[POQty][decimal](10, 3) NULL,[POUnit][nvarchar](8) NULL,[POCurr][nchar](3) NULL,[UnitPrice][decimal](14, 6) NULL,[NeedDate][datetime] NULL,[Remarks][nvarchar](80) NULL,[USDRate][decimal](12, 6) NULL)", new object[]
-                {
-                    new SqlParameter("@username", username)
-                }).SingleOrDefault<DBNull>();
+                //2022-6-14新增两个字段LoadCurr和LoadUPrice
+                DBNull sql = db.Database.SqlQuery<DBNull>("CREATE TABLE dbo.LoadingListAddPOdata_Temp_" + username + "" +
+                    "([LPSerial] [int] NOT NULL, [PONum] [nvarchar](20) NOT NULL," +
+                    "[Fnumber][nvarchar](20) NOT NULL," +
+                    "[LoadQty][decimal](10, 3) NOT NULL," +
+                    "[LoadUnit][nvarchar](8) NOT NULL," +
+                    "[LoadCurr][nchar](3) NULL," +
+                    "[LoadUPrice][decimal](14, 6) NULL," +
+                    "[Supplier][nvarchar](100) NULL," +
+                    "[Material][nvarchar](300) NULL," +
+                    "[POQty][decimal](10, 3) NULL," +
+                    "[POUnit][nvarchar](8) NULL," +
+                    "[POCurr][nchar](3) NULL," +
+                    "[UnitPrice][decimal](14, 6) NULL," +
+                    "[NeedDate][datetime] NULL," +
+                    "[Remarks][nvarchar](80) NULL," +
+                    "[USDRate][decimal](12, 6) NULL)").SingleOrDefault();
                 result = true;
             }
             catch (Exception ex)
@@ -182,20 +195,16 @@ namespace KYH_GetK3POInformation.Models.SqlMethods
         /// <returns></returns>
         public bool InsertData(string username, Others List)
         {
+            //2022-6-14新增两个字段LoadCurr和LoadUPrice
             bool result;
             try
             {
-                string sql = "INSERT INTO dbo.LoadingListAddPOdata_Temp_" + username + "(LPSerial,PONum, Fnumber, LoadQty, LoadUnit) VALUES('{0}','{1}','{2}','{3}','{4}')";
-                sql = string.Format(sql, new object[]
+                if (List.InvUPrice == null)
                 {
-                     List.Serial_No,
-                    List.GIP_PO,
-                    List.Part_No,
-                    List.Qty,
-                    List.Unit
-
-                });
-                DBNull totalCount = this.db.Database.SqlQuery<DBNull>(sql, new object[0]).SingleOrDefault<DBNull>();
+                    List.InvUPrice = 0;
+                }
+                string sql = "INSERT INTO dbo.LoadingListAddPOdata_Temp_" + username + "(LPSerial,PONum, Fnumber, LoadQty, LoadUnit,LoadCurr,LoadUPrice) VALUES('" + List.Serial_No + "','" + List.GIP_PO + "','" + List.Part_No + "','" + List.Qty + "','" + List.Unit + "','" + List.CurrencyID + "','" + List.InvUPrice + "')";
+                DBNull totalCount = db.Database.SqlQuery<DBNull>(sql).SingleOrDefault();
                 result = true;
             }
             catch (Exception ex)

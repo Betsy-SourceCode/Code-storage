@@ -24,7 +24,7 @@ namespace KYH_GetK3POInformation.Controllers
         /// <returns></returns>
         public ActionResult Index(string userid)
         {
-            //userid = "444";
+            userid = "444";
             if (userid == null)
             {
                 userid = "";
@@ -37,7 +37,7 @@ namespace KYH_GetK3POInformation.Controllers
         }
 
         /// <summary>
-        /// 查询K3数据，批量添加到临时表
+        /// 查询K3数据，批量添加到临时表（已作废）
         /// </summary>
         /// <returns></returns>
         public string SelectK3PO_Num()

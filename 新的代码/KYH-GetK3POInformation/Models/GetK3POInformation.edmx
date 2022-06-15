@@ -140,6 +140,9 @@
           <Property Name="LoadUnit" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LPSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NeedDate" Type="DateTime" Precision="3" />
+          <Property Name="ISPOIcon" Type="Int32" Nullable="false" />
+          <Property Name="LoadCurr" Type="String" Nullable="false" />
+          <Property Name="LoadUPrice" Type="String" Nullable="false" />
         </EntityType>
         <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="LoadingListAddPOdata_Temp" EntityType="Self.LoadingListAddPOdata_Temp" />
