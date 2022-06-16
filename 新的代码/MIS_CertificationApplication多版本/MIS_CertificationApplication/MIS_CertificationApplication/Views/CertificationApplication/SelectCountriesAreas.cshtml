@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        #content {
+            width: 100%;
+            margin: 0px auto;
+            @*border: 4px solid blue;*@
+            text-align: center;
+        }
+
+        #main {
+            font-size: 15px;
+            padding: 5px 0px 10px 0px;
+            position: relative;
+        }
+
+        #close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        .btn{
+            width: 30%;
+            height: 50px;
+            background-color: rgb(47 117 181);
+            color: yellow;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 20px 0px;
+        }
+
+        .check {
+            width: 20px;
+            height: 20px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        @*<h2 style="text-align:center">Select A Country or Union Area</h2>*@
+        <div id="main">
+            @*<h2 style="margin:5px;font-weight:500">多 选 国 家 区 域</h2>
+            <a href="#"><img id="close" src="~/Scripts/img/close.png" /></a>*@
+        </div>
+        @*<input id="btnClear" class="btn" type="button" value="Clear All Select" />
+        <input id="btnconfirm"  class="btn" type="button" value="Confirm & Return"  />*@
+    </div>
+    <script>
+        $(function () {
+            var country = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetCountryAreaList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        country += '<div class="col-sm-3" style="text-align:left"><input id="' + value.Name + '" name="test" class="check" type="checkbox" value="' + value.Text + '"/>      ' + value.Text +'</div>';
+                    })
+                    $("#main").append(country);
+                    return false;
+                }
+            });
+        })
+    </script>
+</body>
+</html>

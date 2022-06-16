@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -44,7 +43,7 @@ namespace MIS_CertificationApplication.Controllers
                 }
                 if (ModelCode != "") //型号编码下拉框
                 {
-                    sql = sql + " AND ProductModel like ='" + ModelCode + "'";
+                    sql = sql + " AND ProductModel ='" + ModelCode + "'";
                 }
                 if (day != "") //有效期日期
                 {
@@ -113,6 +112,8 @@ namespace MIS_CertificationApplication.Controllers
                     item.ProductModel = db.Database.SqlQuery<string>(modelSql).FirstOrDefault();
                     item.ApplyCountry = db.Database.SqlQuery<string>(countrySql).FirstOrDefault();
                 }
+                //打印页面专用
+                Session["certifications"] = certifications;
                 return JsonConvert.SerializeObject(certifications);
             }
             catch (Exception ex)
@@ -122,6 +123,15 @@ namespace MIS_CertificationApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// 打印界面专用加载数据
+        /// </summary>
+        /// <returns></returns>
+        public string PrintCertificationApplicationList()
+        {
+            var certifications = Session["certifications"];
+            return JsonConvert.SerializeObject(certifications);
+        }
         #region 下拉框
         /// <summary>
         /// 获得型号编码列表
@@ -233,26 +243,7 @@ namespace MIS_CertificationApplication.Controllers
             }
         }
         /// <summary>
-        /// 获取认证编号是否存在Certificates_Master表
-        /// </summary>
-        /// <param name="CertCode">认证编号</param>
-        /// <returns></returns>
-        public string GetCertCodeISExsits(string CertCode)
-        {
-            try
-            {
-                string sql = @"select CMSerial,certcode+' - '+certname as Text from dbo.Certificates_Master where CertCode = '" + CertCode + "' and IsVoid<>1 order by CMSerial ";
-                List<Others> DataList = db.Database.SqlQuery<Others>(sql).ToList();
-                return JsonConvert.SerializeObject(DataList);
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Write(ex.Message);
-                throw;
-            }
-        }
-        /// <summary>
-        /// 获取 新增界面的 多 选 国 家 区 域 列表
+        /// 获取 多 选 国 家 区 域 列表
         /// </summary>
         /// <returns></returns>
         public string GetCountryAreaList()
@@ -260,24 +251,6 @@ namespace MIS_CertificationApplication.Controllers
             try
             {
                 string sql = "Select Top 60 Icode as Name,'(' + Icode + ') ' + cntyName_s as Text from Country order by OrderBy DESC";
-                List<Others> DataList = db.Database.SqlQuery<Others>(sql).ToList();
-                return JsonConvert.SerializeObject(DataList);
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Write(ex.Message);
-                throw;
-            }
-        }
-        /// <summary>
-        /// 获取 认证管理界面的 多 选 国 家 区 域 列表
-        /// </summary>
-        /// <returns></returns>
-        public string GetCertificatesCountryAreaList()
-        {
-            try
-            {
-                string sql = "SELECT Icode as Name, Continent + ' - ' + CntyName_s + '（' + Icode + '）' AS Text FROM Country WHERE  (OrderBy >= 50) ORDER BY Continent, CntyName_s";
                 List<Others> DataList = db.Database.SqlQuery<Others>(sql).ToList();
                 return JsonConvert.SerializeObject(DataList);
             }
@@ -464,133 +437,6 @@ namespace MIS_CertificationApplication.Controllers
         public int IsUploadStandard(string FileSuffix)
         {
             return this.db.Database.SqlQuery<int>("SELECT COUNT(1) FROM TBWords where  WordCode='FT' and Remark in('Offd','Pics') and Name_EN='" + FileSuffix + "'").FirstOrDefault();
-        }
-        #endregion
-
-        #region 认证管理界面的方法合集
-        /// <summary>
-        /// 查询认证管理数据
-        /// </summary>
-        /// <param name="CountryAreas"> 国家区域  对应字段  Mkt_Cnty</param>
-        /// <param name="key_words">关键字</param>
-        /// <returns></returns>
-        public string GetCertificatesManagementList(string CountryAreas, string key_words,string Cancel)
-        {
-            try
-            {
-                string sql = "select *,'('+c.Icode+')'+c.CntyName_s as CountryArea from  Certificates_Master cm ,Country c where c.icode=cm.Mkt_Cnty";
-                if (CountryAreas != "" && CountryAreas != null)
-                {
-                    sql += " and c.Icode = '" + CountryAreas + "'";
-                }
-                if (key_words!=null&& key_words!="")
-                {
-                    sql += " and cm.CertCode+cm.CertName like '%"+key_words+"%'";
-                }
-                if (Cancel!="true")
-                {
-                    sql += " and IsVoid=1";
-                }
-                
-                List<NewCertificates_Master> DataList = db.Database.SqlQuery<NewCertificates_Master>(sql).ToList();
-                return JsonConvert.SerializeObject(DataList);
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Write(ex.Message);
-                throw;
-            }
-
-        }
-        /// <summary>
-        /// 新增认证管理的数据
-        /// </summary>
-        /// <returns></returns>
-        public int AddCertificatesManagementList(Certificates_Master Certificates_Master)
-        {
-            try
-            {
-
-                Certificates_Master.Remark = Certificates_Master.Remark.Trim();
-                Certificates_Master.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
-                Certificates_Master.CreateDept = new Authority().GetDepartmentSql(Certificates_Master.CreateBy, 0);
-                Certificates_Master.CreateTime = DateTime.Now;
-                Certificates_Master.UpdateBy = Certificates_Master.CreateBy;
-                Certificates_Master.UpdateDept = Certificates_Master.CreateDept;
-                Certificates_Master.UpdateTime = DateTime.Now;
-
-                db.Certificates_Master.Add(Certificates_Master);
-                return db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Write(ex.Message);
-                throw;
-            }
-        }
-        /// <summary>
-        /// 作废数据的方法
-        /// </summary>
-        /// <param name="CMSerail">数据的唯一标识 </param>
-        /// <returns></returns>
-        public int UpdateCertificatesISVoid(string CMSerial)
-        {
-            try
-            {
-                string sql = "select * from Certificates_Master where CMSerial='" + CMSerial + "'";
-                Certificates_Master DataList = db.Database.SqlQuery<Certificates_Master>(sql).FirstOrDefault();
-                DataList.IsVoid = true;
-                DataList.Remark = DataList.Remark.Trim();
-                DataList.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
-                DataList.CreateDept = new Authority().GetDepartmentSql(DataList.CreateBy, 0);
-                DataList.CreateTime = DateTime.Now;
-                DataList.UpdateBy = DataList.CreateBy;
-                DataList.UpdateDept = DataList.CreateDept;
-                DataList.UpdateTime = DateTime.Now;
-                DbEntityEntry<Certificates_Master> entry = this.db.Entry<Certificates_Master>(DataList);
-                entry.State = EntityState.Modified;
-                return db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Write(ex.Message);
-                throw;
-            }
-        }
-        /// <summary>
-        /// 修改认证证书事件  得  save
-        /// </summary>
-        /// <param name="certificates">修改的那一条数据</param>
-        /// <returns></returns>
-        public int CertificateEdit(Certificates_Master certificates)
-        {
-            try
-            {
-                string sql = "select * from Certificates_Master where CertCode='" + certificates.CertCode + "'";
-                Certificates_Master DataList = db.Database.SqlQuery<Certificates_Master>(sql).First();
-                DataList.IsVoid = DataList.IsVoid;
-                DataList.Remark = certificates.Remark.Trim();
-                DataList.CertName = certificates.CertName;
-                DataList.CountryArea = certificates.CountryArea;
-                DataList.Mkt_Cnty = certificates.Mkt_Cnty;
-                DataList.StdFee = certificates.StdFee;
-                DataList.StdTime = certificates.StdTime;
-                DataList.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
-                DataList.CreateDept = new Authority().GetDepartmentSql(DataList.CreateBy, 0);
-                DataList.CreateTime = DateTime.Now;
-                DataList.UpdateBy = DataList.CreateBy;
-                DataList.UpdateDept = DataList.CreateDept;
-                DataList.UpdateTime = DateTime.Now;
-                DbEntityEntry<Certificates_Master> entry = this.db.Entry<Certificates_Master>(DataList);
-                entry.State = EntityState.Modified;
-                return db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Write(ex.Message);
-                throw;
-            }
-
         }
         #endregion
     }

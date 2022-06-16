@@ -164,8 +164,6 @@
           <Property Name="ExpiryDate" Type="datetime" />
           <Property Name="Status" Type="varchar" MaxLength="7" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“WebStation.dbo.View_CertificatesManagement”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <Association Name="FK_Certificates_Cert_Apply_Case">
           <End Role="Cert_Apply_Case" Type="Self.Cert_Apply_Case" Multiplicity="1" />
           <End Role="Certificates" Type="Self.Certificates" Multiplicity="*" />

@@ -205,7 +205,6 @@
       <DependentUpon>CertificationApplicationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LogHelper.cs" />
-    <Compile Include="Models\NewCertificates_Master.cs" />
     <Compile Include="Models\Others.cs" />
     <Compile Include="Models\View_AllDataApplicationList.cs">
       <DependentUpon>CertificationApplicationModel.tt</DependentUpon>
@@ -237,8 +236,7 @@
     <Content Include="Scripts\Alert美化弹出框\sweetalert-2.1.2.min.js" />
     <Content Include="Scripts\Alert美化弹出框\sweetalert.min.css" />
     <Content Include="Scripts\AngularJS.js" />
-    <Content Include="Scripts\img\CertificatesManagementCountryArea.png" />
-    <Content Include="Scripts\img\Certificates_void.png" />
+    <Content Include="Scripts\jquery.table2excel.js" />
     <Content Include="Scripts\layui\css\layui.css" />
     <Content Include="Scripts\layui\css\modules\code.css" />
     <Content Include="Scripts\layui\css\modules\laydate\default\laydate.css" />
@@ -290,9 +288,7 @@
     <Content Include="Scripts\layui\layui\modules\upload.js" />
     <Content Include="Scripts\layui\layui\modules\util.js" />
     <Content Include="Scripts\layui\layui\soulTable.css" />
-    <Content Include="Scripts\PageJS\AddCertificates.js" />
-    <Content Include="Scripts\PageJS\CertificateUpdate.js" />
-    <Content Include="Scripts\PageJS\Create.js" />
+    <Content Include="Scripts\PageJS\FunctionInterface.js" />
     <Content Include="Scripts\Create\Create.css" />
     <Content Include="Scripts\bootstrap-theme.min.css" />
     <Content Include="Scripts\bootstrap.js" />
@@ -315,7 +311,6 @@
     <Content Include="Scripts\img\upload.png" />
     <Content Include="Scripts\Index.css" />
     <Content Include="Scripts\PageJS\Detail.js" />
-    <Content Include="Scripts\PageJS\edit.js" />
     <Content Include="Scripts\PageJS\index.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jQuery.print.js" />
@@ -362,7 +357,7 @@
       <DependentUpon>CertificationApplicationModel.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
-    <Content Include="Views\CertificationApplication\Create.cshtml" />
+    <Content Include="Views\CertificationApplication\FunctionInterface.cshtml" />
     <Content Include="Views\CertificationApplication\Edit.cshtml" />
     <Content Include="Views\CertificationApplication\Detail.cshtml" />
     <Content Include="Views\CertificationApplication\Product_Model_Update.cshtml" />
@@ -378,10 +373,7 @@
     <Content Include="Scripts\layui\layui\font\iconfont.ttf" />
     <Content Include="Scripts\layui\layui\font\iconfont.woff" />
     <Content Include="Scripts\layui\layui\font\iconfont.woff2" />
-    <Content Include="Views\CertificationApplication\SelectCertificatesCountriesAreas.cshtml" />
-    <Content Include="Views\CertificationApplication\AddCertificates.cshtml" />
-    <Content Include="Views\CertificationApplication\CertificateMasterDetails.cshtml" />
-    <Content Include="Views\CertificationApplication\CertificateEdit.cshtml" />
+    <Content Include="Views\CertificationApplication\IndexPrinting.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

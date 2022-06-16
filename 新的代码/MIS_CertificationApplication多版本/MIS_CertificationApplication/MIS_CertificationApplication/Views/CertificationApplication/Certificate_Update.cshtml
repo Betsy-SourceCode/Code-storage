@@ -1,0 +1,181 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <script src="~/Scripts/PageJS/CertificateUpdate.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
+    <link href="~/Scripts/Create/Create.css" rel="stylesheet" />
+    <style>
+        .SelectModels, .SelectFactories, .SelectcovereArea {
+            height: 35px !important;
+            line-height: 35px !important;
+            background-color: rgb(47 117 181) !important;
+            color: yellow !important;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+        }
+
+        .SelectcovereArea {
+            width: 30% !important;
+        }
+
+        th {
+            color: yellow;
+        }
+        /*新增-标题字体加大加粗*/
+        .layui-layer-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .SelectCertificateMasterDetails {
+            border: 2px solid black !important;
+            font-size: 20px !important;
+            width: 20% !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            color: black !important;
+            background-color: rgb(189 215 238) !important;
+        }
+        div.swal-overlay,div.swal-overlay--show-modal {
+            z-index: 19999999 !important;
+        }
+    </style>
+</head>
+<body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
+    <div id="container" style="overflow: hidden">
+        <h1 style="text-align: center;">
+            <span id="Title"></span>
+        </h1>
+        <h1 style="text-align: center;">
+            <span id="Title1">Certificates Management  </span>
+        </h1>
+        <!--搜索条件栏-->
+        <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 80%;margin:0px auto">
+            <div class="panel-heading">
+                @*key-words*@
+                <div class="panel-heading col-sm-11">
+                    <div class="col-sm-3">
+                        <label style="padding-left:114px">key-words</label>：
+                    </div>
+                    <div class="col-sm-6">
+                        <input name="key_words" type="text" id="key_words" class=" form-control input-content" style="width:60%;margin-right:50px" />
+                        <input type="checkbox" name="Cancel" id="Cancel" style="zoom:100%" checked >
+                        <label style="font-size:17px">Include Voids Records</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="button" name="btnPrint" class="form-control  btnBack" value="打印" ng-click="" />
+                        <input type="button" name="btnDaochu" class="form-control  btnBack" value="导出" ng-click="" />
+                    </div>
+                </div>
+                @*K3 Items Num*@
+            <div class="panel-heading col-sm-11">
+                <div class="col-sm-3">
+                    <label style="padding-left:70px">For Country/Area</label>：
+                </div>
+                <div class="col-sm-6" style="position:relative">
+                    <input disabled="disabled" name="CountryArea" type="text" id="CountryArea" class=" form-control input-content" style="width: 100%; margin-right: 50px;padding-right:15%" />
+                    <img id="Area" style="position:absolute;right:5%;top:11%" src="~/Scripts/img/CertificatesManagementCountryArea.png" ng-click="CountryArea()"/>
+                </div>
+                <div class="col-sm-3">
+                    <input type="button" name="btnSearch" class="form-control  btnBack" value="搜索" ng-click="CertificatesManagementList()" />
+                    <input type="button" name="btnAdd" class="form-control  btnBack" value="新增" ng-click="AddCertificates('', '', '', '', '', '')"/>
+                </div>
+            </div>
+            </div>
+
+
+        </form>
+    </div>
+    <!-- 表格上方 -->
+    <div style="width: 85%;margin:0px auto;">
+        <div style="font-size:15px;font:bold"><label>Result of Search:</label><label style="font-size:10px;color:gray;font-weight:100"> Key-Words like '<label id="key"></label>' and For Country/Area include '<label id="country"></label>' </label></div>
+    </div>
+    <!-- 表格 -->
+    <div style="width: 92%;margin:0px auto;">
+        <table id="GridView" class="table-striped tab-content table-hover table" style="width: 98%; margin: 0px auto; margin-bottom: 1%;text-align:center">
+            <thead>
+                <tr style="background-color:rgb(0,112,192);">
+                    <th style="width:10%">
+                        Cert-Code<br />
+                        认 证 代 码
+                    </th>
+                    <th style="width:30%">
+                        Cert-Name<br />
+                        认证名称
+                    </th>
+                    <th style="width:10%">
+                        For Country/Area<br />
+                        适用国家/区域
+                    </th>
+                    <th style="width:10%">
+                        Std Fee<br />
+                        标准价格
+                    </th>
+                    <th style="width:10%">
+                        Std time<br />
+                        标准测试日
+                    </th>
+                    <th style="width:20%">
+                        Remarks<br />
+                        备注
+                    </th>
+                    <th style="width:10%">
+                        功能管理
+                        <br />
+                        Functions
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="Content" ng-repeat="i in list track by $index">
+                <tr ng-dblclick="CertificateMasterDetails(i.CertCode)" ng-if="i.IsVoid" style="box-decoration-break: slice;color:rgb(128,128,128); z-index: 100; cursor: pointer;text-decoration:line-through;background-color:rgb(255,233,233)">
+                    <td>{{i.CertCode}}</td>
+                    <td>{{i.CertName}}</td>
+                    <td>{{i.CountryArea}}</td>
+                    <td>{{i.StdFee}}</td>
+                    <td>{{i.StdTime}}</td>
+                    <td>{{i.Remark}}</td>
+                    <td>
+                        <img ng-if="!i.IsVoid" style="width:28px;height:25px" src="~/Scripts/img/edit.png" />
+                        <img style="width:28px;height:25px" src="~/Scripts/img/create.png" ng-click="AddCertificates(i.CertCode, i.CertName, i.CountryArea, i.StdFee, i.StdTime, i.Remark,i.Mkt_Cnty)"/>
+                        <img ng-if="!i.IsVoid" style="width:28px;height:25px" src="~/Scripts/img/Certificates_void.png" />
+                    </td>
+                </tr>
+                <tr ng-if="!i.IsVoid" style="box-decoration-break: slice; z-index: 100; cursor: pointer;" ng-dblclick="CertificateMasterDetails(i.CertCode)">
+                    <td>{{i.CertCode}}</td>
+                    <td>{{i.CertName}}</td>
+                    <td>{{i.CountryArea}}</td>
+                    <td>{{i.StdFee}}</td>
+                    <td>{{i.StdTime}}</td>
+                    <td>{{i.Remark}}</td>
+                    <td>
+                        <img style="width:28px;height:25px" src="~/Scripts/img/edit.png" ng-click="CertificateEdit(i.CertCode, i.IsVoid)" />
+                        <img style="width:28px;height:25px" src="~/Scripts/img/create.png" ng-click="AddCertificates(i.CertCode, i.CertName, i.CountryArea, i.StdFee, i.StdTime, i.Remark,i.Mkt_Cnty)"/>
+                        <img style="width:28px;height:25px" src="~/Scripts/img/Certificates_void.png" ng-click="ISVoid(i.CMSerial)"/>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody id="NullList">
+                <tr><td id="Message" colspan='7' class='text-center' style='color:red;font-size:20px'>点击搜索按钮后加载数据</td></tr>
+            </tbody>
+        </table>
+      
+    </div>
+
+</body>
+</html>

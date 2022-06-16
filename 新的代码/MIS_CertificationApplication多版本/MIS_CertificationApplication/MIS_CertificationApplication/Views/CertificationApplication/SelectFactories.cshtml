@@ -1,0 +1,78 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        #content {
+            width: 100%;
+            margin: 0px auto;
+            @*border: 4px solid blue;*@
+            text-align: center;
+        }
+
+        #main {
+            font-size: 20px;
+            padding: 5px 0px 10px 0px;
+            position: relative;
+        }
+
+        #close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        #btnconfirm {
+            width: 80%;
+            height: 40px;
+            line-height: 40px;
+            background-color: rgb(47 117 181);
+            color: yellow;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .check {
+            width: 20px;
+            height: 20px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div id="main">
+            @*<h2 style="margin:5px;font-weight:500">多选GIP工厂</h2>
+                <a href="#"><img id="close" src="~/Scripts/img/close.png" /></a>*@
+
+        </div>
+        @*<input id="btnconfirm" type="button" value="Confirm & Return" />*@
+    </div>
+    <script>
+        $(function () {
+            var Factories = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetManufacturerList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Factories += '<input id="' + value.Name + '" class="check" name="test" type="checkbox" value="' + value.Text + '"/>      ' + value.Text + "<div></div>";
+                    })
+                    $("#main").append(Factories);
+                    return false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

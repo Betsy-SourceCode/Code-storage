@@ -17,7 +17,6 @@
         <h1 style="text-align: center;">
             <span id="Title">Certificates Application Details</span>
         </h1>
-        <h1><a id="aaaa">测试</a></h1>
         <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 80%;margin:0px auto">
             @*左边*@
             <div style="float: left; width: 60%;" class="panel-heading col-sm-7">
@@ -132,32 +131,32 @@
                             if (@hzm == "pdf")
                             {
                                 <div style="height:auto;width:100px;position:relative">
-                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile('@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/pdf.png" /></a>
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName', '@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/pdf.png" /></a>
                                 </div>
                             }
                             else if (@hzm == "doc" || @hzm == "docx")
                             {
                                 <div style="height:auto;width:100px;position:relative">
-                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile('@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/word.png" /></a>
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/word.png" /></a>
                                 </div>
                             }
                             else if (@hzm == "xls" || @hzm == "xlsx" || @hzm == "csv")
                             {
 
                                 <div style="height:auto;width:100px;position:relative">
-                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile('@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/excel.png" /></a>
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/excel.png" /></a>
                                 </div>
                             }
                             else if (@hzm == "ppt" || @hzm == "pptx")
                             {
                                 <div style="height:auto;width:100px;position:relative">
-                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile('@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/ppt.png" /></a>
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/ppt.png" /></a>
                                 </div>
 
                             }
                             else
                             {
-                                <a href="#" id="downloadFile" style="margin-top:15px" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile('@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><b>下载</b></a>
+                                <a href="#" id="downloadFile" style="margin-top:15px" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><b>下载</b></a>
                             }
 
                         }
@@ -196,6 +195,7 @@
                 </tr>
             </thead>
             <tbody id="Content">
+                @{var i = 0;}
                 @foreach (var item in ViewBag.SonData)
                 {
                     if (item.Cert_Ref != null)
@@ -224,6 +224,7 @@
                             <td>
                                 @{
                                     string Sonhzm = @item.CertFileName;
+                                    i = ++i;
                                     if (Sonhzm != null)
                                         Sonhzm = Sonhzm.Substring(Sonhzm.LastIndexOf(".") + 1, Sonhzm.ToString().Length - (Sonhzm.LastIndexOf(".") + 1));
                                 }
@@ -232,32 +233,32 @@
                                     if (@Sonhzm == "pdf")
                                     {
                                         <div style="height:auto;width:100px;position:relative">
-                                            <a href="" class="downloadFile" title="点击下载 @item.CertFileName" onclick="downloadFile('@item.CertFileName','@Convert.ToBase64String(@item.CertFile)')"><img src="~/Scripts/img/pdf.png" /></a>
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/pdf.png" /></a>
                                         </div>
                                     }
                                     else if (@Sonhzm == "doc" || @Sonhzm == "docx")
                                     {
                                         <div style="height:auto;width:100px;position:relative">
-                                            <a href="" class="downloadFile" title="点击下载 @item.CertFileName" onclick="downloadFile('@item.CertFileName','@Convert.ToBase64String(@item.CertFile)')"><img src="~/Scripts/img/word.png" /></a>
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/word.png" /></a>
                                         </div>
                                     }
                                     else if (@Sonhzm == "xls" || @Sonhzm == "xlsx" || @Sonhzm == "csv")
                                     {
 
                                         <div style="height:auto;width:100px;position:relative">
-                                            <a href="" class="downloadFile" title="点击下载 @item.CertFileName" onclick="downloadFile('@item.CertFileName','@Convert.ToBase64String(@item.CertFile)')"><img src="~/Scripts/img/excel.png" /></a>
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/excel.png" /></a>
                                         </div>
                                     }
                                     else if (@Sonhzm == "ppt" || @Sonhzm == "pptx")
                                     {
                                         <div style="height:auto;width:100px;position:relative">
-                                            <a href="" class="downloadFile" title="点击下载 @item.CertFileName" onclick="downloadFile('@item.CertFileName','@Convert.ToBase64String(@item.CertFile)')"><img src="~/Scripts/img/ppt.png" /></a>
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/ppt.png" /></a>
                                         </div>
 
                                     }
                                     else
                                     {
-                                        <a href="#" class="downloadFile" style="margin-top:15px" title="点击下载 @item.CertFileName" onclick="downloadFile('@item.CertFileName','@Convert.ToBase64String(@item.CertFile)')"><b>下载</b></a>
+                                        <a href="#" id="SondownloadFile @i" style="margin-top:15px" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><b>下载</b></a>
                                     }
 
                                 }
@@ -298,7 +299,7 @@
         <label style="font-size:12px;padding-left:2%;color:lightgray">Creation: CreateBy (Create-Dept) Create-Time</label>
     </div>
     <div style="text-align:center;margin:0px auto;">
-        <input type="button" name="Close" value="Close" style="margin-right:20%;font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" />
+        <input type="button" name="Close" value="Close" style="margin-right:20%;font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" onclick="window.location.href = '/CertificationApplication/CertificationApplication/index?userid='+@ViewBag.userid" />
         <input type="button" name="Delete" value="Delete" style="font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" />
     </div>
 </body>
