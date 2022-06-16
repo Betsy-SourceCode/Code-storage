@@ -1,0 +1,306 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <link href="~/Scripts/Create/Create.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/PageJS/Detail.js"></script>
+</head>
+<body style="max-width:98%;min-width:1250px; margin:0px auto">
+    <div id="container" style="overflow: hidden">
+        <h1 style="text-align: center;">
+            <span id="Title">Certificates Application Details</span>
+        </h1>
+        <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 80%;margin:0px auto">
+            @*左边*@
+            <div style="float: left; width: 60%;" class="panel-heading col-sm-7">
+                <div class="panel-heading col-sm-10">
+                    <label class="font-backColor">Applicant Ref #</label>：
+                    <label id="ApplicantRef">@ViewBag.Data.ApplicationRef</label>
+                </div>
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor">Applicant (Client)</label>：
+                    <label id="Applicant">@ViewBag.Data.Applicant</label>
+                </div>
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:29px">Manufacturer</label>：
+                    <label id="Manufacturer">@ViewBag.Data.Manufacturer</label>
+                </div>
+                <div class="panel-heading  col-sm-6">
+                    <label class="font-backColor" style="padding-left: 49px;">Customer</label>：
+                    <label id="Customer">@ViewBag.Data.Customer</label>
+                </div>
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left: 51px;">Currency</label> ：
+                    <label id="Currency">@ViewBag.Data.Currency</label>
+                </div>
+                <div class="panel-heading  col-sm-6">
+                    <label class="font-backColor" style="padding-left: 76px;">Payer</label>：
+                    <label id="Payer">@ViewBag.Data.Payer</label>
+                </div>
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:9px">Application Fee</label> ：
+                    <label id="ApplicationFee">@ViewBag.Data.ApplyFee</label>
+                </div>
+
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:10px">Client PO Ref #</label>：
+                    <label id="ClientPORef">@ViewBag.Data.ClientPO</label>
+                </div>
+
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:23px">Inspection fee</label>：
+                    <label id="Inspectionfee">@ViewBag.Data.InspectFee</label>
+                </div>
+
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:24px">GIP OA Ref #</label>：
+                    <label id="GIPOARef">@ViewBag.Data.GIPOA</label>
+                </div>
+
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:6px">Anual Renew fee</label>：
+                    <label id="AnualRenewfee">@ViewBag.Data.YearFee</label>
+                </div>
+            </div>
+            @*右边*@
+            <div style="float: right; width: 40%;">
+                <div class="panel-heading col-sm-15" style="position: relative;display:flex;padding:50px 15px">
+                    <div id="ProductModel">
+                        <label class="font-backColor" style="padding-left:17px">{Product Model(s)}</label>：
+                    </div>
+                    <div style="height: 80px; width: 56%; position: relative">
+                        <label id="ProductModel">@ViewBag.Data.ProductModel</label>
+                    </div>
+                    <div style="position:absolute;top:100px;left:30px">
+                        <img src="~/Scripts/img/model&certificate.png" />
+                    </div>
+                </div>
+                <div class="panel-heading col-sm-15" style="position: relative;display:flex;padding:0px 15px">
+                    <div id="Otherservices">
+                        <label class="font-backColor">Other services & fees<br />(include recurrings)</label>：
+                    </div>
+                    <div style="height: 80px; width: 56%; position: relative">
+                        <label id="Otherservices">
+                            @ViewBag.Data.O_SrvFees
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+            @*remarks*@
+            <div class="panel-heading">
+                <div class="panel-heading col-sm-12">
+                    <label class="font-backColor" style="padding-left:51px">Remarks</label>：
+                    <label id="Remarks">@ViewBag.Data.Remark</label>
+                </div>
+            </div>
+            @*输入区域下半部分*@
+            <div class="panel-heading col-sm-11">
+                <div class="panel-heading col-sm-4">
+                    <label class="font-backColor" style="padding-left:6px">Quotation Ref #</label>：
+                    <label id="QuotationRef">@ViewBag.Data.QuoteRef</label>
+                </div>
+                <div class="panel-heading col-sm-4">
+                    <label class="font-backColor" style="padding-left:62px;">Supplier</label>：
+                    <label id="Supplier">@ViewBag.Data.Supplier</label>
+                </div>
+                <div class="panel-heading col-sm-4" style="position: relative;display:flex;padding:0px 15px">
+                    <div id="Otherservices">
+                        <label class="font-backColor" style="padding-left:55px;">Quotation<br />Attachment</label>：
+                    </div>
+                    <div style="height:45px ;width:90px;position:relative" id="Quotation">
+                        <!--下载文件-->
+                        @{
+                            string hzm = ViewBag.Data.QuoteFileName;
+                            if (hzm != null)
+                            {
+                                hzm = hzm.Substring(hzm.LastIndexOf(".") + 1, hzm.ToString().Length - (hzm.LastIndexOf(".") + 1));
+                            }
+
+                        }
+                        @if (ViewBag.Data.QuoteFile != null)
+                        {
+                            if (@hzm == "pdf")
+                            {
+                                <div style="height:auto;width:100px;position:relative">
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName', '@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/pdf.png" /></a>
+                                </div>
+                            }
+                            else if (@hzm == "doc" || @hzm == "docx")
+                            {
+                                <div style="height:auto;width:100px;position:relative">
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/word.png" /></a>
+                                </div>
+                            }
+                            else if (@hzm == "xls" || @hzm == "xlsx" || @hzm == "csv")
+                            {
+
+                                <div style="height:auto;width:100px;position:relative">
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/excel.png" /></a>
+                                </div>
+                            }
+                            else if (@hzm == "ppt" || @hzm == "pptx")
+                            {
+                                <div style="height:auto;width:100px;position:relative">
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/ppt.png" /></a>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <a href="#" id="downloadFile" style="margin-top:15px" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><b>下载</b></a>
+                            }
+
+                        }
+                        else
+                        {
+                            <label style="margin-top:15px"><b>未上传文件</b></label>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--表格上方-->
+    <div style="width: 85%;margin:0px auto;">
+
+        <div><label> Certificate(s):</label></div>
+
+    </div>
+
+    <!--表格-->
+    <div style="width: 92%;margin:0px auto;">
+
+        <table id="GridView" class="table-striped tab-content table-hover table" style="width: 98%; margin: 12px auto; margin-bottom: 1%;text-align:center">
+            <thead>
+                <tr style="background-color: rgba(217,217,217,0.1)">
+                    <th>
+                        Name < img src="~/Scripts/img/Name.png" />
+                    </th>
+                    <th>Reference Number</th>
+                    <th>Issuer</th>
+                    <th>{ Factory(ies)}</th>
+                    <th>{Covered Area(s) / Country(ies)}</th>
+                    <th>Expiry(Y/M/D)</th>
+                    <th>Attachment</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="Content">
+                @{var i = 0;}
+                @foreach (var item in ViewBag.SonData)
+                {
+                    if (item.Cert_Ref != null)
+                    {
+                        <tr>
+                            <td>
+                                @item.CertName
+                            </td>
+                            <td>
+                                @item.Cert_Ref
+                            </td>
+                            <td>
+                                @item.Issuer
+                            </td>
+                            <td style="position:relative">
+                                @item.Factories
+
+                            </td>
+                            <td style="position:relative">
+                                @item.CoverAreas
+                            </td>
+                            <td style="position:relative">
+                                @item.Expiry
+                            </td>
+                            <!--文件-->
+                            <td>
+                                @{
+                                    string Sonhzm = @item.CertFileName;
+                                    i = ++i;
+                                    if (Sonhzm != null)
+                                        Sonhzm = Sonhzm.Substring(Sonhzm.LastIndexOf(".") + 1, Sonhzm.ToString().Length - (Sonhzm.LastIndexOf(".") + 1));
+                                }
+                                @if (@item.CertFile != null)
+                                {
+                                    if (@Sonhzm == "pdf")
+                                    {
+                                        <div style="height:auto;width:100px;position:relative">
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/pdf.png" /></a>
+                                        </div>
+                                    }
+                                    else if (@Sonhzm == "doc" || @Sonhzm == "docx")
+                                    {
+                                        <div style="height:auto;width:100px;position:relative">
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/word.png" /></a>
+                                        </div>
+                                    }
+                                    else if (@Sonhzm == "xls" || @Sonhzm == "xlsx" || @Sonhzm == "csv")
+                                    {
+
+                                        <div style="height:auto;width:100px;position:relative">
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/excel.png" /></a>
+                                        </div>
+                                    }
+                                    else if (@Sonhzm == "ppt" || @Sonhzm == "pptx")
+                                    {
+                                        <div style="height:auto;width:100px;position:relative">
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/ppt.png" /></a>
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        <a href="#" id="SondownloadFile @i" style="margin-top:15px" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><b>下载</b></a>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <label style="margin-top:15px"><b>未上传文件</b></label>
+                                }
+                            </td>
+                            @if (@item.Status == "Pending")
+                            {
+                                <td style="color: blue">
+                                    @item.Status
+                                </td>
+                            }
+                            @if (@item.Status == "Active")
+                            {
+                                <td style="color:green">
+                                    @item.Status
+                                </td>
+                            }
+                            @if (@item.Status == "Expired")
+                            {
+                                <td style="color:red">
+                                    @item.Status
+                                </td>
+                            }
+                            @if (@item.Status == "Discard")
+                            {
+                                <td style="color:orange">
+                                    @item.Status
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <label style="font-size:12px;padding-left:2%;color:lightgray">Creation: CreateBy (Create-Dept) Create-Time</label>
+    </div>
+    <div style="text-align:center;margin:0px auto;">
+        <input type="button" name="Close" value="Close" style="margin-right:20%;font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" onclick="window.location.href = '/CertificationApplication/CertificationApplication/index?userid='+@ViewBag.userid" />
+        <input type="button" name="Delete" value="Delete" style="font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" />
+    </div>
+</body>
+</html>
