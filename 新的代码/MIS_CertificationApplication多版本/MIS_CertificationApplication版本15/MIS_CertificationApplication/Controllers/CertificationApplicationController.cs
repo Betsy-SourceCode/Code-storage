@@ -242,6 +242,14 @@ namespace MIS_CertificationApplication.Controllers
             return View();
         }
         /// <summary>
+        /// Select-Factories界面   子表中型号多选框
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SelectModels()
+        {
+            return View();
+        }
+        /// <summary>
         /// Certificate Master Details 界面  作废和未作废的
         /// </summary>
         /// <returns></returns>
