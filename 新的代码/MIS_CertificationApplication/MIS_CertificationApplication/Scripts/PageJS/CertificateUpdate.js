@@ -17,7 +17,6 @@ app.controller('mycontroller', function ($scope, $compile) {
         else {
             Cancel = false;
         }
-        console.log()
         $.ajax({
             url: "/CertificationApplication/CertificationApplicationSQL/GetCertificatesManagementList",
             type: 'post',
@@ -114,24 +113,32 @@ app.controller('mycontroller', function ($scope, $compile) {
                 let StdTime = body.find('#StandardTime').val();
                 let Remark = body.find('#Remarks').val();
 
-                //执行新增操作
-                $.ajax({
-                    url: "/CertificationApplication/CertificationApplicationSQL/AddCertificatesManagementList",
-                    type: 'post',
-                    dataType: 'json',
-                    data: { 'CertCode': CertCode, 'CertName': CertName, 'Mkt_Cnty': ArrCovereArea, 'StdFee': StdFee, 'StdTime': StdTime, 'Remark': Remark },
-                    success: function (res) {
-                        //CertificateMasterDetails界面
-                        if (CertCode != "") {
-                            $scope.CertificateMasterDetails(CertCode);
-                            layer.close(index);
+                if (CertCode != "" || CertName != "" || ArrCovereArea != "" || country != "") {
+                    //执行新增操作
+                    $.ajax({
+                        url: "/CertificationApplication/CertificationApplicationSQL/AddCertificatesManagementList",
+                        type: 'post',
+                        dataType: 'json',
+                        data: { 'CertCode': CertCode, 'CertName': CertName, 'Mkt_Cnty': ArrCovereArea, 'StdFee': StdFee, 'StdTime': StdTime, 'Remark': Remark },
+                        success: function (res) {
+                            //CertificateMasterDetails界面
+                            if (res > 0) {
+                                $scope.CertificateMasterDetails(res);//res为CMSerial 数据库唯一标识
+                                layer.close(index);
+                            } else {
+                                swal('Comfirm失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                            }
+                        },
+                        error: function (res) {
+                            //debugger;
+                            swal('Comfirm失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
                         }
-                    },
-                    error: function (res) {
-                        //debugger;
-                        //swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
-                    }
-                });
+                    });
+                }
+                else {
+                    swal('认证代码,认证名称,适用国家/区域!', '以上字段为必填项！', 'error')
+                }
+
             },
             btn2: function (index, layero) {
                 $scope.CertificatesManagementList();
@@ -162,16 +169,21 @@ app.controller('mycontroller', function ($scope, $compile) {
                 let CertCode = body.find('#CertCode').text();
                 let CertName = body.find('#CertName').text();
                 body.find('div[name="CountryArea"]').attr('id', SimpleArea);
-                let Mkt_Cnty = body.find('div[name="CountryArea"]').text();
+                let country = body.find('div[name="CountryArea"]').text();
+                let Mkt_Cnty = body.find('label[name="Mkt_Cnty"]').attr("id");
                 let StdFee = body.find('#StandardFees').text();
                 let StdTime = body.find('#StandardTime').text();
                 let Remark = body.find('#Remarks').text();
-                $scope.AddCertificates(CertCode, CertName, Mkt_Cnty, StdFee, StdTime, Remark);
+                $scope.AddCertificates(CertCode, CertName, country, StdFee, StdTime, Remark, Mkt_Cnty);
                 layer.close(index);
             },
             btn2: function (index, layero) {
                 //Edit
-                $scope.CertificateEdit(CertCode);
+                //获取子页面（iframe页）的body元素
+                var body = layer.getChildFrame('body', index);
+                // 得到找到body元素中id为CertCodeInput的元素，并获取其值赋值给g
+                let CertCode = body.find('#CertCode').text();
+                $scope.CertificateEdit(CertCode, 0);
             },
             btn3: function (index, layero) {
                 var body = layer.getChildFrame('body', index);
@@ -213,15 +225,51 @@ app.controller('mycontroller', function ($scope, $compile) {
                 let CertCode = body.find('#CertCode').text();
                 let CertName = body.find('#CertName').text();
                 body.find('input[name="CountryArea"]').attr('id', SimpleArea);
-                let Mkt_Cnty = body.find('div[name="CountryArea"]').text();
+                let CountryArea = body.find('div[name="CountryArea"]').text();
+                let Mkt_Cnty = body.find('label[name="Mkt_Cnty"]').attr("id");
                 let StdFee = body.find('#StandardFees').text();
                 let StdTime = body.find('#StandardTime').text();
                 let Remark = body.find('#Remarks').text();
-                $scope.AddCertificates(CertCode, CertName, Mkt_Cnty, StdFee, StdTime, Remark);
+                $scope.AddCertificates(CertCode, CertName, CountryArea, StdFee, StdTime, Remark, Mkt_Cnty);
                 layer.close(index);
             },
             btn2: function (index, layero) {
                 //Save
+                //获取子页面（iframe页）的body元素
+                var body = layer.getChildFrame('body', index);
+                // 得到找到body元素中id为CertCodeInput的元素，并获取其值赋值给g
+                let CertCode = body.find('#CertCodeInput').val();
+                let CertName = body.find('#CertName').val();
+                //body.find('#country').attr('id',);
+                body.find('input[name="CountryArea"]').attr('id', SimpleArea);
+                let Mkt_Cnty = body.find('input[name="CountryArea"]').each(function () {
+                    country = $(this).val();
+                    ArrCovereArea = this.id;  //存入数据库的  模糊查询地区代码
+                })
+                SimpleArea = ArrCovereArea;
+                let StdFee = body.find('#StandardFees').val();
+                let StdTime = body.find('#StandardTime').val();
+                let Remark = body.find('#Remarks').val();
+
+                //执行新增操作
+                $.ajax({
+                    url: "/CertificationApplication/CertificationApplicationSQL/AddCertificatesManagementList",
+                    type: 'post',
+                    dataType: 'json',
+                    data: { 'CertCode': CertCode, 'CertName': CertName, 'Mkt_Cnty': ArrCovereArea, 'StdFee': StdFee, 'StdTime': StdTime, 'Remark': Remark },
+                    success: function (res) {
+                        //CertificateMasterDetails界面
+                        if (CertCode != "") {
+                            $scope.CertificateMasterDetails(CertCode);
+                            layer.close(index);
+                        }
+                    },
+                    error: function (res) {
+                        //debugger;
+                        //swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                    }
+                });
+
             },
             btn3: function (index, layero) {
                 $scope.CertificatesManagementList();
@@ -258,6 +306,7 @@ app.controller('mycontroller', function ($scope, $compile) {
                         if (res > 0) {
                             swal('作废成功！', '', 'success');
                             $scope.CertificatesManagementList();
+                            $scope.$apply();
                         }
 
                     },
@@ -284,14 +333,15 @@ app.controller('mycontroller', function ($scope, $compile) {
                 //获取子页面（iframe页）的body元素
                 var body = layer.getChildFrame('body', index);
                 // 得到找到body元素中id为CertCodeInput的元素，并获取其值赋值给g
-                let CertCode = body.find('#CertCode').text();
+                var CertCode = body.find('#CertCode').text();
                 let CertName = body.find('#CertName').val();
-                body.find('input[name="CountryArea"]').attr('id', SimpleArea);
-                let Mkt_Cnty = body.find('input[name="CountryArea"]').val();
+                //body.find('input[name="CountryArea"]').attr('id', SimpleArea);
+                let country = body.find('input[name="CountryArea"]').val();
+                let Mkt_Cnty = body.find('input[name="CountryArea"]').attr("id");
                 let StdFee = body.find('#StandardFees').val();
                 let StdTime = body.find('#StandardTime').val();
                 let Remark = body.find('#Remarks').val();
-                $scope.AddCertificates(CertCode, CertName, Mkt_Cnty, StdFee, StdTime, Remark);
+                $scope.AddCertificates(CertCode, CertName, country, StdFee, StdTime, Remark, Mkt_Cnty);
                 layer.close(index);
             },
             btn2: function (index, layero) {
@@ -299,7 +349,7 @@ app.controller('mycontroller', function ($scope, $compile) {
                 //获取子页面（iframe页）的body元素
                 var body = layer.getChildFrame('body', index);
                 // 得到找到body元素中id为CertCodeInput的元素，并获取其值赋值给g
-                let CertCode = body.find('#CertCode').val();
+                let CertCode = body.find('#CertCode').text();
                 let CertName = body.find('#CertName').val();
                 let Mkt_Cnty = body.find('input[name="CountryArea"]').attr('id');
                 let country = body.find('input[name="CountryArea"]').val();

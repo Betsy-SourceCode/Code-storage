@@ -237,10 +237,9 @@
     <Content Include="Scripts\Alert美化弹出框\sweetalert-2.1.2.min.js" />
     <Content Include="Scripts\Alert美化弹出框\sweetalert.min.css" />
     <Content Include="Scripts\AngularJS.js" />
-    <Content Include="Scripts\img\Dontdelete.png" />
     <Content Include="Scripts\img\CertificatesManagementCountryArea.png" />
     <Content Include="Scripts\img\Certificates_void.png" />
-    <Content Include="Scripts\img\disable效果.png" />
+    <Content Include="Scripts\img\model.png" />
     <Content Include="Scripts\jquery.table2excel.js" />
     <Content Include="Scripts\layui\css\layui.css" />
     <Content Include="Scripts\layui\css\modules\code.css" />
@@ -322,6 +321,7 @@
     <Content Include="Scripts\PageJS\index.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jQuery.print.js" />
+    <Content Include="Scripts\PageJS\ProductModelUpdate.js" />
     <Content Include="Scripts\WdatePicker\calendar.js" />
     <Content Include="Scripts\WdatePicker\lang\en.js" />
     <Content Include="Scripts\WdatePicker\lang\zh-cn.js" />
@@ -385,6 +385,8 @@
     <Content Include="Views\CertificationApplication\CertificateEdit.cshtml" />
     <Content Include="Views\CertificationApplication\IndexPrinting.cshtml" />
     <Content Include="Views\CertificationApplication\FunctionInterface.cshtml" />
+    <Content Include="Views\CertificationApplication\Component_Model_Details.cshtml" />
+    <Content Include="Views\CertificationApplication\AddCopyEditProduct_Model.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

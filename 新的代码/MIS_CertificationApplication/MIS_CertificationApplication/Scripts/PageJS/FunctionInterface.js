@@ -1,63 +1,99 @@
 ﻿var app = angular.module('myApp', []);  //创建模块
 app.controller('mycontroller', function ($scope, $compile) {
-    /**
-    *新增/复制/修改
-    * @param type 1-新增，2-复制，3-修改
-    * @param ApplicationRef  复制和修改才有ApplicationRef(认证申请编号)
-     */
-    $scope.OperationData = function (type, ApplicationRef) {
-        //Customer客户下拉框验证
-        if ($("#Customer").val() == "") {
-            swal({
-                title: "保存失败",
-                text: "Customer下拉框未挑选，请挑选Customer后再点击Confirm按钮",
-                type: "error",
-                buttons: {
-                    button1: {
-                        text: "确认"
+    //下拉框初始化
+    {
+        //委任申请公司下拉框列表
+        $scope.Applicant = function () {
+            var Applicant = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetApplicantList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Applicant += '<option value="' + value.Name + '"';
+                        Applicant += ">" + value.Text + '</option > ';
+                    })
+                    $("#Applicant").append(Applicant);
+                    //不是新增的话，给下拉框赋默认值
+                    if ($("#type").val() != 1) {
+                        $("#ModelCode").find("option[value='" + + "']").attr("selected", true);
                     }
+                    return false;
                 }
-            }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
-                $("#Customer").focus();
             });
-            return false;
         }
-        //Models验证非空
-        if ($("#Models").html() == "") {
-            swal('保存失败!', '原因：Product Model未挑选，请挑选Product Model后再点击Confirm按钮', 'error') //提示框
-            return false;
+        $scope.Applicant();
+        //制造商下拉框列表
+        $scope.Manufacturer = function () {
+            var Manufacturer = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetManufacturerList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Manufacturer += '<option value="' + value.Name + '"';
+                        Manufacturer += ">" + value.Text + '</option > ';
+                    })
+                    $("#Manufacturer").append(Manufacturer);
+                    return false;
+                }
+            });
         }
+        $scope.Manufacturer();
+        //客户下拉框列表
+        $scope.Customer = function () {
+            var Customer = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetCustomerList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Customer += '<option value="' + value + '"';
+                        Customer += ">" + value + '</option > ';
+                    })
+                    $("#Customer").append(Customer);
+                    return false;
+                }
+            });
+        }
+        $scope.Customer();
+        //费用货币下拉框列表
+        $scope.Currency = function () {
+            var Currency = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetCurrencyList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Currency += '<option value="' + value.Name + '"';
+                        Currency += ">" + value.Text + '</option > ';
+                    })
+                    $("#Currency").append(Currency);
+                    return false;
+                }
+            });
+        }
+        $scope.Currency();
+    }
+
+    //新增按钮点击保存数据
+    $scope.InsertData = function () {
         //子表的数据
         var SonListsArray = []; //存放子表数据
-        if (type != 1) { //复制和修改用
-            index = $("#Content tr").length;
-        }
         for (var i = 0; i < index; i++) {
             //取自定义属性的值
             var Name = $('#GridView').find("select option:selected").eq(i).val();
-            //认证名称下拉框非空验证
-            if (Name == "") {
-                swal({
-                    title: "保存失败",
-                    text: "子表的Name下拉框未挑选，请挑选Name后再点击Confirm按钮",
-                    type: "error",
-                    buttons: {
-                        button1: {
-                            text: "确认"
-                        }
-                    }
-                }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
-                    $("#Name" + (i + 1)).focus();
-                });
-                return false;
-            }
             var ReferenceNumber = $('#GridView').find("input[name='ReferenceNumber']").eq(i).val();
             var Issuer = $('#GridView').find("input[name='Issuer']").eq(i).val();
             var factory = $('#GridView').find(".factory").eq(i).attr("ArrFactories");  //子表工厂
             var CoverAreas = $('#GridView').find(".CoverAreas").eq(i).attr("ArrCovereArea");  //子表国家区域
             var date = $('#GridView').find("input[type='date']").eq(i).val(); //有效期
             var Attachment = $('#GridView').find(".Attachment").eq(i).val();
-            SonListsArray.push({ "CM_Serial": Name, "Cert_Ref": ReferenceNumber, "Issuer": Issuer, "Factories": factory, "CoverAreas": CoverAreas, "Expiry": date, "CertFile": Attachment, "CertFileName": "file" + (i + 1), "Sonflag": true });
+            SonListsArray.push({ "CM_Serial": Name, "Cert_Ref": ReferenceNumber, "Issuer": Issuer, "Factories": factory, "CoverAreas": CoverAreas, "Expiry": date, "CertFile": Attachment, "CertFileName": "file" + (i + 1) });
         }
         //console.log(SonListsArray);
         var form = $('#Myform').serialize();
@@ -69,48 +105,29 @@ app.controller('mycontroller', function ($scope, $compile) {
         //用表单来初始化
         var formData = new FormData(form); //文件上传一定要用FormData,表单文件上传的name不需要设置
         formData.append("Models", Models);
-        if (ApplicationRef != "") { //复制和修改才有ApplicationRef(认证申请编号)
-            formData.append("CA_Ref", ApplicationRef);
-        }
+        formData.append("Son", JSON.stringify(SonListsArray));
+        //注意这里是单张图片，只要了第一张
+        /*        formData.append("Mainfile", $("#MainUpload").get(0).files[0]);*/
         //循环将文件添加到formData
         var input = $('input[type = "file"]');
         var SonNum = 0; //子表文件索引
         input.each(function (key, value) {
-            if (value.id == "MainUpload") {//主表标识
+            if (value.id == "MainUpload") {  //主表标识
                 formData.append("Mainfile", value.files[0]);
-                if (value.defaultValue == "") {
-                    formData.append("Mainflag", false);
-                }
-                else {
-                    formData.append("Mainflag", true);
-                }
             }
             else {
-                if (value.defaultValue == "") {
-                    SonListsArray[SonNum].Sonflag = false;
-                }
-                if (value.files[0] != null) {
-                    SonListsArray[SonNum].Sonflag = true;
-                }
                 SonNum += 1;
                 formData.append("file" + SonNum, value.files[0]);
             }
 
         });
-        formData.append("Son", JSON.stringify(SonListsArray));
-        var method = "";
-        if (type == 2 || type == 3) {
-            formData.append("type", type);
-            method = "CopyOrUpdataData"; //复制/修改
-        }
-        else {
-            method = "InsertData"; //新增
-        }
         $.ajax({
-            url: "/CertificationApplication/CertificationApplicationSQL/" + method,
+            url: "/CertificationApplication/CertificationApplicationSQL/InsertData",
             type: 'post',
             dataType: 'json',
             data: formData,
+            /*data: $.param({ "Son": SonListsArray, "Models": Models}) + '&' + from,*/
+            /*data: $.param({ 'SonList': JSON.stringify(SonListsArray) }) + '&' + from,*/
             contentType: false, // 告诉jQuery不要去设置Content-Type请求头（文件上传必须要）
             processData: false,   // 告诉jQuery不要去处理发送的数据（文件上传必须要）
             cache: false, //是否缓存            
@@ -119,24 +136,23 @@ app.controller('mycontroller', function ($scope, $compile) {
                     swal({
                         title: "保存成功",
                         text: "",
-                        type: "success",
+                        icon: "success",
                         buttons: {
                             button1: {
                                 text: "确认",
-                                value: result.ApplicationRef
+                                value: true,
                             }
                         }
                     }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
                         //跳转到详情页
-                        window.location.href = "/CertificationApplication/CertificationApplication/Detail?ApplicationRef=" + result.ApplicationRef;
+                        window.location.href = "/CertificationApplication/CertificationApplication/Detail? ApplicationRef ='" + result.ApplicationRef + '';
                     });
                 }
                 else {
                     swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
                 }
             },
-            error: function (e) {
-                console.log(e);
+            error: function (res) {
                 debugger;
                 swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
             }
@@ -145,14 +161,12 @@ app.controller('mycontroller', function ($scope, $compile) {
 
     //主表中多选框-模型列表的值
     $scope.SelectModels = function () {
-        var Models = $("#Models").attr("ArrModels");
-        $("#Models").attr("ArrModels");
         layer.open({
             type: 2,
             title: 'Select Products Models',
             skin: 'layui-layer-rim', //加上边框
             area: ['940px', '50%'], //宽高
-            content: '../CertificationApplication/SelectModels?Models=' + Models,
+            content: '../CertificationApplication/SelectModels',
             btn: ['Clear All Selected', 'Confirm & Return', 'Update Table'],
             btnAlign: 'c',
             btn1: function (index, layero) { //清楚所有的选中
@@ -176,11 +190,6 @@ app.controller('mycontroller', function ($scope, $compile) {
                 $("#Models").html(arr);
                 //关闭该子页面
                 layer.close(index);
-                if (arr != "") {
-                    //改变标题颜色和背景颜色
-                    $("#ProductModellabel").css({ "color": "black", "background-color": "lightgray" });
-                }
-
             },
             btn3: function (index, layero) { //更新表格
 
@@ -191,32 +200,42 @@ app.controller('mycontroller', function ($scope, $compile) {
                 $(".layui-layer-btn0").addClass("SelectModels");
                 $(".layui-layer-btn1").addClass("SelectModels");
                 $(".layui-layer-btn2").addClass("SelectModels");
+
             }
         });
 
     }
 
+    //主表中  新增模型  图标按钮的点击事件
+    $scope.ProductModelUpdate = function () {
+        layer.open({
+            type: 2,
+            title: '元  器  件 型 号 管 理',
+            skin: 'layui-layer-rim', //加上边框
+            area: ['98%', '95%'], //宽高
+            content: '../CertificationApplication/Product_Model_Update',
+            btnAlign: 'c'
+        });
+    }
+
     //子表方法整合
-    {    //全局变量-用于计算子表table有几行
+    {    //用于计算子表table有几行
         var index = 0;
         //子表新增一行数据
-        $scope.SonAddTr = function (type) {
-            if (type != 1) { //复制和修改用
-                index = $("#Content tr").length;
-            }
+        $scope.SonAddTr = function () {
             //动态创建tr
             var tr = '<tr>';
-            //认证名称下拉框
+
             tr += '<td><select name="Name" id="Name' + (index + 1) + '" class="form-control Name" ><option selected="selected" value="" style="text-align:center" ></option></select ></td>';
-            //Reference Number文本框
+
             tr += '<td><input name="ReferenceNumber" type="text" id="ReferenceNumber" class="form-control input-content" maxlength="30"/></td >';
-            //Issuer文本框
+
             tr += '<td ><input name="Issuer" type="text" id="Issuer" class="form-control input-content" maxlength="100"/></td >';
-            //factory多选框
+
             tr += '<td style="position:relative"><div style="margin-right:40px" class="factory"></div><a  href="" style="position:absolute;right:10px;top:10px;" ng-click="SelectFactories(' + index + ')"><img  src="../Scripts/img/factory-muliSelect.png" /></a></td >';
-            //CoverAreas多选框
+
             tr += '<td style="position:relative"><div style="margin-right:40px" class="CoverAreas" ></div><a href="" style="position:absolute;right:10px;top:10px;" ng-click="SelectCovereArea(' + index + ')" ><img  src="../Scripts/img/CoverAreas-muilSelect.png" /></a></td >';
-            //有效期日期选择器
+
             tr += '<td style="position:relative"><div style="margin-right:40px" class="date" ></div><input type="date" class="form-control"></td >';
             //子表文件上传
             /* tr += '<td style="position:relative"><div style="margin-right:40px" class="Attachment" ></div><a href="" id="upload" ng-click="upLoad()" style="position:absolute;right:10px;top:10px;" ><img src="../Scripts/img/upload.png" /></a><a href="" id="delete" ng-click="delete()" style="position:absolute;right:10px;top:10px;display:none"><img src="../Scripts/img/Del.png" /></a></td >';*/
@@ -226,12 +245,6 @@ app.controller('mycontroller', function ($scope, $compile) {
             //存放文件名，没有可展示的类型图片时使用
             tr += '<div><label id="FileName' + (index + 1) + '" style="display:none"></label><a href="" id="deleteImg' + (index + 1) + '"onclick="deletefile(\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\')" style="position: absolute; bottom:5px; right: 5px;display:none"> <img src="../Scripts/img/Del.png" title="删除已上传的文件" /> </a></div></div></td >';
 
-            //修改需要新增状态
-            if (type == 3) {
-                tr += '<td style="color:green">Active<br/>'
-                tr += '<img src = "../Scripts/img/cxl.png" />'
-                tr += '</td >'
-            }
             tr += '</tr>';
             index++;
             var template = angular.element(tr);
@@ -262,13 +275,12 @@ app.controller('mycontroller', function ($scope, $compile) {
 
         //子表中多选框-工厂
         $scope.SelectFactories = function (element) {
-            var Factories = $('#GridView').find(".factory").eq(element).attr("ArrFactories");  //子表工厂
             layer.open({
                 type: 2,
                 title: '多选GIP工厂',
                 skin: 'layui-layer-rim', //加上边框
                 area: ['450px', '30%'], //宽高
-                content: '../CertificationApplication/SelectFactories?Factories=' + Factories,
+                content: '../CertificationApplication/SelectFactories',
                 btn: ['Confirm & Return'],
                 btnAlign: 'c',
                 btn1: function (index, layero) { //提交并返回
@@ -301,13 +313,12 @@ app.controller('mycontroller', function ($scope, $compile) {
 
         //子表中多选框-国家区域
         $scope.SelectCovereArea = function (element) {
-            var CoverAreas = $('#GridView').find(".CoverAreas").eq(element).attr("ArrCovereArea");  //子表国家区域
             layer.open({
                 type: 2,
                 title: '多 选 国 家 区 域',
                 skin: 'layui-layer-rim', //加上边框
                 area: ['1600px', '65%'], //宽高
-                content: '../CertificationApplication/SelectCountriesAreas?CoverAreas=' + CoverAreas,
+                content: '../CertificationApplication/SelectCountriesAreas',
                 btn: ['Clear All Selected', 'Confirm & Return'],
                 btnAlign: 'c',
                 btn1: function (index, layero) {
@@ -342,7 +353,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             });
         }
 
-        //子表中认证名称操作
+        //子表中认证名称操作  点击进入新增认证的界面
         $scope.CertificatesManagement = function () {
             layer.open({
                 type: 2,
@@ -350,10 +361,7 @@ app.controller('mycontroller', function ($scope, $compile) {
                 skin: 'layui-layer-rim', //加上边框
                 area: ['98%', '95%'], //宽高
                 content: '../CertificationApplication/Certificate_Update',
-                btnAlign: 'c',
-                end: function () {
-
-                }
+                btnAlign: 'c'
             });
 
         }
@@ -363,13 +371,7 @@ app.controller('mycontroller', function ($scope, $compile) {
 //文件上传
 {
     //点击图片文件上传
-    function imgclick(MainUploadid, type, downloadFileid, QuoteFileid) {
-        //修改界面需要将a标签去除
-        if (type == 2 || type == 3) {
-            //after-在指定标签之后添加新的标签
-            $("#" + downloadFileid).after('<img id=' + QuoteFileid + ' style="padding: 5px; display: none" />');
-            $("#" + downloadFileid).remove();
-        }
+    function imgclick(MainUploadid) {
         $("#" + MainUploadid).click();
     }
     /**
@@ -466,38 +468,6 @@ app.controller('mycontroller', function ($scope, $compile) {
         $("#" + FileName).css({ 'display': 'none' });
         //清空文件
         $("#" + MainUploadid).val("");
-        //清空defaultValue
-        $("#" + MainUploadid).each(function (key, value) {
-            value.defaultValue = "";
-        })
-    }
-}
-
-//文件下载
-{
-    //下载
-    function downloadFile(node, fileName, Content) {
-        var hzm = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
-        var contentType = "application/" + hzm;
-        /*    Content += "data:base64," + Content;*/
-        let aLink = document.getElementById(node.id);
-        let blob = base64ToBlob(Content, contentType); //new Blob([Content]);
-        aLink.download = fileName;
-        aLink.href = URL.createObjectURL(blob);
-    };
-    /**
-         * base64转blob
-         * @param code  //base64码
-         * @param contentType   //文件类型
-         */
-    function base64ToBlob(code, contentType) {
-        let raw = window.atob(code);
-        let rawLength = raw.length;
-        let uInt8Array = new Uint8Array(rawLength);
-        for (let i = 0; i < rawLength; ++i) {
-            uInt8Array[i] = raw.charCodeAt(i);
-        }
-        return new Blob([uInt8Array], { type: contentType });
     }
 }
 
@@ -535,16 +505,4 @@ Date.prototype.Format = function (fmt) { // author: meizz
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
-}
-
-function FeiKong() {
-    //做必填选项判断
-    if ($("#Customer").val() == "") {
-        //改变标题颜色和背景颜色
-        $("#Customerlabel").css({ "color": "white", "background-color": "red" });
-    }
-    else {
-        //改变标题颜色和背景颜色
-        $("#Customerlabel").css({ "color": "black", "background-color": "lightgray" });
-    }
 }

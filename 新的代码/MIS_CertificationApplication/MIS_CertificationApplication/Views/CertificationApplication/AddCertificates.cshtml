@@ -34,10 +34,10 @@
     </script>
 </head>
 
-<body>
+<body style="max-width:800px;margin:0px auto">
     <div id="content" style="margin:0px auto;width:70%" ng-app="myApp" ng-controller="mycontroller">
         <h2 style="text-align:center">Create New Certificate Master </h2>
-        <div id="Certcode" class="panel-heading col-sm-11">
+        <div class="panel-heading col-sm-11" id="@ViewBag.certificates.CMSerial" name="CMSerial">
             <label>认证代码<br />Cert-code</label>：
             <input value="@ViewBag.certificates.CertCode" type="text" id="CertCodeInput" name="certcode" class="form-control" style="display:inline;width:77%;" onblur="BlurCertCode(this.value)" />
         </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="panel-heading col-sm-11" style="position:relative">
             <label>适用国家/区域<br />For Country/Area</label>：
-            <input value="@ViewBag.certificates.CountryArea" id="@ViewBag.certificates.Mkt_Cnty" disabled="disabled" type="text"  name="CountryArea" class="form-control" style="display:inline;width:66%;" />
+            <input value="@ViewBag.certificates.CountryArea" id="@ViewBag.certificates.Mkt_Cnty" disabled="disabled" type="text" name="CountryArea" class="form-control" style="display:inline;width:66%;" />
             <img style="position:absolute;right:10%;top:40%" src="~/Scripts/img/CertificatesManagementCountryArea.png" ng-click="CountryArea();" />
         </div>
         <div class="panel-heading col-sm-11">
@@ -62,7 +62,7 @@
         </div>
         <div class="panel-heading col-sm-11" style="position:relative">
             <label>备注<br />Remarks</label>：
-            <div  style="display:inline-block;width:80%;">
+            <div style="display:inline-block;width:80%;">
                 <textarea id="Remarks" class="form-control" name="Remarks" style="width: 100%; border: 1px solid black" maxlength="100">
                     @ViewBag.certificates.Remark
                 </textarea>

@@ -65,18 +65,10 @@
                 dataType: 'JSON',
                 url: "/CertificationApplication/CertificationApplicationSQL/GetManufacturerList",
                 success: function (result) {
-                     var arr = ("@ViewBag.Factories").split('|');
                     $.each(result, function (key, value) {
                         Factories += '<input id="' + value.Name + '" class="check" name="test" type="checkbox" value="' + value.Text + '"/>      ' + value.Text + "<div></div>";
                     })
                     $("#main").append(Factories);
-                    for (var i in arr) {
-                        $.each($("input[type='checkbox']"), function (key, value) {
-                            if (value.id == arr[i]) {
-                                $("#" + value.id).attr("checked", "checked");
-                            }
-                        });
-                    }
                     return false;
                 }
             });

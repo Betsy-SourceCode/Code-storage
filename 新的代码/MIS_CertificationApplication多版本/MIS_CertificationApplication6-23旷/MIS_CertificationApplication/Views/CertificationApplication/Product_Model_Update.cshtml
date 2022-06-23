@@ -1,0 +1,97 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/AngularJS.js"></script>
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <link href="~/Scripts/Create/Create.css" rel="stylesheet" />
+    <style>
+        th {
+            color: yellow;
+        }
+    </style>
+</head>
+<body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
+    <div id="container" style="overflow: hidden">
+        <h1 style="text-align: center;">
+            <span id="Title">产 品 型 号 管 理</span>
+        </h1>
+        <h1 style="text-align: center;">
+            <span id="Title1">Product Model Management </span>
+        </h1>
+        <!--搜索条件栏-->
+        <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 80%;margin:0px auto">
+
+
+            <div class="panel-heading">
+                @*key-words*@
+                <div class="panel-heading col-sm-11">
+                    <label style="padding-left:75px">key-words</label>：
+                    <input name="key_words" type="text" id="key_words" class=" form-control input-content" style="width:60%;margin-right:50px" />
+                    <input type="button" name="btnPrint" class="form-control  btnBack" value="打印" ng-click="" />
+                    <input type="button" name="btnDaochu" class="form-control  btnBack" value="导出" ng-click="" />
+                </div>
+                @*K3 Items Num*@
+                <div class="panel-heading col-sm-11">
+                    <label style="padding-left:51px">K3 Items Num</label>：
+                    <input name="K3ItemsNum" type="text" id="K3ItemsNum" class=" form-control input-content" style="width: 60%; margin-right: 50px" />
+                    <input type="button" name="btnSearch" class="form-control  btnBack" value="搜索" ng-click="" />
+                    <input type="button" name="btnAdd" class="form-control  btnBack" value="新增" ng-click="" />
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+    <!-- 表格上方 -->
+    <div style="width: 85%;margin:0px auto;">
+        <div style="font-size:15px;font:bold"><label>Result of Search:</label><label style="font-size:10px;color:gray;font-weight:100"> Key-Words like '' and K3-Items-Num include ''</label></div>
+    </div>
+    <!-- 表格 -->
+    <div style="width: 92%;margin:0px auto;">
+        <table id="GridView" class="table-striped tab-content table-hover table" style="width: 92%; margin: 0px auto; margin-bottom: 1%;text-align:center">
+            <thead>
+                <tr style="background-color:rgb(0,112,192);">
+                    <th>
+                        Model Code<br />
+                        型 号 代 码
+                    </th>
+                    <th>
+                        Model Description<br />
+                        型 号 描 述
+                    </th>
+                    <th>
+                        Specification<br />
+                        产 数
+                    </th>
+                    <th>
+                        K3 Related Items<br />
+                        K3 关 系 物 料 号
+                    </th>
+                    <th>
+                        功能管理<br />
+                        Functions
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="Content">
+
+                @*<tr ng-repeat="i in List track by $index" ng-dblclick="TOWlgj(i.LAId,i.tableName)" style="box-decoration-break: slice; z-index: 100; cursor: pointer">
+
+                    </tr>*@
+            </tbody>
+        </table>
+        <label style="color:gray;font-size:10px;padding-left:20px">( N.B. For easy illustration of Product Models, pls use wildcard notation & expression to consolidate similar models. )</label>
+    </div>
+
+</body>
+</html>

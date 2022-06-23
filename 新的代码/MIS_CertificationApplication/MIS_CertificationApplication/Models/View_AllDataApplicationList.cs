@@ -48,10 +48,8 @@ namespace MIS_CertificationApplication.Models
         public string Cert_Ref { get; set; }
         public string Issuer { get; set; }
         public string Factories { get; set; }
-        public string FactoriesList { get; set; }
         public string CoverAreas { get; set; }
-        public string CoverAreasList { get; set; }
-        public string Expiry { get; set; }
+        public Nullable<System.DateTime> Expiry { get; set; }
         public byte[] CertFile { get; set; }
         public string SonCreateBy { get; set; }
         public string SonCreateDept { get; set; }

@@ -93,6 +93,7 @@ app.controller('mycontroller', function ($scope) {
             data: from,//传值到后台
             dataType: 'json',
             success: function (res) {
+                console.log(res);
                 if (res.length == 0) {
                     $scope.list = null;
                     $scope.$apply();
@@ -101,6 +102,7 @@ app.controller('mycontroller', function ($scope) {
                     $("#NullList").css("display", "");
                 }
                 else {
+                    /* console.log(res);*/
                     //隐藏显示无数据时 展示的tbody
                     $("#NullList").css("display", "none");
                     $scope.list = res;
@@ -112,10 +114,6 @@ app.controller('mycontroller', function ($scope) {
                 console.log("错误");
             }
         });
-    }
-
-    if (sessionStorage.getItem('Array') != null) {
-        $scope.IndexList();
     }
 
     //跳转页面（实现页面存值）
@@ -166,38 +164,6 @@ app.controller('mycontroller', function ($scope) {
     //经过其他页面从sessionStorage里赋值
     if (sessionStorage.getItem('Array') != null) {
         $scope.sessionStorage(1);
-    }
-
-    //删除主表数据
-    $scope.DelData = function (CA_Ref) {
-        swal({
-            title: '您确定删除此条数据吗?',
-            text: "",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: '确定',
-            cancelButtonText: '取消'
-        }).then((isConfirmed) => {
-            if (isConfirmed) {
-                $.ajax({
-                    type: "post",
-                    dataType: 'JSON',
-                    url: "/CertificationApplication/CertificationApplicationSQL/DelData?CA_Ref=" + CA_Ref,
-                    success: function (result) {
-                        if (result > 0) {
-                            swal('删除成功!', '', 'success') //提示框
-                            //刷新列表
-                            $scope.IndexList();
-                        }
-                        else {
-                            swal('删除失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
-                        }
-                    }
-                });
-            }
-        })
     }
 })
 function DaoChu() {

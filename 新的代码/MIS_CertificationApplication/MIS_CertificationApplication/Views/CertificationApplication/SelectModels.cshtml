@@ -70,21 +70,10 @@
                 dataType: 'JSON',
                 url: "/CertificationApplication/CertificationApplicationSQL/GetProductsModels",
                 success: function (result) {
-                    var arr = ("@ViewBag.Models").split('|');
-                    @*console.log(arr);*@
-                        $.each(result, function (key, value) {
-                            models += '<div class="col-sm-4" style="text-align:left">';
-                                models += '<input id="' + value.CPSerial + '" class="check" name="test" type="checkbox" value="' + value.Text + '" />' + value.Text;
-                            models += '</div>';
-                        })
+                    $.each(result, function (key, value) {
+                        models += '<div class="col-sm-4" style="text-align:left"><input id="' + value.CPSerial + '" class="check" name="test" type="checkbox" value="' + value.Text + '" />      ' + value.Text + '</div>';
+                    })
                     $("#main").append(models);
-                    for (var i in arr) {
-                        $.each($("input[type='checkbox']"), function (key, value) {
-                            if (value.id == arr[i]) {
-                                $("#" + value.id).attr("checked","checked");
-                            }
-                        });
-                    }
                     return false;
                 }
             });

@@ -41,6 +41,15 @@
             text-decoration:line-through;
             color:red;
         }
+        .SelectCertificateMasterDetails {
+            border: 2px solid black !important;
+            font-size: 20px !important;
+            width: 20% !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            color: black !important;
+            background-color: rgb(189 215 238) !important;
+        }
     </style>
 </head>
 
@@ -49,7 +58,7 @@
         <h2 style="text-align:center">Certificate Master Details</h2>
         @if (ViewBag.CertificatesManagement.IsVoid)//作废的
         {
-            <div id="@ViewBag.CertificatesManagement.CMSerial" name="CMSerial" class="panel-heading col-sm-11">
+            <div class="panel-heading col-sm-11">
                 <label id="@ViewBag.CertificatesManagement.CMSerial" name="CMSerial">认证代码<br />Cert-code</label>：
                 <div id="CertCode" class="textVoid">@ViewBag.CertificatesManagement.CertCode</div>
             </div>
@@ -58,7 +67,7 @@
                 <div id="CertName" class="textVoid">@ViewBag.CertificatesManagement.CertName</div>
             </div>
             <div class="panel-heading col-sm-11" style="position:relative">
-                <label>适用国家/区域<br />For Country/Area</label>：
+                <label id="@ViewBag.CertificatesManagement.Mkt_Cnty" name="Mkt_Cnty">适用国家/区域<br />For Country/Area</label>：
                 <div name="CountryArea" class="textVoid" style="width:61%">@ViewBag.CertificatesManagement.CountryArea</div>
             </div>
             <div class="panel-heading col-sm-11 ">
@@ -82,8 +91,8 @@
         }
         else//未作废的
         {
-            <div id="@ViewBag.CertificatesManagement.CMSerial" name="CMSerial" class="panel-heading col-sm-11">
-                <label  id="@ViewBag.CertificatesManagement.CMSerial" name="CMSerial">认证代码<br />Cert-code</label>：
+            <div id="@ViewBag.CertificatesManagement.IsVoid" name="IsVoid" class="panel-heading col-sm-11">
+                <label id="@ViewBag.CertificatesManagement.CMSerial" name="CMSerial">认证代码<br />Cert-code</label>：
                 <div id="CertCode" class="text">@ViewBag.CertificatesManagement.CertCode</div>
             </div>
             <div class="panel-heading col-sm-11">
@@ -91,7 +100,7 @@
                 <div id="CertName" class="text">@ViewBag.CertificatesManagement.CertName</div>
             </div>
             <div class="panel-heading col-sm-11" style="position:relative">
-                <label>适用国家/区域<br />For Country/Area</label>：
+                <label id="@ViewBag.CertificatesManagement.Mkt_Cnty" name="Mkt_Cnty">适用国家/区域<br />For Country/Area</label>：
                 <div name="CountryArea" class="text" style="width:61%">@ViewBag.CertificatesManagement.CountryArea</div>
             </div>
             <div class="panel-heading col-sm-11">

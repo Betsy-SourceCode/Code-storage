@@ -13,6 +13,7 @@ namespace MIS_CertificationApplication.Models
         public int CMSerial { get; set; }
         public int CPSerial { get; set; }
         public string Name { get; set; }
+        public string K3Parts { get; set; }
         public string Text { get; set; }
         public string ApplicationRef { get; set; }
     }

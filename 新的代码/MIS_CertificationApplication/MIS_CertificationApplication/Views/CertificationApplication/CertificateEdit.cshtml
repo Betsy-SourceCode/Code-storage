@@ -40,7 +40,7 @@
         <h2 style="text-align:center">Modify Certificate Master Details </h2>
         <div class="panel-heading col-sm-11">
             <label>认证代码<br />Cert-code</label>：
-            <input value="@ViewBag.CertificateEdit.CertCode" type="text" id="CertCode" name="certcode" class="form-control" style="display:inline;width:76%;" onblur="BlurCertCode(this.value)" />
+            <div id="CertCode" name="certcode"  style="width: 78%; border-bottom: 2px solid black; background-color: lightgray; display: inline-block;padding-top:20px"> @ViewBag.CertificateEdit.CertCode</div>
         </div>
         <div class="panel-heading col-sm-11">
             <label>认证名称<br />Cert-Name</label>：
@@ -48,7 +48,7 @@
         </div>
         <div class="panel-heading col-sm-11" style="position:relative">
             <label>适用国家/区域<br />For Country/Area</label>：
-            <input id="@ViewBag.CertificateEdit.Mkt_Cnty" value="@ViewBag.CertificateEdit.CountryArea" disabled="disabled" type="text" name="CountryArea" class="form-control" style="display:inline;width:66%;" />
+            <input id="@ViewBag.CertificateEdit.Mkt_Cnty" name="CountryArea" value="@ViewBag.CertificateEdit.CountryArea" disabled="disabled" type="text" name="CountryArea" class="form-control" style="display:inline;width:66%;" />
             <img style="position:absolute;right:10%;top:40%" src="~/Scripts/img/CertificatesManagementCountryArea.png" ng-click="CountryArea();" />
         </div>
         <div class="panel-heading col-sm-11">

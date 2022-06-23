@@ -6,7 +6,7 @@
     top: 0;
     bottom: 0;
     display: none;
-    z-index: 1000;
+    z-index: 100000000000;
 }
 
 .swal2-modal {
@@ -23,7 +23,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     display: none;
-    z-index: 2000;
+    z-index: 2000000000000000000000000000;
 }
 
     .swal2-modal:focus {
