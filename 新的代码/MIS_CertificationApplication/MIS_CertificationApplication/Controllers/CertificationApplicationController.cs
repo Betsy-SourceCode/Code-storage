@@ -37,68 +37,140 @@ namespace MIS_CertificationApplication.Controllers
             return View();
         }
         /// <summary>
-        /// Application FunctionInterface  新增
+        /// Application FunctionInterface 功能界面
         /// </summary>
         /// <param name="type">1-新增，2-复制，3-修改</param>
         /// <param name="ApplicationRef"></param>
         /// <returns></returns>
         public ActionResult FunctionInterface(int type, string ApplicationRef)
         {
-            ViewBag.userid = Session["userid"].ToString();
-            //非新增给页面赋默认值
-            if (type != 1)
+            try
             {
-                string sql = "select * from dbo.View_AllDataApplicationList where ApplicationRef='" + ApplicationRef + "' and ApplicationRef is not null";
-                View_AllDataApplicationList list = db.Database.SqlQuery<View_AllDataApplicationList>(sql).FirstOrDefault();
-                List<View_AllDataApplicationList> Sonlist = db.Database.SqlQuery<View_AllDataApplicationList>(sql).ToList();
-                //productModel
-                string modelSql = @"select top 1 STUFF((SELECT ';' + ModelCode FROM component_Model t2 where CPSerial in ({0}) FOR XML PATH('')), 1, 1, '') AS model  from component_Model cm ";
-                string model = list.ProductModel.Replace('|', ',');
-                modelSql = string.Format(modelSql, model);
-                list.ProductModel = db.Database.SqlQuery<string>(modelSql).FirstOrDefault();
-                //主表的文件后缀名
-                if (list.QuoteFile != null)
+                ViewBag.userid = Session["userid"].ToString();
+                //非新增给页面赋默认值
+                if (type != 1)
                 {
-                    ViewBag.MainfileName = list.QuoteFileName.Substring(list.QuoteFileName.LastIndexOf(".") + 1, list.QuoteFileName.ToString().Length - (list.QuoteFileName.LastIndexOf(".") + 1));
-                }
-                ViewBag.Data = list;
-                foreach (var item in Sonlist)
-                {
-
-                    string countrySql = @"select top 1 STUFF((SELECT ';' +'('+Icode+')'+ cntyName_s FROM Country t2 where Icode in({0})  FOR XML PATH('')), 1, 1, '') AS country from Country cm ";
-
-                    item.CoverAreas = "'" + item.CoverAreas + "'";
-                    string country = item.CoverAreas.Replace('|', ',');
-                    var arr = country.Split(',');
-                    string countryList = "";
-                    for (int i = 0; i < arr.Length; i++)
+                    string sql = "select * from dbo.View_AllDataApplicationList where ApplicationRef='" + ApplicationRef + "' and ApplicationRef is not null";
+                    View_AllDataApplicationList list = db.Database.SqlQuery<View_AllDataApplicationList>(sql).FirstOrDefault();
+                    List<View_AllDataApplicationList> Sonlist = db.Database.SqlQuery<View_AllDataApplicationList>(sql).ToList();
+                    //productModel
+                    //将list.ProductModel赋值到前台
+                    ViewBag.Models = list.ProductModel;
+                    string modelSql = @"select top 1 STUFF((SELECT ';' + ModelCode FROM component_Model t2 where CPSerial in ({0}) FOR XML PATH('')), 1, 1, '') AS model  from component_Model cm ";
+                    string model = list.ProductModel.Replace('|', ',');
+                    modelSql = string.Format(modelSql, model);
+                    list.ProductModel = db.Database.SqlQuery<string>(modelSql).FirstOrDefault();
+                    //主表的文件后缀名
+                    if (list.QuoteFile != null)
                     {
+                        ViewBag.MainfileName = list.QuoteFileName.Substring(list.QuoteFileName.LastIndexOf(".") + 1, list.QuoteFileName.ToString().Length - (list.QuoteFileName.LastIndexOf(".") + 1));
+                    }
+                    //list.ApplyFee= (decimal?)0.0000
+                    ViewBag.Data = list;
+                    foreach (var item in Sonlist)
+                    {
+                        //Factories
+                        string factoriesSql = @"select top 1 STUFF((SELECT ';' + Name_cn FROM TBWords t2 where WordCode='FC' and Value in({0}) FOR XML PATH('')), 1, 1, '') AS Value  from TBWords cm ";
+                        if (item.Factories != null)
+                        {
+                            item.Factories = "'" + item.Factories + "'";
+                            string factoriesList = "";
+                            if (item.Factories.IndexOf("|") != -1) //代表一个以上
+                            {
+                                string factories = item.Factories.Replace('|', ',');
+                                var factoriesArr = factories.Split(',');
+                                for (int i = 0; i < factoriesArr.Length; i++)
+                                {
 
-                        if (i == 0 && arr[i] != "''")
-                        {
-                            countryList += arr[i] + "',";
-                        }
-                        else if (i == arr.Length - 1 && arr[i] != "''")
-                        {
-                            countryList += "'" + arr[i];
-                        }
-                        else if (arr[i] == "''")
-                        {
-                            countryList += "'" + arr[i] + "'";
+                                    if (i == 0 && factoriesArr[i] != "''")
+                                    {
+                                        factoriesList += factoriesArr[i] + "',";
+                                    }
+                                    else if (i == factoriesArr.Length - 1 && factoriesArr[i] != "''")
+                                    {
+                                        factoriesList += "'" + factoriesArr[i];
+                                    }
+                                    else if (factoriesArr[i] == "''")
+                                    {
+                                        factoriesList += "'" + factoriesArr[i] + "'";
+                                    }
+                                    else
+                                    {
+                                        factoriesList += "'" + factoriesArr[i] + "',";
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                factoriesList = item.Factories;
+                            }
+                            factoriesSql = string.Format(factoriesSql, factoriesList);
+                            item.Factories = db.Database.SqlQuery<string>(factoriesSql).FirstOrDefault();
                         }
                         else
                         {
-                            countryList += "'" + arr[i] + "',";
+                            item.Factories = "";
                         }
+                        //country
+                        string countrySql = @"select top 1 STUFF((SELECT ';' +'('+Icode+')'+ cntyName_s FROM Country t2 where Icode in({0})  FOR XML PATH('')), 1, 1, '') AS country from Country cm ";
+                        if (item.CoverAreas != null)
+                        {
 
+                            item.CoverAreas = "'" + item.CoverAreas + "'";
+                            string countryList = "";
+                            if (item.Factories.IndexOf("|") != -1) //代表一个以上
+                            {
+                                string country = item.CoverAreas.Replace('|', ',');
+                                var arr = country.Split(',');
+                                for (int i = 0; i < arr.Length; i++)
+                                {
+                                    if (i == 0 && arr[i] != "''")
+                                    {
+                                        countryList += arr[i] + "',";
+                                    }
+                                    else if (i == arr.Length - 1 && arr[i] != "''")
+                                    {
+                                        countryList += "'" + arr[i];
+                                    }
+                                    else if (arr[i] == "''")
+                                    {
+                                        countryList += "'" + arr[i] + "'";
+                                    }
+                                    else
+                                    {
+                                        countryList += "'" + arr[i] + "',";
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                countryList = item.CoverAreas;
+                            }
+                            countrySql = string.Format(countrySql, countryList);
+                            item.CoverAreas = db.Database.SqlQuery<string>(countrySql).FirstOrDefault();
+                        }
+                        else
+                        {
+                            item.CoverAreas = "";
+                        }
                     }
-                    countrySql = string.Format(countrySql, countryList);
-                    item.CoverAreas = db.Database.SqlQuery<string>(countrySql).FirstOrDefault();
+                    ViewBag.SonData = Sonlist;
                 }
-                ViewBag.SonData = Sonlist;
+                else
+                {
+                    ViewBag.Data = new View_AllDataApplicationList();
+                    ViewBag.SonData = new List<View_AllDataApplicationList>();
+                }
+                ViewBag.type = type;
+                return View();
             }
-            ViewBag.type = type;
-            return View();
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                throw;
+            }
         }
         /// <summary>
         /// Application Edit界面  编辑
@@ -138,36 +210,92 @@ namespace MIS_CertificationApplication.Controllers
                 ViewBag.Data = list;
                 foreach (var item in Sonlist)
                 {
-
-                    string countrySql = @"select top 1 STUFF((SELECT ';' +'('+Icode+')'+ cntyName_s FROM Country t2 where Icode in({0})  FOR XML PATH('')), 1, 1, '') AS country from Country cm ";
-
-                    item.CoverAreas = "'" + item.CoverAreas + "'";
-                    string country = item.CoverAreas.Replace('|', ',');
-                    var arr = country.Split(',');
-                    string countryList = "";
-                    for (int i = 0; i < arr.Length; i++)
+                    //Factories
+                    string factoriesSql = @"select top 1 STUFF((SELECT ';' + Name_cn FROM TBWords t2 where WordCode='FC' and Value in({0}) FOR XML PATH('')), 1, 1, '') AS Value  from TBWords cm ";
+                    if (item.Factories != null)
                     {
+                        item.Factories = "'" + item.Factories + "'";
+                        string factoriesList = "";
+                        if (item.Factories.IndexOf("|") != -1) //代表一个以上
+                        {
+                            string factories = item.Factories.Replace('|', ',');
+                            var factoriesArr = factories.Split(',');
+                            for (int i = 0; i < factoriesArr.Length; i++)
+                            {
 
-                        if (i == 0 && arr[i] != "''")
-                        {
-                            countryList += arr[i] + "',";
-                        }
-                        else if (i == arr.Length - 1 && arr[i] != "''")
-                        {
-                            countryList += "'" + arr[i];
-                        }
-                        else if (arr[i] == "''")
-                        {
-                            countryList += "'" + arr[i] + "'";
+                                if (i == 0 && factoriesArr[i] != "''")
+                                {
+                                    factoriesList += factoriesArr[i] + "',";
+                                }
+                                else if (i == factoriesArr.Length - 1 && factoriesArr[i] != "''")
+                                {
+                                    factoriesList += "'" + factoriesArr[i];
+                                }
+                                else if (factoriesArr[i] == "''")
+                                {
+                                    factoriesList += "'" + factoriesArr[i] + "'";
+                                }
+                                else
+                                {
+                                    factoriesList += "'" + factoriesArr[i] + "',";
+                                }
+
+                            }
                         }
                         else
                         {
-                            countryList += "'" + arr[i] + "',";
+                            factoriesList = item.Factories;
                         }
-
+                        factoriesSql = string.Format(factoriesSql, factoriesList);
+                        item.Factories = db.Database.SqlQuery<string>(factoriesSql).FirstOrDefault();
                     }
-                    countrySql = string.Format(countrySql, countryList);
-                    item.CoverAreas = db.Database.SqlQuery<string>(countrySql).FirstOrDefault();
+                    else
+                    {
+                        item.Factories = "";
+                    }
+                    //country
+                    string countrySql = @"select top 1 STUFF((SELECT ';' +'('+Icode+')'+ cntyName_s FROM Country t2 where Icode in({0})  FOR XML PATH('')), 1, 1, '') AS country from Country cm ";
+                    if (item.CoverAreas != null)
+                    {
+
+                        item.CoverAreas = "'" + item.CoverAreas + "'";
+                        string countryList = "";
+                        if (item.Factories.IndexOf("|") != -1) //代表一个以上
+                        {
+                            string country = item.CoverAreas.Replace('|', ',');
+                            var arr = country.Split(',');
+                            for (int i = 0; i < arr.Length; i++)
+                            {
+                                if (i == 0 && arr[i] != "''")
+                                {
+                                    countryList += arr[i] + "',";
+                                }
+                                else if (i == arr.Length - 1 && arr[i] != "''")
+                                {
+                                    countryList += "'" + arr[i];
+                                }
+                                else if (arr[i] == "''")
+                                {
+                                    countryList += "'" + arr[i] + "'";
+                                }
+                                else
+                                {
+                                    countryList += "'" + arr[i] + "',";
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            countryList = item.CoverAreas;
+                        }
+                        countrySql = string.Format(countrySql, countryList);
+                        item.CoverAreas = db.Database.SqlQuery<string>(countrySql).FirstOrDefault();
+                    }
+                    else
+                    {
+                        item.CoverAreas = "";
+                    }
                 }
                 ViewBag.SonData = Sonlist;
             }
@@ -197,24 +325,27 @@ namespace MIS_CertificationApplication.Controllers
         /// Select-Factories界面   子表中工厂多选框
         /// </summary>
         /// <returns></returns>
-        public ActionResult SelectFactories()
+        public ActionResult SelectFactories(string Factories)
         {
+            ViewBag.Factories = Factories;
             return View();
         }
         /// <summary>
         /// Select-Factories界面   子表中国家多选框
         /// </summary>
         /// <returns></returns>
-        public ActionResult SelectCountriesAreas()
+        public ActionResult SelectCountriesAreas(string CoverAreas)
         {
+            ViewBag.CoverAreas = CoverAreas;
             return View();
         }
         /// <summary>
         /// Select-Factories界面   子表中型号多选框
         /// </summary>
         /// <returns></returns>
-        public ActionResult SelectModels()
+        public ActionResult SelectModels(string Models)
         {
+            ViewBag.Models = Models;
             return View();
         }
         /// CertificatesManagement界面   国家及区域单选框
@@ -245,12 +376,12 @@ namespace MIS_CertificationApplication.Controllers
         /// Certificate Master Details 界面  作废和未作废的
         /// </summary>
         /// <returns></returns>
-        public ActionResult CertificateMasterDetails(string CertCode)
+        public ActionResult CertificateMasterDetails(int CMSerial)
         {
-            if (CertCode != "")
+            if (CMSerial > 0)
             {
-                string sql = "select *,'('+c.Icode+')'+c.CntyName_s as CountryArea from  Certificates_Master cm ,Country c where c.icode=cm.Mkt_Cnty and CertCode='" + CertCode + "'";
-                ViewBag.CertificatesManagement = db.Database.SqlQuery<NewCertificates_Master>(sql).Where(s => s.CertCode == CertCode).FirstOrDefault();
+                string sql = "select *,'('+c.Icode+')'+c.CntyName_s as CountryArea from  Certificates_Master cm ,Country c where c.icode=cm.Mkt_Cnty and CMSerial='" + CMSerial + "'";
+                ViewBag.CertificatesManagement = db.Database.SqlQuery<NewCertificates_Master>(sql).FirstOrDefault();
             }
             else
             {

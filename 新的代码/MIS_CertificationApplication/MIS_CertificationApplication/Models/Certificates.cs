@@ -11,7 +11,7 @@ namespace MIS_CertificationApplication.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Certificates
     {
         public int CFSerial { get; set; }
@@ -23,6 +23,7 @@ namespace MIS_CertificationApplication.Models
         public string CoverAreas { get; set; }
         public Nullable<System.DateTime> Expiry { get; set; }
         public byte[] CertFile { get; set; }
+        public string CertFileName { get; set; }
         public string Status { get; set; }
         public string CreateBy { get; set; }
         public string CreateDept { get; set; }
@@ -30,8 +31,8 @@ namespace MIS_CertificationApplication.Models
         public string UpdateBy { get; set; }
         public string UpdateDept { get; set; }
         public System.DateTime UpdateTime { get; set; }
-        public string CertFileName { get; set; }
-    
+        //自定义标志位
+        public bool Sonflag { get; set; }
         public virtual Cert_Apply_Case Cert_Apply_Case { get; set; }
     }
 }

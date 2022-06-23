@@ -36,6 +36,7 @@ namespace MIS_CertificationApplication.Models
         public string QuoteRef { get; set; }
         public string Supplier { get; set; }
         public byte[] QuoteFile { get; set; }
+        public string QuoteFileName { get; set; }
         public string Remark { get; set; }
         public string CreateBy { get; set; }
         public string CreateDept { get; set; }
@@ -43,7 +44,6 @@ namespace MIS_CertificationApplication.Models
         public string UpdateBy { get; set; }
         public string UpdateDept { get; set; }
         public System.DateTime UpdateTime { get; set; }
-        public string QuoteFileName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Certificates> Certificates { get; set; }

@@ -15,7 +15,7 @@
         }
 
         #main {
-            font-size: 20px;
+            font-size: 15px;
             padding: 5px 0px 10px 0px;
             position: relative;
         }
@@ -45,12 +45,13 @@
 </head>
 <body>
     <div id="content">
+        @*<h2 style="text-align:center">Select A Country or Union Area</h2>*@
         <div id="main">
             @*<h2 style="margin:5px;font-weight:500">多 选 国 家 区 域</h2>
-            <a href="#"><img id="close" src="~/Scripts/img/close.png" /></a>*@
+                <a href="#"><img id="close" src="~/Scripts/img/close.png" /></a>*@
         </div>
         @*<input id="btnClear" class="btn" type="button" value="Clear All Select" />
-        <input id="btnconfirm"  class="btn" type="button" value="Confirm & Return"  />*@
+            <input id="btnconfirm"  class="btn" type="button" value="Confirm & Return"  />*@
     </div>
     <script>
         $(function () {
@@ -60,10 +61,18 @@
                 dataType: 'JSON',
                 url: "/CertificationApplication/CertificationApplicationSQL/GetCountryAreaList",
                 success: function (result) {
+                    var arr = ("@ViewBag.CoverAreas").split('|');
                     $.each(result, function (key, value) {
                         country += '<div class="col-sm-3" style="text-align:left"><input id="' + value.Name + '" name="test" class="check" type="checkbox" value="' + value.Text + '"/>      ' + value.Text +'</div>';
                     })
                     $("#main").append(country);
+                    for (var i in arr) {
+                        $.each($("input[type='checkbox']"), function (key, value) {
+                            if (value.id == arr[i]) {
+                                $("#" + value.id).attr("checked", "checked");
+                            }
+                        });
+                    }
                     return false;
                 }
             });
