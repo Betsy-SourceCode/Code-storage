@@ -1,0 +1,180 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/PageJS/ProductModelUpdate.js"></script>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+        /*新增-标题字体加大加粗*/
+        .layui-layer-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        @*K3 相关物料号 相关div的样式*@
+        .k3Div {
+            display: inline-block;
+            width: 80%;
+            margin-bottom:10px;
+            text-align:center;
+        }
+        @*K3 相关物料号 相关input的样式*@
+        .k3Input {
+            display: inline;
+            width: 46%;
+        }
+
+    </style>
+    <script>
+        $(function () {
+            $("#ModelCode").focus();
+        })
+    </script>
+</head>
+<body style="max-width:800px;margin:0px auto">
+    <div id="content">
+
+        <h2 style="text-align:center"> Component Model Details </h2>
+
+        <div style="overflow:hidden">
+            <div class="panel-heading col-sm-2" style="width: 21%">
+                <label>型号编码<br />Model Code</label>：
+            </div>
+            <div id="@ViewBag.ComponentModel.CPSerial" name="CPSerial" class="panel-heading col-sm-9" style="display:inline-block;width:78%;background-color:lightgray;border-bottom:2px solid black">
+                <div id="ModelCode" name="ModelCode">
+                    @ViewBag.ComponentModel.ModelCode
+                </div>
+                @*<input value="@ViewBag.ComponentModel.ModelCode" type="text" id="ModelCode" name="ModelCode" class="form-control" style="display:inline;width:78%;" />*@
+            </div>
+        </div>
+
+
+        <div style="overflow:hidden">
+            <div class="panel-heading col-sm-2" style="width: 21%; display: inline-block">
+                <label>型号名称描述<br />Model Description</label>：
+            </div>
+            <div class="panel-heading col-sm-9" style="display: inline-block; width: 78%; background-color: lightgray; border-bottom: 2px solid black">
+                <div id="ModelName" name="ModelName">
+                    @ViewBag.ComponentModel.ModelName
+                </div>
+            </div>
+        </div>
+
+
+        <div style="overflow:hidden">
+            <div class="panel-heading col-sm-2" style="width: 21%">
+                <label>规格详细<br />Specification</label>：
+            </div>
+            <div class="panel-heading col-sm-9" style="display: inline-block; width: 78%; background-color: lightgray; border-bottom: 2px solid black">
+                <div id="ModelSpec" name="ModelSpec">
+                    @ViewBag.ComponentModel.ModelSpec
+                </div>
+            </div>
+        </div>
+
+
+        <div style="overflow:hidden">
+            <div class="panel-heading col-sm-2" style="width:21%">
+                <label>K3 相关物料号<br />K3 Related Items</label>：
+            </div>
+            <div class="panel-heading col-sm-9">
+
+                @{string aa = ViewBag.ComponentModel.K3Parts;
+                    string K3Parts1 = "";
+                    string K3Parts2 = "";
+                    int index = 0;//第几条数据
+                    int num = 1;//第几行
+                }
+
+                @if (aa != null)
+                {
+                    if (aa.IndexOf(';') != -1)//存在多个k3物料号
+                    {
+                        foreach (var item in aa.Split(';'))//将多个k3物料号进行分割  作为循环input标签的次数
+                        {
+                            if (item.IndexOf('-') != -1)//判断是否存在范围内的k3物料号  如100.002.003.881-886
+                            {
+                                var arr = item.Replace('-', ' ').Replace(';', ' ').Split(' ');//将数据中的 - | 替换成空格  并分割
+                                for (int i = 0; i < arr.Length - 1; i += 2)
+                                {
+                                    K3Parts1 = arr[i];
+                                    K3Parts2 = arr[i + 1];
+                                    <div class="k3Div" style="background-color: lightgray; border-bottom: 2px solid black">
+                                        <div id="K3Parts@(num)@(index+=1)" name="K3Parts1" class="k3Div" style="width: 46%;">@K3Parts1</div>
+                                        <label>—</label>
+                                        <div type="text" id="K3Parts@(num)@(index+=1)" name="K3Parts12" class="k3Div" style="width: 46%;">@K3Parts2</div>
+                                    </div>
+                                }
+                                num++;
+                            }
+                            else
+                            {
+                                <div class="k3Div" style="background-color: lightgray; border-bottom: 2px solid black">
+                                    <div id="K3Parts@(num)@(index+=1)" name="K3Parts11" class="k3Div" style="width: 46%;">@item</div>
+                                    <label>—</label>
+                                    <div id="K3Parts@(num)@(index+=1)" name="K3Parts12" class="k3Div" style="width: 46%;"></div>
+                                </div>
+                            }
+                        }
+                    }
+                    else//不存在多个物料号
+                    {
+                        if (aa.IndexOf('-') != -1)//判断是否存在范围内的k3物料号  如100.002.003.881-886
+                        {
+                            var arr = aa.Replace('-', ' ').Replace(';', ' ').Split(' ');//将数据中的 - | 替换成空格  并分割
+                            for (int i = 0; i < arr.Length - 1; i += 2)
+                            {
+                                K3Parts1 = arr[i];
+                                K3Parts2 = arr[i + 1];
+                                <div class="k3Div" style="background-color: lightgray; border-bottom: 2px solid black">
+                                    <div id="K3Parts@(num)@(index+=1)" name="K3Parts@(num)@(index+=1)" class="k3Div" style="width: 46%;">@K3Parts1</div>
+                                    <label>—</label>
+                                    <div id="K3Parts@(num)@(index+=1)" name="K3Parts@(num)@(index+=1)" class="k3Div" style="width: 46%;">@K3Parts2</div>
+                                </div>
+                            }
+
+                        }
+                        else
+                        {
+                            <div class="k3Div" style="background-color: lightgray; border-bottom: 2px solid black">
+                                <div id="K3Parts@(num)@(index+=1)" name="K3Parts@(num)@(index+=1)" class="k3Div" style="width: 46%;">@aa</div>
+                                <label>—</label>
+                                <div id="K3Parts@(num)@(index+=1)" name="K3Parts@(num)@(index+=1)" class="k3Div" style="width: 46%;"></div>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <div class="k3Div" style="background-color: lightgray; border-bottom: 2px solid black">
+                        <div id="K3Parts@(num)@(index+=1)" name="K3Parts@(num)@(index+=1)" class="k3Div" style="width: 46%;">@aa</div>
+                        <label>—</label>
+                        <div id="K3Parts@(num)@(index+1)" name="K3Parts@(num)@(index+1)" class="k3Div" style="width: 46%;"></div>
+                    </div>
+                }
+
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
