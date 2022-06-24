@@ -7,12 +7,14 @@
     <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Scripts/Index.css" rel="stylesheet" />
     <link href="~/Scripts/Create/Create.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/AngularJS.js"></script>
     <script src="~/Scripts/PageJS/Detail.js"></script>
     <script src="~/Scripts/layui/layui.js"></script>
     <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
 </head>
 <body style="max-width:98%;min-width:1250px; margin:0px auto">
     <div id="container" style="overflow: hidden">
@@ -48,7 +50,7 @@
                 </div>
                 <div class="panel-heading col-sm-6">
                     <label class="font-backColor" style="padding-left:9px">Application Fee</label> ：
-                    <label id="ApplicationFee">@ViewBag.Data.ApplyFee</label>
+                    <label id="ApplicationFee">@ViewBag.Data.ApplyFeeQW</label>
                 </div>
 
                 <div class="panel-heading col-sm-6">
@@ -58,7 +60,7 @@
 
                 <div class="panel-heading col-sm-6">
                     <label class="font-backColor" style="padding-left:23px">Inspection fee</label>：
-                    <label id="Inspectionfee">@ViewBag.Data.InspectFee</label>
+                    <label id="Inspectionfee">@ViewBag.Data.InspectFeeQW</label>
                 </div>
 
                 <div class="panel-heading col-sm-6">
@@ -68,7 +70,7 @@
 
                 <div class="panel-heading col-sm-6">
                     <label class="font-backColor" style="padding-left:6px">Anual Renew fee</label>：
-                    <label id="AnualRenewfee">@ViewBag.Data.YearFee</label>
+                    <label id="AnualRenewfee">@ViewBag.Data.YearFeeQW</label>
                 </div>
             </div>
             @*右边*@
@@ -301,8 +303,10 @@
         <label style="font-size:12px;padding-left:2%;color:lightgray">Creation: CreateBy (Create-Dept) Create-Time</label>
     </div>
     <div style="text-align:center;margin:0px auto;">
-        <input type="button" name="Close" value="Close" style="margin-right:20%;font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" onclick="window.location.href = '/CertificationApplication/CertificationApplication/index?userid='+@ViewBag.userid" />
-        <input type="button" name="Delete" value="Delete" style="font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" />
+        <input class="btn btn-default" type="button" name="Edit" value="Edit" style="margin-right:20%;font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" onclick="window.location.href ='/CertificationApplication/CertificationApplication/FunctionInterface?type=3&ApplicationRef=@ViewBag.Data.ApplicationRef'" />
+        <input class="btn btn-default" type="button" name="Close" value="Close" style="margin-right:20%;font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" onclick="window.location.href = '/CertificationApplication/CertificationApplication/index?userid='+@ViewBag.userid" />
+        <input id="DeleteBtn"  class="btn btn-default" type="button" name="Delete" value="Delete" style="font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" onclick="DelData('@ViewBag.Data.ApplicationRef','@ViewBag.userid')" />
+
     </div>
 </body>
 </html>

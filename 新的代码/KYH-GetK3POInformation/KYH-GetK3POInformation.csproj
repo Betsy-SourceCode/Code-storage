@@ -241,6 +241,7 @@
     <Content Include="Scripts\图标\StartK3sPOData-Hover.png" />
     <Content Include="Scripts\图标\StartK3sPOData.png" />
     <Content Include="Scripts\图标\UserGuideRTF.gif" />
+    <Content Include="Scripts\图标\下载.png" />
     <Content Include="Scripts\导入\xlsx.core.min.js" />
     <Content Include="Scripts\导出\jquery.table2excel.js" />
     <Content Include="Scripts\Index.js" />
@@ -271,6 +272,7 @@
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\GetK3POInformation\Index.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="装箱表模板.csv" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -35,3 +35,54 @@ function CertificatesManagement() {
     });
 
 }
+
+//删除主表数据
+function DelData(CA_Ref, userid) {
+    swal({
+        title: '您确定删除此条数据吗?',
+        text: "",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+    }).then((isConfirmed) => {
+        if (isConfirmed) {
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/DelData?CA_Ref=" + CA_Ref,
+                success: function (result) {
+                    if (result > 0) {
+                        swal({
+                            title: "删除成功",
+                            text: "",
+                            type: "success",
+                            buttons: {
+                                button1: {
+                                    text: "确认",
+                                    value: true
+                                }
+                            }
+                        }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
+                            //跳转首页
+                            window.location.href = "/CertificationApplication/CertificationApplication/index?userid=" + userid;
+                        });
+                    }
+                    else {
+                        swal('删除失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                    }
+                }
+            });
+        }
+    })
+}
+
+$(function () {
+    //子表有数据就禁用删除按钮
+    var TrContent = $("#Content tr").length;
+    if (TrContent > 0) {
+        $("#DeleteBtn").attr("disabled", "disabled");
+    }
+})

@@ -21,8 +21,10 @@ namespace MIS_CertificationApplication.Models
         public string Issuer { get; set; }
         public string Factories { get; set; }
         public string CoverAreas { get; set; }
+        public bool Sonflag { get; set; }
         public Nullable<System.DateTime> Expiry { get; set; }
         public byte[] CertFile { get; set; }
+        public string CertFileName { get; set; }
         public string Status { get; set; }
         public string CreateBy { get; set; }
         public string CreateDept { get; set; }
@@ -30,7 +32,6 @@ namespace MIS_CertificationApplication.Models
         public string UpdateBy { get; set; }
         public string UpdateDept { get; set; }
         public System.DateTime UpdateTime { get; set; }
-        public string CertFileName { get; set; }
     
         public virtual Cert_Apply_Case Cert_Apply_Case { get; set; }
     }

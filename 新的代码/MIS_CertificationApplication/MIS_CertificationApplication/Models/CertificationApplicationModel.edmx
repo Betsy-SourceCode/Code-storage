@@ -132,8 +132,10 @@
           <Property Name="Cert_Ref" Type="nvarchar" MaxLength="30" />
           <Property Name="Issuer" Type="nvarchar" MaxLength="100" />
           <Property Name="Factories" Type="nvarchar" MaxLength="20" />
+          <Property Name="FactoriesList" Type="nvarchar" MaxLength="20" />
           <Property Name="CoverAreas" Type="nvarchar" MaxLength="30" />
-          <Property Name="Expiry" Type="datetime" />
+          <Property Name="CoverAreasList" Type="nvarchar" MaxLength="30" />
+          <Property Name="Expiry" Type="varchar" MaxLength="30" />
           <Property Name="CertFile" Type="image" />
           <Property Name="SonCreateBy" Type="nchar" MaxLength="3" />
           <Property Name="SonCreateDept" Type="nvarchar" MaxLength="100" />
@@ -141,9 +143,12 @@
           <Property Name="SonUpdateBy" Type="nchar" MaxLength="3" />
           <Property Name="SonUpdateDept" Type="nvarchar" MaxLength="100" />
           <Property Name="SonUpdateTime" Type="datetime" />
-          <Property Name="CertName" Type="nvarchar" MaxLength="125" />
+          <Property Name="CertName" Type="nvarchar" MaxLength="148" />
           <Property Name="QuoteFileName" Type="nvarchar" MaxLength="100" />
           <Property Name="CertFileName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApplyFeeQW" Type="varchar" MaxLength="30" />
+          <Property Name="InspectFeeQW" Type="varchar" MaxLength="30" />
+          <Property Name="YearFeeQW" Type="varchar" MaxLength="30" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“WebStation.dbo.View_ApplicationList”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -157,11 +162,11 @@
           <Property Name="Customer" Type="nvarchar" MaxLength="50" />
           <Property Name="ProductModel" Type="nvarchar" MaxLength="200" />
           <Property Name="Supplier" Type="nvarchar" MaxLength="100" />
-          <Property Name="AppDate" Type="datetime" />
+          <Property Name="AppDate" Type="varchar" MaxLength="30" />
           <Property Name="CertificateRef" Type="nvarchar" MaxLength="30" />
-          <Property Name="CertificateName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CertificateName" Type="nvarchar" MaxLength="148" />
           <Property Name="ApplyCountry" Type="nvarchar" MaxLength="30" />
-          <Property Name="ExpiryDate" Type="datetime" />
+          <Property Name="ExpiryDate" Type="varchar" MaxLength="30" />
           <Property Name="Status" Type="varchar" MaxLength="7" />
         </EntityType>
         <Association Name="FK_Certificates_Cert_Apply_Case">
@@ -217,7 +222,9 @@
     [View_AllDataApplicationList].[Cert_Ref] AS [Cert_Ref], 
     [View_AllDataApplicationList].[Issuer] AS [Issuer], 
     [View_AllDataApplicationList].[Factories] AS [Factories], 
+    [View_AllDataApplicationList].[FactoriesList] AS [FactoriesList], 
     [View_AllDataApplicationList].[CoverAreas] AS [CoverAreas], 
+    [View_AllDataApplicationList].[CoverAreasList] AS [CoverAreasList], 
     [View_AllDataApplicationList].[Expiry] AS [Expiry], 
     [View_AllDataApplicationList].[CertFile] AS [CertFile], 
     [View_AllDataApplicationList].[SonCreateBy] AS [SonCreateBy], 
@@ -228,7 +235,10 @@
     [View_AllDataApplicationList].[SonUpdateTime] AS [SonUpdateTime], 
     [View_AllDataApplicationList].[CertName] AS [CertName], 
     [View_AllDataApplicationList].[QuoteFileName] AS [QuoteFileName], 
-    [View_AllDataApplicationList].[CertFileName] AS [CertFileName]
+    [View_AllDataApplicationList].[CertFileName] AS [CertFileName], 
+    [View_AllDataApplicationList].[ApplyFeeQW] AS [ApplyFeeQW], 
+    [View_AllDataApplicationList].[InspectFeeQW] AS [InspectFeeQW], 
+    [View_AllDataApplicationList].[YearFeeQW] AS [YearFeeQW]
     FROM [dbo].[View_AllDataApplicationList] AS [View_AllDataApplicationList]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_ApplicationList" EntityType="Self.View_ApplicationList" store:Type="Views" store:Schema="dbo">
@@ -256,59 +266,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WebStationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Cert_Apply_Case">
-          <Key>
-            <PropertyRef Name="CA_Ref" />
-          </Key>
-          <Property Name="CA_Ref" Type="String" MaxLength="11" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Applicant" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Manufacturer" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Customer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Models" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Payer" Type="Boolean" Nullable="false" />
-          <Property Name="ApplyFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="InspectFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="YearFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="O_SrvFees" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ClientPO" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="GIPOA" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="QuoteRef" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Supplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="QuoteFile" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CreateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="CreateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="UpdateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Certificates" Relationship="Self.FK_Certificates_Cert_Apply_Case" FromRole="Cert_Apply_Case" ToRole="Certificates" />
-          <Property Name="QuoteFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Certificates">
-          <Key>
-            <PropertyRef Name="CFSerial" />
-          </Key>
-          <Property Name="CFSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CA_Ref" Type="String" MaxLength="11" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="CM_Serial" Type="Int32" Nullable="false" />
-          <Property Name="Cert_Ref" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Issuer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Factories" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CoverAreas" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Expiry" Type="DateTime" Precision="3" />
-          <Property Name="CertFile" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="CreateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="CreateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="UpdateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Cert_Apply_Case" Relationship="Self.FK_Certificates_Cert_Apply_Case" FromRole="Certificates" ToRole="Cert_Apply_Case" />
-          <Property Name="CertFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Certificates_Master">
           <Key>
             <PropertyRef Name="CMSerial" />
@@ -328,25 +285,74 @@
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsVoid" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="Component_Model">
+        <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Certificates_Master" EntityType="Self.Certificates_Master" />
+          <EntitySet Name="Cert_Apply_Case" EntityType="WebStationModel.Cert_Apply_Case" />
+          <EntitySet Name="Certificates" EntityType="WebStationModel.Certificates" />
+          <AssociationSet Name="FK_Certificates_Cert_Apply_Case" Association="WebStationModel.FK_Certificates_Cert_Apply_Case">
+            <End Role="Cert_Apply_Case" EntitySet="Cert_Apply_Case" />
+            <End Role="Certificates" EntitySet="Certificates" />
+          </AssociationSet>
+          <EntitySet Name="Component_Model" EntityType="WebStationModel.Component_Model" />
+          <EntitySet Name="View_AllDataApplicationList" EntityType="WebStationModel.View_AllDataApplicationList" />
+          <EntitySet Name="View_ApplicationList" EntityType="WebStationModel.View_ApplicationList" />
+        </EntityContainer>
+        <EntityType Name="Cert_Apply_Case">
           <Key>
-            <PropertyRef Name="CPSerial" />
+            <PropertyRef Name="CA_Ref" />
           </Key>
-          <Property Name="CPSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ModelCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ModelName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="K3Parts" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CreateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="CreateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CA_Ref" Type="String" Nullable="false" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Name="Applicant" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="Manufacturer" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="Customer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Models" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="Payer" Type="Boolean" Nullable="false" />
+          <Property Name="ApplyFee" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="InspectFee" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="YearFee" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="O_SrvFees" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ClientPO" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="GIPOA" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="QuoteRef" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Supplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QuoteFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="QuoteFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateBy" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="CreateDept" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="UpdateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UpdateBy" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="UpdateDept" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModelSpec" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Certificates" Relationship="WebStationModel.FK_Certificates_Cert_Apply_Case" FromRole="Cert_Apply_Case" ToRole="Certificates" />
+        </EntityType>
+        <EntityType Name="Certificates">
+          <Key>
+            <PropertyRef Name="CFSerial" />
+          </Key>
+          <Property Name="CFSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CA_Ref" Type="String" Nullable="false" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Name="CM_Serial" Type="Int32" Nullable="false" />
+          <Property Name="Cert_Ref" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Issuer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Factories" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CoverAreas" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Expiry" Type="DateTime" Precision="3" />
+          <Property Name="CertFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CertFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="CreateBy" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="CreateDept" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateBy" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="UpdateDept" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Cert_Apply_Case" Relationship="WebStationModel.FK_Certificates_Cert_Apply_Case" FromRole="Certificates" ToRole="Cert_Apply_Case" />
         </EntityType>
         <Association Name="FK_Certificates_Cert_Apply_Case">
-          <End Role="Cert_Apply_Case" Type="Self.Cert_Apply_Case" Multiplicity="1" />
-          <End Role="Certificates" Type="Self.Certificates" Multiplicity="*" />
+          <End Type="WebStationModel.Cert_Apply_Case" Role="Cert_Apply_Case" Multiplicity="1" />
+          <End Type="WebStationModel.Certificates" Role="Certificates" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Cert_Apply_Case">
               <PropertyRef Name="CA_Ref" />
@@ -356,34 +362,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="WebStationEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Cert_Apply_Case" EntityType="Self.Cert_Apply_Case" />
-          <EntitySet Name="Certificates" EntityType="Self.Certificates" />
-          <EntitySet Name="Certificates_Master" EntityType="Self.Certificates_Master" />
-          <EntitySet Name="Component_Model" EntityType="Self.Component_Model" />
-          <AssociationSet Name="FK_Certificates_Cert_Apply_Case" Association="Self.FK_Certificates_Cert_Apply_Case">
-            <End Role="Cert_Apply_Case" EntitySet="Cert_Apply_Case" />
-            <End Role="Certificates" EntitySet="Certificates" />
-          </AssociationSet>
-          <EntitySet Name="View_ApplicationList" EntityType="WebStationModel.View_ApplicationList" />
-          <EntitySet Name="View_AllDataApplicationList" EntityType="WebStationModel.View_AllDataApplicationList" />
-        </EntityContainer>
-        <EntityType Name="View_ApplicationList">
+        <EntityType Name="Component_Model">
           <Key>
-            <PropertyRef Name="ApplicationRef" />
+            <PropertyRef Name="CPSerial" />
           </Key>
-          <Property Name="ApplicationRef" Type="String" Nullable="false" MaxLength="11" FixedLength="true" Unicode="true" />
-          <Property Name="ApplicantJC" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
-          <Property Name="Applicant" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Customer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductModel" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Supplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AppDate" Type="DateTime" Precision="3" />
-          <Property Name="CertificateRef" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="CertificateName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ApplyCountry" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
-          <Property Name="Status" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="CPSerial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModelCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ModelName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="K3Parts" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ModelSpec" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateBy" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="CreateDept" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateBy" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="UpdateDept" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="View_AllDataApplicationList">
           <Key>
@@ -424,8 +417,10 @@
           <Property Name="Cert_Ref" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Issuer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Factories" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FactoriesList" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CoverAreas" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Expiry" Type="DateTime" Precision="3" />
+          <Property Name="CoverAreasList" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Expiry" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CertFile" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="SonCreateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
           <Property Name="SonCreateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -433,9 +428,29 @@
           <Property Name="SonUpdateBy" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
           <Property Name="SonUpdateDept" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="SonUpdateTime" Type="DateTime" Precision="3" />
-          <Property Name="CertName" Type="String" MaxLength="125" FixedLength="false" Unicode="true" />
+          <Property Name="CertName" Type="String" MaxLength="148" FixedLength="false" Unicode="true" />
           <Property Name="QuoteFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CertFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApplyFeeQW" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="InspectFeeQW" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="YearFeeQW" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="View_ApplicationList">
+          <Key>
+            <PropertyRef Name="ApplicationRef" />
+          </Key>
+          <Property Name="ApplicationRef" Type="String" Nullable="false" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Name="ApplicantJC" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="Applicant" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductModel" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Supplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AppDate" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CertificateRef" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CertificateName" Type="String" MaxLength="148" FixedLength="false" Unicode="true" />
+          <Property Name="ApplyCountry" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiryDate" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -443,59 +458,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="WebStationModelStoreContainer" CdmEntityContainer="WebStationEntities">
-          <EntitySetMapping Name="Cert_Apply_Case">
-            <EntityTypeMapping TypeName="WebStationModel.Cert_Apply_Case">
-              <MappingFragment StoreEntitySet="Cert_Apply_Case">
-                <ScalarProperty Name="QuoteFileName" ColumnName="QuoteFileName" />
-                <ScalarProperty Name="CA_Ref" ColumnName="CA_Ref" />
-                <ScalarProperty Name="Applicant" ColumnName="Applicant" />
-                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
-                <ScalarProperty Name="Customer" ColumnName="Customer" />
-                <ScalarProperty Name="Models" ColumnName="Models" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="Payer" ColumnName="Payer" />
-                <ScalarProperty Name="ApplyFee" ColumnName="ApplyFee" />
-                <ScalarProperty Name="InspectFee" ColumnName="InspectFee" />
-                <ScalarProperty Name="YearFee" ColumnName="YearFee" />
-                <ScalarProperty Name="O_SrvFees" ColumnName="O_SrvFees" />
-                <ScalarProperty Name="ClientPO" ColumnName="ClientPO" />
-                <ScalarProperty Name="GIPOA" ColumnName="GIPOA" />
-                <ScalarProperty Name="QuoteRef" ColumnName="QuoteRef" />
-                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
-                <ScalarProperty Name="QuoteFile" ColumnName="QuoteFile" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
-                <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Certificates">
-            <EntityTypeMapping TypeName="WebStationModel.Certificates">
-              <MappingFragment StoreEntitySet="Certificates">
-                <ScalarProperty Name="CertFileName" ColumnName="CertFileName" />
-                <ScalarProperty Name="CFSerial" ColumnName="CFSerial" />
-                <ScalarProperty Name="CA_Ref" ColumnName="CA_Ref" />
-                <ScalarProperty Name="CM_Serial" ColumnName="CM_Serial" />
-                <ScalarProperty Name="Cert_Ref" ColumnName="Cert_Ref" />
-                <ScalarProperty Name="Issuer" ColumnName="Issuer" />
-                <ScalarProperty Name="Factories" ColumnName="Factories" />
-                <ScalarProperty Name="CoverAreas" ColumnName="CoverAreas" />
-                <ScalarProperty Name="Expiry" ColumnName="Expiry" />
-                <ScalarProperty Name="CertFile" ColumnName="CertFile" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
-                <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Certificates_Master">
             <EntityTypeMapping TypeName="WebStationModel.Certificates_Master">
               <MappingFragment StoreEntitySet="Certificates_Master">
@@ -516,44 +478,82 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Component_Model">
-            <EntityTypeMapping TypeName="WebStationModel.Component_Model">
-              <MappingFragment StoreEntitySet="Component_Model">
-                <ScalarProperty Name="ModelSpec" ColumnName="ModelSpec" />
-                <ScalarProperty Name="CPSerial" ColumnName="CPSerial" />
-                <ScalarProperty Name="ModelCode" ColumnName="ModelCode" />
-                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
-                <ScalarProperty Name="K3Parts" ColumnName="K3Parts" />
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
-                <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+          <EntitySetMapping Name="Cert_Apply_Case">
+            <EntityTypeMapping TypeName="WebStationModel.Cert_Apply_Case">
+              <MappingFragment StoreEntitySet="Cert_Apply_Case">
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="QuoteFileName" ColumnName="QuoteFileName" />
+                <ScalarProperty Name="QuoteFile" ColumnName="QuoteFile" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="QuoteRef" ColumnName="QuoteRef" />
+                <ScalarProperty Name="GIPOA" ColumnName="GIPOA" />
+                <ScalarProperty Name="ClientPO" ColumnName="ClientPO" />
+                <ScalarProperty Name="O_SrvFees" ColumnName="O_SrvFees" />
+                <ScalarProperty Name="YearFee" ColumnName="YearFee" />
+                <ScalarProperty Name="InspectFee" ColumnName="InspectFee" />
+                <ScalarProperty Name="ApplyFee" ColumnName="ApplyFee" />
+                <ScalarProperty Name="Payer" ColumnName="Payer" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Models" ColumnName="Models" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+                <ScalarProperty Name="Applicant" ColumnName="Applicant" />
+                <ScalarProperty Name="CA_Ref" ColumnName="CA_Ref" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_ApplicationList">
-            <EntityTypeMapping TypeName="WebStationModel.View_ApplicationList">
-              <MappingFragment StoreEntitySet="View_ApplicationList">
+          <EntitySetMapping Name="Certificates">
+            <EntityTypeMapping TypeName="WebStationModel.Certificates">
+              <MappingFragment StoreEntitySet="Certificates">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
-                <ScalarProperty Name="ApplyCountry" ColumnName="ApplyCountry" />
-                <ScalarProperty Name="CertificateName" ColumnName="CertificateName" />
-                <ScalarProperty Name="CertificateRef" ColumnName="CertificateRef" />
-                <ScalarProperty Name="AppDate" ColumnName="AppDate" />
-                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
-                <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
-                <ScalarProperty Name="Customer" ColumnName="Customer" />
-                <ScalarProperty Name="Applicant" ColumnName="Applicant" />
-                <ScalarProperty Name="ApplicantJC" ColumnName="ApplicantJC" />
-                <ScalarProperty Name="ApplicationRef" ColumnName="ApplicationRef" />
+                <ScalarProperty Name="CertFileName" ColumnName="CertFileName" />
+                <ScalarProperty Name="CertFile" ColumnName="CertFile" />
+                <ScalarProperty Name="Expiry" ColumnName="Expiry" />
+                <ScalarProperty Name="CoverAreas" ColumnName="CoverAreas" />
+                <ScalarProperty Name="Factories" ColumnName="Factories" />
+                <ScalarProperty Name="Issuer" ColumnName="Issuer" />
+                <ScalarProperty Name="Cert_Ref" ColumnName="Cert_Ref" />
+                <ScalarProperty Name="CM_Serial" ColumnName="CM_Serial" />
+                <ScalarProperty Name="CA_Ref" ColumnName="CA_Ref" />
+                <ScalarProperty Name="CFSerial" ColumnName="CFSerial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Component_Model">
+            <EntityTypeMapping TypeName="WebStationModel.Component_Model">
+              <MappingFragment StoreEntitySet="Component_Model">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateDept" ColumnName="UpdateDept" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateDept" ColumnName="CreateDept" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="ModelSpec" ColumnName="ModelSpec" />
+                <ScalarProperty Name="K3Parts" ColumnName="K3Parts" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="ModelCode" ColumnName="ModelCode" />
+                <ScalarProperty Name="CPSerial" ColumnName="CPSerial" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="View_AllDataApplicationList">
             <EntityTypeMapping TypeName="WebStationModel.View_AllDataApplicationList">
               <MappingFragment StoreEntitySet="View_AllDataApplicationList">
+                <ScalarProperty Name="YearFeeQW" ColumnName="YearFeeQW" />
+                <ScalarProperty Name="InspectFeeQW" ColumnName="InspectFeeQW" />
+                <ScalarProperty Name="ApplyFeeQW" ColumnName="ApplyFeeQW" />
                 <ScalarProperty Name="CertFileName" ColumnName="CertFileName" />
                 <ScalarProperty Name="QuoteFileName" ColumnName="QuoteFileName" />
                 <ScalarProperty Name="CertName" ColumnName="CertName" />
@@ -565,7 +565,9 @@
                 <ScalarProperty Name="SonCreateBy" ColumnName="SonCreateBy" />
                 <ScalarProperty Name="CertFile" ColumnName="CertFile" />
                 <ScalarProperty Name="Expiry" ColumnName="Expiry" />
+                <ScalarProperty Name="CoverAreasList" ColumnName="CoverAreasList" />
                 <ScalarProperty Name="CoverAreas" ColumnName="CoverAreas" />
+                <ScalarProperty Name="FactoriesList" ColumnName="FactoriesList" />
                 <ScalarProperty Name="Factories" ColumnName="Factories" />
                 <ScalarProperty Name="Issuer" ColumnName="Issuer" />
                 <ScalarProperty Name="Cert_Ref" ColumnName="Cert_Ref" />
@@ -593,6 +595,24 @@
                 <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
                 <ScalarProperty Name="CA_Ref" ColumnName="CA_Ref" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AppDate" ColumnName="AppDate" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="Applicant" ColumnName="Applicant" />
+                <ScalarProperty Name="ApplicantJC" ColumnName="ApplicantJC" />
+                <ScalarProperty Name="ApplicationRef" ColumnName="ApplicationRef" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_ApplicationList">
+            <EntityTypeMapping TypeName="WebStationModel.View_ApplicationList">
+              <MappingFragment StoreEntitySet="View_ApplicationList">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="ApplyCountry" ColumnName="ApplyCountry" />
+                <ScalarProperty Name="CertificateName" ColumnName="CertificateName" />
+                <ScalarProperty Name="CertificateRef" ColumnName="CertificateRef" />
                 <ScalarProperty Name="AppDate" ColumnName="AppDate" />
                 <ScalarProperty Name="Supplier" ColumnName="Supplier" />
                 <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />

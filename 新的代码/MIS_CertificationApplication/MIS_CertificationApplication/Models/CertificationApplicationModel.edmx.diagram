@@ -5,13 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9d4fd3581ec34b19802fab77813808a1" Name="Diagram1">
-        <EntityTypeShape EntityType="WebStationModel.Cert_Apply_Case" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebStationModel.Certificates" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WebStationModel.Certificates_Master" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebStationModel.Component_Model" Width="1.5" PointX="8.125" PointY="3.25" IsExpanded="true" />
-        <AssociationConnector Association="WebStationModel.FK_Certificates_Cert_Apply_Case" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="WebStationModel.View_ApplicationList" Width="1.5" PointX="5.375" PointY="5.75" />
-        <EntityTypeShape EntityType="WebStationModel.View_AllDataApplicationList" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="WebStationModel.Cert_Apply_Case" Width="1.5" PointX="7.375" PointY="8.125" />
+        <EntityTypeShape EntityType="WebStationModel.Certificates" Width="1.5" PointX="9.625" PointY="8.75" />
+        <AssociationConnector Association="WebStationModel.FK_Certificates_Cert_Apply_Case" />
+        <EntityTypeShape EntityType="WebStationModel.Component_Model" Width="2.125" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WebStationModel.View_AllDataApplicationList" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="WebStationModel.View_ApplicationList" Width="1.5" PointX="3.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

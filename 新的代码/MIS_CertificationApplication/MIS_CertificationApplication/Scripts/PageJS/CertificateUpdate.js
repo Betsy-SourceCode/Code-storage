@@ -114,26 +114,26 @@ app.controller('mycontroller', function ($scope, $compile) {
                 let Remark = body.find('#Remarks').val();
 
                 if (CertCode != "" || CertName != "" || ArrCovereArea != "" || country != "") {
-                    //执行新增操作
-                    $.ajax({
-                        url: "/CertificationApplication/CertificationApplicationSQL/AddCertificatesManagementList",
-                        type: 'post',
-                        dataType: 'json',
-                        data: { 'CertCode': CertCode, 'CertName': CertName, 'Mkt_Cnty': ArrCovereArea, 'StdFee': StdFee, 'StdTime': StdTime, 'Remark': Remark },
-                        success: function (res) {
-                            //CertificateMasterDetails界面
-                            if (res > 0) {
-                                $scope.CertificateMasterDetails(res);//res为CMSerial 数据库唯一标识
-                                layer.close(index);
-                            } else {
-                                swal('Comfirm失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
-                            }
-                        },
-                        error: function (res) {
-                            //debugger;
+                //执行新增操作
+                $.ajax({
+                    url: "/CertificationApplication/CertificationApplicationSQL/AddCertificatesManagementList",
+                    type: 'post',
+                    dataType: 'json',
+                    data: { 'CertCode': CertCode, 'CertName': CertName, 'Mkt_Cnty': ArrCovereArea, 'StdFee': StdFee, 'StdTime': StdTime, 'Remark': Remark },
+                    success: function (res) {
+                        //CertificateMasterDetails界面
+                        if (res > 0) {
+                            $scope.CertificateMasterDetails(res);//res为CMSerial 数据库唯一标识
+                            layer.close(index);
+                        } else {
                             swal('Comfirm失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
                         }
-                    });
+                    },
+                    error: function (res) {
+                        //debugger;
+                        swal('Comfirm失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                    }
+                });
                 }
                 else {
                     swal('认证代码,认证名称,适用国家/区域!', '以上字段为必填项！', 'error')

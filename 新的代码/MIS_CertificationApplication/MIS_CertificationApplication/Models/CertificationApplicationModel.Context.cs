@@ -25,11 +25,11 @@ namespace MIS_CertificationApplication.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Certificates_Master> Certificates_Master { get; set; }
         public virtual DbSet<Cert_Apply_Case> Cert_Apply_Case { get; set; }
         public virtual DbSet<Certificates> Certificates { get; set; }
-        public virtual DbSet<Certificates_Master> Certificates_Master { get; set; }
         public virtual DbSet<Component_Model> Component_Model { get; set; }
-        public virtual DbSet<View_ApplicationList> View_ApplicationList { get; set; }
         public virtual DbSet<View_AllDataApplicationList> View_AllDataApplicationList { get; set; }
+        public virtual DbSet<View_ApplicationList> View_ApplicationList { get; set; }
     }
 }

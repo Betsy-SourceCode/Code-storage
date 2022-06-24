@@ -7,6 +7,7 @@
     <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/AngularJS.js"></script>
@@ -14,6 +15,7 @@
     <script src="~/Scripts/layui/layui/modules/layer.js"></script>
     <script src="~/Scripts/layui/layui.js"></script>
     <script src="~/Scripts/jquery.table2excel.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
 </head>
 <body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
     <!--打印页面嵌套过来调用打印页面的方法实现打印-->
@@ -33,8 +35,8 @@
                 <div class="panel-heading col-sm-4">
                     Application or Certificate #：<input name="Application" type="text" id="Application" class="form-control input-content back" style="width:47%;" placeholder='模糊查询申请编号及认证编号' />
                     @*<a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
-                    style="pointer-events: auto;"
-                    onclick="$('#gjz').val('')"></a>*@
+                        style="pointer-events: auto;"
+                        onclick="$('#gjz').val('')"></a>*@
                 </div>
 
             </div>
@@ -65,15 +67,15 @@
                     <option value="" style="text-align:center"></option>
                 </select>
                 @*<a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
-                style="pointer-events: auto;"
-                onclick="$('#gjz').val('')"></a>*@
+                    style="pointer-events: auto;"
+                    onclick="$('#gjz').val('')"></a>*@
             </div>
             <div class="panel-heading col-sm-3">
                 Key Words #：<input name="KeyWords" type="text" id="KeyWords" class="form-control input-content back" style="width:57%;" placeholder='模糊查询供应商及认证名称' />
 
                 @*<a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
-                style="pointer-events: auto;"
-                onclick="$('#shdd').val('')"></a>*@
+                    style="pointer-events: auto;"
+                    onclick="$('#shdd').val('')"></a>*@
             </div>
             <div class="panel-heading col-sm-3">
                 <div id="Statusdiv" style="display:initial">
@@ -95,14 +97,14 @@
             </div>
         </form>
         <div id="DaoChuDiv">
-            <!--导出专用表格-->
-            <table style="clear:both;display:none">
+            <!--搜索条件表格-->
+            <table style="clear:both;margin-left:3%">
                 <tr>
-                    <td id="DaoChuSX" colspan="7"></td>
+                    <td id="DaoChuSX" colspan="7" style="border:none">Result of Search：</td>
                 </tr>
             </table>
             <!-- 表格 -->
-            <table id="GridView" class="table-striped tab-content table-hover table" style="width: 95%; margin: 0px auto; margin-top: 4%; margin-bottom: 1%;text-align:center">
+            <table id="GridView" class="table-striped tab-content table-hover table" style="width: 95%; margin: 0px auto; margin-top: 3px; margin-bottom: 1%;text-align:center">
                 <thead>
                     <tr style="background-color:rgb(206, 201, 201);height:50px">
                         <th style="width:10%;">
@@ -135,8 +137,8 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef" id="Content" class="Content" ng-repeat="i in list track by $index">
-                    <tr style="cursor: pointer"
+                <tbody id="Content" class="Content" ng-repeat="i in list track by $index">
+                    <tr style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef"
                         ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')">
                         <td>{{i.ApplicationRef}}</td>
                         <td>{{i.Applicant}}</td>
@@ -146,15 +148,16 @@
                         <td>{{i.AppDate}}</td>
                         <td id="LastTd" style="text-align:center">
                             <!--修改-->
-                            <a href="" ng-dblclick="tiaozhuan('FunctionInterface?type=3&ApplicationRef='+i.ApplicationRef+'')"><img src="~/Scripts/img/edit.png" /></a>
+                            <a href="" title="修改" ng-click="tiaozhuan('FunctionInterface?type=3&ApplicationRef='+i.ApplicationRef+'')"><img style="width: 28px; height: 25px" src="~/Scripts/img/edit.png" /></a>
                             <!--复制-->
-                            <a href="" ng-dblclick="tiaozhuan('FunctionInterface?type=2&ApplicationRef='+i.ApplicationRef+'')"><img src="~/Scripts/img/create.png" /></a>
+                            <a href="" title="复制" ng-click="tiaozhuan('FunctionInterface?type=2&ApplicationRef='+i.ApplicationRef+'')"><img style="width: 28px; height: 25px" src="~/Scripts/img/create.png" /></a>
                             <!--删除-->
-                            <a href="#"><img src="~/Scripts/img/delete.png" /></a>
+                            <a ng-if="list[$index].CertificateRef==null" href="" title="删除" ng-click="DelData(i.ApplicationRef)"><img style="width: 28px; height: 25px" src="~/Scripts/img/delete.png" /></a>
+                            <a ng-if="list[$index].CertificateRef!=null" title="不能删除"><img style="width: 28px; height: 25px" src="~/Scripts/img/Dontdelete.png" disabled="disabled" /></a>
                         </td>
                     </tr>
 
-                    <tr ng-if="i.CertificateRef!=null&&list[$index].CertificateRef!=list[$index-1].CertificateRef" style="background-color:rgb(226,239,218);color:black;font:bold;text-align:center">
+                    <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color:rgb(226,239,218);color:black;font:bold;text-align:center">
                         <td style="background-color:white;">
                         </td>
                         <td>

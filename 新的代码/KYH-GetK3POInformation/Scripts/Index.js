@@ -29,7 +29,7 @@ app.controller('GetK3POInformationController', function ($scope) {
             }
         }, 300)
         if ("csv" != extension) {
-            swal('导入失败，只能上传后缀名为csv的文件！', '', 'error');
+            swal('导入失败，只能上传后缀名为csv的文件，请下载页面右上角的装箱表模板重新导入！', '', 'error');
             //关闭遮罩层，清空
             $scope.globalmodal(false);
             return false;
@@ -42,15 +42,19 @@ app.controller('GetK3POInformationController', function ($scope) {
                     }), // 以二进制流方式读取得到整份excel表格对象
                     persons = []; // 存储获取到的数据
                 if (data.indexOf("CurrencyID") == -1 && data.indexOf("InvUPrice") == -1) {
-                    swal('导入失败，请使用最新的装箱表格式重新导入！', '', 'error');
+                    swal('导入失败，请使用最新的装箱表格式重新导入，请下载页面右上角的装箱表模板重新导入！', '', 'error');
                     //关闭遮罩层，清空
                     $scope.globalmodal(false);
                     return false;
                 }
             }
             catch (e) {
+                //格式不正确
                 console.log('文件类型不正确');
-                return;
+                swal('导入失败，错误的装箱格式，请核对后重新上传，请下载页面右上角的装箱表模板重新导入！', 'error');
+                //关闭遮罩层，清空
+                $scope.globalmodal(false);
+                return false;
             }
 
             // 表格的表格范围，可用于判断表头是否数量是否正确
