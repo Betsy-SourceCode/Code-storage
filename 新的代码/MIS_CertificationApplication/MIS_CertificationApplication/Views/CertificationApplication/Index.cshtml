@@ -28,7 +28,8 @@
         <h1 style="text-align: center;margin-top:-10px">
             <span id="Title">Certification Application & Management </span>
         </h1>
-
+        <!--用来新开页面打开证书-->
+        <a href="" target="_blank" id="OpenFile" style="display:none"></a>
         <!--搜索条件栏-->
         <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 90%;margin:0px auto">
             <div>
@@ -97,14 +98,14 @@
             </div>
         </form>
         <div id="DaoChuDiv">
-            <!--导出专用表格-->
-            <table style="clear:both;display:none">
+            <!--搜索条件表格-->
+            <table style="clear:both;margin-left:3%">
                 <tr>
-                    <td id="DaoChuSX" colspan="7"></td>
+                    <td id="DaoChuSX" colspan="7" style="border:none">Result of Search：</td>
                 </tr>
             </table>
             <!-- 表格 -->
-            <table id="GridView" class="table-striped tab-content table-hover table" style="width: 95%; margin: 0px auto; margin-top: 4%; margin-bottom: 1%;text-align:center">
+            <table id="GridView" class="table-striped tab-content table-hover table" style="width: 95%; margin: 0px auto; margin-top: 3px; margin-bottom: 1%;text-align:center">
                 <thead>
                     <tr style="background-color:rgb(206, 201, 201);height:50px">
                         <th style="width:10%;">
@@ -138,8 +139,8 @@
                     </tr>
                 </thead>
                 <tbody id="Content" class="Content" ng-repeat="i in list track by $index">
-                    <tr style="cursor: pointer"  ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef"
-                        ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')">
+                    <!--点击进入详情页-->
+                    <tr title="点击进入详情页" ng-click="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
                         <td>{{i.ApplicationRef}}</td>
                         <td>{{i.Applicant}}</td>
                         <td>{{i.Customer}}</td>
@@ -156,7 +157,6 @@
                             <a ng-if="list[$index].CertificateRef!=null" title="不能删除"><img style="width: 28px; height: 25px" src="~/Scripts/img/Dontdelete.png" disabled="disabled" /></a>
                         </td>
                     </tr>
-
                     <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color:rgb(226,239,218);color:black;font:bold;text-align:center">
                         <td style="background-color:white;">
                         </td>
@@ -186,8 +186,8 @@
                             状态
                         </td>
                     </tr>
-
-                    <tr ng-if="i.CertificateRef!=null" style="color:black;font:bold;text-align:center">
+                    <!--点击打开该认证上传之档案-->
+                    <tr title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" ng-if="i.CertificateRef!=null" style="cursor: pointer;color:black;font:bold;text-align:center">
                         <td style="background-color:white"></td>
                         <td>{{i.CertificateRef}}</td>
                         <td colspan="2">{{i.CertificateName}}</td>
@@ -205,6 +205,5 @@
             </table>
         </div>
     </div>
-   
 </body>
 </html>

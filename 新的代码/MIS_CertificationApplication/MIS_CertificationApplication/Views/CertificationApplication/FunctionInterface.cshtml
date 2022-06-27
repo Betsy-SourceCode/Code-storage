@@ -50,7 +50,148 @@
             border: 4px solid blue;
         }
     </style>
-    
+    <script>
+        //下拉框初始化
+        //委任申请公司下拉框列表
+        function Applicant() {
+            var Applicant = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetApplicantList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Applicant += '<option value="' + value.Name + '"';
+                        if ('@ViewBag.Data.ApplicantJC' == value.Name) {   //设置默认值
+                            Applicant += "selected='selected'";
+                        }
+                        Applicant += ">" + value.Text + '</option > ';
+                    })
+                    $("#Applicant").append(Applicant);
+                    return false;
+                }
+            });
+        }
+        //制造商下拉框列表
+        function Manufacturer() {
+            var Manufacturer = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetManufacturerList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Manufacturer += '<option value="' + value.Name + '"';
+                        if ('@ViewBag.Data.Manufacturer' == value.Text) {   //设置默认值
+                             Manufacturer += "selected='selected'";
+                        }
+                        Manufacturer += ">" + value.Text + '</option > ';
+                    })
+                    $("#Manufacturer").append(Manufacturer);
+                    return false;
+                }
+            });
+        }
+        //客户下拉框列表
+        function Customer() {
+            var Customer = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetCustomerList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Customer += '<option value="' + value + '"';
+                        if ('@ViewBag.Data.Customer' == value) {   //设置默认值
+                            Customer += "selected='selected'";
+                        }
+                        Customer += ">" + value + '</option > ';
+                    })
+                    $("#Customer").append(Customer);
+                    return false;
+                }
+            });
+        }
+        //费用货币下拉框列表
+        function Currency() {
+            var Currency = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetCurrencyList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Currency += '<option value="' + value.Name + '"';
+                        if ('@ViewBag.Data.Currency' == value.Text) {   //设置默认值
+                              Currency += "selected='selected'";
+                        }
+                        Currency += ">" + value.Text + '</option > ';
+                    })
+                    $("#Currency").append(Currency);
+                    return false;
+                }
+            });
+        }
+        //加载子表认证名称默认值列表
+        function CertificateNameListDefault() {
+             $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                 url: "/CertificationApplication/CertificationApplicationSQL/GetCertificateNameListDefault",
+                 data: {"CA_Ref":'@ViewBag.Data.ApplicationRef'},
+                 success: function (result) {
+                     //默认值列表
+                     var arr = new Array(result);
+                     //给下拉框赋默认值
+                     $.each($("select[name='SonName']"), function (key, value) {
+                         var CertificateName = "";
+                         var num = key;
+                         $.ajax({
+                             type: "post",
+                             dataType: 'JSON',
+                             url: "/CertificationApplication/CertificationApplicationSQL/GetCertificateNameList",
+                             success: function (result) {
+                                 $.each(result, function (key, value) {
+                                     CertificateName += '<option value="' + value.CMSerial + '"';
+                                     if (arr[0][num]["CMSerial"] == value.CMSerial) {   //设置默认值
+                                         CertificateName += "selected='selected'";
+                                     }
+                                     CertificateName += ">" + value.Text + '</option > ';
+                                 })
+                                 $("#" + value.id).append(CertificateName);
+                             }
+                         });
+                     })
+                 }
+             })
+        }
+        $(function () {
+            //下拉框初始化
+            Applicant(); Manufacturer(); Customer(); Currency();
+            //Payer赋默认值
+            if (@ViewBag.type!= 1) {
+                //[因为option没有text这个属性吧，只是 < option > 标签中间的文本内所以用这个方法
+                 $("#Payer option:contains('@ViewBag.Data.Payer')").attr("selected", true);
+            }
+            //做必填选项判断
+            if ($("#Customer").val() == "") {
+                //改变标题颜色和背景颜色
+                $("#Customerlabel").css({ "color": "white", "background-color": "red" });
+            }
+            else {
+                $("#Customerlabel").css({ "color": "black", "background-color": "lightgray" });
+            }
+            if ($("#Models").html() == "") {
+                //改变标题颜色和背景颜色
+                $("#ProductModellabel").css({ "color": "white", "background-color": "red" });
+            }
+            else {
+                $("#ProductModellabel").css({ "color": "black", "background-color": "lightgray" });
+            }
+            //非新增加载子表认证名称下拉框默认值
+            CertificateNameListDefault();
+        })
+    </script>
 </head>
 <body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
     <div id="container" style="overflow: hidden">
@@ -120,16 +261,22 @@
                     </select>
                 </div>
                 <div class="panel-heading col-sm-6">
+                    @{
+                        var ApplyFee = "";
+                        if (ViewBag.type != 1) //复制和修改从数据库取默认值
+                        {
+                            if (ViewBag.Data.ApplyFee != null)
+                            {
+                                ApplyFee = ViewBag.Data.ApplyFee.ToString().Substring(0, ViewBag.Data.ApplyFee.ToString().Length - 2);
+                            }
+                            else
+                            {
+                                ApplyFee = "0.00";
+                            }
+                        }
+                    }
                     <label class="font-backColor" style="padding-left:9px">Application Fee </label> ：
-                    @if (ViewBag.Data.ApplyFee == (decimal?)0.0000)
-                    {
-                        <input name="ApplyFee" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')" maxlength="9" type="text" id="ApplicationFee" class=" form-control input-content" style="width:53%" value="" />
-                    }
-                    else
-                    {
-                        <input name="ApplyFee" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')" maxlength="9" type="text" id="ApplicationFee" class=" form-control input-content" style="width:53%" value="@ViewBag.Data.ApplyFee" />
-                    }
-
+                    <input name="ApplyFee" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')" maxlength="9" type="text" id="ApplicationFee" class=" form-control input-content" style="width:53%" value="@ApplyFee" />
                 </div>
 
                 <div class="panel-heading col-sm-6">
@@ -138,16 +285,22 @@
                 </div>
 
                 <div class="panel-heading col-sm-6">
+                    @{
+                        var InspectFee = "";
+                        if (ViewBag.type != 1) //复制和修改从数据库取默认值
+                        {
+                            if (ViewBag.Data.InspectFee != null)
+                            {
+                                InspectFee = ViewBag.Data.InspectFee.ToString().Substring(0, ViewBag.Data.InspectFee.ToString().Length - 2);
+                            }
+                            else
+                            {
+                                InspectFee = "0.00";
+                            }
+                        }
+                    }
                     <label class="font-backColor" style="padding-left:23px">Inspection fee </label>：
-                    @if (ViewBag.Data.InspectFee == (decimal?)0.0000)
-                    {
-                        <input name="InspectFee" type="text" id="Inspectionfee" class=" form-control input-content" style="width:53%" value="" />
-                    }
-                    else
-                    {
-                        <input name="InspectFee" type="text" id="Inspectionfee" class=" form-control input-content" style="width:53%" value="@ViewBag.Data.InspectFee" />
-                    }
-
+                    <input name="InspectFee" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')" type="text" id="Inspectionfee" class=" form-control input-content" style="width:53%" value="@InspectFee" />
                 </div>
 
                 <div class="panel-heading col-sm-6">
@@ -156,16 +309,22 @@
                 </div>
 
                 <div class="panel-heading col-sm-6">
+                    @{
+                        var YearFee = "";
+                        if (ViewBag.type != 1) //复制和修改从数据库取默认值
+                        {
+                            if (ViewBag.Data.YearFee != null)
+                            {
+                                YearFee = ViewBag.Data.YearFee.ToString().Substring(0, ViewBag.Data.YearFee.ToString().Length - 2);
+                            }
+                            else
+                            {
+                                YearFee = "0.00";
+                            }
+                        }
+                    }
                     <label class="font-backColor" style="padding-left:6px">Anual Renew fee</label>：
-                    @if (ViewBag.Data.YearFee == (decimal?)0.0000)
-                    {
-                        <input name="YearFee" type="text" id="AnualRenewfee" class=" form-control input-content" style="width:53%" value="" />
-                    }
-                    else
-                    {
-                        <input name="YearFee" type="text" id="AnualRenewfee" class=" form-control input-content" style="width:53%" value="@ViewBag.Data.YearFee" />
-                    }
-
+                    <input name="YearFee" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')" type="text" id="AnualRenewfee" class=" form-control input-content" style="width:53%" value="@YearFee" />
                 </div>
             </div>
             @*右边*@
@@ -351,8 +510,8 @@
                     </tr>
                 </thead>
             }
-            <!-- 新增没有数据不需要显示表格-->
-            @if (ViewBag.type == 1)
+            <!-- 新增没有数据不需要显示表格,复制不需要子表数据所以也不需要显示表格-->
+            @if (ViewBag.type != 3)
             {
                 <tbody id="Content">
                 </tbody>
@@ -477,29 +636,29 @@
                                     if (@item.Status == "Pending")
                                     {
                                         <td style="color: blue">
-                                            @item.Status<br />
-                                            <img src="~/Scripts/img/cxl.png" />
+                                            <label>@item.Status</label><br />
+                                            <a href=""><img src="~/Scripts/img/cxl.png" /></a>
                                         </td>
                                     }
                                     if (@item.Status == "Active")
                                     {
                                         <td style="color:green">
                                             @item.Status<br />
-                                            <img src="~/Scripts/img/cxl.png" />
+                                            <a href=""><img src="~/Scripts/img/cxl.png" /></a>
                                         </td>
                                     }
                                     if (@item.Status == "Expired")
                                     {
                                         <td style="color:red">
                                             @item.Status<br />
-                                            <img src="~/Scripts/img/cxl.png" />
+                                            <a href=""><img src="~/Scripts/img/cxl.png" /></a>
                                         </td>
                                     }
                                     if (@item.Status == "Discard")
                                     {
                                         <td style="color:orange">
                                             @item.Status<br />
-                                            <img src="~/Scripts/img/cxl.png" />
+                                            <a href=""><img src="~/Scripts/img/cxl.png" /></a>
                                         </td>
                                     }
                                 }
@@ -516,168 +675,6 @@
         <input type="submit" name="Confirm" value="Confirm" style="margin-right:20%;font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" ng-click="OperationData(@ViewBag.type,'@ViewBag.Data.ApplicationRef')" />
         <input type="button" name="Cancel" value="Cancel" style="font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" onclick="window.location.href = '/CertificationApplication/CertificationApplication/index?userid='+@ViewBag.userid" />
     </div>
-    <!--熊猫动态加载等待图-->
-    <div style="z-index:1041;position:fixed;top:30%;left:35%;width:500px;border-radius:10px;" id="XMModal">
-        <div>
-            <img src="~/Scripts/img/load.gif" style="margin: 0px 25%; width: 300px; height: 230px;border-radius: 30px;" />
-        </div>
-    </div>
-    <script>
-
-        //下拉框初始化
-        //委任申请公司下拉框列表
-        function Applicant() {
-            var Applicant = "";
-            $.ajax({
-                async: false,
-                type: "post",
-                dataType: 'JSON',
-                url: "/CertificationApplication/CertificationApplicationSQL/GetApplicantList",
-                success: function (result) {
-                    $.each(result, function (key, value) {
-                        Applicant += '<option value="' + value.Name + '"';
-                        if ('@ViewBag.Data.ApplicantJC' == value.Name) {   //设置默认值
-                            Applicant += "selected='selected'";
-                        }
-                        Applicant += ">" + value.Text + '</option > ';
-                    })
-                    $("#Applicant").append(Applicant);
-                    return false;
-                }
-            });
-        }
-        //制造商下拉框列表
-        function Manufacturer() {
-            var Manufacturer = "";
-            $.ajax({
-                async: false,
-                type: "post",
-                dataType: 'JSON',
-                url: "/CertificationApplication/CertificationApplicationSQL/GetManufacturerList",
-                success: function (result) {
-                    $.each(result, function (key, value) {
-                        Manufacturer += '<option value="' + value.Name + '"';
-                        if ('@ViewBag.Data.Manufacturer' == value.Text) {   //设置默认值
-                             Manufacturer += "selected='selected'";
-                        }
-                        Manufacturer += ">" + value.Text + '</option > ';
-                    })
-                    $("#Manufacturer").append(Manufacturer);
-                    return false;
-                }
-            });
-        }
-        //客户下拉框列表
-        function Customer() {
-            var Customer = "";
-            $.ajax({
-                async: false,
-                type: "post",
-                dataType: 'JSON',
-                url: "/CertificationApplication/CertificationApplicationSQL/GetCustomerList",
-                success: function (result) {
-                    $.each(result, function (key, value) {
-                        Customer += '<option value="' + value + '"';
-                        if ('@ViewBag.Data.Customer' == value) {   //设置默认值
-                            Customer += "selected='selected'";
-                        }
-                        Customer += ">" + value + '</option > ';
-                    })
-                    $("#Customer").append(Customer);
-                    return false;
-                }
-            });
-        }
-        //费用货币下拉框列表
-        function Currency() {
-            var Currency = "";
-            $.ajax({
-                async: false,
-                type: "post",
-                dataType: 'JSON',
-                url: "/CertificationApplication/CertificationApplicationSQL/GetCurrencyList",
-                success: function (result) {
-                    $.each(result, function (key, value) {
-                        Currency += '<option value="' + value.Name + '"';
-                        if ('@ViewBag.Data.Currency' == value.Text) {   //设置默认值
-                              Currency += "selected='selected'";
-                        }
-                        Currency += ">" + value.Text + '</option > ';
-                    })
-                    $("#Currency").append(Currency);
-                    return false;
-                }
-            });
-        }
-        //加载子表认证名称默认值列表
-        function CertificateNameListDefault() {
-            $.ajax({
-                async: false,
-                type: "post",
-                dataType: 'JSON',
-                 url: "/CertificationApplication/CertificationApplicationSQL/GetCertificateNameListDefault",
-                 data: {"CA_Ref":'@ViewBag.Data.ApplicationRef'},
-                 success: function (result) {
-                     //默认值列表
-                     var arr = new Array(result);
-                     //给下拉框赋默认值
-                     $.each($("select[name='SonName']"), function (key, value) {
-                         var CertificateName = "";
-                         var num = key;
-                         $.ajax({
-                             async: false,
-                             type: "post",
-                             dataType: 'JSON',
-                             url: "/CertificationApplication/CertificationApplicationSQL/GetCertificateNameList",
-                             success: function (result) {
-                                 $.each(result, function (key, value) {
-                                     CertificateName += '<option value="' + value.CMSerial + '"';
-                                     if (arr[0][num]["CMSerial"] == value.CMSerial) {   //设置默认值
-                                         CertificateName += "selected='selected'";
-                                     }
-                                     CertificateName += ">" + value.Text + '</option > ';
-                                 })
-                                 $("#" + value.id).append(CertificateName);
-                                 
-                             }
-                         });
-                     })
-                    
-                     
-                 }
-            })
-        }
-        $(document).ready(function () {
-            
-            $("#XMModal").modal({ backdrop: 'static', keyboard: false }); //打开熊猫加载图片
-            //下拉框初始化
-            Applicant(); Manufacturer(); Customer(); Currency();
-            //Payer赋默认值
-            if (@ViewBag.type!= 1) {
-                //[因为option没有text这个属性吧，只是 < option > 标签中间的文本内所以用这个方法
-                 $("#Payer option:contains('@ViewBag.Data.Payer')").attr("selected", true);
-            }
-            //做必填选项判断
-            if ($("#Customer").val() == "") {
-                //改变标题颜色和背景颜色
-                $("#Customerlabel").css({ "color": "white", "background-color": "red" });
-            }
-            else {
-                $("#Customerlabel").css({ "color": "black", "background-color": "lightgray" });
-            }
-            if ($("#Models").html() == "") {
-                //改变标题颜色和背景颜色
-                $("#ProductModellabel").css({ "color": "white", "background-color": "red" });
-            }
-            else {
-                $("#ProductModellabel").css({ "color": "black", "background-color": "lightgray" });
-            }
-            //非新增加载子表认证名称下拉框默认值
-            CertificateNameListDefault();
-            $("#XMModal").modal('hide');
-            
-        })
-    </script>
 </body>
 </html>
 

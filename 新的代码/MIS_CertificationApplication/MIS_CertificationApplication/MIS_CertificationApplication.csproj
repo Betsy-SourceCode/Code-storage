@@ -241,7 +241,6 @@
     <Content Include="Scripts\img\CertificatesManagementCountryArea.png" />
     <Content Include="Scripts\img\Certificates_void.png" />
     <Content Include="Scripts\img\disable效果.png" />
-    <Content Include="Scripts\img\load.gif" />
     <Content Include="Scripts\jquery.table2excel.js" />
     <Content Include="Scripts\layui\css\layui.css" />
     <Content Include="Scripts\layui\css\modules\code.css" />

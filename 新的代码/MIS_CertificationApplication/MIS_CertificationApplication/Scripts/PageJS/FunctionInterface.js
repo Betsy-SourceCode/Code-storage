@@ -240,7 +240,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             //修改需要新增状态
             if (type == 3) {
                 tr += '<td style="color:green">Active<br/>'
-                tr += '<img src = "../Scripts/img/cxl.png" />'
+                tr += '<a href=""><img src = "../Scripts/img/cxl.png" /></a>'
                 tr += '</td >'
             }
             tr += '</tr>';
@@ -386,6 +386,8 @@ app.controller('mycontroller', function ($scope, $compile) {
     /**
      * 文件上传
      * @param target  对象本身
+     * @param target  对象本身
+     * @param target  对象本身
      * @param uploadid  上传的input的id
      * @param uploadImgid   上传图标的id
      * @param deleteImgid   删除图标的id
@@ -393,7 +395,7 @@ app.controller('mycontroller', function ($scope, $compile) {
      * @param FileDivid   上传文件所在div的id
      * @param FileName   未找到匹配的文件名label标签id
      */
-    function upload(target, uploadid, uploadImgid, deleteImgid, QuoteFileid, FileDivid, FileName) {
+    function upload(target,type, uploadid, uploadImgid, deleteImgid, QuoteFileid, FileDivid, FileName) {
         //var files = e.target.files;
         //得到上传文件的值
         var fileName = document.getElementById(uploadid).value;
@@ -413,6 +415,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             swal('档案超出5M限制,请选择正确的文件重新上传！', '', 'error');
             return false;
         }
+        //查询文件后缀名是否符合上传档案格式标准
         if (IsUploadStandard(extension) == 0) {
             swal('档案类型不允许,请选择正确的文件重新上传！', '', 'error');
             return false;
@@ -443,6 +446,8 @@ app.controller('mycontroller', function ($scope, $compile) {
         //显示删除图标在页面上
         $("#" + deleteImgid).css({ 'display': 'block' });
         $("#" + FileDivid).css({ 'width': 'auto', 'padding': '5px 40px 5px 5px ' });
+        //改变本条数据的状态
+
     }
     //查询文件后缀名是否符合上传档案格式标准
     function IsUploadStandard(FileSuffix) {

@@ -20,11 +20,13 @@ namespace MIS_CertificationApplication.Models
         public string Customer { get; set; }
         public string ProductModel { get; set; }
         public string Supplier { get; set; }
-        public Nullable<System.DateTime> AppDate { get; set; }
+        public string AppDate { get; set; }
         public string CertificateRef { get; set; }
         public string CertificateName { get; set; }
         public string ApplyCountry { get; set; }
-        public Nullable<System.DateTime> ExpiryDate { get; set; }
+        public string ExpiryDate { get; set; }
         public string Status { get; set; }
+        public Nullable<int> CFSerial { get; set; }
+        public string CertFileName { get; set; }
     }
 }

@@ -147,6 +147,27 @@ namespace MIS_CertificationApplication.Controllers
             var certifications = Session["certifications"];
             return JsonConvert.SerializeObject(certifications);
         }
+
+        /// <summary>
+        /// 通过子表主键获得子表上传保留认证证书及其证书名称
+        /// </summary>
+        /// <param name="CFSerial">子表主键</param>
+        /// <returns></returns>
+        public string GetCertFileByCFSerial(int CFSerial)
+        {
+            try
+            {
+                string sql = @"select CertFile AS Files,CertFileName AS FileNames from Certificates where CFSerial=" + CFSerial;
+                Others DataList = db.Database.SqlQuery<Others>(sql).FirstOrDefault();
+                //DataList.FileBase64 = Convert.ToBase64String(DataList.Files);
+                return JsonConvert.SerializeObject(DataList);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                return "";
+            }
+        }
         #endregion
 
         #region 主表下拉框
@@ -894,6 +915,9 @@ namespace MIS_CertificationApplication.Controllers
                 DataList.Mkt_Cnty = certificates.Mkt_Cnty;
                 DataList.StdFee = certificates.StdFee;
                 DataList.StdTime = certificates.StdTime;
+                DataList.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
+                DataList.CreateDept = new Authority().GetDepartmentSql(DataList.CreateBy, 0);
+                DataList.CreateTime = DateTime.Now;
                 DataList.UpdateBy = DataList.CreateBy;
                 DataList.UpdateDept = DataList.CreateDept;
                 DataList.UpdateTime = DateTime.Now;
@@ -1043,6 +1067,9 @@ namespace MIS_CertificationApplication.Controllers
             {
                 string sql = "select * from component_Model where CPSerial='" + component_Model.CPSerial + "'";
                 Component_Model DataList = db.Database.SqlQuery<Component_Model>(sql).FirstOrDefault();
+                component_Model.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
+                component_Model.CreateDept = new Authority().GetDepartmentSql(DataList.CreateBy, 0);
+                component_Model.CreateTime = DateTime.Now;
                 component_Model.UpdateBy = DataList.CreateBy;
                 component_Model.UpdateDept = DataList.CreateDept;
                 component_Model.UpdateTime = DateTime.Now;

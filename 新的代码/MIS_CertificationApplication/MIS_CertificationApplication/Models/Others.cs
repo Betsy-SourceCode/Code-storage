@@ -16,5 +16,8 @@ namespace MIS_CertificationApplication.Models
         public string K3Parts { get; set; }
         public string Text { get; set; }
         public string ApplicationRef { get; set; }
+        public string FileNames { get; set; }
+        public byte[] Files { get; set; }
+        public string  FileBase64 { get; set; }
     }
 }

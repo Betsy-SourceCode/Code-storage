@@ -62,5 +62,8 @@ namespace MIS_CertificationApplication.Models
         public string CertName { get; set; }
         public string QuoteFileName { get; set; }
         public string CertFileName { get; set; }
+        public string ApplyFeeQW { get; set; }
+        public string InspectFeeQW { get; set; }
+        public string YearFeeQW { get; set; }
     }
 }

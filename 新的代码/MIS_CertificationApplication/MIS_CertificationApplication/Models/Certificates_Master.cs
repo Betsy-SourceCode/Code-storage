@@ -18,12 +18,12 @@ namespace MIS_CertificationApplication.Models
         public string CertCode { get; set; }
         public string CertName { get; set; }
         public string Mkt_Cnty { get; set; }
-        public string CountryArea { get; set; }
         public string StdFee { get; set; }
         public string StdTime { get; set; }
         public string Remark { get; set; }
         public string CreateBy { get; set; }
         public string CreateDept { get; set; }
+        public string CountryArea { get; set; }
         public System.DateTime CreateTime { get; set; }
         public string UpdateBy { get; set; }
         public string UpdateDept { get; set; }
