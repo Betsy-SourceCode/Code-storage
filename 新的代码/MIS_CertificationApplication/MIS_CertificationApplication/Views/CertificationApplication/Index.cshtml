@@ -143,10 +143,10 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody id="Content" class="Content" ng-repeat="i in list track by $index">
+                <tbody id="Content{{$index}}" class="Content" ng-repeat="i in list track by $index" onmouseover="TrHoverIn(this)" onmouseout="TrHoverOut(this)">
                     <!--双击进入详情页-->
                     <tr title="双击进入详情页" ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
-                        <td>{{i.ApplicationRef}}</td>
+                        <td>{{i.ApplicationRef}}<label>{{i.CertificatesCounts}}</label></td>
                         <td>{{i.Applicant}}</td>
                         <td>{{i.Customer}}</td>
                         <td>{{i.Supplier}}</td>

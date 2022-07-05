@@ -287,3 +287,64 @@ function DaoChu() {
     });
 }
 
+//表格的hover  移入和移出事件
+{
+    //表格的hover事件  移入
+    function TrHoverIn(event) {
+        var count = $(event).children().eq(0).children().find("label").text();
+        if (count > 1) {
+            $(event).css({ "border-top": "3px solid blue", "border-left": "3px solid blue", "border-right": "3px solid blue" });
+            $(event).nextAll().each(function (key, value) {
+                var i = "#" + this.id;
+                if (key <= (count - 2)) {
+                    var td = $(i).children().children().eq(0).text().trim();
+                    if (td == "") {
+                        $(i).removeAttr("onmouseover");
+                        $(i).removeAttr("onmouseleave");
+                        $(i).css({ "border-left": "3px solid blue", "border-right": "3px solid blue" });
+
+                        if (key == (count - 2)) {
+                            $(i).removeAttr("onmouseover");
+                            $(i).removeAttr("onmouseleave");
+                            $(i).css({ "border-bottom": "3px solid blue", "border-left": "3px solid blue", "border-right": "3px solid blue" });
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+
+            })
+        } else {
+            $(event).css("border", "3px solid blue");
+        }
+    }
+    //表格的hover事件  移出
+    function TrHoverOut(event) {
+        var count = $(event).children().eq(0).children().find("label").text();
+        if (count > 1) {
+            $(event).css("border", "0px solid blue");
+            $(event).nextAll().each(function (key, value) {
+                var i = "#" + this.id;
+                if (key <= count) {
+                    var td = $(i).children().children().eq(0).text().trim();
+                    if (td == "") {
+                        $(i).removeAttr("ng-mouseover");
+                        $(i).removeAttr("ng-mouseleave");
+                        $(i).css("border", "0px solid blue");
+                        if (key == count) {
+                            $(i).css("border", "0px solid blue");
+                        }
+                    }
+                } else {
+                    return false;
+                }
+
+            })
+        } else {
+            $(event).css("border", "0px solid blue");
+        }
+    }
+}
+

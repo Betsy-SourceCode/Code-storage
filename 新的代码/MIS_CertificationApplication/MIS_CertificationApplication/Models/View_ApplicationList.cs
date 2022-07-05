@@ -28,5 +28,6 @@ namespace MIS_CertificationApplication.Models
         public string Status { get; set; }
         public Nullable<int> CFSerial { get; set; }
         public string CertFileName { get; set; }
+        public Nullable<int> CertificatesCounts { get; set; }
     }
 }

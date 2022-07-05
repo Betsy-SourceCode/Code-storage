@@ -170,6 +170,7 @@
           <Property Name="ApplyCountry" Type="nvarchar" MaxLength="30" />
           <Property Name="ExpiryDate" Type="varchar" MaxLength="30" />
           <Property Name="Status" Type="varchar" MaxLength="7" />
+          <Property Name="CertificatesCounts" Type="int" />
         </EntityType>
         <Association Name="FK_Certificates_Cert_Apply_Case">
           <End Role="Cert_Apply_Case" Type="Self.Cert_Apply_Case" Multiplicity="1" />
@@ -258,7 +259,8 @@
     [View_ApplicationList].[CertificateName] AS [CertificateName], 
     [View_ApplicationList].[ApplyCountry] AS [ApplyCountry], 
     [View_ApplicationList].[ExpiryDate] AS [ExpiryDate], 
-    [View_ApplicationList].[Status] AS [Status]
+    [View_ApplicationList].[Status] AS [Status], 
+    [View_ApplicationList].[CertificatesCounts] AS [CertificatesCounts]
     FROM [dbo].[View_ApplicationList] AS [View_ApplicationList]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Certificates_Cert_Apply_Case" Association="Self.FK_Certificates_Cert_Apply_Case">
@@ -457,6 +459,7 @@
           <Property Name="Status" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
           <Property Name="CFSerial" Type="Int32" />
           <Property Name="CertFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CertificatesCounts" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -614,6 +617,7 @@
           <EntitySetMapping Name="View_ApplicationList">
             <EntityTypeMapping TypeName="WebStationModel.View_ApplicationList">
               <MappingFragment StoreEntitySet="View_ApplicationList">
+                <ScalarProperty Name="CertificatesCounts" ColumnName="CertificatesCounts" />
                 <ScalarProperty Name="CertFileName" ColumnName="CertFileName" />
                 <ScalarProperty Name="CFSerial" ColumnName="CFSerial" />
                 <ScalarProperty Name="Status" ColumnName="Status" />

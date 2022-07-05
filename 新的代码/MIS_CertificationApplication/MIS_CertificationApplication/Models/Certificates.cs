@@ -18,10 +18,10 @@ namespace MIS_CertificationApplication.Models
         public string CA_Ref { get; set; }
         public int CM_Serial { get; set; }
         public string Cert_Ref { get; set; }
-        public bool Sonflag { get; set; }
         public string Issuer { get; set; }
         public string Factories { get; set; }
         public string CoverAreas { get; set; }
+        public bool Sonflag { get; set; }
         public Nullable<System.DateTime> Expiry { get; set; }
         public byte[] CertFile { get; set; }
         public string CertFileName { get; set; }
