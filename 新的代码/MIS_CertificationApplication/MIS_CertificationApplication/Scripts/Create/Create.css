@@ -15,7 +15,7 @@
     border-top-right-radius: 3px
 }
 
-table td, th {
+#GridView td, th {
     border-bottom: 1px solid lightgray;
     border-right: 1px solid lightgray;
     border-left: 1px solid rgba(112,128,144,0.5);
@@ -26,13 +26,13 @@ table td, th {
     height: 40px;
 }
 
-.table, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+#GridView, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
     border: 1px solid black;
 }
 
-    .table > tbody > tr > td,   .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th  {
-        padding: 10px;
-    }
+.table > tbody > tr > td,   .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th  {
+    padding: 10px;
+}
 
 #OAContent td {
     padding: 6px 6px 6px 10px;
@@ -90,4 +90,3 @@ body {
     position: relative;
     top: -6px;
 }
-

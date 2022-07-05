@@ -20,7 +20,7 @@ namespace MIS_CertificationApplication.Controllers
         public ActionResult Index(string userid)
         {
             //userid = "298"; //财务部
-            //userid = "444";
+            userid = "444";
             if (userid == null)
             {
                 userid = "";

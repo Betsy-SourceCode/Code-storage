@@ -60,7 +60,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             var Status = "";
             //修改需要传状态
             if (type == 3) {
-                Status = $("tbody").children().eq(i).children().eq(7).find("label").text();
+                Status = $("tbody").children().eq(i).children().eq(7).find("label").text(); //状态
                 if (Status == "Pending") {
                     Status = "P";
                 }
@@ -72,6 +72,11 @@ app.controller('mycontroller', function ($scope, $compile) {
                 }
                 else if (Status == "Discard") {
                     Status = "D";
+                }
+                //二次判断：在没有认证编号的条件下，就不用分“过期 / 有效”了,直接改为在办
+                var ReferenceNumber = $("tbody").children().eq(i).children().eq(1).find("input").val(); //认证编号
+                if (ReferenceNumber == "") {
+                    Status = "P";
                 }
             }
             SonListsArray.push({ "CM_Serial": Name, "Cert_Ref": ReferenceNumber, "Issuer": Issuer, "Factories": factory, "CoverAreas": CoverAreas, "Expiry": date, "CertFile": Attachment, "CertFileName": "file" + (i + 1), "Sonflag": true, "Status": Status });
@@ -254,7 +259,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             //CoverAreas多选框
             tr += '<td style="position:relative"><div style="margin-right:40px" class="CoverAreas" ></div><a href="" style="position:absolute;right:10px;top:10px;" ng-click="SelectCovereArea(' + index + ')" ><img  src="../Scripts/img/CoverAreas-muilSelect.png" /></a></td >';
             //有效期日期选择器
-            tr += '<td style="position:relative"><div style="margin-right:40px" class="date"  ></div><input type="date" class="form-control" onchange="DateChange(' + index + ',' + type + ',this)"></td >';
+            tr += '<td><div style="position:relative"><input type="text" name="date" id="date' + index + '" lay-verify="date" autocomplete="off" class="layui-input" style="cursor:pointer" onchange="DateChange(' + index + ',' + type + ',this)"><i class="DateIcon"><img src="../Scripts/img/日期选择器Icon.png" /></i></div></td >';
             //子表文件上传
             /* tr += '<td style="position:relative"><div style="margin-right:40px" class="Attachment" ></div><a href="" id="upload" ng-click="upLoad()" style="position:absolute;right:10px;top:10px;" ><img src="../Scripts/img/upload.png" /></a><a href="" id="delete" ng-click="delete()" style="position:absolute;right:10px;top:10px;display:none"><img src="../Scripts/img/Del.png" /></a></td >';*/
 
@@ -270,12 +275,26 @@ app.controller('mycontroller', function ($scope, $compile) {
                 tr += '</td >'
             }
             tr += '</tr>';
-            index++;
             var template = angular.element(tr);
             var mobileDialogElement = $compile(template)($scope);
             angular.element("#Content").append(mobileDialogElement);
             /*$("#Content").append(tr);*/
             //$scope.SelectFactories();
+            //时间控件
+            //日期
+            layui.use('laydate', function () {
+                var laydate = layui.laydate;
+                var Newdate = "#date" + index;
+                //常规用法
+                laydate.render({
+                    elem: Newdate,
+                    done: function (date) {
+                        DateChange(index - 1, type, Newdate);
+                    }
+                });
+                index++;
+            });
+
             $scope.CertificateName("Name" + index);  //因为上面index已经++了，所以不用再+1了
         }
 
@@ -499,29 +518,51 @@ function CheckReferenceNumberAndSonName(element, index) {
     });
 }
 //子表的日期改变事件
-function DateChange(index, type, element) {
+function DateChange(index, type, element, IsInsert) {
     if (type == 3) {
-        var num = document.getElementById("MainUpload" + (index + 1)).files.length;
-        if (num == 0) {
-            $("tbody").children().eq(index).children().eq(7).css("color", "blue");//将作废状态字体颜色改为orange
-            $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");//作废后 将状态改为Discard
+        var num;
+        //0-修改本身的，0-新增一行
+        if (IsInsert == 1) {
+            num = document.getElementById("MainUpload" + (index + 1)).files.length;
+        } else {
+            $("#MainUpload" + (index + 1)).each(function (key, value) {
+                if (value.defaultValue == "") {
+                    num = 0;  //没有文件
+                }
+                else {
+                    num = 1;
+                }
+            })
         }
-        if (num != 0 && $(element).val() == "") {
-            $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-            $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+        //在没有认证编号的条件下，就不用分“过期 / 有效”了,直接改为在办
+        var ReferenceNumber = $("tbody").children().eq(index).children().eq(1).find("input").val(); //认证编号
+        if (ReferenceNumber == "") {
+            $("tbody").children().eq(index).children().eq(7).css("color", "blue");
+            $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
         }
-        var dateold = $(element).val();
-        if (dateold != "") {
-            var date = new Date(dateold);
-            var nowDate = new Date();
-            if (date > nowDate) {
-                $("tbody").children().eq(index).children().eq(7).css("color", "red");//将作废状态字体颜色改为orange
-                $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");//作废后 将状态改为Discard
-            } else {
+        else {
+            if (num == 0) {
+                $("tbody").children().eq(index).children().eq(7).css("color", "blue");
+                $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
+            }
+            if (num != 0 && $(element).val() == "") {
                 $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
                 $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
             }
+            var dateold = $(element).val();
+            if (dateold != "") {
+                var date = new Date(dateold);
+                var nowDate = new Date();
+                if (date > nowDate) {
+                    $("tbody").children().eq(index).children().eq(7).css("color", "red");
+                    $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
+                } else {
+                    $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                    $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+                }
+            }
         }
+
         //if ($("#MainUpload" + (index + 1)).files[0] != null && element.val() != "") {
         //    var date = new Date(element.val());
         //    var nowDate = new Date();
@@ -540,7 +581,6 @@ function DateChange(index, type, element) {
     }
 
 }
-
 
 //文件上传
 {
@@ -617,24 +657,31 @@ function DateChange(index, type, element) {
         //显示删除图标在页面上
         $("#" + deleteImgid).css({ 'display': 'inline-block' });
         $("#" + FileDivid).css({ 'width': 'auto', 'padding': '5px 40px 5px 5px ' });
-        if (type == 3 && index != 0) {
-            var dateold = $("tbody").children().eq(index).children().eq(5).find("input").val();
-            console.log(dateold)
-            if (dateold != "") {
-                var date = new Date(dateold);
-                var nowDate = new Date();
-                if (date > nowDate) {
-                    $("tbody").children().eq(index).children().eq(7).css("color", "red");//将作废状态字体颜色改为orange
-                    $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");//作废后 将状态改为Discard
+        if (type == 3) {
+            //在没有认证编号的条件下，就不用分“过期 / 有效”了,直接改为在办
+            var ReferenceNumber = $("tbody").children().eq(index).children().eq(1).find("input").val(); //认证编号
+            console.log(ReferenceNumber);
+            if (ReferenceNumber == "") {
+                $("tbody").children().eq(index).children().eq(7).css("color", "blue");
+                $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
+            }
+            else {
+                var dateold = $("tbody").children().eq(index).children().eq(5).find("input").val();
+                if (dateold != "") {
+                    var date = new Date(dateold);
+                    var nowDate = new Date();
+                    if (date > nowDate) {
+                        $("tbody").children().eq(index).children().eq(7).css("color", "red");
+                        $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
+                    } else {
+                        $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                        $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+                    }
                 } else {
                     $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
                     $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
                 }
-            } else {
-                $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-                $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
             }
-
         }
     }
     //查询文件后缀名是否符合上传档案格式标准

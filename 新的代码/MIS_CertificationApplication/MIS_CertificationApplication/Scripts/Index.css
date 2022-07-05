@@ -1,13 +1,15 @@
 ﻿.table, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
     border: 1px solid black;
 }
-.table > tbody > tr > td,   .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th  {
-    padding:10px;
-}
+
+    .table > tbody > tr > td,   .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th  {
+        padding: 10px;
+    }
 /*功能管理图片的间距*/
-#LastTd{
-    margin-left:10px;
+#LastTd {
+    margin-left: 10px;
 }
+
 table {
     border-collapse: collapse;
     color: #708090;
@@ -39,10 +41,10 @@ a, a:hover {
     text-decoration: none;
 }
 
-a:hover {
-    overflow: hidden;
-    white-space: initial;
-}
+    a:hover {
+        overflow: hidden;
+        white-space: initial;
+    }
 
 #OAContent td {
     padding: 6px 6px 6px 10px;
@@ -54,6 +56,7 @@ a:hover {
 table {
     font-size: 13px;
 }
+
 th {
     background-color: #ccc;
     color: black;
@@ -79,20 +82,17 @@ body {
 }
 
 .panel-heading {
-    padding:5px 0px;
+    padding: 5px 0px;
     font-size: 17px;
     font-weight: bold;
-}
-
-.qq {
-    display: contents;
 }
 
 .btn-primary {
     background-color: #428bca;
     border-color: #357ebd;
 }
+
 .type {
-    position:relative;
-    top:-6px;
+    position: relative;
+    top: -6px;
 }
