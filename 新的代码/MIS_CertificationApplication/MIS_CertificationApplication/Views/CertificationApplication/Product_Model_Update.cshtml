@@ -18,13 +18,16 @@
     <script src="~/Scripts/AngularJS.js"></script>
     <script src="~/Scripts/layui/layui.js"></script>
     <script src="~/Scripts/PageJS/ProductModelUpdate.js"></script>
+    <script src="~/Scripts/jquery.table2excel.js"></script>
     <style>
         th {
             color: yellow;
         }
-        .swal2-container{
-            z-index:10000000000;
+
+        .swal2-container {
+            z-index: 10000000000;
         }
+
         .SelectCertificateMasterDetails {
             border: 2px solid black !important;
             font-size: 20px !important;
@@ -33,11 +36,22 @@
             line-height: 30px !important;
             color: black !important;
             background-color: rgb(189 215 238) !important;
+            margin: 0px 5px !important;
+        }
+        /*新增-标题字体加大加粗*/
+        .layui-layer-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
         }
     </style>
 </head>
 <body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
+    <!--打印页面嵌套过来调用打印页面的方法实现打印-->
+    <iframe src="~/CertificationApplication/Product_Model_UpdatePrinting" height="500" name="iframName" id="iframeId" style=" display:none;width:100%">
+    </iframe>
     <div id="container" style="overflow: hidden">
+        <!--元器件型号管理主界面-->
         <h1 style="text-align: center;">
             <span id="Title1">Product Model Management </span>
         </h1>
@@ -48,75 +62,105 @@
                 <div class="panel-heading col-sm-11">
                     <label style="padding-left:75px">key-words</label>：
                     <input name="key_words" type="text" id="key_words" class=" form-control input-content" style="width:60%;margin-right:50px" />
-                    <input type="button" name="btnPrint" class="form-control  btnBack" value="打印" ng-click="" />
-                    <input type="button" name="btnDaochu" class="form-control  btnBack" value="导出" ng-click="" />
+                    <input type="button" name="btnPrint" id="btnPrint" class="form-control  btnBack" value="打印" onclick="Dayin()" disabled="disabled" />
+                    <input type="button" name="btnDaochu" id="btnDaochu" class="form-control  btnBack" value="导出" onclick="DaoChu()" disabled="disabled" />
                 </div>
-                @*K3 Items Num*@
                 <div class="panel-heading col-sm-11">
                     <label style="padding-left:51px">K3 Items Num</label>：
                     <input name="K3ItemsNum" type="text" id="K3ItemsNum" class=" form-control input-content" style="width: 60%; margin-right: 50px" />
                     <input type="button" name="btnSearch" class="form-control  btnBack" value="搜索" ng-click="ComponentModelManagement()" />
-                    <input type="button" name="btnAdd" class="form-control  btnBack" value="新增" ng-click="AddComponentModel(0);" />
+                    <!--新增需要特殊权限-->
+                    @if (ViewBag.Add == 1)
+                    {
+                        <input type="button" name="btnAdd" class="form-control  btnBack" value="新增" ng-click="AddComponentModel(0);" />
+                    }
+                    else
+                    {
+                        <input type="button" name="btnAdd" disabled="disabled" class="form-control  btnBack" value="新增" ng-click="AddComponentModel(0);" />
+                    }
+
                 </div>
             </div>
 
 
         </form>
     </div>
-    <!-- 表格上方 -->
-    <div style="width: 85%;margin:0px auto;">
-        <div style="font-size:15px;font:bold">
-        <label>Result of Search:</label>
-        <label style="font-size:10px;color:gray;font-weight:100"> 
-            Key-Words like '<label id="key"></label>' 
-            and K3-Items-Num include '<label id="k3"></label>'</label></div>
-    </div>
-    <!-- 表格 -->
-    <div style="width: 92%;margin:0px auto;">
-        <table id="GridView" class="table-striped tab-content table-hover table" style="width: 92%; margin: 0px auto; margin-bottom: 1%;text-align:center">
-            <thead>
-                <tr style="background-color:rgb(0,112,192);">
-                    <th>
-                        Model Code<br />
-                        型 号 代 码
-                    </th>
-                    <th>
-                        Model Description<br />
-                        型 号 名称
-                    </th>
-                    <th>
-                        Specification<br />
-                        规 格 详 细
-                    </th>
-                    <th>
-                        K3 Related Items<br />
-                        K3 关 系 物 料 号
-                    </th>
-                    <th>
-                        功能管理<br />
-                        Functions
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="Content" ng-repeat="i in list track by $index">
-                <tr ng-dblclick="ComponentModelDetail(i.CPSerial)" style="box-decoration-break: slice;color:rgb(128,128,128); z-index: 100; cursor: pointer;">
-                    <td>{{i.ModelCode}}</td>
-                    <td>{{i.ModelName}}</td>
-                    <td>{{i.ModelSpec}}</td>
-                    <td>{{i.K3Parts}}</td>
-                    <td>
-                        <img style="width:28px;height:25px" src="~/Scripts/img/edit.png" ng-click="EditComponentModel(i.CPSerial)" />
-                        <img style="width:28px;height:25px" src="~/Scripts/img/create.png" ng-click="CopyComponentModel(i.CPSerial)" />
-                        <img style="width:28px;height:25px" src="~/Scripts/img/delete.png" ng-click="ISDel(i.CPSerial)"/>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody id="NullList">
-                <tr><td id="Message" colspan='7' class='text-center' style='color:red;font-size:20px'>点击搜索按钮后加载数据</td></tr>
-            </tbody>
+    <!-- 表格上方-筛选条件 -->
+    <div id="DaoChuDiv">
+        @*<div style="width: 85%;margin:0px auto;">
+                <div style="font-size:15px;font:bold">
+                    <label>Result of Search:</label>
+                    <label style="font-size:10px;color:gray;font-weight:100">
+                        Key-Words like '<label id="key"></label>'
+                        and K3-Items-Num include '<label id="k3"></label>'
+                    </label>
+                </div>
+            </div>*@
+        <table style="margin-left:8%">
+            <tr>
+                <td colspan="4" style="border:none">
+                    <label>Result of Search:</label>
+                    <label style="font-size:10px;color:gray;font-weight:100">
+                        Key-Words like '<label id="key"></label>'
+                        and K3-Items-Num include '<label id="k3"></label>'
+                    </label>
+                </td>
+            </tr>
         </table>
-        <label style="color:gray;font-size:10px;padding-left:20px">( N.B. For easy illustration of Product Models, pls use wildcard notation & expression to consolidate similar models. )</label>
+        <!-- 表格 -->
+        <div style="width: 92%;margin:0px auto;">
+            <table id="GridView" class="table-striped tab-content table-hover table" style="width: 92%; margin: 0px auto; margin-bottom: 1%;text-align:center">
+                <thead>
+                    <tr style="background-color:rgb(0,112,192);">
+                        <th>
+                            Model Code<br />
+                            型 号 代 码
+                        </th>
+                        <th>
+                            Model Description<br />
+                            型 号 名称
+                        </th>
+                        <th>
+                            Specification<br />
+                            规 格 详 细
+                        </th>
+                        <th>
+                            K3 Related Items<br />
+                            K3 关 系 物 料 号
+                        </th>
+                        <th class="noExl">
+                            功能管理<br />
+                            Functions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="Content" ng-repeat="i in list track by $index">
+                    <tr ng-dblclick="ComponentModelDetail(i.CPSerial)" style="box-decoration-break: slice;color:rgb(128,128,128); z-index: 100; cursor: pointer;">
+                        <td>{{i.ModelCode}}</td>
+                        <td>{{i.ModelName}}</td>
+                        <td>{{i.ModelSpec}}</td>
+                        <td title="{{i.K3PartsStr}}">{{i.K3Parts}}</td>
+                        <td class="noExl">
+                            <img ng-if="i.RLV=='A'||i.RLV=='B'" title="修改" style="width:28px;height:25px" src="~/Scripts/img/edit.png" ng-click="EditComponentModel(i.CPSerial)" />
+                            <!--复制需要特殊权限-->
+                            @if (ViewBag.Add == 1)
+                            {
+                                <img title="复制" style="width:28px;height:25px" src="~/Scripts/img/create.png" ng-click="CopyComponentModel(i.CPSerial)" />
+                            }
+                            <img ng-if="i.IsRemove==0" title="删除" style="width:28px;height:25px" src="~/Scripts/img/delete.png" ng-click="ISDel(i.CPSerial)" />
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody id="NullList">
+                    <tr><td id="Message" colspan='7' class='text-center noExl' style='color:red;font-size:20px'>点击搜索按钮后加载数据</td></tr>
+                </tbody>
+            </table>
+            <label style="color:gray;font-size:10px;padding-left:4%">( N.B. For easy illustration of Product Models, pls use wildcard notation & expression to consolidate similar models. )</label>
+        </div>
     </div>
-
+    <!--熊猫动态加载等待图-->
+    <div style="background-color:white !important;z-index:1041;position:fixed;top:45%;left:45%;width:200px;border-radius:10px;display:none" id="XMModal">
+        <img src="~/Scripts/img/加载.gif" style="margin:0px 25%;width: 100px; height: 100px;" />
+    </div>
 </body>
 </html>

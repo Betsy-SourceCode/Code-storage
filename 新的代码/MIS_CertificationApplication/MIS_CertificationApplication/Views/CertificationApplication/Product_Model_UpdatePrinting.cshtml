@@ -1,0 +1,165 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Create/Create.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <style>
+        th {
+            color: yellow;
+        }
+
+        .swal2-container {
+            z-index: 10000000000;
+        }
+
+        .SelectCertificateMasterDetails {
+            border: 2px solid black !important;
+            font-size: 20px !important;
+            width: 20% !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            color: black !important;
+            background-color: rgb(189 215 238) !important;
+            margin: 0px 5px !important;
+        }
+    </style>
+    <script>
+        var app = angular.module('myApp', []);  //创建模块
+        app.controller('mycontroller', function ($scope, $timeout) {
+            //产品模型管理数据查询
+            $scope.ComponentModelManagement = function () {
+                //k3代码
+                var K3ItemsNum = $("#k3").html();
+                //key_words
+                var key_words = $("#key").html();
+                $.ajax({
+                    async: false,
+                    //改用Session["Product_Model_UpdatePrinting"]取数据
+                    url: "/CertificationApplication/CertificationApplicationSQL/Product_Model_UpdatePrintingList",
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (res) {
+                        //console.log(res);
+                        if (res.length == 0) {
+                            $scope.list = null;
+                            $scope.$apply();
+                            //显示无数据时 展示的tbody
+                            $("#Message").html("未找到任何记录");
+                            $("#NullList").css("display", "");
+                        }
+                        else {
+                            //隐藏显示无数据时 展示的tbody
+                            $("#NullList").css("display", "none");
+                            $scope.list = res;
+                            $scope.$apply();
+                        }
+                    },
+                    error: function (res) {
+                        //debugger;
+                        //swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                    }
+                });
+            }
+        });
+        //首页调打印的方法
+        function Dayin(CK3ItemsNum, key_words) {
+            console.log(CK3ItemsNum)
+            console.log(key_words)
+            $("#key").html(key_words);
+            $("#k3").html(CK3ItemsNum);
+            //调用AngularJS方法
+            var appElement = document.querySelector('[ng-controller=mycontroller]');
+            var scope = angular.element(appElement).scope();
+            scope.ComponentModelManagement();
+            setTimeout(function () {
+                //处理dom加载完成，或者repeat循环完成要做的事情
+                window.print();
+            }, 100);
+        }
+    </script>
+</head>
+<body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
+    <div id="container" style="overflow: hidden">
+        <!--打印元器件型号管理主界面-->
+        <h1 style="text-align: center;">
+            <span id="Title1">Print Product Model Management </span>
+        </h1>
+        <!--搜索条件栏-->
+        <div style="margin-left:5%">
+            <label>Result of Search:</label>
+            <label style="font-size:10px;color:gray;font-weight:100">
+                Key-Words like '<label id="key"></label>'
+                and K3-Items-Num include '<label id="k3"></label>'
+            </label>
+        </div>
+    </div>
+    <!-- 表格上方-筛选条件 -->
+    <div id="DaoChuDiv">
+        <!-- 表格 -->
+        <div style="width: 92%;margin:0px auto;">
+            <table id="GridView" class="table-striped tab-content table-hover table" style="width: 92%; margin: 0px auto; margin-bottom: 1%;text-align:center">
+                <thead>
+                    <tr style="background-color:rgb(0,112,192);">
+                        <th>
+                            Model Code<br />
+                            型 号 代 码
+                        </th>
+                        <th>
+                            Model Description<br />
+                            型 号 名称
+                        </th>
+                        <th>
+                            Specification<br />
+                            规 格 详 细
+                        </th>
+                        <th>
+                            K3 Related Items<br />
+                            K3 关 系 物 料 号
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="Content" ng-repeat="i in list track by $index">
+                    <tr ng-dblclick="ComponentModelDetail(i.CPSerial)" style="box-decoration-break: slice;color:rgb(128,128,128); z-index: 100; cursor: pointer;">
+                        <td>{{i.ModelCode}}</td>
+                        <td>{{i.ModelName}}</td>
+                        <td>{{i.ModelSpec}}</td>
+                        <td>{{i.K3Parts}}</td>
+                    </tr>
+                </tbody>
+                <tbody id="NullList">
+                    <tr><td id="Message" colspan='7' class='text-center noExl' style='color:red;font-size:20px'>点击搜索按钮后加载数据</td></tr>
+                </tbody>
+            </table>
+            <label style="color:gray;font-size:10px;padding-left:4%">( N.B. For easy illustration of Product Models, pls use wildcard notation & expression to consolidate similar models. )</label>
+        </div>
+    </div>
+    <!--打印人和打印时间-->
+    <div style="width:85%;overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+        <span style="float: left;">
+            <b>打印人:</b>
+            <b>@ViewBag.username</b>
+        </span>
+        <span style="float: right;">
+            <b>打印时间:</b>
+            @{
+                var Time = DateTime.Now;
+            }
+            <b>@Time</b>
+        </span>
+    </div>
+</body>
+</html>

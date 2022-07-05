@@ -57,7 +57,24 @@ app.controller('mycontroller', function ($scope, $compile) {
             var CoverAreas = $('#GridView').find(".CoverAreas").eq(i).attr("ArrCovereArea");  //子表国家区域
             var date = $('#GridView').find("input[type='date']").eq(i).val(); //有效期
             var Attachment = $('#GridView').find(".Attachment").eq(i).val();
-            SonListsArray.push({ "CM_Serial": Name, "Cert_Ref": ReferenceNumber, "Issuer": Issuer, "Factories": factory, "CoverAreas": CoverAreas, "Expiry": date, "CertFile": Attachment, "CertFileName": "file" + (i + 1), "Sonflag": true });
+            var Status = "";
+            //修改需要传状态
+            if (type == 3) {
+                Status = $("tbody").children().eq(i).children().eq(7).find("label").text();
+                if (Status == "Pending") {
+                    Status = "P";
+                }
+                else if (Status == "Active") {
+                    Status = "A";
+                }
+                else if (Status == "Expired") {
+                    Status = "E";
+                }
+                else if (Status == "Discard") {
+                    Status = "D";
+                }
+            }
+            SonListsArray.push({ "CM_Serial": Name, "Cert_Ref": ReferenceNumber, "Issuer": Issuer, "Factories": factory, "CoverAreas": CoverAreas, "Expiry": date, "CertFile": Attachment, "CertFileName": "file" + (i + 1), "Sonflag": true, "Status": Status });
         }
         //console.log(SonListsArray);
         var form = $('#Myform').serialize();
@@ -107,6 +124,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             method = "InsertData"; //新增
         }
         $.ajax({
+            async: false,
             url: "/CertificationApplication/CertificationApplicationSQL/" + method,
             type: 'post',
             dataType: 'json',
@@ -145,26 +163,31 @@ app.controller('mycontroller', function ($scope, $compile) {
 
     //主表中多选框-模型列表的值
     $scope.SelectModels = function () {
-        var Models = $("#Models").attr("ArrModels");
-        $("#Models").attr("ArrModels");
+        var Models = $("#Models").attr("arrModels");
         layer.open({
             type: 2,
             title: 'Select Products Models',
             skin: 'layui-layer-rim', //加上边框
             area: ['940px', '50%'], //宽高
             content: '../CertificationApplication/SelectModels?Models=' + Models,
-            btn: ['Clear All Selected', 'Confirm & Return', 'Update Table'],
+            btn: ['Clear All Selected', 'Confirm & Return'/*, 'Update Table'*/],
             btnAlign: 'c',
             btn1: function (index, layero) { //清楚所有的选中
-
+                //获取子页面（iframe页）的body元素
+                var body = layer.getChildFrame('body', index);
+                body.find("input[name='test']").each(function () {
+                    $(this).removeAttr("checked");
+                });
             },
             btn2: function (index, layero) { //提交并返回
                 //获取子页面（iframe页）的body元素
                 var body = layer.getChildFrame('body', index);
                 // 得到找到body元素中id为edit_category的元素，并获取其值赋值给g
                 var arr = "";
+                var isnull = "";
                 var ArrModels = ""; //存放子表中多选框-模型列表的值
                 let g = body.find('input[name="test"]:checked').each(function () {
+                    isnull += $(this).val();
                     arr += $(this).val() + ";";
                     ArrModels += this.id + "|";  //存入数据库的
                 })
@@ -174,17 +197,19 @@ app.controller('mycontroller', function ($scope, $compile) {
                 //给自定义属性赋值
                 $("#Models").attr("ArrModels", ArrModels);
                 $("#Models").html(arr);
-                //关闭该子页面
-                layer.close(index);
-                if (arr != "") {
+                if (isnull != "") {
                     //改变标题颜色和背景颜色
                     $("#ProductModellabel").css({ "color": "black", "background-color": "lightgray" });
                 }
-
+                else {
+                    $("#ProductModellabel").css({ "color": "white", "background-color": "red" });
+                }
+                //关闭该子页面
+                layer.close(index);
             },
-            btn3: function (index, layero) { //更新表格
+            //btn3: function (index, layero) { //更新表格
 
-            },
+            //},
             success: function (layero, index) {
                 /*debugger*/
                 //渲染按钮的样式
@@ -210,6 +235,7 @@ app.controller('mycontroller', function ($scope, $compile) {
     //子表方法整合
     {    //全局变量-用于计算子表table有几行
         var index = 0;
+
         //子表新增一行数据
         $scope.SonAddTr = function (type) {
             if (type != 1) { //复制和修改用
@@ -218,9 +244,9 @@ app.controller('mycontroller', function ($scope, $compile) {
             //动态创建tr
             var tr = '<tr>';
             //认证名称下拉框
-            tr += '<td><select name="Name" id="Name' + (index + 1) + '" class="form-control Name" ><option selected="selected" value="" style="text-align:center" ></option></select ></td>';
+            tr += '<td><select name="SonName" onchange="CheckReferenceNumberAndSonName(this,' + (index + 1) + ')" id="SonName' + (index + 1) + '" class="form-control Name" ><option selected="selected" value="" style="text-align:center" ></option></select ></td>';
             //Reference Number文本框
-            tr += '<td><input name="ReferenceNumber" type="text" id="ReferenceNumber" class="form-control input-content" maxlength="30"/></td >';
+            tr += '<td><input name="ReferenceNumber" type="text" id="ReferenceNumber' + (index + 1) + '" class="form-control input-content" maxlength="30" onblur="CheckReferenceNumberAndSonName(this,' + (index + 1) + ')"/></td >';
             //Issuer文本框
             tr += '<td ><input name="Issuer" type="text" id="Issuer" class="form-control input-content" maxlength="100"/></td >';
             //factory多选框
@@ -228,19 +254,19 @@ app.controller('mycontroller', function ($scope, $compile) {
             //CoverAreas多选框
             tr += '<td style="position:relative"><div style="margin-right:40px" class="CoverAreas" ></div><a href="" style="position:absolute;right:10px;top:10px;" ng-click="SelectCovereArea(' + index + ')" ><img  src="../Scripts/img/CoverAreas-muilSelect.png" /></a></td >';
             //有效期日期选择器
-            tr += '<td style="position:relative"><div style="margin-right:40px" class="date" ></div><input type="date" class="form-control"></td >';
+            tr += '<td style="position:relative"><div style="margin-right:40px" class="date"  ></div><input type="date" class="form-control" onchange="DateChange(' + index + ',' + type + ',this)"></td >';
             //子表文件上传
             /* tr += '<td style="position:relative"><div style="margin-right:40px" class="Attachment" ></div><a href="" id="upload" ng-click="upLoad()" style="position:absolute;right:10px;top:10px;" ><img src="../Scripts/img/upload.png" /></a><a href="" id="delete" ng-click="delete()" style="position:absolute;right:10px;top:10px;display:none"><img src="../Scripts/img/Del.png" /></a></td >';*/
 
-            tr += '<td style="position:relative"><div id="SonFileDiv' + (index + 1) + '" style="height: auto; width: 100px;position: relative"><div style = "position: absolute; top: 3px; right: 5px; cursor: pointer; " ><img id="uploadImg' + (index + 1) + '" src = "../Scripts/img/upload.png" title = "点击按钮上传文件" onclick = "imgclick(\'MainUpload' + (index + 1) + '\')" style = "width: 100 % " > <input id="MainUpload' + (index + 1) + '" type="file" class="file" onchange="upload(this,\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\')" style="display: none"></div><img id="QuoteFile' + (index + 1) + '" style = "padding: 5px; display: none" /> '
+            tr += '<td style="position:relative"><div id="SonFileDiv' + (index + 1) + '" style="height: auto; width: 100px"><div style = "position: absolute; top: 3px; right: 5px; cursor: pointer; " ><img id="uploadImg' + (index + 1) + '" src = "../Scripts/img/upload.png" title = "点击按钮上传文件" onclick = "imgclick(\'MainUpload' + (index + 1) + '\')" style = "width: 100 % " > <input id="MainUpload' + (index + 1) + '" type="file" class="file" onchange="upload(' + index + ',' + type + ',this,\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\')" style="display: none"></div><img id="QuoteFile' + (index + 1) + '" style = "padding: 5px; display: none" /> '
 
             //存放文件名，没有可展示的类型图片时使用
-            tr += '<div><label id="FileName' + (index + 1) + '" style="display:none"></label><a href="" id="deleteImg' + (index + 1) + '"onclick="deletefile(\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\')" style="position: absolute; bottom:5px; right: 5px;display:none"> <img src="../Scripts/img/Del.png" title="删除已上传的文件" /> </a></div></div></td >';
+            tr += '<div><label id="FileName' + (index + 1) + '" style="display:none;"></label><a href="" id="deleteImg' + (index + 1) + '"onclick="deletefile(\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\')" style="position: absolute; bottom:20px; right: 10px;display:none"> <img src="../Scripts/img/Del.png" title="删除已上传的文件" /> </a></div></div></td >';
 
             //修改需要新增状态
             if (type == 3) {
-                tr += '<td style="color:green">Active<br/>'
-                tr += '<a href=""><img src = "../Scripts/img/cxl.png" /></a>'
+                tr += '<td style="color:green"><label></label><br/>'
+                tr += '<a href="" id="cxl' + (index + 1) + '" ng-click="CXL(' + index + ')"><img src = "../Scripts/img/cxl.png" /></a>'
                 tr += '</td >'
             }
             tr += '</tr>';
@@ -265,7 +291,7 @@ app.controller('mycontroller', function ($scope, $compile) {
                         CertificateName += '<option value="' + value.CMSerial + '"';
                         CertificateName += ">" + value.Text + '</option > ';
                     })
-                    $("#" + Name).append(CertificateName);
+                    $("Select[name='SonName']").append(CertificateName);
                     return false;
                 }
             });
@@ -278,7 +304,7 @@ app.controller('mycontroller', function ($scope, $compile) {
                 type: 2,
                 title: '多选GIP工厂',
                 skin: 'layui-layer-rim', //加上边框
-                area: ['450px', '30%'], //宽高
+                area: ['450px', '35%'], //宽高
                 content: '../CertificationApplication/SelectFactories?Factories=' + Factories,
                 btn: ['Confirm & Return'],
                 btnAlign: 'c',
@@ -322,7 +348,11 @@ app.controller('mycontroller', function ($scope, $compile) {
                 btn: ['Clear All Selected', 'Confirm & Return'],
                 btnAlign: 'c',
                 btn1: function (index, layero) {
-
+                    //获取子页面（iframe页）的body元素
+                    var body = layer.getChildFrame('body', index);
+                    body.find("input[name='test']").each(function () {
+                        $(this).removeAttr("checked");
+                    });
                 },
                 btn2: function (index, layero) { //提交并返回
 
@@ -355,6 +385,11 @@ app.controller('mycontroller', function ($scope, $compile) {
 
         //子表中认证名称操作
         $scope.CertificatesManagement = function () {
+            //循环存选中值到数组里
+            var SonArr = [];
+            $.each($("select[name='SonName']"), function (key, value) {
+                SonArr.push($(this).val());
+            })
             layer.open({
                 type: 2,
                 title: '认 证 管 理',
@@ -363,13 +398,149 @@ app.controller('mycontroller', function ($scope, $compile) {
                 content: '../CertificationApplication/Certificate_Update',
                 btnAlign: 'c',
                 end: function () {
+                    //循环加载下拉框列表
+                    var num = 1;
+                    for (var i = 0; i < SonArr.length; i++) {
 
+                        $scope.CertificateName("Name" + num);
+                        num++;
+                        ////赋默认值
+                        //$("#Name" + i).find("option['value=\"" + SonArr[i] + "\"']").attr("selected", "selected");
+                    }
                 }
             });
 
         }
+
+        //子表中 作废操作
+        $scope.CXL = function (id) {
+            swal({
+                title: '您确定是否作废此条数据?',
+                text: "",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '确定',
+                cancelButtonText: '取消'
+            }).then((isConfirmed) => {
+                if (isConfirmed) {
+                    //console.log($("tbody").children().eq(id).html());
+                    $("tbody").children().eq(id).css("pointer-events", "none");//禁用本条数据  当前tr
+                    $("tbody").children().eq(id).css("background-color", "rgb(255,233,233)");//禁用本条数据后  将tr背景颜色改为红色
+                    $("tbody").children().eq(id).children().eq(1).children().val("");//清空认证编号
+                    $("tbody").children().eq(id).children().eq(7).css("color", "orange");//将作废状态字体颜色改为orange
+                    $("tbody").children().eq(id).children().eq(7).find("label").html("Discard");//作废后 将状态改为Discard
+                }
+            })
+        }
     }
 })
+
+//检查 相同的认证名称，认证编号不能相同
+function CheckReferenceNumberAndSonName(element, index) {
+    var ReferenceNumber = $("#ReferenceNumber" + index).val();
+    var Name = $("#SonName" + index).val();
+    var num = $("#Content tr").length;
+    //认证名称为空就跳过判断
+    if (Name == "") {
+        $("#SonName" + index).focus();
+        return false;
+    }
+    //认证编号为空就跳过判断
+    if (ReferenceNumber == "") {
+        return false;
+    }
+    for (var i = 0; i < num; i++) {
+        var str = $("#Content").children().eq(index - 1).siblings().eq(i);
+        var NameSelect = str.children().eq(0).find("select").val();
+        var ReferenceNumberInput = str.children().eq(1).find("input").val();
+        if (Name == NameSelect) {
+            if (ReferenceNumber == ReferenceNumberInput) {
+                swal({
+                    title: "操作失败",
+                    text: "相同的认证名称，认证编号不能相同",
+                    type: "error",
+                    buttons: {
+                        button1: {
+                            text: "确认"
+                        }
+                    }
+                }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
+                    $("#ReferenceNumber" + index).focus();
+                    $("#ReferenceNumber" + index).val("");
+                });
+                return false;
+            }
+        }
+    }
+    $.ajax({
+        type: "post",
+        dataType: 'JSON',
+        url: "/CertificationApplication/CertificationApplicationSQL/CheckReferenceNumberAndSonName",
+        data: { "Name": Name, "ReferenceNumber": ReferenceNumber },
+        success: function (result) {
+            if (result > 0) {
+                swal({
+                    title: "操作失败",
+                    text: "相同的认证名称，认证编号不能相同",
+                    type: "error",
+                    buttons: {
+                        button1: {
+                            text: "确认"
+                        }
+                    }
+                }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
+                    $("#ReferenceNumber" + index).focus();
+                    $("#ReferenceNumber" + index).val("");
+                });
+            }
+        }
+    });
+}
+//子表的日期改变事件
+function DateChange(index, type, element) {
+    if (type == 3) {
+        var num = document.getElementById("MainUpload" + (index + 1)).files.length;
+        if (num == 0) {
+            $("tbody").children().eq(index).children().eq(7).css("color", "blue");//将作废状态字体颜色改为orange
+            $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");//作废后 将状态改为Discard
+        }
+        if (num != 0 && $(element).val() == "") {
+            $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+            $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+        }
+        var dateold = $(element).val();
+        if (dateold != "") {
+            var date = new Date(dateold);
+            var nowDate = new Date();
+            if (date > nowDate) {
+                $("tbody").children().eq(index).children().eq(7).css("color", "red");//将作废状态字体颜色改为orange
+                $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");//作废后 将状态改为Discard
+            } else {
+                $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+            }
+        }
+        //if ($("#MainUpload" + (index + 1)).files[0] != null && element.val() != "") {
+        //    var date = new Date(element.val());
+        //    var nowDate = new Date();
+        //    if (date > nowDate) {
+        //        $("tbody").children().eq(id).children().eq(7).css("color", "red");//将作废状态字体颜色改为orange
+        //        $("tbody").children().eq(id).children().eq(7).find("label").html("Expired");//作废后 将状态改为Discard
+        //    } else {
+        //        $("tbody").children().eq(id).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+        //        $("tbody").children().eq(id).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+        //    }
+        //} else {
+        //    $("tbody").children().eq(id).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+        //    $("tbody").children().eq(id).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+        //}
+
+    }
+
+}
+
 
 //文件上传
 {
@@ -385,8 +556,8 @@ app.controller('mycontroller', function ($scope, $compile) {
     }
     /**
      * 文件上传
-     * @param target  对象本身
-     * @param target  对象本身
+     * @param index  当前tr
+     * @param type  1-新增，2-复制，3-修改
      * @param target  对象本身
      * @param uploadid  上传的input的id
      * @param uploadImgid   上传图标的id
@@ -395,7 +566,7 @@ app.controller('mycontroller', function ($scope, $compile) {
      * @param FileDivid   上传文件所在div的id
      * @param FileName   未找到匹配的文件名label标签id
      */
-    function upload(target,type, uploadid, uploadImgid, deleteImgid, QuoteFileid, FileDivid, FileName) {
+    function upload(index, type, target, uploadid, uploadImgid, deleteImgid, QuoteFileid, FileDivid, FileName) {
         //var files = e.target.files;
         //得到上传文件的值
         var fileName = document.getElementById(uploadid).value;
@@ -415,13 +586,12 @@ app.controller('mycontroller', function ($scope, $compile) {
             swal('档案超出5M限制,请选择正确的文件重新上传！', '', 'error');
             return false;
         }
-        //查询文件后缀名是否符合上传档案格式标准
         if (IsUploadStandard(extension) == 0) {
             swal('档案类型不允许,请选择正确的文件重新上传！', '', 'error');
             return false;
         }
         //显示上传的文件图片在页面上
-        $("#" + QuoteFileid).css({ 'display': 'block' }).prop("title", target.files[0].name);
+        $("#" + QuoteFileid).css({ 'display': 'inline-block' }).prop("title", target.files[0].name);
         //匹配文件类型图片
         if (extension == "pdf") {
             document.getElementById(QuoteFileid).src = "../Scripts/img/pdf.png";
@@ -439,27 +609,54 @@ app.controller('mycontroller', function ($scope, $compile) {
             //隐藏可以匹配的图片
             $("#" + QuoteFileid).css({ 'display': 'none' });
             //未找到匹配的把文件名显示出来
-            $("#" + FileName).css({ 'display': 'block' }).html(target.files[0].name);
+            $("#" + FileName).css('display', 'block').html("其他类型");
+            $("#" + FileName).attr("title", target.files[0].name);
         }
         //隐藏上传图标
         $("#" + uploadImgid).css({ 'display': 'none' });
         //显示删除图标在页面上
-        $("#" + deleteImgid).css({ 'display': 'block' });
+        $("#" + deleteImgid).css({ 'display': 'inline-block' });
         $("#" + FileDivid).css({ 'width': 'auto', 'padding': '5px 40px 5px 5px ' });
-        //改变本条数据的状态
+        if (type == 3 && index != 0) {
+            var dateold = $("tbody").children().eq(index).children().eq(5).find("input").val();
+            console.log(dateold)
+            if (dateold != "") {
+                var date = new Date(dateold);
+                var nowDate = new Date();
+                if (date > nowDate) {
+                    $("tbody").children().eq(index).children().eq(7).css("color", "red");//将作废状态字体颜色改为orange
+                    $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");//作废后 将状态改为Discard
+                } else {
+                    $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                    $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+                }
+            } else {
+                $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+            }
 
+        }
     }
     //查询文件后缀名是否符合上传档案格式标准
     function IsUploadStandard(FileSuffix) {
+        var res = 0;
         $.ajax({
+            async: false,
             type: "post",
-            dataType: 'JSON',
             url: "/CertificationApplication/CertificationApplicationSQL/IsUploadStandard",
             data: { "FileSuffix": FileSuffix },
             success: function (result) {
-                return result;
+                if (result == -1) {
+                    swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                    return false;
+                }
+                else {
+                    res = result;
+                }
+
             }
         });
+        return res;
     }
     /**
      * 删除按钮
@@ -473,7 +670,7 @@ app.controller('mycontroller', function ($scope, $compile) {
         //隐藏删除图标
         $("#" + deleteImgid).css({ 'display': 'none' });
         //显示上传图标在页面上
-        $("#" + uploadImgid).css({ 'display': 'block' });
+        $("#" + uploadImgid).css({ 'display': 'inline-block' });
         //隐藏上传的文件图片
         $("#" + QuoteFileid).css({ 'display': 'none' });
         //重置div

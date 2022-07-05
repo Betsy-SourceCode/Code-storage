@@ -1,0 +1,209 @@
+﻿
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/PageJS/index.js"></script>
+    <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <script src="~/Scripts/jquery.table2excel.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
+</head>
+<body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
+    <!--打印页面嵌套过来调用打印页面的方法实现打印-->
+    <iframe src="~/CertificationApplication/IndexPrinting" height="500" name="iframName" id="iframeId" style=" display:none;width:100%">
+    </iframe>
+    <div id="container">
+        <h1 style="text-align: center;">
+            <span id="Title">认 证 申 请 及 管 理</span>
+        </h1>
+        <h1 style="text-align: center;margin-top:-10px">
+            <span id="Title">Certification Application & Management </span>
+        </h1>
+        <!--用来新开页面打开证书-->
+        <a href="" target="_blank" id="OpenFile" style="display:none"></a>
+        <!--搜索条件栏-->
+        <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 90%;margin:0px auto">
+            <div>
+                <div class="panel-heading col-sm-4">
+                    Application or Certificate #：<input name="Application" type="text" id="Application" class="form-control input-content back" style="width:47%;" placeholder='模糊查询申请编号及认证编号' />
+                    @*<a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                        style="pointer-events: auto;"
+                        onclick="$('#gjz').val('')"></a>*@
+                </div>
+
+            </div>
+            <div class="panel-heading col-sm-3">
+                <div id="ProductModel" style="display:initial">
+                    ModelCode：<select class="form-control" style="width:60%" id="ModelCode" name="ModelCode">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="panel-heading col-sm-3">
+                <div id="Expire" style="display:initial">
+                    Expire in : <select id="Expires" name="ExpireSelect" class="form-control" style="border:0px solid black;color:gray">
+                        <option value="past">past</option>
+                        <option value="coming">coming</option>
+                    </select>&nbsp;&nbsp;&nbsp;
+                    <input name="day" type="text" id="ExpireIn" class="form-control input-content" style="width: 20%; " />&nbsp;&nbsp;&nbsp;<label style="color:gray;font-weight:100">days</label>
+                    <div style="position:relative;float:right;top:0px;right:20px">
+                        <input type="button" name="btnPrint" style="position:absolute;left:80px" class="form-control  btnBack" value="打印" ng-click="Dayin()" />
+                        <input type="button" name="btnDaoChu" style="position:absolute;left:160px" class="form-control  btnBack" value="导出" onclick="DaoChu()" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-heading col-sm-4" style="padding-left:112px">
+                Customer ：
+                <select name="Customer" id="Customer" class="form-control back" style="width:63%;height:34px">
+                    <option value="" style="text-align:center"></option>
+                </select>
+                @*<a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                    style="pointer-events: auto;"
+                    onclick="$('#gjz').val('')"></a>*@
+            </div>
+            <div class="panel-heading col-sm-3">
+                Key Words #：<input name="KeyWords" type="text" id="KeyWords" class="form-control input-content back" style="width:57%;" placeholder='模糊查询供应商及认证名称' />
+
+                @*<a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
+                    style="pointer-events: auto;"
+                    onclick="$('#shdd').val('')"></a>*@
+            </div>
+            <div class="panel-heading col-sm-3">
+                <div id="Statusdiv" style="display:initial">
+                    Status：
+                    <select name="Status" id="Status" class="form-control back" style="width:63%;height:34px">
+                        <option value="" style="text-align:center"></option>
+                        <option value="Pending">Progressing (no Cert Upload)</option>
+                        <option value="Active">Active (Cert Successful Uploaded)</option>
+                        <option value="Expired">Expired (After Expiry Date)</option>
+                        <option value="Discard">Discard (Cert Discarded)</option>
+                    </select>&nbsp;&nbsp;&nbsp;
+                    <div style="position:relative;float:right;top:0px;right:20px">
+                        <input type="button" name="btnSearch" style="position:absolute;left:80px" class="form-control  btnBack" value="搜索" ng-click="IndexList()" />
+                        <a href="">
+                            <input type="button" name="btnAdd" style="position:absolute;left:160px" class="form-control  btnBack" value="新增" ng-click="tiaozhuan('FunctionInterface?type=1')" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div id="DaoChuDiv">
+            <!--搜索条件表格-->
+            <table style="clear:both;margin-left:3%">
+                <tr>
+                    <td id="DaoChuSX" colspan="7" style="border:none">Result of Search：</td>
+                </tr>
+            </table>
+            <!-- 表格 -->
+            <table id="GridView" class="table-striped tab-content table-hover table" style="width: 95%; margin: 0px auto; margin-top: 3px; margin-bottom: 1%;text-align:center">
+                <thead>
+                    <tr style="background-color:rgb(206, 201, 201);height:50px">
+                        <th style="width:10%;">
+                            Application Ref #
+                            <br />申 请 编 号
+                        </th>
+                        <th style="width:25%;">
+                            Applicant
+                            <br />申请方
+                        </th>
+                        <th style="width:10%;">
+                            Customer
+                            <br />客户
+                        </th>
+                        <th style="width:15%;">
+                            Supplier
+                            <br />供应商
+                        </th>
+                        <th style="width:20%;">
+                            Product Model #
+                            <br />产品型号
+                        </th>
+                        <th style="width:10%;">
+                            App-Date(yy/mm/dd)
+                            <br />申请日期
+                        </th>
+                        <th style="width:10%;">
+                            功能管理
+                            <br />Functions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="Content" class="Content" ng-repeat="i in list track by $index">
+                    <!--点击进入详情页-->
+                    <tr title="点击进入详情页" ng-click="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
+                        <td>{{i.ApplicationRef}}</td>
+                        <td>{{i.Applicant}}</td>
+                        <td>{{i.Customer}}</td>
+                        <td>{{i.ProductModel}}</td>
+                        <td>{{i.Supplier}}</td>
+                        <td>{{i.AppDate}}</td>
+                        <td id="LastTd" style="text-align:center">
+                            <!--修改-->
+                            <a href="" title="修改" ng-click="tiaozhuan('FunctionInterface?type=3&ApplicationRef='+i.ApplicationRef+'')"><img style="width: 28px; height: 25px" src="~/Scripts/img/edit.png" /></a>
+                            <!--复制-->
+                            <a href="" title="复制" ng-click="tiaozhuan('FunctionInterface?type=2&ApplicationRef='+i.ApplicationRef+'')"><img style="width: 28px; height: 25px" src="~/Scripts/img/create.png" /></a>
+                            <!--删除-->
+                            <a ng-if="list[$index].CertificateRef==null" href="" title="删除" ng-click="DelData(i.ApplicationRef)"><img style="width: 28px; height: 25px" src="~/Scripts/img/delete.png" /></a>
+                            <a ng-if="list[$index].CertificateRef!=null" title="不能删除"><img style="width: 28px; height: 25px" src="~/Scripts/img/Dontdelete.png" disabled="disabled" /></a>
+                        </td>
+                    </tr>
+                    <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color:rgb(226,239,218);color:black;font:bold;text-align:center">
+                        <td style="background-color:white;">
+                        </td>
+                        <td>
+                            Certificate Ref #
+                            <br />
+                            认证编号
+                        </td>
+                        <td colspan="2">
+                            Certificate Name
+                            <br />
+                            认证名称
+                        </td>
+                        <td>
+                            Apply Country / Area
+                            <br />
+                            可用国家或区域
+                        </td>
+                        <td>
+                            Expiry Date
+                            <br />
+                            有效期(yy/mm/dd)
+                        </td>
+                        <td>
+                            Status
+                            <br />
+                            状态
+                        </td>
+                    </tr>
+                    <!--点击打开该认证上传之档案-->
+                    <tr title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" ng-if="i.CertificateRef!=null" style="cursor: pointer;color:black;font:bold;text-align:center">
+                        <td style="background-color:white"></td>
+                        <td>{{i.CertificateRef}}</td>
+                        <td colspan="2">{{i.CertificateName}}</td>
+                        <td>{{i.ApplyCountry}}</td>
+                        <td>{{i.ExpiryDate}}</td>
+                        <td ng-if="i.Status=='Pending'" style="color:blue"><b>{{i.Status}}</b></td>
+                        <td ng-if="i.Status=='Active'" style="color:green"><b>{{i.Status}}</b></td>
+                        <td ng-if="i.Status=='Expired'" style="color:red"><b>{{i.Status}}</b></td>
+                        <td ng-if="i.Status=='Discard'" style="color:orange"><b>{{i.Status}}</b></td>
+                    </tr>
+                </tbody>
+                <tbody id="NullList">
+                    <tr><td id="Message" colspan='7' class='text-center noExl' style='color:red;font-size:20px'>点击搜索按钮后加载数据</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

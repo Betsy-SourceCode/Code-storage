@@ -15,9 +15,20 @@
         app.controller('mycontroller', function ($scope, $timeout) {
             //数据加载
             $scope.IndexList = function () {
+                var Application = $("#Application").text();
+                var ModelCode = $("#ModelCode").text(); //取主页的下拉框text
+                var day = $("#ExpireIn").text();
+                var ExpireSelect = $("#Expires").text();
+                var Customer = $("#Customer").text();
+                var KeyWords = $("#KeyWords").text();
+                var Status = $("#Status").text();
                 $.ajax({
-                    url: '/CertificationApplication/CertificationApplicationSQL/PrintCertificationApplicationList',
+                    async: false,
+                    url: '/CertificationApplication/CertificationApplicationSQL/CertificationApplicationList',
                     dataType: 'json',
+                    data: {
+                        "Application": Application, "ModelCode": ModelCode, "ExpireSelect": ExpireSelect, "day": day, "Customer": Customer, "KeyWords": KeyWords, "Status": Status
+                    },
                     success: function (res) {
                         console.log(res);
                         if (res.length == 0) {
@@ -26,6 +37,10 @@
                             //显示无数据时 展示的tbody
                             $("#Message").html("未找到任何记录");
                             $("#NullList").css("display", "");
+                            $timeout(function () {
+                                //处理dom加载完成，或者repeat循环完成要做的事情
+                                window.print();
+                            }, 1000);
                         }
                         else {
                             /* console.log(res);*/
@@ -33,6 +48,10 @@
                             $("#NullList").css("display", "none");
                             $scope.list = res;
                             $scope.$apply();
+                            $timeout(function () {
+                                //处理dom加载完成，或者repeat循环完成要做的事情
+                                window.print();
+                            }, 1000);
                         }
 
                     }
@@ -56,10 +75,7 @@
             var appElement = document.querySelector('[ng-controller=mycontroller]');
             var scope = angular.element(appElement).scope();
             scope.IndexList();
-            setTimeout(function () {
-                //处理dom加载完成，或者repeat循环完成要做的事情
-                window.print();
-            }, 100);
+
         }
     </script>
 </head>
@@ -115,18 +131,17 @@
                     </th>
                 </tr>
             </thead>
-            <tbody ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef" id="Content" class="Content" ng-repeat="i in list track by $index">
-                <tr style="cursor: pointer"
-                    ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')">
+            <tbody id="Content" class="Content" ng-repeat="i in list track by $index">
+                <!--双击进入详情页-->
+                <tr title="点击进入详情页" ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
                     <td>{{i.ApplicationRef}}</td>
                     <td>{{i.Applicant}}</td>
                     <td>{{i.Customer}}</td>
-                    <td>{{i.ProductModel}}</td>
                     <td>{{i.Supplier}}</td>
-                    <td colspan="2">{{i.AppDate}}</td>
+                    <td>{{i.ProductModel}}</td>
+                    <td>{{i.AppDate}}</td>
                 </tr>
-
-                <tr ng-if="i.CertificateRef!=null&&list[$index].CertificateRef!=list[$index-1].CertificateRef" style="background-color:rgb(226,239,218);color:black;font:bold;text-align:center">
+                <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color:rgb(226,239,218);color:black;font:bold;text-align:center">
                     <td style="background-color:white;">
                     </td>
                     <td>
@@ -155,8 +170,8 @@
                         状态
                     </td>
                 </tr>
-
-                <tr ng-if="i.CertificateRef!=null" style="color:black;font:bold;text-align:center">
+                <!--点击打开该认证上传之档案-->
+                <tr ng-if="i.CertificateRef!=null" title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" style="cursor: pointer;color:black;font:bold;text-align:center">
                     <td style="background-color:white"></td>
                     <td>{{i.CertificateRef}}</td>
                     <td colspan="2">{{i.CertificateName}}</td>

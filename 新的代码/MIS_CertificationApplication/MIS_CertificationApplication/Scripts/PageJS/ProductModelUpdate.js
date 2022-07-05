@@ -39,6 +39,7 @@ function BlurK3Parts(valueStr, thisInput) {
 app.controller('mycontroller', function ($scope, $compile) {
     //产品模型管理数据查询
     $scope.ComponentModelManagement = function () {
+        $("#XMModal").modal({ backdrop: 'static', keyboard: false }); //打开熊猫加载图片
         //k3代码
         var K3ItemsNum = $("#K3ItemsNum").val();
         //key_words
@@ -49,7 +50,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             url: "/CertificationApplication/CertificationApplicationSQL/GetComponentModelManagementList",
             type: 'post',
             dataType: 'json',
-            data: { 'K3ItemsNum': K3ItemsNum, 'key_words': key_words },
+            data: { 'K3ItemsNum': K3ItemsNum, 'key_words': key_words,'flag':0 },//flag=0时  是查询
             success: function (res) {
                 //console.log(res);
                 if (res.length == 0) {
@@ -58,13 +59,22 @@ app.controller('mycontroller', function ($scope, $compile) {
                     //显示无数据时 展示的tbody
                     $("#Message").html("未找到任何记录");
                     $("#NullList").css("display", "");
+                    //禁用打印和导出按钮
+                    $("#btnPrint").attr("disabled", true);
+                    $("#btnDaochu").attr("disabled", true);
+                    //加载完成后  关闭熊猫遮罩层
+                    $("#XMModal").modal('hide');
                 }
                 else {
-                    /* console.log(res);*/
+                    //打开打印和导出按钮
+                    $("#btnPrint").removeAttr("disabled");
+                    //$("#btnDaochu").removeAttr("disabled");
                     //隐藏显示无数据时 展示的tbody
                     $("#NullList").css("display", "none");
                     $scope.list = res;
                     $scope.$apply();
+                    //加载完成后  关闭熊猫遮罩层
+                    $("#XMModal").modal('hide');
                 }
             },
             error: function (res) {
@@ -130,6 +140,8 @@ app.controller('mycontroller', function ($scope, $compile) {
                 }
                 var ModelSpec = body.find("#ModelSpec").val();
                 var arr = "";//所有输入的k3物料号 arr
+                var result1;//用于判断物料号是否存在公司物料表中
+                var result2;//用于判断物料号是否存在公司物料表中
                 var K3Parts = body.find("div[class='k3Div']").each(function () {//在页面中找div下的input标签
                     var _that = this;//代表当前input
                     var num = 0;//代表  input   循环的次数
@@ -145,8 +157,85 @@ app.controller('mycontroller', function ($scope, $compile) {
                                 fnumber2 = $(this).val();//num>0代表已经是第二个input的值了
                                 num = 0;//再将num的值还原为初始值0
                             }
+                            //检查是否存在公司物料表中
+                            if (fnumber1 != "") {
+                                //检查是否存在于GIPComponent 表  不存在提示 所填的物料号不存在于公司的物料总表里，请查核及修正
+                                $.ajax({
+                                    async: false,
+                                    url: "/CertificationApplication/CertificationApplicationSQL/GetK3PartsISExsits",
+                                    type: 'post',
+                                    dataType: 'json',
+                                    data: { 'Fnumber': fnumber1 },
+                                    success: function (res) {
+                                        //console.log(res);
+                                        if (res.length == 0) {
+                                            swal({
+                                                title: "所填的物料号不存在于公司的物料总表里，请查核及修正",
+                                                text: "",
+                                                icon: "error",
+                                                buttons: {
+                                                    button1: {
+                                                        text: "确认",
+                                                        value: true,
+                                                    }
+                                                }
+                                            }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
+                                                $(this).focus();
+                                                $(this).val("");
+                                            });
+                                            result1 = false;
+                                        } else {
+                                            result1 = true;
+                                        }
+
+                                    },
+                                    error: function (res) {
+                                        //debugger;
+                                        //swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                                    }
+                                });
+                            }
+                            if (fnumber2 != "") {
+                                //检查是否存在于GIPComponent 表  不存在提示 所填的物料号不存在于公司的物料总表里，请查核及修正
+                                $.ajax({
+                                    async: false,
+                                    url: "/CertificationApplication/CertificationApplicationSQL/GetK3PartsISExsits",
+                                    type: 'post',
+                                    dataType: 'json',
+                                    data: { 'Fnumber': fnumber2 },
+                                    success: function (res) {
+                                        //console.log(res);
+                                        if (res.length == 0) {
+                                            swal({
+                                                title: "所填的物料号不存在于公司的物料总表里，请查核及修正",
+                                                text: "",
+                                                icon: "error",
+                                                buttons: {
+                                                    button1: {
+                                                        text: "确认",
+                                                        value: true,
+                                                    }
+                                                }
+                                            }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
+                                                $(this).focus();
+                                                $(this).val("");
+                                            });
+                                            result2 = false;
+                                        } else {
+                                            result2 = true;
+                                        }
+
+                                    },
+                                    error: function (res) {
+                                        //debugger;
+                                        //swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                                    }
+                                });
+                            }
                         }
                     });
+
+
                     //两个物料号比较大小
                     $.ajax({
                         async: false,
@@ -155,6 +244,7 @@ app.controller('mycontroller', function ($scope, $compile) {
                         dataType: 'json',
                         success: function (res) {
                             if (res != "") {
+
                                 arr += res + ";"
                             }
                         },
@@ -163,12 +253,17 @@ app.controller('mycontroller', function ($scope, $compile) {
                             swal('新增物料号失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
                         }
                     });
-                    
+
                 })
+                //物料号的集合 arr
                 arr = arr.substring(0, arr.lastIndexOf(';'));
                 if (arr == "") {
                     $(this).focus();
                     body.find(".K3PartsTip").html("*");
+                    return false;
+                }
+                //result 为false时，就是k3在
+                if (result1 == false || result2 == false) {
                     return false;
                 }
                 if (arr.length <= 500) {
@@ -178,7 +273,7 @@ app.controller('mycontroller', function ($scope, $compile) {
                 } else {
                     layer.close(index);
                     swal('【K3 相关物料号】新增的数据长度过长!', '请重新输入长度不超过500的【K3 相关物料号】', 'error')
-                } 
+                }
             },
             btn2: function (index, layero) {
                 layer.close(index);
@@ -376,8 +471,8 @@ app.controller('mycontroller', function ($scope, $compile) {
                     layer.close(index);
                     swal('【K3 相关物料号】新增的数据长度过长!', '请重新输入长度不超过500的【K3 相关物料号】', 'error')
                 }
-                
-                
+
+
             },
             btn2: function (index, layero) {
                 //关闭
@@ -395,7 +490,7 @@ app.controller('mycontroller', function ($scope, $compile) {
     $scope.ComponentModelDetail = function (CPSerial) {
         layer.open({
             type: 2,
-            title: '修  改  元  器  件  型  号',
+            title: '元  器  件  型  号  详  情 ',
             skin: 'layui-layer-rim', //加上边框
             area: ['1250px', '80%'], //宽高
             content: '../CertificationApplication/Component_Model_Details?CPSerial=' + CPSerial,
@@ -474,3 +569,25 @@ app.controller('mycontroller', function ($scope, $compile) {
 
     }
 })
+//导出
+function DaoChu() {
+    var myDate = new Date();
+    /*    var time = myDate.Format("yyyyMMddhhmm");  //获得当前年月日时分秒*/
+    $("#DaoChuDiv").table2excel({
+        // 不被导出的表格行的CSS class类
+        exclude: ".noExl",
+        // 导出的Excel文档的名称
+        name: "Excel Document Name",
+        // Excel文件的名称
+        filename: "测试.xls"
+        /* specialStyle: ["fontred", "changebgcolor"]*/
+    });
+}
+//打印
+function Dayin() {
+    //将值传到打印界面
+    //k3代码
+    var K3ItemsNum = $("#K3ItemsNum").val();
+    var key_words = $("#key_words").val();
+    document.getElementById("iframeId").contentWindow.Dayin(K3ItemsNum, key_words);  //contentWindow-指定的iframe或者iframe所在的Window对象
+}

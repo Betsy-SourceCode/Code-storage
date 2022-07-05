@@ -1,0 +1,74 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/PageJS/CertificateUpdate.js"></script>
+    <script src="~/Scripts/PageJS/AddCertificates.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
+    <style>
+        /*新增-标题字体加大加粗*/
+        .layui-layer-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .text {
+            padding: 10px 0px;
+            display: inline-block;
+            border-bottom: 1px solid black;
+            width: 71%;
+            background-color: lightgray
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content" style="margin:0px auto;width:70%" ng-app="myApp" ng-controller="mycontroller">
+        <h2 style="text-align:center">Modify Certificate Master Details </h2>
+        <div class="panel-heading col-sm-11">
+            <label>认证代码<br />Cert-code</label>：
+            <div id="CertCode" name="certcode"  style="width: 78%; border-bottom: 2px solid black; background-color: lightgray; display: inline-block;padding-top:20px"> @ViewBag.CertificateEdit.CertCode</div>
+        </div>
+        <div class="panel-heading col-sm-11">
+            <label>认证名称<br />Cert-Name</label>：
+            <input value="@ViewBag.CertificateEdit.CertName" type="text" id="CertName" name="CertName" class="form-control" style="display:inline;width:76%;" />
+        </div>
+        <div class="panel-heading col-sm-11" style="position:relative">
+            <label>适用国家/区域<br />For Country/Area</label>：
+            <input id="@ViewBag.CertificateEdit.Mkt_Cnty" name="CountryArea" value="@ViewBag.CertificateEdit.CountryArea" disabled="disabled" type="text" name="CountryArea" class="form-control" style="display:inline;width:66%;" />
+            <img style="position:absolute;right:10%;top:40%" src="~/Scripts/img/CertificatesManagementCountryArea.png" ng-click="CountryArea();" />
+        </div>
+        <div class="panel-heading col-sm-11">
+            <label>标准费用<br />Standard Fees</label>：
+            <label>USD$</label>
+            <input value="@ViewBag.CertificateEdit.StdFee" type="text" id="StandardFees" name="StandardFees" class="form-control" style="display:inline;width:30%;" />
+        </div>
+        <div class="panel-heading col-sm-11">
+            <label>标准测试日<br />Standard Time</label>：
+            <input value="@ViewBag.CertificateEdit.StdTime" type="text" id="StandardTime" name="StandardTime" class="form-control" style="display:inline;width:30%;" />
+            <label>weeks</label>
+        </div>
+        <div class="panel-heading col-sm-11" style="position:relative">
+            <label>备注<br />Remarks</label>：
+            <div style="display:inline-block;width:80%;">
+                <textarea id="Remarks" class="form-control" name="Remarks" style="width: 100%; border: 1px solid black" maxlength="100">
+                    @ViewBag.CertificateEdit.Remark
+                </textarea>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

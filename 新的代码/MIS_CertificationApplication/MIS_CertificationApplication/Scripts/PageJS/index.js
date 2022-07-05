@@ -45,8 +45,11 @@ app.controller('mycontroller', function ($scope) {
     }
 
     //主页数据列表查询
-    $scope.IndexList = function () {
-        $scope.SXCondition();
+    $scope.IndexList = function (flag) {
+        $("#XMModal").modal({ backdrop: 'static', keyboard: false }); //打开熊猫加载图片
+        if (flag == 0) {
+            $scope.SXCondition();
+        }
         var from = $('#Myform').serialize();
         $.ajax({
             url: '/CertificationApplication/CertificationApplicationSQL/CertificationApplicationList',
@@ -54,17 +57,27 @@ app.controller('mycontroller', function ($scope) {
             dataType: 'json',
             success: function (res) {
                 if (res.length == 0) {
+                    //禁用打印和导出按钮
+                    $("#btnPrint").attr("disabled", true);
+                    $("#btnDaoChu").attr("disabled", true);
                     $scope.list = null;
                     $scope.$apply();
                     //显示无数据时 展示的tbody
                     $("#Message").html("未找到任何记录");
                     $("#NullList").css("display", "");
+                    //加载完成后  关闭熊猫遮罩层
+                    $("#XMModal").modal('hide');
                 }
                 else {
+                    //打开打印和导出按钮
+                    $("#btnPrint").removeAttr("disabled");
+                    //$("#btnDaoChu").removeAttr("disabled");
                     //隐藏显示无数据时 展示的tbody
                     $("#NullList").css("display", "none");
                     $scope.list = res;
                     $scope.$apply();
+                    //加载完成后  关闭熊猫遮罩层
+                    $("#XMModal").modal('hide');
                 }
 
             }
@@ -128,11 +141,11 @@ app.controller('mycontroller', function ($scope) {
                 dataType: 'JSON',
                 url: "/CertificationApplication/CertificationApplicationSQL/GetCertFileByCFSerial?CFSerial=" + CFSerial,
                 success: function (result) {
-                    if (result == null || result.Files == null) {
+                    if (result == null || result.FileBase64 == null) {
                         return false;
                     }
                     //打开新窗口
-                    $scope.OpenFile("OpenFile", result.FileNames, result.Files);
+                    $scope.OpenFile("OpenFile", result.FileNames, result.FileBase64);
 
                 }
             });
@@ -144,9 +157,12 @@ app.controller('mycontroller', function ($scope) {
             var contentType = "application/" + hzm;
             let aLink = document.getElementById(node);
             let blob = $scope.base64ToBlob(Content, contentType); //new Blob([Content]);
-            /*aLink.download = fileName;*/
+            if (hzm != "pdf") {
+                aLink.download = fileName; //下载
+            }
             aLink.href = URL.createObjectURL(blob);
             aLink.click();
+            aLink.removeAttribute("download"); //移除下载
         };
         /**
              * base64转blob
@@ -195,13 +211,12 @@ app.controller('mycontroller', function ($scope) {
             //给页面赋值,js加载的下拉框只能在初始化赋值
             if (type == 1) {
                 var Array = JSON.parse(sessionStorage.getItem('Array'));
-                console.log(Array);
                 $("#Application").val(Array[0]);
                 $("#ExpireIn").val(Array[2]);
                 $("#Expires").find("option[value='" + Array[3] + "']").attr("selected", true);
                 $("#KeyWords").val(Array[5]);
                 $("#Status").find("option[value='" + Array[6] + "']").attr("selected", true);
-                $("#DaoChuSX").html(Array[7]); //筛选条件
+                $("#DaoChuSX").html(Array[8]); //筛选条件
             }
         }
     }
@@ -235,7 +250,7 @@ app.controller('mycontroller', function ($scope) {
                         if (result > 0) {
                             swal('删除成功!', '', 'success') //提示框
                             //刷新列表
-                            $scope.IndexList();
+                            $scope.IndexList(0);
                         }
                         else {
                             swal('删除失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
@@ -250,12 +265,10 @@ app.controller('mycontroller', function ($scope) {
     {
         $scope.ModelCode();
         $scope.Customer();
-        if (sessionStorage.getItem('Array') != null) {
-            $scope.IndexList();
-        }
         //经过其他页面从sessionStorage里赋值
         if (sessionStorage.getItem('Array') != null) {
             $scope.sessionStorage(1);
+            $scope.IndexList(1);
         }
     }
 })

@@ -1,0 +1,191 @@
+﻿
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Index.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script>
+        var app = angular.module('myApp', []);  //创建模块
+        app.controller('mycontroller', function ($scope, $timeout) {
+            //数据加载
+            $scope.IndexList = function () {
+                $.ajax({
+                    url: '/CertificationApplication/CertificationApplicationSQL/PrintCertificationApplicationList',
+                    dataType: 'json',
+                    success: function (res) {
+                        console.log(res);
+                        if (res.length == 0) {
+                            $scope.list = null;
+                            $scope.$apply();
+                            //显示无数据时 展示的tbody
+                            $("#Message").html("未找到任何记录");
+                            $("#NullList").css("display", "");
+                        }
+                        else {
+                            /* console.log(res);*/
+                            //隐藏显示无数据时 展示的tbody
+                            $("#NullList").css("display", "none");
+                            $scope.list = res;
+                            $scope.$apply();
+                        }
+
+                    }
+                    , error: function () {
+                        console.log("错误");
+                    }
+                });
+            }
+
+        });
+        //首页调打印的方法
+        function Dayin(Array) {
+            $("#Application").html(Array[0]);
+            $("#ModelCode").html(Array[7]); //取主页的下拉框text
+            $("#ExpireIn").html(Array[2]);
+            $("#Expires").html(Array[3]);
+            $("#Customer").html(Array[4]);
+            $("#KeyWords").html(Array[5]);
+            $("#Status").html(Array[6]);
+            //调用AngularJS方法
+            var appElement = document.querySelector('[ng-controller=mycontroller]');
+            var scope = angular.element(appElement).scope();
+            scope.IndexList();
+            setTimeout(function () {
+                //处理dom加载完成，或者repeat循环完成要做的事情
+                window.print();
+            }, 100);
+        }
+    </script>
+</head>
+<body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
+    <div id="container">
+        <h1 style="text-align: center;">
+            <span id="Title">打 印 认 证 申 请 及 管 理</span>
+        </h1>
+        <h1 style="text-align: center;margin-top:-10px">
+            <span id="Title">Print Certification Application & Management </span>
+        </h1>
+        <!--搜索条件栏-->
+        <div class="panel panel-default" style="height:auto">
+            <div class="container-fluid">
+                <div class="row panel-heading">
+                    Application or Certificate #：<label id="Application"></label>&nbsp;
+                    ModelCode：<label id="ModelCode"></label>&nbsp;
+                    Expire in : <label id="Expires"></label>&nbsp;&nbsp;&nbsp;<label id="ExpireIn"></label>&nbsp;&nbsp;&nbsp;<label>days</label>&nbsp;
+                    Customer ：<label id="Customer"></label>&nbsp;
+                    Key Words #：<label id="KeyWords"></label>&nbsp;
+                    Status：<label id="Status"></label>
+                </div>
+
+            </div>
+        </div>
+        <!-- 表格 -->
+        <table id="GridView" class="table-striped tab-content table-hover table" style="width:100%; margin: 0px auto; margin-top: 4%; margin-bottom: 1%;text-align:center">
+            <thead>
+                <tr style="background-color:rgb(206, 201, 201);height:50px">
+                    <th style="width:10%;">
+                        Application Ref #
+                        <br />申 请 编 号
+                    </th>
+                    <th style="width:25%;">
+                        Applicant
+                        <br />申请方
+                    </th>
+                    <th style="width:10%;">
+                        Customer
+                        <br />客户
+                    </th>
+                    <th style="width:15%;">
+                        Supplier
+                        <br />供应商
+                    </th>
+                    <th style="width:20%;">
+                        Product Model #
+                        <br />产品型号
+                    </th>
+                    <th style="width:10%;" colspan="2">
+                        App-Date(yy/mm/dd)
+                        <br />申请日期
+                    </th>
+                </tr>
+            </thead>
+            <tbody ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef" id="Content" class="Content" ng-repeat="i in list track by $index">
+                <tr style="cursor: pointer"
+                    ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')">
+                    <td>{{i.ApplicationRef}}</td>
+                    <td>{{i.Applicant}}</td>
+                    <td>{{i.Customer}}</td>
+                    <td>{{i.ProductModel}}</td>
+                    <td>{{i.Supplier}}</td>
+                    <td colspan="2">{{i.AppDate}}</td>
+                </tr>
+
+                <tr ng-if="i.CertificateRef!=null&&list[$index].CertificateRef!=list[$index-1].CertificateRef" style="background-color:rgb(226,239,218);color:black;font:bold;text-align:center">
+                    <td style="background-color:white;">
+                    </td>
+                    <td>
+                        Certificate Ref #
+                        <br />
+                        认证编号
+                    </td>
+                    <td colspan="2">
+                        Certificate Name
+                        <br />
+                        认证名称
+                    </td>
+                    <td>
+                        Apply Country / Area
+                        <br />
+                        可用国家或区域
+                    </td>
+                    <td>
+                        Expiry Date
+                        <br />
+                        有效期(yy/mm/dd)
+                    </td>
+                    <td>
+                        Status
+                        <br />
+                        状态
+                    </td>
+                </tr>
+
+                <tr ng-if="i.CertificateRef!=null" style="color:black;font:bold;text-align:center">
+                    <td style="background-color:white"></td>
+                    <td>{{i.CertificateRef}}</td>
+                    <td colspan="2">{{i.CertificateName}}</td>
+                    <td>{{i.ApplyCountry}}</td>
+                    <td>{{i.ExpiryDate}}</td>
+                    <td ng-if="i.Status=='Pending'" style="color:blue"><b>{{i.Status}}</b></td>
+                    <td ng-if="i.Status=='Active'" style="color:green"><b>{{i.Status}}</b></td>
+                    <td ng-if="i.Status=='Expired'" style="color:red"><b>{{i.Status}}</b></td>
+                    <td ng-if="i.Status=='Discard'" style="color:orange"><b>{{i.Status}}</b></td>
+                </tr>
+            </tbody>
+            <tbody id="NullList">
+                <tr><td id="Message" colspan='7' class='text-center noExl' style='color:red;font-size:20px'>点击搜索按钮后加载数据</td></tr>
+            </tbody>
+        </table>
+        <!--打印人和打印时间-->
+        <div style="width:98%;overflow: auto; font-size: 10px; color: #808080; margin: 0px auto;">
+            <span style="float: left;">
+                <b>打印人:</b>
+                <b>@ViewBag.username</b>
+            </span>
+            <span style="float: right;">
+                <b>打印时间:</b>
+                @{
+                    var Time = DateTime.Now;
+                }
+                <b>@Time</b>
+            </span>
+        </div>
+    </div>
+</body>
+</html>

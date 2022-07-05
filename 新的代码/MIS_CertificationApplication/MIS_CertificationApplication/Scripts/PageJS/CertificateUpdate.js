@@ -31,9 +31,15 @@ app.controller('mycontroller', function ($scope, $compile) {
                     //显示无数据时 展示的tbody
                     $("#Message").html("未找到任何记录");
                     $("#NullList").css("display", "");
+                    //禁用打印和导出按钮
+                    $("#btnPrint").attr("disabled", true);
+                    $("#btnDaochu").attr("disabled", true);
                 }
                 else {
-                    /* console.log(res);*/
+                    //打开打印和导出按钮
+                    $("#btnPrint").removeAttr("disabled");
+                    /*$("#btnDaoChu").removeAttr("disabled");*/
+                    //$("#btnDaochu").removeAttr("disabled");
                     //隐藏显示无数据时 展示的tbody
                     $("#NullList").css("display", "none");
                     $scope.list = res;
@@ -109,14 +115,14 @@ app.controller('mycontroller', function ($scope, $compile) {
                     body.find('#CertCodeTip').html("");
                 }
                 let CertName = body.find('#CertName').val();
-                if (CertName=="") {
+                if (CertName == "") {
                     body.find('#CertNameTip').html("*");
                     body.find('#CertName').focus();
                     return false;
-                }else{
+                } else {
                     body.find('#CertNameTip').html("");
                 }
-                
+
                 //body.find('#country').attr('id',);
                 body.find('input[name="CountryArea"]').attr('id', SimpleArea);
                 let Mkt_Cnty = body.find('input[name="CountryArea"]').each(function () {
@@ -136,26 +142,26 @@ app.controller('mycontroller', function ($scope, $compile) {
                 let Remark = body.find('#Remarks').val();
 
                 if (CertCode != "" || CertName != "" || ArrCovereArea != "" || country != "") {
-                //执行新增操作
-                $.ajax({
-                    url: "/CertificationApplication/CertificationApplicationSQL/AddCertificatesManagementList",
-                    type: 'post',
-                    dataType: 'json',
-                    data: { 'CertCode': CertCode, 'CertName': CertName, 'Mkt_Cnty': ArrCovereArea, 'StdFee': StdFee, 'StdTime': StdTime, 'Remark': Remark },
-                    success: function (res) {
-                        //CertificateMasterDetails界面
-                        if (res > 0) {
-                            $scope.CertificateMasterDetails(res);//res为CMSerial 数据库唯一标识
-                            layer.close(index);
-                        } else {
+                    //执行新增操作
+                    $.ajax({
+                        url: "/CertificationApplication/CertificationApplicationSQL/AddCertificatesManagementList",
+                        type: 'post',
+                        dataType: 'json',
+                        data: { 'CertCode': CertCode, 'CertName': CertName, 'Mkt_Cnty': ArrCovereArea, 'StdFee': StdFee, 'StdTime': StdTime, 'Remark': Remark },
+                        success: function (res) {
+                            //CertificateMasterDetails界面
+                            if (res > 0) {
+                                $scope.CertificateMasterDetails(res);//res为CMSerial 数据库唯一标识
+                                layer.close(index);
+                            } else {
+                                swal('Comfirm失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                            }
+                        },
+                        error: function (res) {
+                            //debugger;
                             swal('Comfirm失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
                         }
-                    },
-                    error: function (res) {
-                        //debugger;
-                        swal('Comfirm失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
-                    }
-                });
+                    });
                 }
                 else {
                     swal('认证代码,认证名称,适用国家/区域!', '以上字段为必填项！', 'error')
@@ -414,4 +420,35 @@ app.controller('mycontroller', function ($scope, $compile) {
         });
     }
 })
+//导出
+function DaoChu() {
+    var myDate = new Date();
+    /*    var time = myDate.Format("yyyyMMddhhmm");  //获得当前年月日时分秒*/
+    $("#DaoChuDiv").table2excel({
+        // 不被导出的表格行的CSS class类
+        exclude: ".noExl",
+        // 导出的Excel文档的名称
+        name: "Excel Document Name",
+        // Excel文件的名称
+        filename: "测试.xls"
+        /* specialStyle: ["fontred", "changebgcolor"]*/
+    });
+}
+//打印
+function Dayin() {
+    //将值传到打印界面
+    var CountryArea = $("input[name='CountryArea']").attr("id");
+    //k3代码
+    var key_words = $("#key_words").val();
+    $("#key").html(key_words);
+    $("#country").html(CountryArea);
+    var Cancel = true;
+    if ($("#Cancel").is(":checked")) {
+        Cancel = true;
+    }
+    else {
+        Cancel = false;
+    }
+    document.getElementById("iframeId").contentWindow.Dayin(CountryArea, key_words, Cancel);  //contentWindow-指定的iframe或者iframe所在的Window对象
+}
 

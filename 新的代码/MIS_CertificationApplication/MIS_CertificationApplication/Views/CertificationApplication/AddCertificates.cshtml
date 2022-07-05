@@ -26,6 +26,25 @@
             text-align: center;
         }
 
+        .SelectCertificateMasterDetails {
+            border: 2px solid black !important;
+            font-size: 20px !important;
+            width: 20% !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            color: black !important;
+            background-color: rgb(189 215 238) !important;
+        }
+
+        .SelectModels, .SelectFactories, .SelectcovereArea {
+            height: 35px !important;
+            line-height: 35px !important;
+            background-color: rgb(47 117 181) !important;
+            color: yellow !important;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+            margin: 0px 5px !important;
+        }
     </style>
     <script>
         $(function () {
@@ -39,11 +58,11 @@
         <h2 style="text-align:center">Create New Certificate Master </h2>
         <div class="panel-heading col-sm-11" id="@ViewBag.certificates.CMSerial" name="CMSerial">
             <label>认证代码<br />Cert-code</label>：
-            <input value="@ViewBag.certificates.CertCode" type="text" id="CertCodeInput" name="certcode" class="form-control" style="display:inline;width:77%;" onblur="BlurCertCode(this.value,1)" /><label id="CertCodeTip" style="color:red;font-size:20px"></label>
+            <input value="@ViewBag.certificates.CertCode" type="text" id="CertCodeInput" name="certcode" class="form-control" style="display:inline;width:77%;" onblur="BlurCertCode(this.value,1)" maxlength="20" /><label id="CertCodeTip" style="color:red;font-size:20px"></label>
         </div>
         <div class="panel-heading col-sm-11">
             <label>认证名称<br />Cert-Name</label>：
-            <input value="@ViewBag.certificates.CertName" type="text" id="CertName" name="CertName" class="form-control" style="display:inline;width:76%;" /><label id="CertNameTip" style="color:red;font-size:20px"></label>
+            <input value="@ViewBag.certificates.CertName" type="text" id="CertName" name="CertName" class="form-control" style="display:inline;width:76%;" maxlength="100" /><label id="CertNameTip" style="color:red;font-size:20px"></label>
         </div>
         <div class="panel-heading col-sm-11" style="position:relative">
             <label>适用国家/区域<br />For Country/Area</label>：
@@ -54,17 +73,17 @@
         <div class="panel-heading col-sm-11">
             <label>标准费用<br />Standard Fees</label>：
             <label>USD$</label>
-            <input value="@ViewBag.certificates.StdFee" type="text" id="StandardFees" name="StandardFees" class="form-control" style="display:inline;width:30%;" />
+            <input value="@ViewBag.certificates.StdFee" type="text" id="StandardFees" name="StandardFees" class="form-control" style="display:inline;width:30%;" maxlength="200" />
         </div>
         <div class="panel-heading col-sm-11">
             <label>标准测试日<br />Standard Time</label>：
-            <input value="@ViewBag.certificates.StdTime" type="text" id="StandardTime" name="StandardTime" class="form-control" style="display:inline;width:30%;" />
+            <input value="@ViewBag.certificates.StdTime" type="text" id="StandardTime" name="StandardTime" class="form-control" style="display:inline;width:30%;" maxlength="200" />
             <label>weeks</label>
         </div>
         <div class="panel-heading col-sm-11" style="position:relative">
             <label>备注<br />Remarks</label>：
             <div style="display:inline-block;width:80%;">
-                <textarea id="Remarks" class="form-control" name="Remarks" style="width: 100%; border: 1px solid black" maxlength="100">
+                <textarea id="Remarks" class="form-control" name="Remarks" style="width: 100%; border: 1px solid black" maxlength="500">
                     @ViewBag.certificates.Remark
                 </textarea>
             </div>

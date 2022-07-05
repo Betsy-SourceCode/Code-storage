@@ -1,0 +1,681 @@
+﻿
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Create/Create.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
+    <link href="~/Scripts/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/AngularJS.js"></script>
+    <script src="~/Scripts/PageJS/FunctionInterface.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
+    <script src="~/Scripts/layui/layui.js"></script>
+    <script src="~/Scripts/layui/layui/modules/layer.js"></script>
+    <style>
+        /*新增-标题字体加大加粗*/
+        .layui-layer-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .SelectModels, .SelectFactories, .SelectcovereArea {
+            height: 40px !important;
+            line-height: 40px !important;
+            background-color: rgb(47 117 181) !important;
+            color: yellow !important;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+        }
+
+        .SelectModels {
+            width: 30% !important;
+        }
+
+        .SelectcovereArea {
+            width: 40% !important;
+        }
+
+        .SelectFactories {
+            width: 50% !important;
+        }
+
+        .layui-layer-rim {
+            border: 4px solid blue;
+        }
+    </style>
+    <script>
+        //下拉框初始化
+        //委任申请公司下拉框列表
+        function Applicant() {
+            var Applicant = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetApplicantList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Applicant += '<option value="' + value.Name + '"';
+                        if ('@ViewBag.Data.ApplicantJC' == value.Name) {   //设置默认值
+                            Applicant += "selected='selected'";
+                        }
+                        Applicant += ">" + value.Text + '</option > ';
+                    })
+                    $("#Applicant").append(Applicant);
+                    return false;
+                }
+            });
+        }
+        //制造商下拉框列表
+        function Manufacturer() {
+            var Manufacturer = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetManufacturerList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Manufacturer += '<option value="' + value.Name + '"';
+                        if ('@ViewBag.Data.Manufacturer' == value.Text) {   //设置默认值
+                             Manufacturer += "selected='selected'";
+                        }
+                        Manufacturer += ">" + value.Text + '</option > ';
+                    })
+                    $("#Manufacturer").append(Manufacturer);
+                    return false;
+                }
+            });
+        }
+        //客户下拉框列表
+        function Customer() {
+            var Customer = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetCustomerList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Customer += '<option value="' + value + '"';
+                        if ('@ViewBag.Data.Customer' == value) {   //设置默认值
+                            Customer += "selected='selected'";
+                        }
+                        Customer += ">" + value + '</option > ';
+                    })
+                    $("#Customer").append(Customer);
+                    return false;
+                }
+            });
+        }
+        //费用货币下拉框列表
+        function Currency() {
+            var Currency = "";
+            $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                url: "/CertificationApplication/CertificationApplicationSQL/GetCurrencyList",
+                success: function (result) {
+                    $.each(result, function (key, value) {
+                        Currency += '<option value="' + value.Name + '"';
+                        if ('@ViewBag.Data.Currency' == value.Text) {   //设置默认值
+                              Currency += "selected='selected'";
+                        }
+                        Currency += ">" + value.Text + '</option > ';
+                    })
+                    $("#Currency").append(Currency);
+                    return false;
+                }
+            });
+        }
+        //加载子表认证名称默认值列表
+        function CertificateNameListDefault() {
+             $.ajax({
+                type: "post",
+                dataType: 'JSON',
+                 url: "/CertificationApplication/CertificationApplicationSQL/GetCertificateNameListDefault",
+                 data: {"CA_Ref":'@ViewBag.Data.ApplicationRef'},
+                 success: function (result) {
+                     //默认值列表
+                     var arr = new Array(result);
+                     //给下拉框赋默认值
+                     $.each($("select[name='SonName']"), function (key, value) {
+                         var CertificateName = "";
+                         var num = key;
+                         $.ajax({
+                             type: "post",
+                             dataType: 'JSON',
+                             url: "/CertificationApplication/CertificationApplicationSQL/GetCertificateNameList",
+                             success: function (result) {
+                                 $.each(result, function (key, value) {
+                                     CertificateName += '<option value="' + value.CMSerial + '"';
+                                     if (arr[0][num]["CMSerial"] == value.CMSerial) {   //设置默认值
+                                         CertificateName += "selected='selected'";
+                                     }
+                                     CertificateName += ">" + value.Text + '</option > ';
+                                 })
+                                 $("#" + value.id).append(CertificateName);
+                             }
+                         });
+                     })
+                 }
+             })
+        }
+        $(function () {
+            //下拉框初始化
+            Applicant(); Manufacturer(); Customer(); Currency();
+            //Payer赋默认值
+            if (@ViewBag.type!= 1) {
+                //[因为option没有text这个属性吧，只是 < option > 标签中间的文本内所以用这个方法
+                 $("#Payer option:contains('@ViewBag.Data.Payer')").attr("selected", true);
+            }
+            //做必填选项判断
+            if ($("#Customer").val() == "") {
+                //改变标题颜色和背景颜色
+                $("#Customerlabel").css({ "color": "white", "background-color": "red" });
+            }
+            else {
+                $("#Customerlabel").css({ "color": "black", "background-color": "lightgray" });
+            }
+            if ($("#Models").html() == "") {
+                //改变标题颜色和背景颜色
+                $("#ProductModellabel").css({ "color": "white", "background-color": "red" });
+            }
+            else {
+                $("#ProductModellabel").css({ "color": "black", "background-color": "lightgray" });
+            }
+            //非新增加载子表认证名称下拉框默认值
+            CertificateNameListDefault();
+        })
+    </script>
+</head>
+<body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
+    <div id="container" style="overflow: hidden">
+        <h1 style="text-align: center;margin-top:1%">
+            <!--新增-->
+            @if (ViewBag.type == 1)
+            {
+                <span id="Title">Create New Certificates Application</span>
+            }
+            <!--复制-->
+            @if (ViewBag.type == 2)
+            {
+                <span id="Title">Copy  Certificates Application</span>
+            }
+            <!--修改-->
+            @if (ViewBag.type == 3)
+            {
+                <span id="Title">Modify Certificates Application</span>
+            }
+        </h1>
+        <!--搜索条件栏-->
+        <form id="Myform" method="post" class="form-inline" onsubmit="return false" enctype="multipart/form-data" style="width:80%;margin:0px auto">
+            @*左边*@
+            <div style="float: left; width: 60%;" class="panel-heading col-sm-7">
+                <!--修改(type=3)出现申请编号(Application Ref)-->
+                @if (ViewBag.type == 3)
+                {
+                    <div class="panel-heading col-sm-10">
+                        <label class="font-backColor">Applicant Ref #</label>：
+                        <label id="ApplicantRef"><b>@ViewBag.Data.ApplicationRef</b></label>
+                    </div>
+                }
+                <!--委任申请公司下拉框-->
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor">Applicant (Client) </label>：
+                    <select name="Applicant" id="Applicant" class="form-control" style="width:46%;height:34px">
+                        <option selected="selected" value="" style="text-align:center"></option>
+                    </select>
+                </div>
+                <!--制造商下拉框列表-->
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:29px">Manufacturer</label>：
+                    <select name="Manufacturer" id="Manufacturer" class="form-control" style="width:53%;height:34px">
+                        <option selected="selected" value="" style="text-align:center"></option>
+                    </select>
+                </div>
+                <!--客户下拉框列表-->
+                <div class="panel-heading  col-sm-6">
+                    <label id="Customerlabel" class="font-backColor" style="padding-left: 49px;">Customer</label>：
+                    <select name="Customer" id="Customer" class="form-control" style="width:46%;height:34px" onchange="FeiKong()">
+                        <option style="text-align:center"></option>
+                    </select>
+                </div>
+                <!--费用货币下拉框列表-->
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left: 51px;">Currency </label> ：
+                    <select name="Currency" id="Currency" class="form-control " style="width:53%; height: 34px">
+                        <option selected="selected" value="" style="text-align:center"></option>
+                    </select>
+                </div>
+                <div class="panel-heading  col-sm-6">
+                    <label class="font-backColor" style="padding-left: 76px;">Payer </label>：
+                    <select name="Payer" id="Payer" class="form-control" style="width:46%;height:34px">
+                        <option value="1"></option>
+                        <option value="1">GIP</option>
+                        <option value="0">Customer</option>
+                    </select>
+                </div>
+                <div class="panel-heading col-sm-6">
+                    @{
+                        var ApplyFee = "";
+                        if (ViewBag.type != 1) //复制和修改从数据库取默认值
+                        {
+                            if (ViewBag.Data.ApplyFee != null)
+                            {
+                                ApplyFee = ViewBag.Data.ApplyFee.ToString().Substring(0, ViewBag.Data.ApplyFee.ToString().Length - 2);
+                            }
+                            else
+                            {
+                                ApplyFee = "0.00";
+                            }
+                        }
+                    }
+                    <label class="font-backColor" style="padding-left:9px">Application Fee </label> ：
+                    <input name="ApplyFee" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')" maxlength="9" type="text" id="ApplicationFee" class=" form-control input-content" style="width:53%" value="@ApplyFee" />
+                </div>
+
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:10px">Client PO Ref # </label>：
+                    <input name="ClientPO" type="text" id="ClientPORef" class=" form-control input-content" style="width:47%" maxlength="30" value="@ViewBag.Data.ClientPO" />
+                </div>
+
+                <div class="panel-heading col-sm-6">
+                    @{
+                        var InspectFee = "";
+                        if (ViewBag.type != 1) //复制和修改从数据库取默认值
+                        {
+                            if (ViewBag.Data.InspectFee != null)
+                            {
+                                InspectFee = ViewBag.Data.InspectFee.ToString().Substring(0, ViewBag.Data.InspectFee.ToString().Length - 2);
+                            }
+                            else
+                            {
+                                InspectFee = "0.00";
+                            }
+                        }
+                    }
+                    <label class="font-backColor" style="padding-left:23px">Inspection fee </label>：
+                    <input name="InspectFee" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')" type="text" id="Inspectionfee" class=" form-control input-content" style="width:53%" value="@InspectFee" />
+                </div>
+
+                <div class="panel-heading col-sm-6">
+                    <label class="font-backColor" style="padding-left:24px">GIP OA Ref # </label>：
+                    <input name="GIPOA" type="text" id="GIPOARef" class=" form-control input-content" style="width:47%" maxlength="20" value="@ViewBag.Data.GIPOA" />
+                </div>
+
+                <div class="panel-heading col-sm-6">
+                    @{
+                        var YearFee = "";
+                        if (ViewBag.type != 1) //复制和修改从数据库取默认值
+                        {
+                            if (ViewBag.Data.YearFee != null)
+                            {
+                                YearFee = ViewBag.Data.YearFee.ToString().Substring(0, ViewBag.Data.YearFee.ToString().Length - 2);
+                            }
+                            else
+                            {
+                                YearFee = "0.00";
+                            }
+                        }
+                    }
+                    <label class="font-backColor" style="padding-left:6px">Anual Renew fee</label>：
+                    <input name="YearFee" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')" type="text" id="AnualRenewfee" class=" form-control input-content" style="width:53%" value="@YearFee" />
+                </div>
+            </div>
+            @*右边*@
+            <div style="float: right; width: 40%;">
+                <div class="panel-heading col-sm-15" style="position: relative;display:flex;padding:20px 15px">
+                    <div id="ProductModel">
+                        <label id="ProductModellabel" class="font-backColor" style="padding-left:17px">{Product Model(s)} </label>：
+                    </div>
+                    <div style="height:100px ;width:56%;position:relative">
+                        <textarea class="form-control" rows="5" name="Models" id="Models" ArrModels="@ViewBag.Models" style="width: 100%; border: 1px solid black;pointer-events:none;" disabled="disabled" maxlength="100">@ViewBag.Data.ProductModel</textarea>
+                        <a href="" ng-click="SelectModels();"><img src="~/Scripts/img/ModelMuli-Select.png" style="position:absolute;bottom:10px ;right:10px" /></a>
+                    </div>
+                    <div style="position:absolute;top:50px;left:30px">
+                        <a href=""><img src="~/Scripts/img/model&certificate.png" ng-click="ProductModelUpdate()" /></a>
+                    </div>
+                </div>
+                <div class="panel-heading col-sm-15" style="position: relative;display:flex;padding:0px 15px">
+                    <div id="Otherservices">
+                        <label class="font-backColor">Other services & fees<br />(include recurrings) </label>：
+                    </div>
+                    <div style="height: 100px; width: 56%;position: relative">
+                        <textarea class="form-control" rows="5" name="O_SrvFees" id="O_SrvFees" style="width: 100%; border: 1px solid black;" maxlength="100">@ViewBag.Data.O_SrvFees</textarea>
+                    </div>
+
+                </div>
+
+            </div>
+            @*remarks*@
+            <div class="panel-heading">
+                <div class="panel-heading col-sm-12">
+                    <label class="font-backColor" style="padding-left:51px">Remarks </label>：
+                    @*<input name="Remark" type="text" id="Remark" class=" form-control input-content" style="width:85%" maxlength="500"/>*@
+                    <textarea class="form-control" rows="2" name="Remark" id="Remark" style="width:85.5%; border: 1px solid black" maxlength="500">@ViewBag.Data.Remark</textarea>
+                </div>
+            </div>
+            @*输入区域下半部分*@
+            <div class="panel-heading col-sm-11">
+                <div class="panel-heading col-sm-4">
+                    <label class="font-backColor" style="padding-left:6px">Quotation Ref # </label>：
+                    <input name="QuoteRef" type="text" id="QuotationRef" class=" form-control input-content" style="width:47%" maxlength="30" value="@ViewBag.Data.QuoteRef" />
+                </div>
+                <div class="panel-heading col-sm-4">
+                    <label class="font-backColor" style="padding-left:62px;">Supplier </label>：
+                    <input name="Supplier" type="text" id="Supplier" class=" form-control input-content" style="width:47%" max="100" value="@ViewBag.Data.Supplier" />
+                </div>
+                <!-- 文件上传 -->
+                <div class="panel-heading col-sm-4" style="position: relative;display:flex;padding:0px 15px">
+                    <div id="Otherservices">
+                        <label class="font-backColor" style="padding-left:55px;">Quotation<br />Attachment </label>：
+                    </div>
+                    <div id="FileDiv" style="height:auto;width:110px;border:1px solid black;position:relative">
+                        <!--上传按钮-->
+                        <div style="position: absolute; top: 9px; right: 7px; cursor: pointer;">
+                            @if (ViewBag.type == 1 || ViewBag.Data.QuoteFile == null)
+                            {
+                                <img id="uploadImg" src="../Scripts/img/upload.png" title="点击按钮上传文件" onclick="imgclick('MainUpload','@ViewBag.type','downloadFile','QuoteFile')" style="width:100%" />
+                                <input id="MainUpload" type="file" class="file" onchange="upload(this,'MainUpload','uploadImg','deleteImg','QuoteFile', 'FileDiv','FileName')" style="display: none" />
+                            }
+                            else
+                            {
+                                <img id="uploadImg" src="../Scripts/img/upload.png" title="点击按钮上传文件" onclick="imgclick('MainUpload','@ViewBag.type','downloadFile','QuoteFile')" style="width:100%;display:none" />
+                                <input id="MainUpload" type="file" class="file" onchange="upload(this,'MainUpload','uploadImg','deleteImg','QuoteFile', 'FileDiv','FileName')" style="display: none" value="@Convert.ToBase64String(ViewBag.Data.QuoteFile)" />
+                            }
+
+
+                        </div>
+                        @if (ViewBag.type == 1)
+                        {
+                            <img id="QuoteFile" style="padding:5px;display:none" />
+                        }
+                        else
+                        {
+                            string hzm = ViewBag.Data.QuoteFileName;
+                            if (hzm != null)
+                            {
+                                hzm = hzm.Substring(hzm.LastIndexOf(".") + 1, hzm.ToString().Length - (hzm.LastIndexOf(".") + 1));
+                            }
+                            <!--修改页面有下载功能需要a标签-->
+                            if (ViewBag.Data.QuoteFile != null)
+                            {
+                                if (@hzm == "pdf")
+                                {
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName', '@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img id="QuoteFile" style="padding:5px;" src="~/Scripts/img/pdf.png" /></a>
+                                }
+                                else if (@hzm == "doc" || @hzm == "docx")
+                                {
+                                    <div style="height:auto;width:100px;position:relative">
+                                        <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img id="QuoteFile" style="padding:5px;" src="~/Scripts/img/word.png" /></a>
+                                    </div>
+                                }
+                                else if (@hzm == "xls" || @hzm == "xlsx" || @hzm == "csv")
+                                {
+
+                                    <div style="height:auto;width:100px;position:relative">
+                                        <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img id="QuoteFile" style="padding:5px;" src="~/Scripts/img/excel.png" /></a>
+                                    </div>
+                                }
+                                else if (@hzm == "ppt" || @hzm == "pptx")
+                                {
+                                    <div style="height:auto;width:100px;position:relative">
+                                        <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img id="QuoteFile" style="padding:5px;" src="~/Scripts/img/ppt.png" /></a>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <a href="#" id="downloadFile" style="margin-top:15px" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><b>下载</b></a>
+                                }
+                                <!--删除按钮-->
+                                <div>
+                                    <label id="FileName" style="display:none"></label>
+                                    <a href="" id="deleteImg" onclick="deletefile('MainUpload','uploadImg','deleteImg','QuoteFile', 'FileDiv','FileName')" style="position: absolute; bottom:5px; right: 5px;">
+                                        <img src="../Scripts/img/Del.png" title="删除已上传的文件" />
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <label id="downloadFile" style="margin-top: 10px;margin-left: 3px;">
+                                    <b>未上传文件</b>
+                                </label>
+                            }
+
+                        }
+                        <!-- 存放文件名，没有可展示的类型图片时使用 -->
+                        <div>
+                            <label id="FileName" style="display:none"></label>
+                            <a href="" id="deleteImg" onclick="deletefile('MainUpload','uploadImg','deleteImg','QuoteFile', 'FileDiv','FileName')" style="position: absolute; bottom:5px; right: 5px;display:none">
+                                <img src="../Scripts/img/Del.png" title="删除已上传的文件" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <!-- 表格上方 -->
+    <div style="width: 85%;margin:0px auto;display:flex;position:relative">
+        <div><label>Certificate(s):</label></div>
+        <div style="position:absolute;right:-47px;">
+            <img src="~/Scripts/img/jiahao.png" style="position:relative;left:75px;bottom:7px" />
+            <input type="button" name="addLine" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add New Certificate Line&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" style="font-size:17px;height:50px;width:300px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" ng-click="SonAddTr(@ViewBag.type)" />
+        </div>
+    </div>
+    <!-- 表格 -->
+    <div style="width: 92%;margin:0px auto;">
+        <table id="GridView" class="table-striped tab-content table-hover table" style="width: 98%; margin: 42px auto; margin-bottom: 1%;text-align:center">
+            @if (ViewBag.type == 1)
+            {
+                <thead>
+                    <tr style="background-color: rgba(217,217,217,0.1)">
+                        <th style="width:20%">
+                            Name<a href=""><img src="~/Scripts/img/Name.png" ng-click="CertificatesManagement()" /></a>
+                        </th>
+                        <th style="width:10%">Reference Number</th>
+                        <th style="width:10%">Issuer</th>
+                        <th style="width:20%">{Factory(ies)}</th>
+                        <th style="width:20%">{Covered Area(s) / Country(ies)}</th>
+                        <th style="width:10%">Expiry(Y/M/D)</th>
+                        <th style="width:10%">Attachment</th>
+                    </tr>
+                </thead>
+            }
+            else
+            {
+                <thead>
+                    <tr style="background-color: rgba(217,217,217,0.1)">
+                        <th>
+                            Name <img src="~/Scripts/img/Name.png" onclick="CertificatesManagement()" />
+                        </th>
+                        <th>Reference Number</th>
+                        <th>Issuer</th>
+                        <th>{ Factory(ies)}</th>
+                        <th>{Covered Area(s) / Country(ies)}</th>
+                        <th>Expiry(Y/M/D)</th>
+                        <th>Attachment</th>
+                        <!--修改需要显示状态-->
+                        @if (ViewBag.type == 3)
+                        {
+                            <th>Status</th>
+                        }
+                    </tr>
+                </thead>
+            }
+            <!-- 新增没有数据不需要显示表格,复制不需要子表数据所以也不需要显示表格-->
+            @if (ViewBag.type != 3)
+            {
+                <tbody id="Content">
+                </tbody>
+            }
+            else
+            {
+                <!--复制和修改需要-->
+                <tbody id="Content">
+                    @{int index = 0;}
+                    @foreach (var item in ViewBag.SonData)
+                    {
+                        if (item.Cert_Ref != null)
+                        {
+                            <tr>
+                                <td>
+                                    <select name="SonName" id="SonName@(index + 1)" class="form-control Name">
+                                        <option selected="selected" value="" style="text-align:center">
+                                        </option>
+                                    </select>
+                                    @*@item.CertName*@
+                                </td>
+                                <td>
+                                    <input name="ReferenceNumber" type="text" id="ReferenceNumber" class="form-control input-content" maxlength="30" value="@item.Cert_Ref" />
+                                </td>
+                                <td>
+                                    <input name="Issuer" type="text" id="Issuer" class="form-control input-content" maxlength="100" value="@item.Issuer" />
+                                </td>
+                                <td style="position:relative">
+                                    @{ if (item.Factories != null)
+                                        {
+                                            item.Factories = item.Factories.Replace(";", ";\n");
+                                        }
+                                    }
+                                    <div style="margin-right:40px" class="factory" ArrFactories="@item.FactoriesList"> @item.Factories</div>
+                                    <a href="" style="position:absolute;right:10px;top:10px;" ng-click="SelectFactories(@index)"><img src="../Scripts/img/factory-muliSelect.png" /></a>
+                                </td>
+                                <td style="position:relative">
+                                    <div style="margin-right:40px" class="CoverAreas" ArrCovereArea="@item.CoverAreasList"> @item.CoverAreas</div><a href="" style="position:absolute;right:10px;top:10px;" ng-click="SelectCovereArea(@index)"><img src="../Scripts/img/CoverAreas-muilSelect.png" /></a>
+                                </td>
+                                <td style="position:relative">
+                                    <div style="margin-right:40px" class="date"></div><input type="date" class="form-control" value="@item.Expiry">
+                                </td>
+                                <!--文件-->
+                                @{
+                                    string Sonhzm = @item.CertFileName;
+                                    if (Sonhzm != null)
+                                        Sonhzm = Sonhzm.Substring(Sonhzm.LastIndexOf(".") + 1, Sonhzm.ToString().Length - (Sonhzm.LastIndexOf(".") + 1));
+                                }
+                                <td style="position:relative">
+                                    <div id="SonFileDiv@(index + 1)" style="height: auto; width: 100px;position: relative">
+                                        <!--上传按钮-->
+                                        <div style="position: absolute; top: 9px; right: 7px; cursor: pointer;">
+                                            @if (@item.CertFile == null)
+                                            {
+                                                <img id="uploadImg@(index + 1)" src="../Scripts/img/upload.png" title="点击按钮上传文件" onclick="imgclick('MainUpload@(index + 1)','@ViewBag.type','downloadFile@(index + 1)','QuoteFile@(index + 1)')" style="width:100% ">
+                                                <input id="MainUpload@(index + 1)" type="file" class="file" onchange="upload(this,'MainUpload@(index + 1)','uploadImg@(index + 1)','deleteImg@(index + 1)','QuoteFile@(index + 1)','FileDiv@(index + 1)','FileName@(index + 1)')" style="display: none">
+                                            }
+                                            else
+                                            {
+                                                <img id="uploadImg@(index + 1)" src="../Scripts/img/upload.png" title="点击按钮上传文件" onclick="imgclick('MainUpload@(index + 1)','@ViewBag.type','downloadFile@(index + 1)','QuoteFile@(index + 1)')" style="width:100%;display:none ">
+                                                <input id="MainUpload@(index + 1)" type="file" class="file" onchange="upload(this,'MainUpload@(index + 1)','uploadImg@(index + 1)','deleteImg@(index + 1)','QuoteFile@(index + 1)','FileDiv@(index + 1)','FileName@(index + 1)')" style="display: none" value="@Convert.ToBase64String(item.CertFile)">
+                                            }
+                                        </div>
+                                        @*<img id="QuoteFile@(index + 1)" style="padding: 5px; display: none" /> '*@
+                                        @if (@item.CertFile != null)
+                                        {
+                                            if (@Sonhzm == "pdf")
+                                            {
+                                                <a href="" id="downloadFile@(index + 1)" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName', '@Convert.ToBase64String(item.CertFile)')"><img id="QuoteFile@(index + 1)" style="padding:5px;" src="~/Scripts/img/pdf.png" /></a>
+                                            }
+                                            else if (@Sonhzm == "doc" || @Sonhzm == "docx")
+                                            {
+                                                <div style="height:auto;width:100px;position:relative">
+                                                    <a href="" id="downloadFile@(index + 1)" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img id="QuoteFile@(index + 1)" style="padding:5px;" src="~/Scripts/img/word.png" /></a>
+                                                </div>
+                                            }
+                                            else if (@Sonhzm == "xls" || @Sonhzm == "xlsx" || @Sonhzm == "csv")
+                                            {
+
+                                                <div style="height:auto;width:100px;position:relative">
+                                                    <a href="" id="downloadFile@(index + 1)" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img id="QuoteFile@(index + 1)" style="padding:5px;" src="~/Scripts/img/excel.png" /></a>
+                                                </div>
+                                            }
+                                            else if (@Sonhzm == "ppt" || @Sonhzm == "pptx")
+                                            {
+                                                <div style="height:auto;width:100px;position:relative">
+                                                    <a href="" id="downloadFile@(index + 1)" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img id="QuoteFile@(index + 1)" style="padding:5px;" src="~/Scripts/img/ppt.png" /></a>
+                                                </div>
+
+                                            }
+                                            else
+                                            {
+                                                <a href="#" id="downloadFile@(index + 1)" style="margin-top:15px" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><b>下载</b></a>
+                                            }
+                                            <!--删除按钮-->
+                                            <div>
+                                                <label id="FileName@(index + 1)" style="display:none"></label>
+                                                <a href="" id="deleteImg@(index + 1)" onclick="deletefile('MainUpload@(index + 1)','uploadImg@(index + 1)','deleteImg@(index + 1)','QuoteFile@(index + 1)', 'FileDiv@(index + 1)','FileName@(index + 1)')" style="position: absolute; bottom:5px; right: 5px;">
+                                                    <img src="../Scripts/img/Del.png" title="删除已上传的文件" />
+                                                </a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <label id="downloadFile@(index + 1)" style="margin-top:11px;margin-right:30px">
+                                                <b>未上传文件</b>
+                                            </label>
+                                        }
+                                        <div>
+                                            <label id="FileName@(index + 1) " style="display:none"></label>
+                                            <a href="" id="deleteImg@(index + 1)" onclick="deletefile('MainUpload@(index + 1)','uploadImg@(index + 1) ','deleteImg@(index + 1)','QuoteFile@(index + 1)','FileDiv@(index + 1) ','FileName@(index + 1)')" style="position: absolute; bottom:5px; right: 5px;display:none">
+                                                <img src="../Scripts/img/Del.png" title="删除已上传的文件" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                                @{index = index + 1;
+                                }
+                                <!--修改需要显示状态-->
+                                @if (ViewBag.type == 3)
+                                {
+                                    if (@item.Status == "Pending")
+                                    {
+                                        <td style="color: blue">
+                                            <label>@item.Status</label><br />
+                                            <a href=""><img src="~/Scripts/img/cxl.png" /></a>
+                                        </td>
+                                    }
+                                    if (@item.Status == "Active")
+                                    {
+                                        <td style="color:green">
+                                            @item.Status<br />
+                                            <a href=""><img src="~/Scripts/img/cxl.png" /></a>
+                                        </td>
+                                    }
+                                    if (@item.Status == "Expired")
+                                    {
+                                        <td style="color:red">
+                                            @item.Status<br />
+                                            <a href=""><img src="~/Scripts/img/cxl.png" /></a>
+                                        </td>
+                                    }
+                                    if (@item.Status == "Discard")
+                                    {
+                                        <td style="color:orange">
+                                            @item.Status<br />
+                                            <a href=""><img src="~/Scripts/img/cxl.png" /></a>
+                                        </td>
+                                    }
+                                }
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            }
+        </table>
+        <label style="font-size:12px;padding-left:2%;color:lightgray">Creation: CreateBy (Create-Dept) Create-Time</label>
+    </div>
+    <div style="text-align:center;margin:0px auto;">
+        <input type="submit" name="Confirm" value="Confirm" style="margin-right:20%;font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" ng-click="OperationData(@ViewBag.type,'@ViewBag.Data.ApplicationRef')" />
+        <input type="button" name="Cancel" value="Cancel" style="font-size:20px;height:40px;width:150px;border:1px solid black;background-color:rgb(47,117,181);color:rgb(255,255,0)" onclick="window.location.href = '/CertificationApplication/CertificationApplication/index?userid='+@ViewBag.userid" />
+    </div>
+</body>
+</html>
+
+

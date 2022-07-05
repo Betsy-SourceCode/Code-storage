@@ -3,7 +3,9 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href="~/Scripts/Alert美化弹出框/sweetalert.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
     <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
     <style>
@@ -63,7 +65,7 @@
                 success: function (result) {
                     var arr = ("@ViewBag.CoverAreas").split('|');
                     $.each(result, function (key, value) {
-                        country += '<div class="col-sm-3" style="text-align:left"><input id="' + value.Name + '" name="test" class="check" type="checkbox" value="' + value.Text + '"/>      ' + value.Text +'</div>';
+                        country += '<div class="col-sm-3" style="text-align:left"><input  id="' + value.Name + '" name="test" class="check" type="checkbox" value="' + value.Text + '"  onchange="yanzheng(this)"/>      ' + value.Text +'</div>';
                     })
                     $("#main").append(country);
                     for (var i in arr) {
@@ -77,6 +79,14 @@
                 }
             });
         })
+        //验证勾选的多选框是否超过9个  超过则不允许用户继续勾选
+        function yanzheng(element) {
+            var elem = $("input[type='checkbox']:checked").length;
+            if (elem > 9) {
+                $(element).attr("checked", false);
+                swal('国家区域最多只允许勾选9个！', '', 'error');
+            }
+        }
     </script>
 </body>
 </html>

@@ -16,6 +16,11 @@
     <script src="~/Scripts/layui/layui.js"></script>
     <script src="~/Scripts/jquery.table2excel.js"></script>
     <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
+    <style>
+        .blue:hover {
+            border: #6a5acd 2px solid;
+        }
+    </style>
 </head>
 <body style="max-width:98%;min-width:1250px; margin:0px auto" ng-app="myApp" ng-controller="mycontroller">
     <!--打印页面嵌套过来调用打印页面的方法实现打印-->
@@ -34,7 +39,7 @@
         <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 90%;margin:0px auto">
             <div>
                 <div class="panel-heading col-sm-4">
-                    Application or Certificate #：<input name="Application" type="text" id="Application" class="form-control input-content back" style="width:47%;" placeholder='模糊查询申请编号及认证编号' />
+                    Application or Certificate #：<input name="Application" type="text" id="Application" class="form-control input-content back" style="width:37%;" placeholder='模糊查询申请编号及认证编号' />
                     @*<a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
                         style="pointer-events: auto;"
                         onclick="$('#gjz').val('')"></a>*@
@@ -54,17 +59,17 @@
                         <option value="past">past</option>
                         <option value="coming">coming</option>
                     </select>&nbsp;&nbsp;&nbsp;
-                    <input name="day" type="text" id="ExpireIn" class="form-control input-content" style="width: 20%; " />&nbsp;&nbsp;&nbsp;<label style="color:gray;font-weight:100">days</label>
+                    <input name="day" type="text" id="ExpireIn" class="form-control input-content" style="width:10%; " />&nbsp;&nbsp;&nbsp;<label style="color:gray;font-weight:100">days</label>
                     <div style="position:relative;float:right;top:0px;right:20px">
-                        <input type="button" name="btnPrint" style="position:absolute;left:80px" class="form-control  btnBack" value="打印" ng-click="Dayin()" />
-                        <input type="button" name="btnDaoChu" style="position:absolute;left:160px" class="form-control  btnBack" value="导出" onclick="DaoChu()" />
+                        <input type="button" name="btnPrint" id="btnPrint" style="position:absolute;left:80px" class="btnBack form-control" value="打印" ng-click="Dayin()" disabled="disabled" />
+                        <input type="button" name="btnDaoChu" id="btnDaoChu" style="position:absolute;left:160px;" class="btnBack form-control" value="导出" onclick="DaoChu()" disabled="disabled" />
                     </div>
                 </div>
 
             </div>
             <div class="panel-heading col-sm-4" style="padding-left:112px">
                 Customer ：
-                <select name="Customer" id="Customer" class="form-control back" style="width:63%;height:34px">
+                <select name="Customer" id="Customer" class="form-control back" style="width:50%;height:34px">
                     <option value="" style="text-align:center"></option>
                 </select>
                 @*<a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a qq"
@@ -89,10 +94,17 @@
                         <option value="Discard">Discard (Cert Discarded)</option>
                     </select>&nbsp;&nbsp;&nbsp;
                     <div style="position:relative;float:right;top:0px;right:20px">
-                        <input type="button" name="btnSearch" style="position:absolute;left:80px" class="form-control  btnBack" value="搜索" ng-click="IndexList()" />
-                        <a href="">
+                        <input type="button" name="btnSearch" style="position:absolute;left:80px" class="form-control  btnBack" value="搜索" ng-click="IndexList(0)" />
+                        <!--新增需要特殊权限-->
+                        @if (ViewBag.Add == 1)
+                        {
                             <input type="button" name="btnAdd" style="position:absolute;left:160px" class="form-control  btnBack" value="新增" ng-click="tiaozhuan('FunctionInterface?type=1')" />
-                        </a>
+                        }
+                        else
+                        {
+                            <input type="button" name="btnAdd" disabled="disabled" style="position:absolute;left:160px" class="form-control  btnBack" value="新增" ng-click="tiaozhuan('FunctionInterface?type=1')" />
+                        }
+                        <input type="button" name="btnLiKai" id="btnLiKai" style="position:absolute;left:240px;" class="btnBack form-control" value="离开" onclick="window.location.href = 'http://192.166.7.241/Admin/ProjectList.aspx?userid= @ViewBag.userid',sessionStorage.clear()" />
                     </div>
                 </div>
             </div>
@@ -139,19 +151,22 @@
                     </tr>
                 </thead>
                 <tbody id="Content" class="Content" ng-repeat="i in list track by $index">
-                    <!--点击进入详情页-->
-                    <tr title="点击进入详情页" ng-click="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
+                    <!--双击进入详情页-->
+                    <tr title="双击进入详情页" ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
                         <td>{{i.ApplicationRef}}</td>
                         <td>{{i.Applicant}}</td>
                         <td>{{i.Customer}}</td>
-                        <td>{{i.ProductModel}}</td>
                         <td>{{i.Supplier}}</td>
+                        <td>{{i.ProductModel}}</td>
                         <td>{{i.AppDate}}</td>
                         <td id="LastTd" style="text-align:center">
                             <!--修改-->
                             <a href="" title="修改" ng-click="tiaozhuan('FunctionInterface?type=3&ApplicationRef='+i.ApplicationRef+'')"><img style="width: 28px; height: 25px" src="~/Scripts/img/edit.png" /></a>
-                            <!--复制-->
-                            <a href="" title="复制" ng-click="tiaozhuan('FunctionInterface?type=2&ApplicationRef='+i.ApplicationRef+'')"><img style="width: 28px; height: 25px" src="~/Scripts/img/create.png" /></a>
+                            <!--复制需要特殊权限-->
+                            @if (ViewBag.Add == 1)
+                            {
+                                <a href="" title="复制" ng-click="tiaozhuan('FunctionInterface?type=2&ApplicationRef='+i.ApplicationRef+'')"><img style="width: 28px; height: 25px" src="~/Scripts/img/create.png" /></a>
+                            }
                             <!--删除-->
                             <a ng-if="list[$index].CertificateRef==null" href="" title="删除" ng-click="DelData(i.ApplicationRef)"><img style="width: 28px; height: 25px" src="~/Scripts/img/delete.png" /></a>
                             <a ng-if="list[$index].CertificateRef!=null" title="不能删除"><img style="width: 28px; height: 25px" src="~/Scripts/img/Dontdelete.png" disabled="disabled" /></a>
@@ -187,7 +202,7 @@
                         </td>
                     </tr>
                     <!--点击打开该认证上传之档案-->
-                    <tr title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" ng-if="i.CertificateRef!=null" style="cursor: pointer;color:black;font:bold;text-align:center">
+                    <tr ng-if="i.CertificateRef!=null" title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" style="cursor: pointer;color:black;font:bold;text-align:center">
                         <td style="background-color:white"></td>
                         <td>{{i.CertificateRef}}</td>
                         <td colspan="2">{{i.CertificateName}}</td>
@@ -203,6 +218,10 @@
                     <tr><td id="Message" colspan='7' class='text-center noExl' style='color:red;font-size:20px'>点击搜索按钮后加载数据</td></tr>
                 </tbody>
             </table>
+        </div>
+        <!--熊猫动态加载等待图-->
+        <div style="background-color:white !important;z-index:1041;position:fixed;top:45%;left:45%;width:200px;border-radius:10px;display:none" id="XMModal">
+            <img src="~/Scripts/img/加载.gif" style="margin:0px 25%;width: 100px; height: 100px;" />
         </div>
     </div>
 </body>

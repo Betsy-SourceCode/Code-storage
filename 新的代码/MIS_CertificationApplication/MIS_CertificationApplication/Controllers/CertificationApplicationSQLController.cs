@@ -74,9 +74,29 @@ namespace MIS_CertificationApplication.Controllers
                     sql = sql + " AND Status='" + Status + "'";
                 }
                 sql += " ORDER BY ApplicationRef DESC,CertificateRef desc,ApplyCountry desc";
+
                 List<View_ApplicationList> certifications = db.Database.SqlQuery<View_ApplicationList>(sql).ToList();
+
                 foreach (var item in certifications)
                 {
+                    //文件后缀名
+                    if (item.CertFileName != null)
+                    {
+                        var hzm = item.CertFileName.Substring(item.CertFileName.LastIndexOf(".") + 1, item.CertFileName.Length - item.CertFileName.LastIndexOf(".") - 1);
+                        if (hzm == "pdf")
+                        {
+                            item.CertFileName = "点击打开  " + item.CertFileName;
+                        }
+                        else
+                        {
+                            item.CertFileName = "点击下载  " + item.CertFileName;
+                        }
+                    }
+                    else
+                    {
+                        item.CertFileName = "暂未上传文件";
+                    }
+
                     //ProductModel
                     string modelSql = @"select top 1 STUFF((SELECT ';' + ModelCode FROM component_Model t2 where CPSerial in ({0}) FOR XML PATH('')), 1, 1, '') AS model
                                     from component_Model cm ";
@@ -153,13 +173,13 @@ namespace MIS_CertificationApplication.Controllers
         /// </summary>
         /// <param name="CFSerial">子表主键</param>
         /// <returns></returns>
-        public string GetCertFileByCFSerial(int CFSerial)
+        public string GetCertFileByCFSerial(string CFSerial)
         {
             try
             {
                 string sql = @"select CertFile AS Files,CertFileName AS FileNames from Certificates where CFSerial=" + CFSerial;
                 Others DataList = db.Database.SqlQuery<Others>(sql).FirstOrDefault();
-                //DataList.FileBase64 = Convert.ToBase64String(DataList.Files);
+                DataList.FileBase64 = Convert.ToBase64String(DataList.Files);
                 return JsonConvert.SerializeObject(DataList);
             }
             catch (Exception ex)
@@ -278,8 +298,9 @@ namespace MIS_CertificationApplication.Controllers
             try
             {
                 string sql = @"select cer.CM_Serial as CMSerial from dbo.Certificates_Master master,
-                dbo.Certificates cer where master.CMSerial = cer.CM_Serial and CA_Ref ='" + CA_Ref + "'";
+                dbo.Certificates cer where master.CMSerial = cer.CM_Serial and IsVoid=0  and CA_Ref ='" + CA_Ref + "'";
                 List<Others> DataList = db.Database.SqlQuery<Others>(sql).ToList();
+                var aa = DataList.Count;
                 return JsonConvert.SerializeObject(DataList);
             }
             catch (Exception ex)
@@ -296,7 +317,7 @@ namespace MIS_CertificationApplication.Controllers
         {
             try
             {
-                string sql = @"select CMSerial,certcode+' - '+certname as Text from dbo.Certificates_Master order by CMSerial";
+                string sql = @"select CMSerial,certcode+' - '+certname as Text from dbo.Certificates_Master where IsVoid=0 order by CMSerial";
                 List<Others> DataList = db.Database.SqlQuery<Others>(sql).ToList();
                 return JsonConvert.SerializeObject(DataList);
             }
@@ -396,10 +417,28 @@ namespace MIS_CertificationApplication.Controllers
                 using (DbContextTransaction trans = this.db.Database.BeginTransaction()) //事务，获取自增ID
                 {
                     db.Configuration.ValidateOnSaveEnabled = false;
-                    Cert_Apply_Case LatestData = db.Cert_Apply_Case.OrderByDescending(a => a.CA_Ref).FirstOrDefault();
-                    var NewCA_Ref = LatestData.CA_Ref.Substring(LatestData.CA_Ref.Length - 3, 3);
-                    string num = (int.Parse(NewCA_Ref) + 1).ToString();
-                    string xuhao = num.Length == 1 ? "00" + num : num.Length == 2 ? "0" + num : num.ToString();
+                    int count = db.Cert_Apply_Case.Count();
+                    Cert_Apply_Case LatestData;
+                    string xuhao;
+                    if (count != 0)
+                    {
+                        LatestData = db.Cert_Apply_Case.OrderByDescending(a => a.CA_Ref).FirstOrDefault();
+                        var NewCA_Ref = LatestData.CA_Ref.Substring(LatestData.CA_Ref.Length - 3, 3);
+                        string num = (int.Parse(NewCA_Ref) + 1).ToString();
+                        if (num == "999")
+                        {
+                            xuhao = "999";
+                        }
+                        else
+                        {
+                            xuhao = num.Length == 1 ? "00" + num : num.Length == 2 ? "0" + num : num.ToString();
+                        }
+                    }
+                    else
+                    {
+                        xuhao = "001";
+                    }
+
                     List<Certificates> JsonsList = JsonConvert.DeserializeObject<List<Certificates>>(Son);
                     #region 图片做特殊操作
                     for (int i = 0; i < Request.Files.Count; i++)
@@ -667,6 +706,7 @@ namespace MIS_CertificationApplication.Controllers
         {
             try
             {
+
                 //子表
                 var index = 0;
                 List<Certificates> OldSon = null;
@@ -689,23 +729,7 @@ namespace MIS_CertificationApplication.Controllers
                     }
                     DateTime Expiry = Convert.ToDateTime(item.Expiry);
                     DateTime now = DateTime.Now;
-                    //在办-新增了记录，但没有认证编号的
-                    if (item.Cert_Ref == "")
-                    {
-                        item.Status = "P";
-                    }
-                    //有效-有认证编号，失效期为空，或未过(起始小于结束)
-                    var aa = Expiry.CompareTo(now);
-                    if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) < 0))
-                    {
-                        item.Status = "A";
-                    }
-                    //失效-已过有效期
-                    if (Expiry.CompareTo(now) > 0)
-                    {
-                        item.Status = "E";
-                    }
-                    if (index < OldSon.Count)
+                    if (index < OldSon.Count && type == 3)
                     {
                         //修改
                         item.CreateBy = OldSon[index].CreateBy;
@@ -715,6 +739,22 @@ namespace MIS_CertificationApplication.Controllers
                     else
                     {
                         //新增
+                        //在办-新增了记录，但没有认证编号的
+                        if (item.Cert_Ref == "")
+                        {
+                            item.Status = "P";
+                        }
+                        //有效-有认证编号，失效期为空，或未过(起始小于结束)
+                        var aa = Expiry.CompareTo(now);
+                        if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) < 0))
+                        {
+                            item.Status = "A";
+                        }
+                        //失效-已过有效期
+                        if (Expiry.CompareTo(now) > 0)
+                        {
+                            item.Status = "E";
+                        }
                         item.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
                         item.CreateDept = new Authority().GetDepartmentSql(item.CreateBy, 0);
                         item.CreateTime = DateTime.Now;
@@ -747,6 +787,22 @@ namespace MIS_CertificationApplication.Controllers
                     }
                     else
                     {
+                        //在办-新增了记录，但没有认证编号的
+                        if (item.Cert_Ref == "")
+                        {
+                            item.Status = "P";
+                        }
+                        //有效-有认证编号，失效期为空，或未过(起始小于结束)
+                        var aa = Expiry.CompareTo(now);
+                        if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) < 0))
+                        {
+                            item.Status = "A";
+                        }
+                        //失效-已过有效期
+                        if (Expiry.CompareTo(now) > 0)
+                        {
+                            item.Status = "E";
+                        }
                         //执行新增
                         item.CA_Ref = Main.CA_Ref;
                         db.Certificates.Add(item);
@@ -795,7 +851,16 @@ namespace MIS_CertificationApplication.Controllers
         /// <returns></returns>
         public int IsUploadStandard(string FileSuffix)
         {
-            return this.db.Database.SqlQuery<int>("SELECT COUNT(1) FROM TBWords where  WordCode='FT' and Remark in('Offd','Pics') and Name_EN='" + FileSuffix + "'").FirstOrDefault();
+            try
+            {
+                int result = db.Database.SqlQuery<int>("SELECT COUNT(1) FROM TBWords where  WordCode='FT' and Remark in('Offd','Pics') and Name_EN='" + FileSuffix + "'").FirstOrDefault();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                return -1;
+            }
         }
         #endregion
 
@@ -823,8 +888,13 @@ namespace MIS_CertificationApplication.Controllers
                 {
                     sql += " and IsVoid=0";
                 }
-
+                sql += " order by cm.CertCode";
                 List<NewCertificates_Master> DataList = db.Database.SqlQuery<NewCertificates_Master>(sql).ToList();
+                //循环查权限
+                foreach (var item in DataList)
+                {
+                    item.RLV = new Authority().GetRLV(Session["userid"].ToString(), item.CreateBy, item.CreateDept);
+                }
                 return JsonConvert.SerializeObject(DataList);
             }
             catch (Exception ex)
@@ -834,6 +904,7 @@ namespace MIS_CertificationApplication.Controllers
             }
 
         }
+
         /// <summary>
         /// 新增认证管理的数据
         /// </summary>
@@ -932,6 +1003,26 @@ namespace MIS_CertificationApplication.Controllers
             }
 
         }
+        /// <summary>
+        /// 检查  相同的认证名称，认证编号是否相同
+        /// </summary>
+        /// <param name="Name">认证名称</param>
+        /// <param name="ReferenceNumber">认证编号</param>
+        /// <returns></returns>
+        public int CheckReferenceNumberAndSonName(string Name, string ReferenceNumber)
+        {
+            try
+            {
+                string sql = "select Count(*) from dbo.Certificates where CM_Serial=" + Name + " and Cert_ref='" + ReferenceNumber + "'";
+                int num = db.Database.SqlQuery<int>(sql).FirstOrDefault();
+                return num;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                throw;
+            }
+        }
         #endregion
 
         #region  产品模型界面的方法合集
@@ -941,7 +1032,7 @@ namespace MIS_CertificationApplication.Controllers
         /// <param name="K3ItemsNum"> 模糊查询 K3-Related-Items</param>
         /// <param name="key_words">关键字  Model-Code + Model-Name + Specification</param>
         /// <returns></returns>
-        public string GetComponentModelManagementList(string K3ItemsNum, string key_words)
+        public string GetComponentModelManagementList(string K3ItemsNum, string key_words, int flag)
         {
             try
             {
@@ -955,7 +1046,42 @@ namespace MIS_CertificationApplication.Controllers
                 {
                     sql += " and modelcode+modelName+isnull(ModelSpec,'') like '%" + key_words + "%'";
                 }
+                sql += " order by CreateTime desc";
+                List<Cert_Apply_Case> certs = db.Cert_Apply_Case.ToList();
                 List<Component_Model> DataList = db.Database.SqlQuery<Component_Model>(sql).ToList();
+                var num = 1; //用来控制内循环字段赋值循环次数
+                //循环查权限(打印不需要)
+                if (flag == 0)
+                {
+                    foreach (var cert in certs)
+                    {
+                        Array arr = cert.Models.Split('|');
+                        foreach (string i in arr)
+                        {
+                            foreach (var item in DataList)
+                            {
+                                if (int.Parse(i) == item.CPSerial)
+                                {
+                                    item.IsRemove = 1;//代表不能删除  数据存在主表（型号被使用）
+                                }
+                                if (num == 1)
+                                {
+                                    //K3Parts超过150字符就隐藏多余的
+                                    item.K3PartsStr = item.K3Parts;
+                                    if (item.K3Parts.Length >= 100)
+                                    {
+                                        item.K3Parts = item.K3Parts.Substring(0, 100) + "...";
+                                    }
+                                    item.RLV = new Authority().GetRLV(Session["userid"].ToString(), item.CreateBy, item.CreateDept);
+                                }
+                            }
+                            num++;
+                        }
+
+                    }
+                }
+                //打印页面专用
+                Session["Product_Model_UpdatePrinting"] = DataList;
                 return JsonConvert.SerializeObject(DataList);
             }
             catch (Exception ex)
@@ -964,6 +1090,16 @@ namespace MIS_CertificationApplication.Controllers
                 throw;
             }
 
+        }
+
+        /// <summary>
+        /// 打印界面专用加载数据
+        /// </summary>
+        /// <returns></returns>
+        public string Product_Model_UpdatePrintingList()
+        {
+            var Product_Model_UpdatePrinting = Session["Product_Model_UpdatePrinting"];
+            return JsonConvert.SerializeObject(Product_Model_UpdatePrinting);
         }
         /// <summary>
         /// 检查是否存在于GIPComponent 表
@@ -991,11 +1127,19 @@ namespace MIS_CertificationApplication.Controllers
         /// <returns></returns>
         public int ComponentModelISDel(string CPSerial)
         {
-            int id = int.Parse(CPSerial);
-            Component_Model DataList = db.Component_Model.Where(s => s.CPSerial == id).FirstOrDefault();
-            db.Component_Model.Remove(DataList);
-            int i = db.SaveChanges();
-            return i;
+            try
+            {
+                int id = int.Parse(CPSerial);
+                Component_Model DataList = db.Component_Model.Where(s => s.CPSerial == id).FirstOrDefault();
+                db.Component_Model.Remove(DataList);
+                int i = db.SaveChanges();
+                return i;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                throw;
+            }
         }
         /// <summary>
         /// 新增  产品模型数据

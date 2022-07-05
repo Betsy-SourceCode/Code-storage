@@ -56,6 +56,10 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=108.0.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\KYH-ProductPrice\packages\RestSharp.108.0.1\lib\netstandard2.0\RestSharp.dll</HintPath>
     </Reference>
@@ -150,9 +154,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -237,10 +238,29 @@
     <Content Include="Scripts\Alert美化弹出框\sweetalert-2.1.2.min.js" />
     <Content Include="Scripts\Alert美化弹出框\sweetalert.min.css" />
     <Content Include="Scripts\AngularJS.js" />
-    <Content Include="Scripts\img\Dontdelete.png" />
     <Content Include="Scripts\img\CertificatesManagementCountryArea.png" />
     <Content Include="Scripts\img\Certificates_void.png" />
+    <Content Include="Scripts\img\close.png" />
+    <Content Include="Scripts\img\CoverAreas-muilSelect.png" />
+    <Content Include="Scripts\img\create.png" />
+    <Content Include="Scripts\img\cxl.png" />
+    <Content Include="Scripts\img\date.png" />
+    <Content Include="Scripts\img\Del.png" />
+    <Content Include="Scripts\img\delete.png" />
     <Content Include="Scripts\img\disable效果.png" />
+    <Content Include="Scripts\img\Dontdelete.png" />
+    <Content Include="Scripts\img\edit.png" />
+    <Content Include="Scripts\img\excel.png" />
+    <Content Include="Scripts\img\factory-muliSelect.png" />
+    <Content Include="Scripts\img\jiahao.png" />
+    <Content Include="Scripts\img\model&amp;certificate.png" />
+    <Content Include="Scripts\img\ModelMuli-Select.png" />
+    <Content Include="Scripts\img\Name.png" />
+    <Content Include="Scripts\img\pdf.png" />
+    <Content Include="Scripts\img\ppt.png" />
+    <Content Include="Scripts\img\upload.png" />
+    <Content Include="Scripts\img\word.png" />
+    <Content Include="Scripts\img\加载.gif" />
     <Content Include="Scripts\jquery.table2excel.js" />
     <Content Include="Scripts\layui\css\layui.css" />
     <Content Include="Scripts\layui\css\modules\code.css" />
@@ -301,21 +321,6 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\img\close.png" />
-    <Content Include="Scripts\img\CoverAreas-muilSelect.png" />
-    <Content Include="Scripts\img\create.png" />
-    <Content Include="Scripts\img\cxl.png" />
-    <Content Include="Scripts\img\date.png" />
-    <Content Include="Scripts\img\Del.png" />
-    <Content Include="Scripts\img\delete.png" />
-    <Content Include="Scripts\img\edit.png" />
-    <Content Include="Scripts\img\factory-muliSelect.png" />
-    <Content Include="Scripts\img\jiahao.png" />
-    <Content Include="Scripts\img\model&amp;certificate.png" />
-    <Content Include="Scripts\img\ModelMuli-Select.png" />
-    <Content Include="Scripts\img\Name.png" />
-    <Content Include="Scripts\img\pdf.png" />
-    <Content Include="Scripts\img\upload.png" />
     <Content Include="Scripts\Index.css" />
     <Content Include="Scripts\PageJS\Detail.js" />
     <Content Include="Scripts\PageJS\index.js" />
@@ -387,6 +392,8 @@
     <Content Include="Views\CertificationApplication\FunctionInterface.cshtml" />
     <Content Include="Views\CertificationApplication\AddCopyEditProduct_Model.cshtml" />
     <Content Include="Views\CertificationApplication\Component_Model_Details.cshtml" />
+    <Content Include="Views\CertificationApplication\Certificate_UpdatePrinting.cshtml" />
+    <Content Include="Views\CertificationApplication\Product_Model_UpdatePrinting.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

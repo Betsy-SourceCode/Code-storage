@@ -69,7 +69,7 @@
                 </div>
                 <div class="panel-heading col-sm-9" id="@ViewBag.ComponentModel.CPSerial" name="CPSerial">
                     @*onblur="BlurModelCode(this.value)"*@
-                    <div  id="ModelCode" name="ModelCode" style="display: inline-block; border-bottom: 2px solid black; width: 78%; background-color: lightgray; padding-top: 16px; ">@ViewBag.ComponentModel.ModelCode</div>
+                    <div id="ModelCode" name="ModelCode" style="display: inline-block; border-bottom: 2px solid black; width: 78%; background-color: lightgray; padding-top: 16px; ">@ViewBag.ComponentModel.ModelCode</div>
                 </div>
             </div>
         }
@@ -81,7 +81,7 @@
                 </div>
                 <div class="panel-heading col-sm-9" id="@ViewBag.ComponentModel.CPSerial" name="CPSerial">
                     @*onblur="BlurModelCode(this.value)"*@
-                    <input value="@ViewBag.ComponentModel.ModelCode" type="text" id="ModelCode" name="ModelCode" class="form-control" style="display:inline;width:78%;" /><label id="ModelCodeTip" style="color:red;font-size:20px"></label>
+                    <input value="@ViewBag.ComponentModel.ModelCode" type="text" id="ModelCode" name="ModelCode" class="form-control" style="display:inline;width:78%;" maxlength="20" /><label id="ModelCodeTip" style="color:red;font-size:20px"></label>
                 </div>
             </div>
         }
@@ -94,7 +94,7 @@
                 <label>型号名称描述<br />Model Description</label>：
             </div>
             <div class="panel-heading col-sm-9" style="display: inline-block">
-                <input value="@ViewBag.ComponentModel.ModelName" type="text" id="ModelName" name="ModelName" class="form-control" style="display:inline;width:78%;" /><label id="ModelNameTip" style="color:red;font-size:20px"></label>
+                <input value="@ViewBag.ComponentModel.ModelName" type="text" id="ModelName" name="ModelName" class="form-control" style="display:inline;width:78%;" maxlength="40" /><label id="ModelNameTip" style="color:red;font-size:20px"></label>
             </div>
         </div>
 
@@ -104,7 +104,7 @@
                 <label>规格详细<br />Specification</label>：
             </div>
             <div class="panel-heading col-sm-9">
-                <textarea class="form-control" rows="5" id="ModelSpec" name="ModelSpec" style="display:inline-block;width: 78%; border: 1px solid black" maxlength="100">
+                <textarea class="form-control" rows="5" id="ModelSpec" name="ModelSpec" style="display:inline-block;width: 78%; border: 1px solid black" maxlength="500">
                     @ViewBag.ComponentModel.ModelSpec
                 </textarea>
             </div>
@@ -114,7 +114,7 @@
         <div style="overflow:hidden">
             <div class="panel-heading col-sm-2" style="width:21%">
                 <label>K3 相关物料号<br />K3 Related Items</label>：
-                <a href="#" ng-click="AddK3Input()"><label style="font-size:50px;font-weight:700;color:red">+</label></a>
+                <a href="" ng-click="AddK3Input()"><label style="font-size: 50px; font-weight: 700; color: red;cursor: pointer;">+</label></a>
             </div>
             <div class="panel-heading col-sm-9" id="K3DivContainer">
 
