@@ -61,24 +61,29 @@
                 @*key-words*@
                 <div class="panel-heading col-sm-11">
                     <label style="padding-left:75px">key-words</label>：
-                    <input name="key_words" type="text" id="key_words" class=" form-control input-content" style="width:60%;margin-right:50px" />
-                    <input type="button" name="btnPrint" id="btnPrint" class="form-control  btnBack" value="打印" onclick="Dayin()" disabled="disabled" />
-                    <input type="button" name="btnDaochu" id="btnDaochu" class="form-control  btnBack" value="导出" onclick="DaoChu()" disabled="disabled" />
+                    <input name="key_words" type="text" id="key_words" class=" form-control input-content" style="width:60%;" />
+                    <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a" style="display: contents; pointer-events: auto;" onclick="$(this).siblings().val('')"></a>
+                    <div style="display:contents">
+                        <input type="button" name="btnPrint" id="btnPrint" class="form-control  btnBack" value="打印" onclick="Dayin()" disabled="disabled" style="margin-left: 50px" />
+                        <input type="button" name="btnDaochu" id="btnDaochu" class="form-control  btnBack" value="导出" onclick="DaoChu()" disabled="disabled" />
+                    </div>
                 </div>
                 <div class="panel-heading col-sm-11">
                     <label style="padding-left:51px">K3 Items Num</label>：
-                    <input name="K3ItemsNum" type="text" id="K3ItemsNum" class=" form-control input-content" style="width: 60%; margin-right: 50px" />
-                    <input type="button" name="btnSearch" class="form-control  btnBack" value="搜索" ng-click="ComponentModelManagement()" />
-                    <!--新增需要特殊权限-->
-                    @if (ViewBag.Add == 1)
-                    {
-                        <input type="button" name="btnAdd" class="form-control  btnBack" value="新增" ng-click="AddComponentModel(0);" />
-                    }
-                    else
-                    {
-                        <input type="button" name="btnAdd" disabled="disabled" class="form-control  btnBack" value="新增" ng-click="AddComponentModel(0);" />
-                    }
-
+                    <input name="K3ItemsNum" type="text" id="K3ItemsNum" class=" form-control input-content" style="width: 60%;" />
+                    <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a" style="display: contents; pointer-events: auto;" onclick="$(this).siblings().val('')"></a>
+                    <div style="display:contents">
+                        <input type="button" name="btnSearch" class="form-control  btnBack" value="搜索" ng-click="ComponentModelManagement()" style="margin-left: 50px" />
+                        <!--新增需要特殊权限-->
+                        @if (ViewBag.Add == 1)
+                        {
+                            <input type="button" name="btnAdd" class="form-control  btnBack" value="新增" ng-click="AddComponentModel(0);" />
+                        }
+                        else
+                        {
+                            <input type="button" name="btnAdd" disabled="disabled" class="form-control  btnBack" value="新增" ng-click="AddComponentModel(0);" />
+                        }
+                    </div>
                 </div>
             </div>
 

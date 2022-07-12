@@ -11,7 +11,7 @@ namespace MIS_CertificationApplication.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Certificates_Master
     {
         public int CMSerial { get; set; }

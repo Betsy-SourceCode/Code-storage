@@ -22,9 +22,9 @@ namespace MIS_CertificationApplication.Models
         public string Factories { get; set; }
         public string CoverAreas { get; set; }
         public bool Sonflag { get; set; }
-        public Nullable<System.DateTime> Expiry { get; set; }
         public byte[] CertFile { get; set; }
         public string CertFileName { get; set; }
+        public Nullable<System.DateTime> Expiry { get; set; }
         public string Status { get; set; }
         public string CreateBy { get; set; }
         public string CreateDept { get; set; }

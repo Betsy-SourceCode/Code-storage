@@ -36,6 +36,7 @@ namespace MIS_CertificationApplication.Controllers
         {
             try
             {
+                new SqlBulkcopy().SqlBulkCopy(); //查询前先更新子表状态
                 DateTime dt = new DateTime();
                 DateTime now = DateTime.Now;
                 string sql = "select * from View_ApplicationList where 1=1 ";
@@ -146,6 +147,57 @@ namespace MIS_CertificationApplication.Controllers
                     {
                         item.ApplyCountry = "";
                     }
+                    //CertificatesCounts 每一条主表数据下子表数据的条数
+                    string NewStatus = "";
+                    if (Status == "Active")
+                    {
+                        NewStatus = "A";
+                    }
+                    if (Status == "Expired")
+                    {
+                        NewStatus = "E";
+                    }
+                    if (Status == "Discard")
+                    {
+                        NewStatus = "D";
+                    }
+                    if (Status == "Pending")
+                    {
+                        NewStatus = "P";
+                    }
+                    if (item.CertificatesCounts != null)
+                    {
+                        string[] CertificatesCounts = item.CertificatesCounts.Split('|');  //分割成数组
+                        if (Status != "")
+                        {
+                            foreach (var list in CertificatesCounts)
+                            {
+                                string[] arr = list.Split(':');
+                                if (arr[0] == NewStatus)
+                                {
+                                    item.CertificatesCounts = arr[1];
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int Length = CertificatesCounts.Length;
+                            if (Length != 0)
+                            {
+                                item.CertificatesCounts = CertificatesCounts[Length - 1];
+                            }
+                            else
+                            {
+                                item.CertificatesCounts = CertificatesCounts[Length];
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        item.CertificatesCounts = "0";
+                    }
+
                 }
                 //打印页面专用
                 Session["certifications"] = certifications;
@@ -218,7 +270,7 @@ namespace MIS_CertificationApplication.Controllers
         {
             try
             {
-                string sql = "SELECT DISTINCT CustGrp FROM Customer ORDER BY CustGrp";
+                string sql = "SELECT DISTINCT CustGrp FROM Customer where CustGrp is not null and  Belongs <> 'ZZ'  ORDER BY CustGrp";
                 List<string> DataList = db.Database.SqlQuery<string>(sql).ToList();
                 return JsonConvert.SerializeObject(DataList);
             }
@@ -510,24 +562,25 @@ namespace MIS_CertificationApplication.Controllers
                             if (item.CertFile == null)
                             {
                                 item.CertFileName = null;
+                                item.Status = "P";
                             }
                             DateTime Expiry = Convert.ToDateTime(item.Expiry);
                             DateTime now = DateTime.Now;
-                            //在办-新增了记录，但没有认证编号的
-                            if (item.Cert_Ref == "")
-                            {
-                                item.Status = "P";
-                            }
                             //有效-有认证编号，失效期为空，或未过(起始小于结束)
-                            var aa = Expiry.CompareTo(now);
-                            if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) < 0))
+                            //指定的数小于参数返回 - 1
+                            if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) > 0))
                             {
                                 item.Status = "A";
                             }
                             //失效-已过有效期
-                            if (Expiry.CompareTo(now) > 0)
+                            if (Expiry.CompareTo(now) < 0) //指定的数大于参数返回 1
                             {
                                 item.Status = "E";
+                            }
+                            //在办-新增了记录，但没有认证编号的
+                            if (item.Cert_Ref == "")
+                            {
+                                item.Status = "P";
                             }
                             item.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
                             item.CreateDept = new Authority().GetDepartmentSql(item.CreateBy, 0);
@@ -738,31 +791,38 @@ namespace MIS_CertificationApplication.Controllers
                     }
                     else
                     {
+                        //新增一行
+                        item.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
+                        item.CreateDept = new Authority().GetDepartmentSql(item.CreateBy, 0);
+                        item.CreateTime = DateTime.Now;
+                    }
+                    if (item.Status != "D") //不作废的情况下
+                    {
                         //新增
+                        //有效-有认证编号，失效期为空，或未过(起始小于结束)
+                        if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) > 0))
+                        {
+                            item.Status = "A";
+                        }
+                        //失效-已过有效期
+                        if (Expiry.CompareTo(now) < 0)
+                        {
+                            item.Status = "E";
+                        }
                         //在办-新增了记录，但没有认证编号的
                         if (item.Cert_Ref == "")
                         {
                             item.Status = "P";
                         }
-                        //有效-有认证编号，失效期为空，或未过(起始小于结束)
-                        var aa = Expiry.CompareTo(now);
-                        if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) < 0))
+                        if (item.CertFile == null)
                         {
-                            item.Status = "A";
+                            item.Status = "P";
                         }
-                        //失效-已过有效期
-                        if (Expiry.CompareTo(now) > 0)
-                        {
-                            item.Status = "E";
-                        }
-                        item.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
-                        item.CreateDept = new Authority().GetDepartmentSql(item.CreateBy, 0);
-                        item.CreateTime = DateTime.Now;
                     }
                     item.UpdateBy = new Authority().GetUserSql(Session["userid"].ToString());
                     item.UpdateDept = new Authority().GetDepartmentSql(item.CreateBy, 0);
                     item.UpdateTime = DateTime.Now;
-                    if (index < OldSon.Count)
+                    if (index < OldSon.Count && type == 3)
                     {
                         item.CA_Ref = OldSon[index].CA_Ref;
                         if (OldSon[index].CertFile != null && item.CertFile == null && item.Sonflag) //新旧文件替换
@@ -770,39 +830,13 @@ namespace MIS_CertificationApplication.Controllers
                             item.CertFile = OldSon[index].CertFile;
                             item.CertFileName = OldSon[index].CertFileName;
                         }
-                        if (type == 2) //复制
-                        {
-                            //执行新增
-                            item.CA_Ref = Main.CA_Ref;
-                            db.Certificates.Add(item);
-                        }
-                        else
-                        {
-                            //执行修改
-                            item.CFSerial = OldSon[index].CFSerial;
-                            DbEntityEntry<Certificates> Sonentry = db.Entry(item);
-                            Sonentry.State = EntityState.Modified;
-                        }
-
+                        //执行修改
+                        item.CFSerial = OldSon[index].CFSerial;
+                        DbEntityEntry<Certificates> Sonentry = db.Entry(item);
+                        Sonentry.State = EntityState.Modified;
                     }
                     else
                     {
-                        //在办-新增了记录，但没有认证编号的
-                        if (item.Cert_Ref == "")
-                        {
-                            item.Status = "P";
-                        }
-                        //有效-有认证编号，失效期为空，或未过(起始小于结束)
-                        var aa = Expiry.CompareTo(now);
-                        if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) < 0))
-                        {
-                            item.Status = "A";
-                        }
-                        //失效-已过有效期
-                        if (Expiry.CompareTo(now) > 0)
-                        {
-                            item.Status = "E";
-                        }
                         //执行新增
                         item.CA_Ref = Main.CA_Ref;
                         db.Certificates.Add(item);
@@ -831,8 +865,8 @@ namespace MIS_CertificationApplication.Controllers
             {
                 //查询需要删除的数据
                 Cert_Apply_Case Main = db.Cert_Apply_Case.Where(a => a.CA_Ref == CA_Ref).AsNoTracking().FirstOrDefault();
-                this.db.Cert_Apply_Case.Attach(Main);
-                this.db.Cert_Apply_Case.Remove(Main);
+                db.Cert_Apply_Case.Attach(Main);
+                db.Cert_Apply_Case.Remove(Main);
                 i = this.db.SaveChanges();
             }
             catch (Exception ex)

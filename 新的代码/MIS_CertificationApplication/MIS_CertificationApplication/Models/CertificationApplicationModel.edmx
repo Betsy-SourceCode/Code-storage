@@ -170,7 +170,7 @@
           <Property Name="ApplyCountry" Type="nvarchar" MaxLength="30" />
           <Property Name="ExpiryDate" Type="varchar" MaxLength="30" />
           <Property Name="Status" Type="varchar" MaxLength="7" />
-          <Property Name="CertificatesCounts" Type="int" />
+          <Property Name="CertificatesCounts" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_Certificates_Cert_Apply_Case">
           <End Role="Cert_Apply_Case" Type="Self.Cert_Apply_Case" Multiplicity="1" />
@@ -452,14 +452,14 @@
           <Property Name="ProductModel" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Supplier" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AppDate" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CFSerial" Type="Int32" />
+          <Property Name="CertFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CertificateRef" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="CertificateName" Type="String" MaxLength="148" FixedLength="false" Unicode="true" />
           <Property Name="ApplyCountry" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="ExpiryDate" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="CFSerial" Type="Int32" />
-          <Property Name="CertFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CertificatesCounts" Type="Int32" />
+          <Property Name="CertificatesCounts" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -618,13 +618,13 @@
             <EntityTypeMapping TypeName="WebStationModel.View_ApplicationList">
               <MappingFragment StoreEntitySet="View_ApplicationList">
                 <ScalarProperty Name="CertificatesCounts" ColumnName="CertificatesCounts" />
-                <ScalarProperty Name="CertFileName" ColumnName="CertFileName" />
-                <ScalarProperty Name="CFSerial" ColumnName="CFSerial" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
                 <ScalarProperty Name="ApplyCountry" ColumnName="ApplyCountry" />
                 <ScalarProperty Name="CertificateName" ColumnName="CertificateName" />
                 <ScalarProperty Name="CertificateRef" ColumnName="CertificateRef" />
+                <ScalarProperty Name="CertFileName" ColumnName="CertFileName" />
+                <ScalarProperty Name="CFSerial" ColumnName="CFSerial" />
                 <ScalarProperty Name="AppDate" ColumnName="AppDate" />
                 <ScalarProperty Name="Supplier" ColumnName="Supplier" />
                 <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />

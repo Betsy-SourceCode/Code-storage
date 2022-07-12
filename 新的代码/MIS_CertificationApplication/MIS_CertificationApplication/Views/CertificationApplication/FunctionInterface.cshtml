@@ -180,16 +180,18 @@
                          layui.use('laydate', function () {
                              var laydate = layui.laydate;
                              var Newdate = "#date" + index;
+                             var num = index;
                              //常规用法
                              laydate.render({
                                  elem: Newdate,
                                  done: function (date) {
-                                     DateChange(index-1,'@ViewBag.type', Newdate);
+                                     DateChange(num, '@ViewBag.type', Newdate);
                                  }
                              });
                          });
                          index++;
                      })
+                     
                  }
              })
         }
@@ -392,7 +394,7 @@
                             <a href="" ng-click="SelectModels();"><img src="~/Scripts/img/ModelMuli-Select.png" style="position:absolute;bottom:10px ;right:10px" /></a>
                         </div>
                         <div style="position:absolute;top:50px;left:30px">
-                            <a href=""><img src="~/Scripts/img/model&certificate.png" ng-click="ProductModelUpdate()" /></a>
+                            <a href=""><img src="~/Scripts/img/model&certificate.png" style="width:40px ;height:40px" ng-click="ProductModelUpdate()" /></a>
                         </div>
                     </div>
                     <div class="panel-heading col-sm-15" style="position: relative;display:flex;padding:0px 15px">
@@ -517,8 +519,8 @@
             </form>
         </div>
         <!-- 表格上方 -->
-        <div style="width: 85%;margin:0px auto;display:flex;position:relative">
-            <div><label>Certificate(s):</label></div>
+        <div style="width: 85%; margin: 0px auto; display: flex; position: relative; ">
+            <div style="background-color:lightgray;font-weight:bold;position: absolute;height:50px;line-height:50px;text-align:center;width:300px;font-size:17px;bottom:-61px;left:-47px;border:2px solid black">Applied Certificates Listing</div>
             <div style="position:absolute;right:-47px;">
                 <a href="" ng-click="SonAddTr(@ViewBag.type)">
                     <img src="~/Scripts/img/jiahao.png" style="position:relative;left:60px;bottom:6px" />
@@ -527,12 +529,14 @@
             </div>
         </div>
         <!-- 表格 -->
-        <div style="width: 92%;margin:0px auto;">
+        <div style="width: 92%;margin:20px auto;overflow:hidden">
             <table id="GridView" class="table-striped tab-content table-hover table" style="width: 98%; margin: 42px auto; margin-bottom: 1%;text-align:center">
                 <thead>
                     <tr style="background-color: rgba(217,217,217,0.1)">
                         <th style="width:20%">
-                            Name<a href=""><img src="~/Scripts/img/Name.png" ng-click="CertificatesManagement()" /></a>
+                            Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="">
+                                <img src="~/Scripts/img/model&certificate.png" style="width: 35px; height: 35px" ng-click="CertificatesManagement()" />
+                            </a>
                         </th>
                         <th style="width:10%">Reference Number</th>
                         <th style="width:10%">Issuer</th>
@@ -573,7 +577,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input name="ReferenceNumber" type="text" id="ReferenceNumber" class="form-control input-content" maxlength="30" value="@item.Cert_Ref" />
+                                            <input name="ReferenceNumber" type="text" id="ReferenceNumber@(index)" class="form-control input-content" maxlength="30" value="@item.Cert_Ref"  />
                                         </td>
                                         <td>
                                             <input name="Issuer" type="text" id="Issuer" class="form-control input-content" maxlength="100" value="@item.Issuer" />
@@ -718,7 +722,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input name="ReferenceNumber" type="text" id="ReferenceNumber@(index + 1)" class="form-control input-content" maxlength="30" value="@item.Cert_Ref" onblur="CheckReferenceNumberAndSonName(this,'@(index + 1)')" />
+                                            <input name="ReferenceNumber" type="text" id="ReferenceNumber@(index + 1)" class="form-control input-content" maxlength="30" value="@item.Cert_Ref" onblur="CheckReferenceNumberAndSonName(this,'@(index + 1)'),ReferenceNumberBlur(this,@ViewBag.type,@(index))" />
                                         </td>
                                         <td>
                                             <input name="Issuer" type="text" id="Issuer" class="form-control input-content" maxlength="100" value="@item.Issuer" />

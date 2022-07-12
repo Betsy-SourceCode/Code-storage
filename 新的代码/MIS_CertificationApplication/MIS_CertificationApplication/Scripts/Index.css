@@ -96,3 +96,11 @@ body {
     position: relative;
     top: -6px;
 }
+
+.TableTrTitle:hover td {
+    background-color: rgb(226,239,218);
+}
+
+.table > tbody + tbody {
+    border: none;
+}

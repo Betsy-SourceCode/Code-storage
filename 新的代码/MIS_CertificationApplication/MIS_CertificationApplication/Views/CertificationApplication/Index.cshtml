@@ -2,8 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-
+    <meta name="viewport" content="width=device-width">
     <link href="~/Scripts/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="~/Scripts/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Scripts/Index.css" rel="stylesheet" />
@@ -17,8 +16,13 @@
     <script src="~/Scripts/jquery.table2excel.js"></script>
     <script src="~/Scripts/Alert美化弹出框/sweetalert-2.1.2.min.js"></script>
     <style>
-        .blue:hover {
-            border: #6a5acd 2px solid;
+        @@media only screen and (max-width: 1420px) {
+            #Application {
+                width: 30% !important;
+            }
+            #KeyWords{
+                width:50% !important;
+            }
         }
     </style>
 </head>
@@ -110,7 +114,7 @@
                 </tr>
             </table>
             <!-- 表格 -->
-            <table id="GridView" class="table-striped tab-content table-hover table" style="width: 95%; margin: 0px auto; margin-top: 3px; margin-bottom: 1%;text-align:center">
+            <table id="GridView" class="table-striped tab-content table-hover table" style="border:none;width: 95%; margin: 0px auto; margin-top: 3px; margin-bottom: 1%;text-align:center">
                 <thead>
                     <tr style="background-color:rgb(206, 201, 201);height:50px">
                         <th style="width:9%;">
@@ -146,7 +150,8 @@
                 <tbody id="Content{{$index}}" class="Content" ng-repeat="i in list track by $index" onmouseover="TrHoverIn(this)" onmouseout="TrHoverOut(this)">
                     <!--双击进入详情页-->
                     <tr title="双击进入详情页" ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
-                        <td>{{i.ApplicationRef}}<label>{{i.CertificatesCounts}}</label></td>
+                        @*style="display:none"*@
+                        <td style="font-weight: 900; color: black; border-top: 1.5px solid lightgray;">{{i.ApplicationRef}}<label style="display:none">{{i.CertificatesCounts}}</label></td>
                         <td>{{i.Applicant}}</td>
                         <td>{{i.Customer}}</td>
                         <td>{{i.Supplier}}</td>
@@ -165,8 +170,8 @@
                             <a ng-if="list[$index].CertificateRef!=null" title="不能删除"><img style="width: 28px; height: 25px" src="~/Scripts/img/Dontdelete.png" disabled="disabled" /></a>
                         </td>
                     </tr>
-                    <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color: rgb(226,239,218);color: black; font: bold; text-align: center; pointer-events: none;">
-                        <td style="background-color:white;">
+                    <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color: rgb(226,239,218);color: black; font: bold; text-align: center;" class="TableTrTitle">
+                        <td style="background-color: white; border: none !important">
                         </td>
                         <td>
                             Certificate Ref #
@@ -195,8 +200,8 @@
                         </td>
                     </tr>
                     <!--点击打开该认证上传之档案-->
-                    <tr ng-if="i.CertificateRef!=null" title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" style="cursor: pointer;color:black;font:bold;text-align:center">
-                        <td style="background-color:white"></td>
+                    <tr ng-if="i.CertificateRef!=null" title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" style="cursor: pointer; color: black; font: bold; text-align: center;">
+                        <td style="background-color: white; border: none;"></td>
                         <td>{{i.CertificateRef}}</td>
                         <td colspan="2">{{i.CertificateName}}</td>
                         <td>{{i.ApplyCountry}}</td>

@@ -50,6 +50,7 @@ app.controller('mycontroller', function ($scope) {
         if (flag == 0) {
             $scope.SXCondition();
         }
+
         var from = $('#Myform').serialize();
         $.ajax({
             url: '/CertificationApplication/CertificationApplicationSQL/CertificationApplicationList',
@@ -79,12 +80,20 @@ app.controller('mycontroller', function ($scope) {
                     //加载完成后  关闭熊猫遮罩层
                     $("#XMModal").modal('hide');
                 }
+                //$("#GridView tbody").each(function (key, value) {
+                //    //td为null值 去掉boder
+                //    var tdNull = $(this).children().find("td").eq(0).text();
+                //    if (tdNull == "") {
+                //        $(this).children().find("td").eq(0).css("border", "none");
+                //    }
+                //})
 
             }
             , error: function () {
                 console.log("错误");
             }
         });
+
     }
     //筛选条件初始化
     $scope.SXCondition = function () {
@@ -291,7 +300,46 @@ function DaoChu() {
 {
     //表格的hover事件  移入
     function TrHoverIn(event) {
-        var count = $(event).children().eq(0).children().find("label").text();
+        var count = $(event).children().eq(0).children().find("label").text();//每一条主表数据下子表数据的条数
+        var searchCount = "";
+        //子表加边框
+        if (count == "") {
+            //判断是后面的元素的话，要往前找到第一个元素
+            $(event).prevAll().each(function (key, value) {
+                var c = "#" + this.id;
+                searchCount = $(c).children().eq(0).children().find("label").text();
+                if (searchCount != "") {
+                    if (searchCount > 1) {
+                        //最开始的位置
+                        $(c).css({ "border-top": "3px solid blue", "border-left": "3px solid blue", "border-right": "3px solid blue" });
+                        $(c).nextAll().each(function (key, value) {
+                            var i = "#" + this.id;
+                            //因为子表第一条效果不同，所以在中间的需要-2
+                            if (key <= (searchCount - 2)) {
+                                var td = $(i).children().children().eq(0).text().trim(); //第一格没有数据的代表是子表
+                                if (td == "") {
+                                    //中间的位置
+                                    $(i).css({ "border-left": "3px solid blue", "border-right": "3px solid blue" });
+                                    if (key == (searchCount - 2)) {
+                                        //结束的位置
+                                        $(i).css({ "border-bottom": "3px solid blue", "border-left": "3px solid blue", "border-right": "3px solid blue" });
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+
+                        })
+                    } else {
+                        $(c).css("border", "3px solid blue");
+                    }
+                    return false;
+                }
+            })
+        }
+        //主表加边框
         if (count > 1) {
             $(event).css({ "border-top": "3px solid blue", "border-left": "3px solid blue", "border-right": "3px solid blue" });
             $(event).nextAll().each(function (key, value) {
@@ -299,12 +347,12 @@ function DaoChu() {
                 if (key <= (count - 2)) {
                     var td = $(i).children().children().eq(0).text().trim();
                     if (td == "") {
-                        $(i).removeAttr("onmouseover");
+                        //$(i).removeAttr("onmouseover");
                         $(i).removeAttr("onmouseleave");
                         $(i).css({ "border-left": "3px solid blue", "border-right": "3px solid blue" });
 
                         if (key == (count - 2)) {
-                            $(i).removeAttr("onmouseover");
+                            //$(i).removeAttr("onmouseover");
                             $(i).removeAttr("onmouseleave");
                             $(i).css({ "border-bottom": "3px solid blue", "border-left": "3px solid blue", "border-right": "3px solid blue" });
                         }
@@ -317,12 +365,46 @@ function DaoChu() {
 
             })
         } else {
-            $(event).css("border", "3px solid blue");
+            if (searchCount > 1) {
+
+            } else {
+                $(event).css("border", "3px solid blue");
+            }
         }
     }
     //表格的hover事件  移出
     function TrHoverOut(event) {
         var count = $(event).children().eq(0).children().find("label").text();
+        var searchCount = "";
+        if (count == "") {
+            //判断是后面的元素的话，要往前找到第一个元素
+            $(event).prevAll().each(function (key, value) {
+                var c = "#" + this.id;
+                searchCount = $(c).children().eq(0).children().find("label").text();
+                if (searchCount != "") {
+                    if (searchCount > 1) {
+                        $(c).css("border", "0px solid blue");
+                        $(c).nextAll().each(function (key, value) {
+                            var i = "#" + this.id;
+                            if (key <= searchCount) {
+                                var td = $(i).children().children().eq(0).text().trim();
+                                if (td == "") {
+                                    $(i).css("border", "0px solid blue");
+                                    if (key == searchCount) {
+                                        $(i).css("border", "0px solid blue");
+                                    }
+                                }
+                            } else {
+                                return false;
+                            }
+                        })
+                    } else {
+                        $(c).css("border", "0px solid blue");
+                    }
+                    return false;
+                }
+            })
+        }
         if (count > 1) {
             $(event).css("border", "0px solid blue");
             $(event).nextAll().each(function (key, value) {
@@ -330,8 +412,6 @@ function DaoChu() {
                 if (key <= count) {
                     var td = $(i).children().children().eq(0).text().trim();
                     if (td == "") {
-                        $(i).removeAttr("ng-mouseover");
-                        $(i).removeAttr("ng-mouseleave");
                         $(i).css("border", "0px solid blue");
                         if (key == count) {
                             $(i).css("border", "0px solid blue");
@@ -343,7 +423,9 @@ function DaoChu() {
 
             })
         } else {
-            $(event).css("border", "0px solid blue");
+            if (searchCount <= 1) {
+                $(event).css("border", "0px solid blue");
+            }
         }
     }
 }

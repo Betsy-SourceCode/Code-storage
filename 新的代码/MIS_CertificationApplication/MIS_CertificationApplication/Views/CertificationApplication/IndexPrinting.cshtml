@@ -10,6 +10,11 @@
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/AngularJS.js"></script>
+    <style>
+        .table > tbody + tbody {
+            border: none;
+        }
+    </style>
     <script>
         var app = angular.module('myApp', []);  //创建模块
         app.controller('mycontroller', function ($scope, $timeout) {
@@ -102,47 +107,50 @@
             </div>
         </div>
         <!-- 表格 -->
-        <table id="GridView" class="table-striped tab-content table-hover table" style="width:100%; margin: 0px auto; margin-top: 4%; margin-bottom: 1%;text-align:center">
-            <thead>
+        <table id="GridView" class="table-striped tab-content table-hover table" style="width: 100%; margin: 0px auto; margin-top: 4%; margin-bottom: 1%; text-align: center; border: none;">
+            <thead style="border:1px solid lightgray">
                 <tr style="background-color:rgb(206, 201, 201);height:50px">
-                    <th style="width:10%;">
+                    <th style="width:9%;">
                         Application Ref #
                         <br />申 请 编 号
                     </th>
-                    <th style="width:25%;">
+                    <th style="width:13%;">
                         Applicant
                         <br />申请方
                     </th>
-                    <th style="width:10%;">
+                    <th style="width:12%;">
                         Customer
                         <br />客户
                     </th>
-                    <th style="width:15%;">
+                    <th style="width:12%;">
                         Supplier
                         <br />供应商
                     </th>
-                    <th style="width:20%;">
+                    <th style="width:25%;">
                         Product Model #
                         <br />产品型号
                     </th>
-                    <th style="width:10%;" colspan="2">
+                    <th style="width:8%;">
                         App-Date(yy/mm/dd)
                         <br />申请日期
+                    </th>
+                    <th style="width:8%;">
                     </th>
                 </tr>
             </thead>
             <tbody id="Content" class="Content" ng-repeat="i in list track by $index">
                 <!--双击进入详情页-->
-                <tr title="点击进入详情页" ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
-                    <td>{{i.ApplicationRef}}</td>
+                <tr title="双击进入详情页" ng-dblclick="tiaozhuan('Detail?ApplicationRef='+i.ApplicationRef+'')" style="cursor: pointer" ng-if="i.ApplicationRef!=list[$index-1].ApplicationRef">
+                    <td style="font-weight: 900; color: black; border-top: 1.5px solid lightgray;">{{i.ApplicationRef}}<label style="display:none">{{i.CertificatesCounts}}</label></td>
                     <td>{{i.Applicant}}</td>
                     <td>{{i.Customer}}</td>
                     <td>{{i.Supplier}}</td>
                     <td>{{i.ProductModel}}</td>
                     <td>{{i.AppDate}}</td>
+                    <td></td>
                 </tr>
-                <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color:rgb(226,239,218);color:black;font:bold;text-align:center">
-                    <td style="background-color:white;">
+                <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color: rgb(226,239,218);color: black; font: bold; text-align: center;" class="TableTrTitle">
+                    <td style="background-color: white; border: none !important">
                     </td>
                     <td>
                         Certificate Ref #
@@ -171,8 +179,8 @@
                     </td>
                 </tr>
                 <!--点击打开该认证上传之档案-->
-                <tr ng-if="i.CertificateRef!=null" title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" style="cursor: pointer;color:black;font:bold;text-align:center">
-                    <td style="background-color:white"></td>
+                <tr ng-if="i.CertificateRef!=null" title="{{i.CertFileName}}" ng-click="GetCertFileByCFSerial(i.CFSerial)" style="cursor: pointer;color:black; font: bold; text-align: center">
+                    <td style="background-color: white; border: none;"></td>
                     <td>{{i.CertificateRef}}</td>
                     <td colspan="2">{{i.CertificateName}}</td>
                     <td>{{i.ApplyCountry}}</td>

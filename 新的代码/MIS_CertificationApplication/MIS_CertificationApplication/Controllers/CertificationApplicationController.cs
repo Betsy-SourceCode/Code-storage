@@ -20,7 +20,7 @@ namespace MIS_CertificationApplication.Controllers
         public ActionResult Index(string userid)
         {
             //userid = "298"; //财务部
-            userid = "444";
+            //userid = "444";
             if (userid == null)
             {
                 userid = "";
@@ -134,7 +134,7 @@ namespace MIS_CertificationApplication.Controllers
 
                             item.CoverAreas = "'" + item.CoverAreas + "'";
                             string countryList = "";
-                            if (item.Factories.IndexOf("|") != -1) //代表一个以上
+                            if (item.CoverAreas.IndexOf("|") != -1) //代表一个以上
                             {
                                 string country = item.CoverAreas.Replace('|', ',');
                                 var arr = country.Split(',');

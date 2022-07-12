@@ -78,12 +78,13 @@
             <div class="panel-heading">
                 @*key-words*@
                 <div class="panel-heading col-sm-11">
-                    <div class="col-sm-3">
-                        <label style="padding-left:114px">key-words</label>：
+                    <div class="col-sm-3" style="text-align:right">
+                        <label>key-words:</label>
                     </div>
                     <div class="col-sm-6">
-                        <input name="key_words" type="text" id="key_words" class=" form-control input-content" style="width:60%;margin-right:50px" />
-                        <input type="checkbox" name="Cancel" id="Cancel" style="zoom:100%" checked>
+                        <input name="key_words" type="text" id="key_words" class=" form-control input-content" style="width:60%;" />
+                        <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a" style="display: contents; pointer-events: auto;" onclick="$(this).siblings().val('')"></a>
+                        <input type="checkbox" name="Cancel" id="Cancel" style="zoom:100%;" checked>
                         <label style="font-size:10px">Include Voids Records</label>
                     </div>
                     <div class="col-sm-3">
@@ -93,12 +94,13 @@
                 </div>
                 @*K3 Items Num*@
                 <div class="panel-heading col-sm-11">
-                    <div class="col-sm-3">
-                        <label style="padding-left:70px">For Country/Area</label>：
+                    <div class="col-sm-3" style="text-align:right">
+                        <label>For Country/Area:</label>
                     </div>
                     <div class="col-sm-6" style="position:relative">
-                        <input disabled="disabled" name="CountryArea" type="text" id="" class=" form-control input-content" style="width: 100%; margin-right: 50px;padding-right:15%" />
-                        <img id="Area" style="position:absolute;right:5%;top:11%" src="~/Scripts/img/CertificatesManagementCountryArea.png" ng-click="CountryArea()" />
+                        <input disabled="disabled" name="CountryArea" type="text" id="" class=" form-control input-content" style="width:95%" />
+                        <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a" style="display: contents; pointer-events: auto;" onclick="$(this).siblings().val('')"></a>
+                        <img id="Area" style="position:absolute;right:11%;top:15%" src="~/Scripts/img/CertificatesManagementCountryArea.png" ng-click="CountryArea()" />
                     </div>
                     <div class="col-sm-3">
                         <input type="button" name="btnSearch" class="form-control  btnBack" value="搜索" ng-click="CertificatesManagementList()" />
@@ -168,8 +170,8 @@
                         <td>{{i.CertCode}}</td>
                         <td>{{i.CertName}}</td>
                         <td>{{i.CountryArea}}</td>
-                        <td>{{i.StdFee}}</td>
-                        <td>{{i.StdTime}}</td>
+                        <td>USD ${{i.StdFee}}</td>
+                        <td>{{i.StdTime}}wks</td>
                         <td>{{i.Remark}}</td>
                         <td class="noExl">
                             <img title="修改" ng-if="!i.IsVoid" style="width:28px;height:25px" src="~/Scripts/img/edit.png" />
@@ -184,8 +186,8 @@
                         <td>{{i.CertCode}}</td>
                         <td>{{i.CertName}}</td>
                         <td>{{i.CountryArea}}</td>
-                        <td>{{i.StdFee}}</td>
-                        <td>{{i.StdTime}}</td>
+                        <td>USD $&nbsp;&nbsp;&nbsp;{{i.StdFee}}</td>
+                        <td>{{i.StdTime}}&nbsp;&nbsp;&nbsp; wks</td>
                         <td>{{i.Remark}}</td>
                         <td class="noExl">
                             <img ng-if="i.RLV=='A'||i.RLV=='B'" title="修改" style="width:28px;height:25px" src="~/Scripts/img/edit.png" ng-click="CertificateEdit(i.CertCode, i.IsVoid)" />
@@ -194,7 +196,7 @@
                             {
                                 <img title="复制" style="width:28px;height:25px" src="~/Scripts/img/create.png" ng-click="AddCertificates(i.CertCode, i.CertName, i.CountryArea, i.StdFee, i.StdTime, i.Remark,i.Mkt_Cnty)" />
                             }
-                            <img title="作废" style="width:28px;height:25px" src="~/Scripts/img/Certificates_void.png" ng-click="ISVoid(i.CMSerial)" />
+                            <img title="作废" style="width:32px;height:30px" src="~/Scripts/img/Certificates_void.png" ng-click="ISVoid(i.CMSerial,i.CertCode)" />
                         </td>
                     </tr>
                 </tbody>

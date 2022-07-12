@@ -55,7 +55,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             var Issuer = $('#GridView').find("input[name='Issuer']").eq(i).val();
             var factory = $('#GridView').find(".factory").eq(i).attr("ArrFactories");  //子表工厂
             var CoverAreas = $('#GridView').find(".CoverAreas").eq(i).attr("ArrCovereArea");  //子表国家区域
-            var date = $('#GridView').find("input[type='date']").eq(i).val(); //有效期
+            var date = $("#date" + i).val(); //有效期
             var Attachment = $('#GridView').find(".Attachment").eq(i).val();
             var Status = "";
             //修改需要传状态
@@ -72,11 +72,6 @@ app.controller('mycontroller', function ($scope, $compile) {
                 }
                 else if (Status == "Discard") {
                     Status = "D";
-                }
-                //二次判断：在没有认证编号的条件下，就不用分“过期 / 有效”了,直接改为在办
-                var ReferenceNumber = $("tbody").children().eq(i).children().eq(1).find("input").val(); //认证编号
-                if (ReferenceNumber == "") {
-                    Status = "P";
                 }
             }
             SonListsArray.push({ "CM_Serial": Name, "Cert_Ref": ReferenceNumber, "Issuer": Issuer, "Factories": factory, "CoverAreas": CoverAreas, "Expiry": date, "CertFile": Attachment, "CertFileName": "file" + (i + 1), "Sonflag": true, "Status": Status });
@@ -251,7 +246,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             //认证名称下拉框
             tr += '<td><select name="SonName" onchange="CheckReferenceNumberAndSonName(this,' + (index + 1) + ')" id="SonName' + (index + 1) + '" class="form-control Name" ><option selected="selected" value="" style="text-align:center" ></option></select ></td>';
             //Reference Number文本框
-            tr += '<td><input name="ReferenceNumber" type="text" id="ReferenceNumber' + (index + 1) + '" class="form-control input-content" maxlength="30" onblur="CheckReferenceNumberAndSonName(this,' + (index + 1) + ')"/></td >';
+            tr += '<td><input name="ReferenceNumber" type="text" id="ReferenceNumber' + (index + 1) + '" class="form-control input-content" maxlength="30" onblur="CheckReferenceNumberAndSonName(this,' + (index + 1) + '),ReferenceNumberBlur(this,' + type + ',' + index + ')"/></td >';
             //Issuer文本框
             tr += '<td ><input name="Issuer" type="text" id="Issuer" class="form-control input-content" maxlength="100"/></td >';
             //factory多选框
@@ -285,11 +280,12 @@ app.controller('mycontroller', function ($scope, $compile) {
             layui.use('laydate', function () {
                 var laydate = layui.laydate;
                 var Newdate = "#date" + index;
+                var num = index;
                 //常规用法
                 laydate.render({
                     elem: Newdate,
                     done: function (date) {
-                        DateChange(index - 1, type, Newdate);
+                        DateChange(num, type, Newdate);
                     }
                 });
                 index++;
@@ -455,7 +451,35 @@ app.controller('mycontroller', function ($scope, $compile) {
         }
     }
 })
-
+//子表认证名称失焦事件 （用于判断是否过了有效期  从而改变状态）
+function ReferenceNumberBlur(element, type, index) {
+    if (type == 3) {
+        //在没有认证编号的条件下，就不用分“过期 / 有效”了,直接改为在办
+        var ReferenceNumber = $(element).val(); //认证编号
+        if (ReferenceNumber == "") {
+            $("tbody").children().eq(index).children().eq(7).css("color", "blue");
+            $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
+            return false;
+        }
+        else {
+            var dateold = $("tbody").children().eq(index).children().eq(5).find("input").val();
+            if (dateold != "") {
+                var date = new Date(dateold);
+                var nowDate = new Date();
+                if (date < nowDate) {
+                    $("tbody").children().eq(index).children().eq(7).css("color", "red");
+                    $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
+                } else {
+                    $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                    $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+                }
+            } else {
+                $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+            }
+        }
+    }
+}
 //检查 相同的认证名称，认证编号不能相同
 function CheckReferenceNumberAndSonName(element, index) {
     var ReferenceNumber = $("#ReferenceNumber" + index).val();
@@ -553,7 +577,7 @@ function DateChange(index, type, element, IsInsert) {
             if (dateold != "") {
                 var date = new Date(dateold);
                 var nowDate = new Date();
-                if (date > nowDate) {
+                if (date < nowDate) {
                     $("tbody").children().eq(index).children().eq(7).css("color", "red");
                     $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
                 } else {
@@ -670,7 +694,7 @@ function DateChange(index, type, element, IsInsert) {
                 if (dateold != "") {
                     var date = new Date(dateold);
                     var nowDate = new Date();
-                    if (date > nowDate) {
+                    if (date < nowDate) {
                         $("tbody").children().eq(index).children().eq(7).css("color", "red");
                         $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
                     } else {

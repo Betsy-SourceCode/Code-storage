@@ -98,7 +98,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             type: 2,
             title: '新  增  认  证  证  书',
             skin: 'layui-layer-rim', //加上边框
-            area: ['90%', '90%'], //宽高
+            area: ['1300px', '100%'], //宽高
             content: '../CertificationApplication/AddCertificates?CertCode=' + CertCode + '&CertName=' + CertName + '&CountryArea=' + country + '&StdFee=' + StdFee + '&StdTime=' + StdTime + '&Remark=' + Remark + '&Mkt_Cnty=' + Mkt_Cnty,
             btn: ['Confirm', 'Cancel'],
             btnAlign: 'c',
@@ -217,8 +217,9 @@ app.controller('mycontroller', function ($scope, $compile) {
             btn3: function (index, layero) {
                 var body = layer.getChildFrame('body', index);
                 let CMSerial = body.find('label[name="CMSerial"]').attr("id");
+                let CertCode = body.find('#CertCode').text();
                 //作废
-                $scope.ISVoid(CMSerial);
+                $scope.ISVoid(CMSerial, CertCode);
                 //Void
                 layer.close(index);
             },
@@ -315,9 +316,9 @@ app.controller('mycontroller', function ($scope, $compile) {
         });
     }
     //作废的方法
-    $scope.ISVoid = function (CMSerial) {
+    $scope.ISVoid = function (CMSerial, CertCode) {
         swal({
-            title: '您确定是否作废此条数据?',
+            title: '您确定是否作废<br/>此条认证为<label style="color:red">"' + CertCode + '"</label>的数据?',
             text: "",
             type: 'warning',
             showCancelButton: true,
@@ -353,7 +354,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             type: 2,
             title: '维  护  认  证  证  书  信  息',
             skin: 'layui-layer-rim', //加上边框
-            area: ['700px', '90%'], //宽高
+            area: ['1300px', '100%'], //宽高
             content: '../CertificationApplication/CertificateEdit?CertCode=' + CertCode + '&IsVoid=' + IsVoid,
             btn: ['Copy', 'Save', 'Close'],
             btnAlign: 'c',
