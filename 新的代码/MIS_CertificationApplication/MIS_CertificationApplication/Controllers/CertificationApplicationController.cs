@@ -20,7 +20,7 @@ namespace MIS_CertificationApplication.Controllers
         public ActionResult Index(string userid)
         {
             //userid = "298"; //财务部
-            //userid = "444";
+            userid = "444";
             if (userid == null)
             {
                 userid = "";
@@ -77,7 +77,7 @@ namespace MIS_CertificationApplication.Controllers
                     modelSql = string.Format(modelSql, model);
                     list.ProductModel = db.Database.SqlQuery<string>(modelSql).FirstOrDefault();
                     //主表的文件后缀名
-                    if (list.QuoteFile != null)
+                    if (list.QuoteFileName != null)
                     {
                         ViewBag.MainfileName = list.QuoteFileName.Substring(list.QuoteFileName.LastIndexOf(".") + 1, list.QuoteFileName.ToString().Length - (list.QuoteFileName.LastIndexOf(".") + 1));
                     }
@@ -210,7 +210,7 @@ namespace MIS_CertificationApplication.Controllers
                     modelSql = string.Format(modelSql, model);
                     list.ProductModel = db.Database.SqlQuery<string>(modelSql).FirstOrDefault();
                     //主表的文件后缀名
-                    if (list.QuoteFile != null)
+                    if (list.QuoteFileName != null)
                     {
                         ViewBag.MainfileName = list.QuoteFileName.Substring(list.QuoteFileName.LastIndexOf(".") + 1, list.QuoteFileName.ToString().Length - (list.QuoteFileName.LastIndexOf(".") + 1));
                     }

@@ -6,6 +6,7 @@
 .font-backColor {
     background-color: lightgray;
     padding: 2px 0px;
+    font-weight: 600;
 }
 
 .panel-heading {

@@ -264,6 +264,8 @@
     <Content Include="Scripts\img\上一步.png" />
     <Content Include="Scripts\img\关闭.jpg" />
     <Content Include="Scripts\img\加载.gif" />
+    <Content Include="Scripts\img\取消作废.png" />
+    <Content Include="Scripts\img\操作手册图标.jpg" />
     <Content Include="Scripts\img\日期选择器Icon.png" />
     <Content Include="Scripts\jquery.table2excel.js" />
     <Content Include="Scripts\layui\css\layui.css" />

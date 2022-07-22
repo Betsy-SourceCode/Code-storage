@@ -34,7 +34,6 @@ namespace MIS_CertificationApplication.Models
         public string ClientPO { get; set; }
         public string GIPOA { get; set; }
         public string QuoteRef { get; set; }
-        public byte[] QuoteFile { get; set; }
         public string Remark { get; set; }
         public string CreateBy { get; set; }
         public string CreateDept { get; set; }
@@ -52,7 +51,6 @@ namespace MIS_CertificationApplication.Models
         public string CoverAreas { get; set; }
         public string CoverAreasList { get; set; }
         public string Expiry { get; set; }
-        public byte[] CertFile { get; set; }
         public string SonCreateBy { get; set; }
         public string SonCreateDept { get; set; }
         public Nullable<System.DateTime> SonCreateTime { get; set; }
@@ -65,5 +63,7 @@ namespace MIS_CertificationApplication.Models
         public string ApplyFeeQW { get; set; }
         public string InspectFeeQW { get; set; }
         public string YearFeeQW { get; set; }
+        public string QuoteFileFlag { get; set; }
+        public Nullable<int> CertFileFlag { get; set; }
     }
 }

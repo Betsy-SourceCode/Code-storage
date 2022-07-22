@@ -104,9 +104,9 @@
                 <label>规格详细<br />Specification</label>：
             </div>
             <div class="panel-heading col-sm-9">
-                <textarea class="form-control" rows="5" id="ModelSpec" name="ModelSpec" style="display:inline-block;width: 78%; border: 1px solid black" maxlength="500">
-                    @ViewBag.ComponentModel.ModelSpec
-                </textarea>
+                <textarea class="form-control" rows="5" id="ModelSpec" name="ModelSpec" style="width: 78%; border: 1px solid black;" maxlength="500">@ViewBag.ComponentModel.ModelSpec</textarea>
+
+
             </div>
         </div>
 
@@ -138,9 +138,9 @@
                                     K3Parts1 = arr[i];
                                     K3Parts2 = arr[i + 1];
                                     <div class="k3Div" id="@(num)">
-                                        <input value="@K3Parts1" type="text" id="" name="K3Parts" class="form-control k3Input" />
+                                        <input value="@K3Parts1" type="text" id="" name="K3Parts" class="form-control k3Input" onblur="BlurK3Parts(this.value,this)" />
                                         <label>—</label>
-                                        <input value="@K3Parts2" type="text" id="" name="K3Parts" class="form-control k3Input" /><label class="K3PartsTip" style="color:red;font-size:20px"></label>
+                                        <input value="@K3Parts2" type="text" id="" name="K3Parts" class="form-control k3Input" onblur="BlurK3Parts(this.value,this)" /><label class="K3PartsTip" style="color:red;font-size:20px"></label>
                                     </div>
                                     num++;
                                 }
@@ -149,8 +149,8 @@
                             else
                             {
                                 <div class="k3Div" id="@(num)">
-                                    <input value="@item" type="text" id="" name="K3Parts" class="form-control k3Input" />
-                                    <label>—</label> <input value="" type="text" id="" name="K3Parts" class="form-control k3Input" /><label class="K3PartsTip" style="color:red;font-size:20px"></label>
+                                    <input value="@item" type="text" id="" name="K3Parts" class="form-control k3Input" onblur="BlurK3Parts(this.value,this)" />
+                                    <label>—</label> <input value="" type="text" id="" name="K3Parts" class="form-control k3Input" onblur="BlurK3Parts(this.value,this)" /><label class="K3PartsTip" style="color:red;font-size:20px"></label>
                                 </div>
                                 num++;
                             }
@@ -166,8 +166,8 @@
                                 K3Parts1 = arr[i];
                                 K3Parts2 = arr[i + 1];
                                 <div class="k3Div" id="@(num)">
-                                    <input value="@K3Parts1" type="text" id="" name="K3Parts" class="form-control k3Input" />
-                                    <label>—</label> <input value="@K3Parts2" type="text" id="" name="K3Parts" class="form-control k3Input" />
+                                    <input value="@K3Parts1" type="text" id="" name="K3Parts" class="form-control k3Input" onblur="BlurK3Parts(this.value,this)" />
+                                    <label>—</label> <input value="@K3Parts2" type="text" id="" name="K3Parts" class="form-control k3Input" onblur="BlurK3Parts(this.value,this)" />
                                 </div><label class="K3PartsTip" style="color:red;font-size:20px"></label>
                                 num++;
                             }
@@ -176,9 +176,9 @@
                         else
                         {
                             <div class="k3Div" id="@(num)">
-                                <input value="@aa" type="text" id="" name="K3Parts" class="form-control k3Input" />
+                                <input value="@aa" type="text" id="" name="K3Parts" class="form-control k3Input" onblur="BlurK3Parts(this.value,this)" />
                                 <label>—</label>
-                                <input value="" type="text" id="" name="K3Parts" class="form-control k3Input" /><label class="K3PartsTip" style="color:red;font-size:20px"></label>
+                                <input value="" type="text" id="" name="K3Parts" class="form-control k3Input" onblur="BlurK3Parts(this.value,this)" /><label class="K3PartsTip" style="color:red;font-size:20px"></label>
                             </div>
                             num++;
                         }

@@ -32,6 +32,10 @@
             margin: 0px 5px !important;
         }
 
+        .swal2-overlay, .swal2-modal {
+            z-index: 19999014;
+        }
+
         .SelectcovereArea {
             width: 30% !important;
         }
@@ -99,7 +103,7 @@
                     </div>
                     <div class="col-sm-6" style="position:relative">
                         <input disabled="disabled" name="CountryArea" type="text" id="" class=" form-control input-content" style="width:95%" />
-                        <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a" style="display: contents; pointer-events: auto;" onclick="$(this).siblings().val('')"></a>
+                        <a class="glyphicon glyphicon-remove btn form-control-feedback input-clear-a" style="display: contents; pointer-events: auto;" onclick="$(this).siblings().attr('id', '');$(this).siblings().val('')"></a>
                         <img id="Area" style="position:absolute;right:11%;top:15%" src="~/Scripts/img/CertificatesManagementCountryArea.png" ng-click="CountryArea()" />
                     </div>
                     <div class="col-sm-3">

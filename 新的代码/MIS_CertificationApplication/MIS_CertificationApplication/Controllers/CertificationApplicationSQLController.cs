@@ -36,7 +36,7 @@ namespace MIS_CertificationApplication.Controllers
         {
             try
             {
-                new SqlBulkcopy().SqlBulkCopy(); //查询前先更新子表状态
+                //new SqlBulkcopy().SqlBulkCopy(); //查询前先更新子表状态
                 DateTime dt = new DateTime();
                 DateTime now = DateTime.Now;
                 string sql = "select * from View_ApplicationList where 1=1 ";
@@ -221,6 +221,27 @@ namespace MIS_CertificationApplication.Controllers
         }
 
         /// <summary>
+        /// 通过主表主键获得主表报价单及其证书名称
+        /// </summary>
+        /// <param name="CA_Ref">主表主键</param>
+        /// <returns></returns>
+        public string GetQuoteFileByCA_Ref(string CA_Ref)
+        {
+            try
+            {
+                string sql = @"select QuoteFile AS Files,QuoteFileName AS FileNames from Cert_Apply_Case where CA_Ref='" + CA_Ref + "'";
+                Others DataList = db.Database.SqlQuery<Others>(sql).FirstOrDefault();
+                DataList.FileBase64 = Convert.ToBase64String(DataList.Files);
+                return JsonConvert.SerializeObject(DataList);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write(ex.Message);
+                return "";
+            }
+        }
+
+        /// <summary>
         /// 通过子表主键获得子表上传保留认证证书及其证书名称
         /// </summary>
         /// <param name="CFSerial">子表主键</param>
@@ -240,6 +261,7 @@ namespace MIS_CertificationApplication.Controllers
                 return "";
             }
         }
+
         #endregion
 
         #region 主表下拉框
@@ -562,25 +584,27 @@ namespace MIS_CertificationApplication.Controllers
                             if (item.CertFile == null)
                             {
                                 item.CertFileName = null;
-                                item.Status = "P";
                             }
                             DateTime Expiry = Convert.ToDateTime(item.Expiry);
                             DateTime now = DateTime.Now;
-                            //有效-有认证编号，失效期为空，或未过(起始小于结束)
-                            //指定的数小于参数返回 - 1
-                            if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) > 0))
-                            {
-                                item.Status = "A";
-                            }
-                            //失效-已过有效期
-                            if (Expiry.CompareTo(now) < 0) //指定的数大于参数返回 1
-                            {
-                                item.Status = "E";
-                            }
-                            //在办-新增了记录，但没有认证编号的
-                            if (item.Cert_Ref == "")
+                            //在没有认证编号和文件的条件下，就不用分“过期 / 有效”了,直接默认为在办
+                            if (item.CertFile == null && item.Cert_Ref == "")
                             {
                                 item.Status = "P";
+                            }
+                            else
+                            {
+                                //有效-有认证编号，失效期为空，或未过(起始小于结束)
+                                //指定的数小于参数返回 - 1
+                                if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) > 0))
+                                {
+                                    item.Status = "A";
+                                }
+                                //失效-已过有效期
+                                if (Expiry.CompareTo(now) < 0) //指定的数大于参数返回 1
+                                {
+                                    item.Status = "E";
+                                }
                             }
                             item.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
                             item.CreateDept = new Authority().GetDepartmentSql(item.CreateBy, 0);
@@ -619,7 +643,7 @@ namespace MIS_CertificationApplication.Controllers
         /// <param name="type">2-复制，3-修改</param>
         /// <param name="Main">主表</param>
         /// <param name="Son">子表</param>
-        /// <param name="Mainflag">主表标志位</param>
+        /// <param name="Mainflag">主表标志位：是否取旧文件</param>
         /// <returns></returns>
         public string CopyOrUpdateData(int type, Cert_Apply_Case Main, string Son, bool Mainflag)
         {
@@ -638,8 +662,10 @@ namespace MIS_CertificationApplication.Controllers
                         Stream inputStream = Request.Files[i].InputStream;
                         byte[] PicBt = new byte[inputStream.Length];
                         inputStream.Read(PicBt, 0, PicBt.Length);
-                        if (Request.Files.AllKeys[i] == "Mainfile" && OldMain.QuoteFile == null)  //主表
+                        //主表(!Mainflag代表上传了新的文件)
+                        if (Request.Files.AllKeys[i] == "Mainfile" && !Mainflag)
                         {
+                            //将新文件写入字段
                             Main.QuoteFile = PicBt;
                             Main.QuoteFileName = Request.Files[i].FileName;
                         }
@@ -647,19 +673,21 @@ namespace MIS_CertificationApplication.Controllers
                         {
                             for (int j = 0; j < JsonsList.Count; j++)
                             {
-                                if (JsonsList[j].CertFileName == Request.Files.AllKeys[i] && JsonsList[j].CertFile == null && JsonsList[j].Sonflag)
+                                //子表(!JsonsList[j].Sonflag代表上传了新的文件)
+                                //将新文件写入字段
+                                if (JsonsList[j].CertFileName == Request.Files.AllKeys[i] && !JsonsList[j].Sonflag)
                                 {
                                     JsonsList[j].CertFile = PicBt;
                                     JsonsList[j].CertFileName = Request.Files[i].FileName;
                                 }
                             }
                         }
-                        //主表原本就有文件并且修改时没有上传新的文件
-                        if (OldMain.QuoteFile != null && Main.QuoteFile == null && Mainflag)
-                        {
-                            Main.QuoteFile = OldMain.QuoteFile;
-                            Main.QuoteFileName = OldMain.QuoteFileName;
-                        }
+                    }
+                    //主表原本就有文件并且修改时没有上传新的文件，将旧文件写入字段
+                    if (Mainflag)
+                    {
+                        Main.QuoteFile = OldMain.QuoteFile;
+                        Main.QuoteFileName = OldMain.QuoteFileName;
                     }
                     #endregion
                     //设置默认值
@@ -791,32 +819,32 @@ namespace MIS_CertificationApplication.Controllers
                     }
                     else
                     {
-                        //新增一行
+                        //新增一行（复制直接走这里）
                         item.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
                         item.CreateDept = new Authority().GetDepartmentSql(item.CreateBy, 0);
                         item.CreateTime = DateTime.Now;
                     }
-                    if (item.Status != "D") //不作废的情况下
+                    if (type == 2) //复制需要判断状态
                     {
                         //新增
-                        //有效-有认证编号，失效期为空，或未过(起始小于结束)
-                        if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) > 0))
-                        {
-                            item.Status = "A";
-                        }
-                        //失效-已过有效期
-                        if (Expiry.CompareTo(now) < 0)
-                        {
-                            item.Status = "E";
-                        }
-                        //在办-新增了记录，但没有认证编号的
-                        if (item.Cert_Ref == "")
+                        //在没有认证编号和文件的条件下，就不用分“过期 / 有效”了,直接默认为在办
+                        if (item.CertFile == null && item.Cert_Ref == "")
                         {
                             item.Status = "P";
                         }
-                        if (item.CertFile == null)
+                        else
                         {
-                            item.Status = "P";
+                            //有效-有认证编号，失效期为空，或未过(起始小于结束)
+                            //指定的数小于参数返回 - 1
+                            if (item.Cert_Ref != "" && (item.Expiry == null || Expiry.CompareTo(now) > 0))
+                            {
+                                item.Status = "A";
+                            }
+                            //失效-已过有效期
+                            if (Expiry.CompareTo(now) < 0) //指定的数大于参数返回 1
+                            {
+                                item.Status = "E";
+                            }
                         }
                     }
                     item.UpdateBy = new Authority().GetUserSql(Session["userid"].ToString());
@@ -825,7 +853,8 @@ namespace MIS_CertificationApplication.Controllers
                     if (index < OldSon.Count && type == 3)
                     {
                         item.CA_Ref = OldSon[index].CA_Ref;
-                        if (OldSon[index].CertFile != null && item.CertFile == null && item.Sonflag) //新旧文件替换
+                        //子表原本就有文件并且修改时没有上传新的文件，将旧文件写入字段
+                        if (item.Sonflag)
                         {
                             item.CertFile = OldSon[index].CertFile;
                             item.CertFileName = OldSon[index].CertFileName;
@@ -947,7 +976,6 @@ namespace MIS_CertificationApplication.Controllers
         {
             try
             {
-                Certificates_Master.Remark = Certificates_Master.Remark.Trim();
                 Certificates_Master.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
                 Certificates_Master.CreateDept = new Authority().GetDepartmentSql(Certificates_Master.CreateBy, 0);
                 Certificates_Master.CreateTime = DateTime.Now;
@@ -1184,7 +1212,6 @@ namespace MIS_CertificationApplication.Controllers
         {
             try
             {
-                component.ModelSpec = component.ModelSpec.Trim();
                 component.CreateBy = new Authority().GetUserSql(Session["userid"].ToString());
                 component.CreateDept = new Authority().GetDepartmentSql(component.CreateBy, 0);
                 component.CreateTime = DateTime.Now;

@@ -95,19 +95,20 @@ app.controller('mycontroller', function ($scope, $compile) {
         input.each(function (key, value) {
             if (value.id == "MainUpload") {//主表标识
                 formData.append("Mainfile", value.files[0]);
-                if (value.defaultValue == "") {
-                    formData.append("Mainflag", false);
+                //true取旧文件，false取新文件
+                if ($("#" + value.id).attr("QuoteFileFlag") != "0") {
+                    formData.append("Mainflag", true);
                 }
                 else {
-                    formData.append("Mainflag", true);
+                    formData.append("Mainflag", false);
                 }
             }
             else {
-                if (value.defaultValue == "") {
-                    SonListsArray[SonNum].Sonflag = false;
+                if ($("#" + value.id).attr("CertFileFlag") != "0") {
+                    SonListsArray[SonNum].Sonflag = true; //还是旧文件
                 }
-                if (value.files[0] != null) {
-                    SonListsArray[SonNum].Sonflag = true;
+                else {
+                    SonListsArray[SonNum].Sonflag = false;  //上传了新文件
                 }
                 SonNum += 1;
                 formData.append("file" + SonNum, value.files[0]);
@@ -147,6 +148,8 @@ app.controller('mycontroller', function ($scope, $compile) {
                     }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
                         //跳转到详情页
                         window.location.href = "/CertificationApplication/CertificationApplication/Detail?ApplicationRef=" + result.ApplicationRef;
+                        //测试暂用
+                        /*location.reload();*/
                     });
                 }
                 else {
@@ -246,7 +249,7 @@ app.controller('mycontroller', function ($scope, $compile) {
             //认证名称下拉框
             tr += '<td><select name="SonName" onchange="CheckReferenceNumberAndSonName(this,' + (index + 1) + ')" id="SonName' + (index + 1) + '" class="form-control Name" ><option selected="selected" value="" style="text-align:center" ></option></select ></td>';
             //Reference Number文本框
-            tr += '<td><input name="ReferenceNumber" type="text" id="ReferenceNumber' + (index + 1) + '" class="form-control input-content" maxlength="30" onblur="CheckReferenceNumberAndSonName(this,' + (index + 1) + '),ReferenceNumberBlur(this,' + type + ',' + index + ')"/></td >';
+            tr += '<td><input name="ReferenceNumber" type="text" id="ReferenceNumber' + (index + 1) + '" class="form-control input-content" maxlength="30" onblur="CheckReferenceNumberAndSonName(this,' + (index + 1) + '),ChangeStatus(' + index + ')"/></td >';
             //Issuer文本框
             tr += '<td ><input name="Issuer" type="text" id="Issuer" class="form-control input-content" maxlength="100"/></td >';
             //factory多选框
@@ -254,19 +257,22 @@ app.controller('mycontroller', function ($scope, $compile) {
             //CoverAreas多选框
             tr += '<td style="position:relative"><div style="margin-right:40px" class="CoverAreas" ></div><a href="" style="position:absolute;right:10px;top:10px;" ng-click="SelectCovereArea(' + index + ')" ><img  src="../Scripts/img/CoverAreas-muilSelect.png" /></a></td >';
             //有效期日期选择器
-            tr += '<td><div style="position:relative"><input type="text" name="date" id="date' + index + '" lay-verify="date" autocomplete="off" class="layui-input" style="cursor:pointer" onchange="DateChange(' + index + ',' + type + ',this)"><i class="DateIcon"><img src="../Scripts/img/日期选择器Icon.png" /></i></div></td >';
+            tr += '<td><div style="position:relative"><input type="text" name="date" id="date' + index + '" lay-verify="date" autocomplete="off" class="layui-input" style="cursor:pointer"><i class="DateIcon"><img src="../Scripts/img/日期选择器Icon.png" /></i></div></td >';
             //子表文件上传
             /* tr += '<td style="position:relative"><div style="margin-right:40px" class="Attachment" ></div><a href="" id="upload" ng-click="upLoad()" style="position:absolute;right:10px;top:10px;" ><img src="../Scripts/img/upload.png" /></a><a href="" id="delete" ng-click="delete()" style="position:absolute;right:10px;top:10px;display:none"><img src="../Scripts/img/Del.png" /></a></td >';*/
 
-            tr += '<td style="position:relative"><div id="SonFileDiv' + (index + 1) + '" style="height: auto; width: 100px"><div style = "position: absolute; top: 3px; right: 5px; cursor: pointer; " ><img id="uploadImg' + (index + 1) + '" src = "../Scripts/img/upload.png" title = "点击按钮上传文件" onclick = "imgclick(\'MainUpload' + (index + 1) + '\')" style = "width: 100 % " > <input id="MainUpload' + (index + 1) + '" type="file" class="file" onchange="upload(' + index + ',' + type + ',this,\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\')" style="display: none"></div><img id="QuoteFile' + (index + 1) + '" style = "padding: 5px; display: none" /> '
+            tr += '<td style="position:relative"><div id="SonFileDiv' + (index + 1) + '" style="height: auto; width: 100px"><div style = "position: absolute; top: 3px; right: 5px; cursor: pointer; " ><img id="uploadImg' + (index + 1) + '" src = "../Scripts/img/upload.png" title = "点击按钮上传文件" onclick = "imgclick(\'MainUpload' + (index + 1) + '\')" style = "width: 100 % " > <input id="MainUpload' + (index + 1) + '" type="file" class="file" CertFileFlag="0" onchange="upload(' + index + ',' + type + ',this,\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\')" style="display: none"></div><img id="QuoteFile' + (index + 1) + '" style = "padding: 5px; display: none" /> '
 
             //存放文件名，没有可展示的类型图片时使用
-            tr += '<div><label id="FileName' + (index + 1) + '" style="display:none;"></label><a href="" id="deleteImg' + (index + 1) + '"onclick="deletefile(\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\')" style="position: absolute; bottom:20px; right: 10px;display:none"> <img src="../Scripts/img/Del.png" title="删除已上传的文件" /> </a></div></div></td >';
+            tr += '<div><label id="FileName' + (index + 1) + '" style="display:none;"></label><a href="" id="deleteImg' + (index + 1) + '"onclick="deletefile(\'MainUpload' + (index + 1) + '\',\'uploadImg' + (index + 1) + '\',\'deleteImg' + (index + 1) + '\',\'QuoteFile' + (index + 1) + '\',\'FileDiv' + (index + 1) + '\',\'FileName' + (index + 1) + '\'),ChangeStatus(' + index + ')" style="position: absolute; bottom:20px; right: 10px;display:none"> <img src="../Scripts/img/Del.png" title="删除已上传的文件" /> </a></div></div></td >';
 
             //修改需要新增状态
             if (type == 3) {
                 tr += '<td style="color:green"><label></label><br/>'
-                tr += '<a href="" id="cxl' + (index + 1) + '" ng-click="CXL(' + index + ')"><img src = "../Scripts/img/cxl.png" /></a>'
+                tr += '<div style="display:contents">'
+                tr += '<a href="" id="cxl' + (index + 1) + '" title="作废"  ng-click="CXL(' + index + ')"><img src = "../Scripts/img/cxl.png" /></a>'
+                tr += '<a href="" id="Cancelcxl' + (index + 1) + '" title="取消作废"  ng-click="CancelCXL(' + index + ',$event)" style="pointer-events: auto !important; display: none"><img src = "../Scripts/img/cxl.取消作废" /></a>'
+                tr += '</div >'
                 tr += '</td >'
             }
             tr += '</tr>';
@@ -285,7 +291,7 @@ app.controller('mycontroller', function ($scope, $compile) {
                 laydate.render({
                     elem: Newdate,
                     done: function (date) {
-                        DateChange(num, type, Newdate);
+                        ChangeStatus(num);
                     }
                 });
                 index++;
@@ -440,170 +446,62 @@ app.controller('mycontroller', function ($scope, $compile) {
                 cancelButtonText: '取消'
             }).then((isConfirmed) => {
                 if (isConfirmed) {
-                    //console.log($("tbody").children().eq(id).html());
                     $("tbody").children().eq(id).css("pointer-events", "none");//禁用本条数据  当前tr
+                    //打开取消作废按钮的td
+                    $("tbody").children().eq(id).children().eq(7).css("pointer-events", "auto");//开启本条数据的功能按钮  当前tr
                     $("tbody").children().eq(id).css("background-color", "rgb(255,233,233)");//禁用本条数据后  将tr背景颜色改为红色
                     $("tbody").children().eq(id).children().eq(1).children().val("");//清空认证编号
                     $("tbody").children().eq(id).children().eq(7).css("color", "orange");//将作废状态字体颜色改为orange
                     $("tbody").children().eq(id).children().eq(7).find("label").html("Discard");//作废后 将状态改为Discard
+                    //取消作废按钮显示，作废按钮隐藏
+                    //$("#Cancelcxl" + (2)).css({ "display": "block" });
+                    $("#Cancelcxl" + (2)).children().css({ "display": "inline" });
+                    $("#cxl" + (2)).css({ "display": "none" });
+                    //$(MyEvent.target).parent().siblings().css({ "display": "block" });
+                    //$(MyEvent.target).css({ "display": "none" });
                 }
             })
+        }
+
+        //子表中 取消作废操作
+        $scope.CancelCXL = function (id, MyEvent) {
+            //恢复功能
+            $("tbody").children().eq(id).css("pointer-events", "auto");//开启本条数据的功能按钮  当前tr
+            $("tbody").children().eq(id).css("background-color", "white");//禁用本条数据后  将tr背景颜色改为红色
+            //作废按钮显示，取消作废按钮隐藏
+            $(MyEvent.target).parent().siblings().css({ "display": "block" });
+            $(MyEvent.target).css({ "display": "none" });
+            //更新状态
+            ChangeStatus(id);
         }
     }
 })
-//子表认证名称失焦事件 （用于判断是否过了有效期  从而改变状态）
-function ReferenceNumberBlur(element, type, index) {
-    if (type == 3) {
-        //在没有认证编号的条件下，就不用分“过期 / 有效”了,直接改为在办
-        var ReferenceNumber = $(element).val(); //认证编号
-        if (ReferenceNumber == "") {
-            $("tbody").children().eq(index).children().eq(7).css("color", "blue");
-            $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
-            return false;
+
+//货币失焦
+function FeeStyle(NameStr, id) {
+    if (NameStr.indexOf('.') != -1) {
+        var str = NameStr.split('.');
+        var arr = "";
+        var len = str[1].length;
+        if (len == 1) {
+            str[1] = str[1] + "0";
         }
-        else {
-            var dateold = $("tbody").children().eq(index).children().eq(5).find("input").val();
-            if (dateold != "") {
-                var date = new Date(dateold);
-                var nowDate = new Date();
-                if (date < nowDate) {
-                    $("tbody").children().eq(index).children().eq(7).css("color", "red");
-                    $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
-                } else {
-                    $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-                    $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
-                }
-            } else {
-                $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-                $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
-            }
-        }
-    }
-}
-//检查 相同的认证名称，认证编号不能相同
-function CheckReferenceNumberAndSonName(element, index) {
-    var ReferenceNumber = $("#ReferenceNumber" + index).val();
-    var Name = $("#SonName" + index).val();
-    var num = $("#Content tr").length;
-    //认证名称为空就跳过判断
-    if (Name == "") {
-        $("#SonName" + index).focus();
-        return false;
-    }
-    //认证编号为空就跳过判断
-    if (ReferenceNumber == "") {
-        return false;
-    }
-    for (var i = 0; i < num; i++) {
-        var str = $("#Content").children().eq(index - 1).siblings().eq(i);
-        var NameSelect = str.children().eq(0).find("select").val();
-        var ReferenceNumberInput = str.children().eq(1).find("input").val();
-        if (Name == NameSelect) {
-            if (ReferenceNumber == ReferenceNumberInput) {
-                swal({
-                    title: "操作失败",
-                    text: "相同的认证名称，认证编号不能相同",
-                    type: "error",
-                    buttons: {
-                        button1: {
-                            text: "确认"
-                        }
-                    }
-                }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
-                    $("#ReferenceNumber" + index).focus();
-                    $("#ReferenceNumber" + index).val("");
-                });
-                return false;
-            }
-        }
-    }
-    $.ajax({
-        type: "post",
-        dataType: 'JSON',
-        url: "/CertificationApplication/CertificationApplicationSQL/CheckReferenceNumberAndSonName",
-        data: { "Name": Name, "ReferenceNumber": ReferenceNumber },
-        success: function (result) {
-            if (result > 0) {
-                swal({
-                    title: "操作失败",
-                    text: "相同的认证名称，认证编号不能相同",
-                    type: "error",
-                    buttons: {
-                        button1: {
-                            text: "确认"
-                        }
-                    }
-                }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
-                    $("#ReferenceNumber" + index).focus();
-                    $("#ReferenceNumber" + index).val("");
-                });
-            }
-        }
-    });
-}
-//子表的日期改变事件
-function DateChange(index, type, element, IsInsert) {
-    if (type == 3) {
-        var num;
-        //0-修改本身的，0-新增一行
-        if (IsInsert == 1) {
-            num = document.getElementById("MainUpload" + (index + 1)).files.length;
+        arr = str[0] + '.' + str[1];
+        $("#" + id).val(arr);
+    } else {
+        if (NameStr != "") {
+            $("#" + id).val(NameStr + ".00");
         } else {
-            $("#MainUpload" + (index + 1)).each(function (key, value) {
-                if (value.defaultValue == "") {
-                    num = 0;  //没有文件
-                }
-                else {
-                    num = 1;
-                }
-            })
+            $("#" + id).val(NameStr + '0.00');
         }
-        //在没有认证编号的条件下，就不用分“过期 / 有效”了,直接改为在办
-        var ReferenceNumber = $("tbody").children().eq(index).children().eq(1).find("input").val(); //认证编号
-        if (ReferenceNumber == "") {
-            $("tbody").children().eq(index).children().eq(7).css("color", "blue");
-            $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
-        }
-        else {
-            if (num == 0) {
-                $("tbody").children().eq(index).children().eq(7).css("color", "blue");
-                $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
-            }
-            if (num != 0 && $(element).val() == "") {
-                $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-                $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
-            }
-            var dateold = $(element).val();
-            if (dateold != "") {
-                var date = new Date(dateold);
-                var nowDate = new Date();
-                if (date < nowDate) {
-                    $("tbody").children().eq(index).children().eq(7).css("color", "red");
-                    $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
-                } else {
-                    $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-                    $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
-                }
-            }
-        }
-
-        //if ($("#MainUpload" + (index + 1)).files[0] != null && element.val() != "") {
-        //    var date = new Date(element.val());
-        //    var nowDate = new Date();
-        //    if (date > nowDate) {
-        //        $("tbody").children().eq(id).children().eq(7).css("color", "red");//将作废状态字体颜色改为orange
-        //        $("tbody").children().eq(id).children().eq(7).find("label").html("Expired");//作废后 将状态改为Discard
-        //    } else {
-        //        $("tbody").children().eq(id).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-        //        $("tbody").children().eq(id).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
-        //    }
-        //} else {
-        //    $("tbody").children().eq(id).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-        //    $("tbody").children().eq(id).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
-        //}
 
     }
-
+}
+//货币聚焦
+function FeeFucsStyle(NameStr, id) {
+    if (NameStr.indexOf('.') == 1) {
+        $("#" + id).val("");
+    }
 }
 
 //文件上传
@@ -680,54 +578,7 @@ function DateChange(index, type, element, IsInsert) {
         $("#" + uploadImgid).css({ 'display': 'none' });
         //显示删除图标在页面上
         $("#" + deleteImgid).css({ 'display': 'inline-block' });
-        $("#" + FileDivid).css({ 'width': 'auto', 'padding': '5px 40px 5px 5px ' });
-        if (type == 3) {
-            //在没有认证编号的条件下，就不用分“过期 / 有效”了,直接改为在办
-            var ReferenceNumber = $("tbody").children().eq(index).children().eq(1).find("input").val(); //认证编号
-            console.log(ReferenceNumber);
-            if (ReferenceNumber == "") {
-                $("tbody").children().eq(index).children().eq(7).css("color", "blue");
-                $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
-            }
-            else {
-                var dateold = $("tbody").children().eq(index).children().eq(5).find("input").val();
-                if (dateold != "") {
-                    var date = new Date(dateold);
-                    var nowDate = new Date();
-                    if (date < nowDate) {
-                        $("tbody").children().eq(index).children().eq(7).css("color", "red");
-                        $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
-                    } else {
-                        $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-                        $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
-                    }
-                } else {
-                    $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
-                    $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
-                }
-            }
-        }
-    }
-    //查询文件后缀名是否符合上传档案格式标准
-    function IsUploadStandard(FileSuffix) {
-        var res = 0;
-        $.ajax({
-            async: false,
-            type: "post",
-            url: "/CertificationApplication/CertificationApplicationSQL/IsUploadStandard",
-            data: { "FileSuffix": FileSuffix },
-            success: function (result) {
-                if (result == -1) {
-                    swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
-                    return false;
-                }
-                else {
-                    res = result;
-                }
-
-            }
-        });
-        return res;
+        $("#" + FileDivid).css({ 'width': '120px', 'padding': '5px 40px 5px 5px ' });
     }
     /**
      * 删除按钮
@@ -750,24 +601,41 @@ function DateChange(index, type, element, IsInsert) {
         $("#" + FileName).css({ 'display': 'none' });
         //清空文件
         $("#" + MainUploadid).val("");
-        //清空defaultValue
-        $("#" + MainUploadid).each(function (key, value) {
-            value.defaultValue = "";
-        })
+        //改变input自定义属性的值为0,代表不需要旧文件
+        //代表主表
+        if ($("#" + MainUploadid).attr("id") == "MainUpload") {
+            $("#" + MainUploadid).attr("QuoteFileFlag", 0);
+        }
+        else {
+            $("#" + MainUploadid).attr("CertFileFlag", 0);
+        }
     }
 }
 
 //文件下载
 {
-    //下载
-    function downloadFile(node, fileName, Content) {
+    /**
+        * 下载
+        * @param type  //0-主表，1-子表
+        * @param node   //本身
+        * @param fileName   //文件名称
+        * @param Primarykey   //主键
+        */
+    function downloadFile(type, node, fileName, Primarykey) {
         var hzm = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
         var contentType = "application/" + hzm;
         /*    Content += "data:base64," + Content;*/
-        let aLink = document.getElementById(node.id);
-        let blob = base64ToBlob(Content, contentType); //new Blob([Content]);
-        aLink.download = fileName;
-        aLink.href = URL.createObjectURL(blob);
+        //0-主表，1-子表
+        var Content = GetFileByPrimarykey(type, Primarykey); //文件
+        if (Content != "0") {
+            let aLink = document.getElementById(node.id);
+            let blob = base64ToBlob(Content, contentType); //new Blob([Content]);
+            aLink.download = fileName;
+            aLink.href = URL.createObjectURL(blob);
+        }
+        else {
+            return false;
+        }
     };
     /**
          * base64转blob
@@ -783,24 +651,63 @@ function DateChange(index, type, element, IsInsert) {
         }
         return new Blob([uInt8Array], { type: contentType });
     }
-}
 
-//循环表单（已作废）
-function getform() {
-    var form1 = document.getElementById("Myform");
-    for (i = 0; i < form1.elements.length; i++) {
-        var e = form1.elements[i];
-        //alert(e.name + "\t" + e.value);
-        e.name = "" + e.name + "";
-        if (e.value == "") {
-            e.value = null;
+    //通过主键获取文件及其文件名
+    function GetFileByPrimarykey(type, Primarykey) {
+        var sqlurl = "";
+        if (type == 0) {
+            //主表
+            sqlurl = "GetQuoteFileByCA_Ref?CA_Ref=" + Primarykey;
         }
-        if (e.name != "QuoteFile") {
-            /* formData.append(e.name, e.value);*/
+        if (type == 1) {
+            //子表
+            sqlurl = "GetCertFileByCFSerial?CFSerial=" + Primarykey;
         }
-        /*formData.append("", "");*/
+        var file = "";
+        //根据子表主键查对应的文件
+        $.ajax({
+            async: false,
+            type: "post",
+            dataType: 'JSON',
+            url: "/CertificationApplication/CertificationApplicationSQL/" + sqlurl,
+            success: function (result) {
+                if (result == null || result.FileBase64 == null) {
+                    return 0;
+                }
+                else {
+                    file = result.FileBase64;
+                }
+
+            },
+            error: function (e) {
+                swal('操作失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                return 0;
+            }
+        });
+        return file;
     }
-    console.log(jsonObj);
+
+    //查询文件后缀名是否符合上传档案格式标准
+    function IsUploadStandard(FileSuffix) {
+        var res = 0;
+        $.ajax({
+            async: false,
+            type: "post",
+            url: "/CertificationApplication/CertificationApplicationSQL/IsUploadStandard",
+            data: { "FileSuffix": FileSuffix },
+            success: function (result) {
+                if (result == -1) {
+                    swal('保存失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+                    return false;
+                }
+                else {
+                    res = result;
+                }
+
+            }
+        });
+        return res;
+    }
 }
 
 //格式化时间
@@ -821,14 +728,123 @@ Date.prototype.Format = function (fmt) { // author: meizz
     return fmt;
 }
 
-function FeiKong() {
+//验证方法整合
+{
     //做必填选项判断
-    if ($("#Customer").val() == "") {
-        //改变标题颜色和背景颜色
-        $("#Customerlabel").css({ "color": "white", "background-color": "red" });
+    function FeiKong() {
+        if ($("#Customer").val() == "") {
+            //改变标题颜色和背景颜色
+            $("#Customerlabel").css({ "color": "white", "background-color": "red" });
+        }
+        else {
+            //改变标题颜色和背景颜色
+            $("#Customerlabel").css({ "color": "black", "background-color": "lightgray" });
+        }
     }
-    else {
-        //改变标题颜色和背景颜色
-        $("#Customerlabel").css({ "color": "black", "background-color": "lightgray" });
+
+    //做验证改变状态：子表认证名称失焦事件/日期选择器改变事件/文件上传事件/取消作废操作更新状态
+    function ChangeStatus(index) {
+        var num;
+        //判断当前数据是否有文件
+        $("#MainUpload" + (parseInt(index) + 1)).each(function (key, value) {
+            CertFileFlag = $("#MainUpload" + (parseInt(index) + 1)).attr("CertFileFlag");
+            if (CertFileFlag == "0" && value.files[0] == null) {
+                num = 0;  //没有文件
+            }
+            else {
+                num = 1;
+            }
+        })
+        //在没有认证编号和文件的条件下，就不用分“过期 / 有效”了,直接改为在办
+        var ReferenceNumber = $("tbody").children().eq(index).children().eq(1).find("input").val(); //认证编号
+        if (ReferenceNumber == "" && num == 0) {
+            $("tbody").children().eq(index).children().eq(7).css("color", "blue");
+            $("tbody").children().eq(index).children().eq(7).find("label").html("Pending");
+            return false;
+        }
+        else {
+            var dateold = $("tbody").children().eq(index).children().eq(5).find("input").val(); //有效期
+            if (dateold != "") {
+                var date = new Date(dateold);
+                var nowDate = new Date();
+                if (date < nowDate) {
+                    $("tbody").children().eq(index).children().eq(7).css("color", "red");
+                    $("tbody").children().eq(index).children().eq(7).find("label").html("Expired");
+                }
+                else {
+                    $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                    $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+                }
+            }
+            else {
+                //未选日期默认为永久有效
+                $("tbody").children().eq(index).children().eq(7).css("color", "green");//将作废状态字体颜色改为green
+                $("tbody").children().eq(index).children().eq(7).find("label").html("Active");//作废后 将状态改为Active
+            }
+        }
+    }
+
+    //检查 相同的认证名称，认证编号不能相同
+    function CheckReferenceNumberAndSonName(element, index) {
+        var ReferenceNumber = $("#ReferenceNumber" + index).val();
+        var Name = $("#SonName" + index).val();
+        var num = $("#Content tr").length;
+        //认证名称为空就跳过判断
+        if (Name == "") {
+            $("#SonName" + index).focus();
+            return false;
+        }
+        //认证编号为空就跳过判断
+        if (ReferenceNumber == "") {
+            return false;
+        }
+        for (var i = 0; i < num; i++) {
+            var str = $("#Content").children().eq(index - 1).siblings().eq(i);
+            var NameSelect = str.children().eq(0).find("select").val();
+            var ReferenceNumberInput = str.children().eq(1).find("input").val();
+            if (Name == NameSelect) {
+                if (ReferenceNumber == ReferenceNumberInput) {
+                    swal({
+                        title: "操作失败",
+                        text: "相同的认证名称，认证编号不能相同",
+                        type: "error",
+                        buttons: {
+                            button1: {
+                                text: "确认"
+                            }
+                        }
+                    }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
+                        $("#ReferenceNumber" + index).focus();
+                        $("#ReferenceNumber" + index).val("");
+                    });
+                    return false;
+                }
+            }
+        }
+        $.ajax({
+            type: "post",
+            dataType: 'JSON',
+            url: "/CertificationApplication/CertificationApplicationSQL/CheckReferenceNumberAndSonName",
+            data: { "Name": Name, "ReferenceNumber": ReferenceNumber },
+            success: function (result) {
+                if (result > 0) {
+                    swal({
+                        title: "操作失败",
+                        text: "相同的认证名称，认证编号不能相同",
+                        type: "error",
+                        buttons: {
+                            button1: {
+                                text: "确认"
+                            }
+                        }
+                    }).then(function (value) {   //这里的value就是按钮的value值，只要对应就可以啦
+                        $("#ReferenceNumber" + index).focus();
+                        $("#ReferenceNumber" + index).val("");
+                    });
+                }
+            }
+        });
     }
 }
+
+

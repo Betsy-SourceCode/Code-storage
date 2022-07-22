@@ -360,7 +360,8 @@ app.controller('mycontroller', function ($scope, $compile) {
             btnAlign: 'c',
             btn1: function (index, layero) {
                 //copy
-                //获取子页面（iframe页）的body元素
+                //获取子页面（iframe页）的body元
+
                 var body = layer.getChildFrame('body', index);
                 // 得到找到body元素中id为CertCodeInput的元素，并获取其值赋值给g
                 var CertCode = body.find('#CertCode').text();

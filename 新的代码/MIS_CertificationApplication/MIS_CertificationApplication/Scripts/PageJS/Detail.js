@@ -1,13 +1,54 @@
 ﻿//下载
-function downloadFile(node, fileName, Content) {
+function downloadFile(type, node, fileName, Primarykey) {
     var hzm = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length);
     var contentType = "application/" + hzm;
     /*    Content += "data:base64," + Content;*/
-    let aLink = document.getElementById(node.id);
-    let blob = base64ToBlob(Content, contentType); //new Blob([Content]);
-    aLink.download = fileName;
-    aLink.href = URL.createObjectURL(blob);
+    //0-主表，1-子表
+    var Content = GetFileByPrimarykey(type, Primarykey); //文件
+    if (Content != "0") {
+        let aLink = document.getElementById(node.id);
+        let blob = base64ToBlob(Content, contentType); //new Blob([Content]);
+        aLink.download = fileName;
+        aLink.href = URL.createObjectURL(blob);
+    }
+    else {
+        return false;
+    }
 };
+//通过主键获取文件及其文件名
+function GetFileByPrimarykey(type, Primarykey) {
+    var sqlurl = "";
+    if (type == 0) {
+        //主表
+        sqlurl = "GetQuoteFileByCA_Ref?CA_Ref=" + Primarykey;
+    }
+    if (type == 1) {
+        //子表
+        sqlurl = "GetCertFileByCFSerial?CFSerial=" + Primarykey;
+    }
+    var file = "";
+    //根据子表主键查对应的文件
+    $.ajax({
+        async: false,
+        type: "post",
+        dataType: 'JSON',
+        url: "/CertificationApplication/CertificationApplicationSQL/" + sqlurl,
+        success: function (result) {
+            if (result == null || result.FileBase64 == null) {
+                return 0;
+            }
+            else {
+                file = result.FileBase64;
+            }
+
+        },
+        error: function (e) {
+            swal('操作失败!', '发生错误，请联系电脑部！内部成员请查看日志文件', 'error') //提示框
+            return 0;
+        }
+    });
+    return file;
+}
 /**
      * base64转blob
      * @param code  //base64码

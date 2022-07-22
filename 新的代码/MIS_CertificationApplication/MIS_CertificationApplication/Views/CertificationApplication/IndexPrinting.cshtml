@@ -29,13 +29,9 @@
                 var Status = $("#Status").text();
                 $.ajax({
                     async: false,
-                    url: '/CertificationApplication/CertificationApplicationSQL/CertificationApplicationList',
+                    url: '/CertificationApplication/CertificationApplicationSQL/PrintCertificationApplicationList',
                     dataType: 'json',
-                    data: {
-                        "Application": Application, "ModelCode": ModelCode, "ExpireSelect": ExpireSelect, "day": day, "Customer": Customer, "KeyWords": KeyWords, "Status": Status
-                    },
                     success: function (res) {
-                        console.log(res);
                         if (res.length == 0) {
                             $scope.list = null;
                             $scope.$apply();
@@ -109,7 +105,7 @@
         <!-- 表格 -->
         <table id="GridView" class="table-striped tab-content table-hover table" style="width: 100%; margin: 0px auto; margin-top: 4%; margin-bottom: 1%; text-align: center; border: none;">
             <thead style="border:1px solid lightgray">
-                <tr style="background-color:rgb(206, 201, 201);height:50px">
+                <tr style="background-color: rgb(206, 201, 201); height: 50px; font-weight: 900; ">
                     <th style="width:9%;">
                         Application Ref #
                         <br />申 请 编 号
@@ -149,8 +145,8 @@
                     <td>{{i.AppDate}}</td>
                     <td></td>
                 </tr>
-                <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color: rgb(226,239,218);color: black; font: bold; text-align: center;" class="TableTrTitle">
-                    <td style="background-color: white; border: none !important">
+                <tr ng-if="i.CertificateRef!=null&&list[$index].ApplicationRef!=list[$index-1].ApplicationRef" style="background-color: rgb(226,239,218);color: black; font: bold; text-align: center;font-weight: 900;" class="TableTrTitle">
+                    <td style="background-color: white; border: none !important;">
                     </td>
                     <td>
                         Certificate Ref #

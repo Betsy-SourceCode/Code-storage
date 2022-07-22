@@ -101,13 +101,9 @@ namespace MIS_CertificationApplication.Models
                                         status = "E";
                                     }
                                 }
-                                if (cert_ref.ToString() == "")
+                                if (cert_ref.ToString() == "" && CertFile == null)
                                 {
                                     //在办-新增了记录，但没有认证编号的
-                                    status = "P";
-                                }
-                                if (CertFile == null)
-                                {
                                     status = "P";
                                 }
                                 values[i] = props[i].GetValue(item);

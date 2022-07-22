@@ -22,74 +22,113 @@
             <h1 style="text-align: center;">
                 <span id="Title">Certificates Application Details</span>
                 <div style="float: right; margin-right: 20px;">
-                    <a href="javascript:window.history.back()" style="margin-left: 25px;"><img src="~/Scripts/img/关闭.jpg" title="关闭" /></a>
+                    <a href="" style="margin-left: 25px;" onclick="window.location.href = '/CertificationApplication/CertificationApplication/index?userid='+@ViewBag.userid; return false;"><img src="~/Scripts/img/关闭.jpg" title="关闭" /></a>
                 </div>
             </h1>
             <form id="Myform" method="post" class="form-inline" role="form" onsubmit="return false" style="width: 80%;margin:0px auto">
                 @*左边*@
                 <div style="float: left; width: 60%;" class="panel-heading col-sm-7">
                     <div class="panel-heading col-sm-10">
-                        <label class="font-backColor">Applicant Ref #</label>：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Applicant Ref #<br />申请编号
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="ApplicantRef">@ViewBag.Data.ApplicationRef</label>
                     </div>
                     <div class="panel-heading col-sm-6">
-                        <label class="font-backColor">Applicant (Client)</label>：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Applicant(Client)<br />委托人
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="Applicant">@ViewBag.Data.Applicant</label>
                     </div>
                     <div class="panel-heading col-sm-6">
-                        <label class="font-backColor" style="padding-left:29px">Manufacturer</label>：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Manufacturer<br />制造商
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="Manufacturer">@ViewBag.Data.Manufacturer</label>
                     </div>
-                    <div class="panel-heading  col-sm-6">
-                        <label class="font-backColor" style="padding-left: 49px;">Customer</label>：
+                    <div class="panel-heading col-sm-6">
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Customer<br />客户
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="Customer">@ViewBag.Data.Customer</label>
                     </div>
                     <div class="panel-heading col-sm-6">
-                        <label class="font-backColor" style="padding-left: 51px;">Currency</label> ：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Currency<br />货币
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="Currency">@ViewBag.Data.Currency</label>
                     </div>
-                    <div class="panel-heading  col-sm-6">
-                        <label class="font-backColor" style="padding-left: 76px;">Payer</label>：
+                    <div class="panel-heading col-sm-6">
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Payer<br />付款方
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="Payer">@ViewBag.Data.Payer</label>
                     </div>
                     <div class="panel-heading col-sm-6">
-                        <label class="font-backColor" style="padding-left:9px">Application Fee</label> ：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Application Fee<br />申请费
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="ApplicationFee">@ViewBag.Data.ApplyFeeQW</label>
                     </div>
 
                     <div class="panel-heading col-sm-6">
-                        <label class="font-backColor" style="padding-left:10px">Client PO Ref #</label>：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Client PO Ref #<br />客户认购单
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="ClientPORef">@ViewBag.Data.ClientPO</label>
                     </div>
 
                     <div class="panel-heading col-sm-6">
-                        <label class="font-backColor" style="padding-left:23px">Inspection fee</label>：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Inspection fee<br />验厂费
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="Inspectionfee">@ViewBag.Data.InspectFeeQW</label>
                     </div>
 
                     <div class="panel-heading col-sm-6">
-                        <label class="font-backColor" style="padding-left:24px">GIP OA Ref #</label>：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            GIP OA Ref#<br />GIP-OA审批号
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="GIPOARef">@ViewBag.Data.GIPOA</label>
                     </div>
 
                     <div class="panel-heading col-sm-6">
-                        <label class="font-backColor" style="padding-left:6px">Anual Renew fee</label>：
+                        <div class=" col-sm-5 font-backColor" style="text-align:center">
+                            Anual Renew fee<br />每年续费
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="AnualRenewfee">@ViewBag.Data.YearFeeQW</label>
                     </div>
                 </div>
                 @*右边*@
                 <div style="float: right; width: 40%;">
                     <div class="panel-heading col-sm-15" style="position: relative;display:flex;padding:50px 15px">
-                        <div id="ProductModel">
-                            <label class="font-backColor" style="padding-left:17px">{Product Model(s)}</label>：
+                        <div id="ProductModel" class="panel-heading col-sm-10" style="text-align:center">
+                            <div class="col-sm-6 font-backColor" style="width:64%">
+                                {ProductModel(s)}<br />型号
+                            </div>
+                            <div class="col-sm-1">：</div>
                         </div>
                         <div style="height: 80px; width: 56%; position: relative">
                             <label id="ProductModel">@ViewBag.Data.ProductModel</label>
                         </div>
                     </div>
                     <div class="panel-heading col-sm-15" style="position: relative;display:flex;padding:0px 15px">
-                        <div id="Otherservices">
-                            <label class="font-backColor">Other services & fees<br />(include recurrings)</label>：
+                        <div id="Otherservices" class="panel-heading col-sm-10" style="text-align:center">
+                            <div class="col-sm-6 font-backColor" style="width:64%">
+                                (IncludeRecurrings)<br />其他服务及收费（含重要收费类）
+                            </div>
+                            <div class="col-sm-1">：</div>
                         </div>
                         <div style="height: 80px; width: 56%; position: relative">
                             <label id="Otherservices">
@@ -102,25 +141,35 @@
                 </div>
                 @*remarks*@
                 <div class="panel-heading">
-                    <div class="panel-heading col-sm-12">
-                        <label class="font-backColor" style="padding-left:51px">Remarks</label>：
+                    <div class="panel-heading col-sm-9" style="text-align:center">
+                        <div class=" col-sm-2 font-backColor">
+                            Remarks<br />备注
+                        </div>
+                        <div class="col-sm-1" style="width:auto">：</div>
                         <label id="Remarks">@ViewBag.Data.Remark</label>
                     </div>
                 </div>
                 @*输入区域下半部分*@
                 <div class="panel-heading col-sm-11">
-                    <div class="panel-heading col-sm-4">
-                        <label class="font-backColor" style="padding-left:6px">Quotation Ref #</label>：
+                    <div class="panel-heading col-sm-4" style="text-align:center">
+                        <div class=" col-sm-5 font-backColor">
+                            QuotationRef#<br />报价单
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="QuotationRef">@ViewBag.Data.QuoteRef</label>
                     </div>
-                    <div class="panel-heading col-sm-4">
-                        <label class="font-backColor" style="padding-left:62px;">Supplier</label>：
+                    <div class="panel-heading col-sm-4" style="text-align:center">
+                        <div class=" col-sm-5 font-backColor">
+                            Supplier<br />供应商
+                        </div>
+                        <div class="col-sm-1">：</div>
                         <label id="Supplier">@ViewBag.Data.Supplier</label>
                     </div>
                     <div class="panel-heading col-sm-4" style="position: relative;display:flex;padding:0px 15px">
-                        <div id="Otherservices">
-                            <label class="font-backColor" style="padding-left:55px;">Quotation<br />Attachment</label>：
+                        <div id="Otherservices" class=" col-sm-5 font-backColor" style="text-align:center">
+                            Quotation<br />Attachment<br />报价单附档
                         </div>
+                        <div class="col-sm-1">：</div>
                         <div style="height:45px ;width:90px;position:relative;line-height:45px" id="Quotation">
                             <!--下载文件-->
                             @{
@@ -129,41 +178,33 @@
                                 {
                                     hzm = hzm.Substring(hzm.LastIndexOf(".") + 1, hzm.ToString().Length - (hzm.LastIndexOf(".") + 1));
                                 }
-
                             }
-                            @if (ViewBag.Data.QuoteFile != null)
+                            @if (ViewBag.Data.QuoteFileName != null)
                             {
-                                if (@hzm == "pdf")
-                                {
-                                    <div style="height:auto;width:100px;position:relative">
-                                        <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName', '@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/pdf.png" /></a>
-                                    </div>
-                                }
-                                else if (@hzm == "doc" || @hzm == "docx")
-                                {
-                                    <div style="height:auto;width:100px;position:relative">
-                                        <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/word.png" /></a>
-                                    </div>
-                                }
-                                else if (@hzm == "xls" || @hzm == "xlsx" || @hzm == "csv")
-                                {
-
-                                    <div style="height:auto;width:100px;position:relative">
-                                        <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/excel.png" /></a>
-                                    </div>
-                                }
-                                else if (@hzm == "ppt" || @hzm == "pptx")
-                                {
-                                    <div style="height:auto;width:100px;position:relative">
-                                        <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><img src="~/Scripts/img/ppt.png" /></a>
-                                    </div>
-
-                                }
-                                else
-                                {
-                                    <a href="#" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(this,'@ViewBag.Data.QuoteFileName','@Convert.ToBase64String(ViewBag.Data.QuoteFile)')"><b>下载</b></a>
-                                }
-
+                                <div style="height: auto; width:100px;position:relative">
+                                    <a href="" id="downloadFile" title="点击下载 @ViewBag.Data.QuoteFileName" onclick="downloadFile(0,this,'@ViewBag.Data.QuoteFileName', '@ViewBag.Data.ApplicationRef')">
+                                        @if (@hzm == "pdf")
+                                        {
+                                            <img src="~/Scripts/img/pdf.png" style="padding:14px;" />
+                                        }
+                                        else if (@hzm == "doc" || @hzm == "docx")
+                                        {
+                                            <img src="~/Scripts/img/word.png" style="padding:14px;" />
+                                        }
+                                        else if (@hzm == "xls" || @hzm == "xlsx" || @hzm == "csv")
+                                        {
+                                            <img src="~/Scripts/img/excel.png" style="padding:14px;" />
+                                        }
+                                        else if (@hzm == "ppt" || @hzm == "pptx")
+                                        {
+                                            <img src="~/Scripts/img/ppt.png" style="padding:14px;" />
+                                        }
+                                        else
+                                        {
+                                            <b>下载</b>
+                                        }
+                                    </a>
+                                </div>
                             }
                             else
                             {
@@ -183,7 +224,6 @@
 
         <!--表格-->
         <div style="width: 92%;margin:0px auto;">
-
             <table id="GridView" class="table-striped tab-content table-hover table" style="width: 98%; margin: 12px auto; margin-bottom: 1%;text-align:center">
                 <thead>
                     <tr style="background-color: rgba(217,217,217,0.1)">
@@ -215,7 +255,6 @@
                                 </td>
                                 <td style="position:relative">
                                     @item.Factories
-
                                 </td>
                                 <td style="position:relative">
                                     @item.CoverAreas
@@ -231,39 +270,32 @@
                                         if (Sonhzm != null)
                                             Sonhzm = Sonhzm.Substring(Sonhzm.LastIndexOf(".") + 1, Sonhzm.ToString().Length - (Sonhzm.LastIndexOf(".") + 1));
                                     }
-                                    @if (@item.CertFile != null)
+                                    @if (@item.CertFileName != null)
                                     {
-                                        if (@Sonhzm == "pdf")
-                                        {
-                                            <div style="height:auto;width:100px;position:relative">
-                                                <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/pdf.png" /></a>
-                                            </div>
-                                        }
-                                        else if (@Sonhzm == "doc" || @Sonhzm == "docx")
-                                        {
-                                            <div style="height:auto;width:100px;position:relative">
-                                                <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/word.png" /></a>
-                                            </div>
-                                        }
-                                        else if (@Sonhzm == "xls" || @Sonhzm == "xlsx" || @Sonhzm == "csv")
-                                        {
-
-                                            <div style="height:auto;width:100px;position:relative">
-                                                <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/excel.png" /></a>
-                                            </div>
-                                        }
-                                        else if (@Sonhzm == "ppt" || @Sonhzm == "pptx")
-                                        {
-                                            <div style="height:auto;width:100px;position:relative">
-                                                <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><img src="~/Scripts/img/ppt.png" /></a>
-                                            </div>
-
-                                        }
-                                        else
-                                        {
-                                            <a href="#" id="SondownloadFile @i" style="line-height:55px" title="点击下载 @item.CertFileName" onclick="downloadFile(this,'@item.CertFileName','@Convert.ToBase64String(item.CertFile)')"><b>下载</b></a>
-                                        }
-
+                                        <div style="height:auto;position:relative">
+                                            <a href="" id="SondownloadFile @i" title="点击下载 @item.CertFileName" onclick="downloadFile(1,this,'@item.CertFileName', '@item.CFSerial')">
+                                                @if (@Sonhzm == "pdf")
+                                                {
+                                                    <img src="~/Scripts/img/pdf.png" />
+                                                }
+                                                else if (@Sonhzm == "doc" || @Sonhzm == "docx")
+                                                {
+                                                    <img src="~/Scripts/img/word.png" />
+                                                }
+                                                else if (@Sonhzm == "xls" || @Sonhzm == "xlsx" || @Sonhzm == "csv")
+                                                {
+                                                    <img src="~/Scripts/img/excel.png" />
+                                                }
+                                                else if (@Sonhzm == "ppt" || @Sonhzm == "pptx")
+                                                {
+                                                    <img src="~/Scripts/img/ppt.png" />
+                                                }
+                                                else
+                                                {
+                                                    <b style="line-height:55px">下载</b>
+                                                }
+                                            </a>
+                                        </div>
                                     }
                                     else
                                     {
